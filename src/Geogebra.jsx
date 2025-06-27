@@ -28,8 +28,8 @@ const Geogebra = (props) => {
   const [watchPropsChange, setWatchPropsChange] = useState(false);
   // gets called by Geogebra after the Applet is ready
   const onAppletReady = useCallback(
-    () => {
-      if (appletOnLoad) appletOnLoad();
+    (ggbApi) => {
+      if (appletOnLoad) appletOnLoad(ggbApi);
       if (onReady) onReady();
       debug && console.log(`Applet with id "${id}" is ready`);
     },

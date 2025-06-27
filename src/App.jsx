@@ -1,23 +1,25 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
 import Geogebra from './Geogebra';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const drawEllipse = (applet) => {
+    applet.evalCommand('ellipse: x^2/25 + y^2/9 = 1');
+    applet.setColor('ellipse', 255, 0, 0);
+    applet.setLineThickness('ellipse', 3);
+    applet.setCaption('ellipse', '椭圆: \\frac{x^2}{25} + \\frac{y^2}{9} = 1');
+
+    applet.evalCommand('A: Point(ellipse)');
+    applet.evalCommand('C1: (4, 0)');
+    applet.evalCommand('C2: (-4, 0)');
+    applet.evalCommand('s1: Segment(C1, A)');
+    applet.evalCommand('s2: Segment(C2, A)');
+    applet.evalCommand('lenSum: s1 + s2');
+
+    applet.setCoordSystem(-6, 6, -4, 4);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+    <div>
+      <div>foo</div>
       <Geogebra
         id="geogebra"
         width={1200}
@@ -32,19 +34,9 @@ function App() {
         showToolBarHelp={false}
         errorDialogsActive={true}
         showTutorialLink={true}
+        appletOnLoad={drawEllipse}
       />
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   );
 }
 
