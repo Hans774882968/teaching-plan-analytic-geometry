@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 
+// TODO: 如何 width: 100%
 const Geogebra = (props) => {
   const defaultProps = {
     appName: 'classic',
@@ -57,7 +58,7 @@ const Geogebra = (props) => {
   }, [watchPropsChange, debug, id, onAppletReady]);
 
   return (
-    <div id={`${id}-holder`}>
+    <div id={`${id}-holder`} className={props.className}>
       <div id={id}></div>
     </div>
   );

@@ -148,6 +148,62 @@ return k;
 2. 复制web3d和css两个文件夹到`public\geogebra`。
 3. `geogebra\web3d\web3d.nocache.js`的`k = e(o.location.href)`改成`k = e(o.location.href + 'geogebra/web3d/');`。
 
+## React项目如何支持Katex公式
+
+相关文件：
+
+- `src\ellipseDefinition\EllipseDefinition.jsx`
+- `src\ellipseDefinition\config.jsx`
+
+首先
+
+```powershell
+bun add katex @matejmazur/react-katex
+```
+
+接着
+
+```jsx
+import 'katex/dist/katex.min.css';
+import TeX from '@matejmazur/react-katex';
+```
+
+然后直接引用：
+
+```jsx
+<TeX>{'c = \\sqrt{a^2 - b^2}'}</TeX>
+<TeX block>{String.raw`\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1`}</TeX>
+```
+
+因为我希望DeepSeek生成一个`config.js`的Schema方便后续配置，所以我实际上是在`src\ellipseDefinition\config.jsx`导入的`TeX`。大致方案如下：
+
+config配置示例：
+
+```jsx
+export const config = {
+  properties: {
+    title: '椭圆的重要性质',
+    items: [
+      <><strong className="highlight">离心率</strong>：<TeX>{'e = \\frac{c}{a} \\ (0 < e < 1)'}</TeX>，表示椭圆的扁平程度</>,
+      <><strong className="highlight">焦点性质</strong>：从椭圆一个焦点发出的光线，经椭圆反射后会经过另一个焦点</>,
+      <><strong className="important">对称性</strong>：椭圆关于长轴、短轴和中心对称</>,
+      <><strong className="highlight">面积公式</strong>：<TeX>{'S = \\pi \\times a \\times b'}</TeX></>,
+    ],
+  },
+}
+```
+
+`EllipseDefinition.jsx`调用：
+
+```jsx
+<div className="knowledge-point">
+  <h3>🔍 {config.properties.title}</h3>
+  {config.properties.items.map((item, i) => (
+    <p key={i}>{i + 1}. {item}</p>
+  ))}
+</div>
+```
+
 ## 参考资料
 
 1. GeoGebra官方文档：https://geogebra.github.io/docs/reference/en/GeoGebra_Apps_Embedding/
