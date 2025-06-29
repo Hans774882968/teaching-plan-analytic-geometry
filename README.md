@@ -136,6 +136,8 @@ return k;
 
 我们把它改成`k = e(o.location.href + 'geogebra/web3d/');`，问题解决！
 
+250629更新：接入react-router后，需要改为`k = e('geogebra/web3d/');`。
+
 之后发现，控制台没有报错了，但样式不对劲。这是因为它请求了`geogebra/css/...`。所以我们不能只复制web3d文件夹，还要把同级的css文件夹复制过去。至此搞定！
 
 ### geogebra 的神秘 bug
@@ -203,6 +205,49 @@ export const config = {
   ))}
 </div>
 ```
+
+## 支持路由
+
+支持路由挺常规的，主要需要注意改一下这句`k = e('geogebra/web3d/');`（详见《geogebra的自托管解决方案》一节）。
+
+## AI生成教案网页场景下如何解决样式冲突
+
+我们先生成第一个教案网页，然后研究如何生成其他教案网页。这就有一个绕不过去的问题：如何解决样式冲突？我想到两条路：
+
+1. 尽量少更改AI生成的第一个教案网页，将其放入shadow dom。我尝试了一下，发现主要的困难在于geogebra。这条路也许能走通，但风险太高，舍弃。
+    1. 它的源码引用了`document.getElementById、document.querySelector`等方法。这些方法都会失效。这个是可解的，hook它们就行。
+    2. geogebra引入了5个CSS文件（可以用`document.querySelectorAll('link.ggw_resource')`拿到）。它们无法作用到shadow dom内部。这个也好处理，写段JS手动把它们插入到shadow dom里即可。
+    3. 处理上面两点了，就不再有大错误了，但还有一些隐蔽的报错。比如：`:root`指定的CSS变量无法引用到，导致设置坐标轴颜色的OK按钮失去背景色。修改`geogebra/css/bundles/bundle.css`的`:root`为`:root, :host`可解决。
+    4. 等式栏的每个条目左上角的三个点点击两次才能出现菜单栏。这个确实不懂怎么解了。
+2. 引入scss和css modules。手动或者让AI改好第一个教案网页。然后用第一个教案网页的代码生成开发规范，在后续生成其他教案网页时将开发规范一起输入到提示词里。
+
+附：如何hook `document.getElementById`：
+
+```js
+export function getShadowRootWrap() {
+  return document.querySelector('.shadow-root-div')?.shadowRoot;
+}
+
+const settings = {
+  showLog: false,
+};
+
+export function hookGetEleById() {
+  settings.showLog && console.log('%c[teaching-plan-analytic-geometry] 正在 hook document.getElementById', 'background: #3a2e00; color: #e2c041; padding: 3px 6px;');
+  const originalGetEleById = document.getElementById;
+  document.getElementById = function (id) {
+    settings.showLog && console.log('[teaching-plan-analytic-geometry] document.getElementById matched param', id);
+    const shadowRootWrap = getShadowRootWrap();
+    if (!shadowRootWrap) {
+      return originalGetEleById.call(document, id);
+    }
+    const res = shadowRootWrap?.querySelector(`#${id}`);
+    return res || null;
+  };
+}
+```
+
+
 
 ## 参考资料
 

@@ -24,45 +24,8 @@
 body {
   font-family: 'Nunito', sans-serif;
   background-color: var(--background);
-  /* 淡蓝色背景 */
   color: #333;
   line-height: 2;
   padding: 0;
   overflow-x: hidden;
-}
-
-h1,
-h2,
-h3 {
-  font-family: 'Fredoka One', cursive;
-  color: var(--text-dark);
-}
-
-h1 {
-  font-size: var(--title-size);
-  text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-  font-size: var(--section-title-size);
-  color: var(--primary);
-  position: relative;
-  padding-left: 15px;
-}
-
-h2::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 5px;
-  height: 80%;
-  background-color: var(--accent);
-  border-radius: 5px;
-}
-
-ul {
-  padding-left: 16px;
 }

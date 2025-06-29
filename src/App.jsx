@@ -1,8 +1,21 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+import 'katex/dist/katex.min.css';
 import EllipseDefinition from './ellipseDefinition/EllipseDefinition';
+import TeachingPlanList from './TeachingPlanList';
+import EllipseHardQuestions from './ellipseDefinition/EllipseHardQuestions';
 
 function App() {
   return (
-    <EllipseDefinition />
+    <HelmetProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<TeachingPlanList />} />
+          <Route path="/ellipse-definition" element={<EllipseDefinition />} />
+          <Route path="/ellipse-hard-questions" element={<EllipseHardQuestions />} />
+        </Routes>
+      </Router>
+    </HelmetProvider>
   );
 }
 
