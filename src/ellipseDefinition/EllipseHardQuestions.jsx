@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { config } from './hardQuestionsConfig';
 import QuizContainer from './QuizContainer';
 import { Helmet } from 'react-helmet-async';
-// TODO: 解决样式冲突风险
-import '../common/teachingPlans.css';
-import './EllipseDefinition.scss';
+import styles from './EllipseDefinition.module.scss';
+import TPButton from '../component/TPButton';
 
 function Inner() {
   const [showFeedbacks, setShowFeedbacks] = useState({});
@@ -18,9 +17,9 @@ function Inner() {
   };
 
   return (
-    <div className="container">
-      <section className="teaching-plan-section">
-        <h2 className="teaching-plan-h2">🧠 知识大挑战</h2>
+    <div className={styles.container}>
+      <section className={styles.teachingPlanSection}>
+        <h2 className={styles.teachingPlanH2}>🧠 知识大挑战</h2>
         <p>🔥 来测试一下你对椭圆的理解够不够深刻吧！</p>
         {
           config.quiz.map((quiz, index) => (
@@ -32,13 +31,10 @@ function Inner() {
             />
           ))
         }
-        <div className="check-answers-container">
-          <button
-            className="check-answers"
-            onClick={checkAnswers}
-          >
+        <div className={styles.checkAnswersContainer}>
+          <TPButton onClick={checkAnswers}>
             检查答案
-          </button>
+          </TPButton>
         </div>
       </section>
     </div>

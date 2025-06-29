@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './QuizContainer.scss';
+import styles from './QuizContainer.module.scss';
 
 export default function QuizContainer({ index, quiz, showFeedbacks }) {
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -12,15 +12,15 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
   };
 
   return (
-    <div className="quiz-container">
-      <div className="question">
+    <div className={styles.quizContainer}>
+      <div className={styles.question}>
         {`${index + 1}. `}{quiz.question}
       </div>
-      <div className="options">
+      <div className={styles.options}>
         {quiz.options.map((option, optIndex) => (
           <div
             key={optIndex}
-            className={`option ${selectedOptions[index] === optIndex ? 'selected' : ''}`}
+            className={`${styles.option} ${selectedOptions[index] === optIndex ? styles.selected : ''}`}
             onClick={() => handleOptionSelect(index, optIndex)}
           >
             {option}
@@ -29,9 +29,9 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
       </div>
       {showFeedbacks[index] && (
         <div
-          className={`feedback ${selectedOptions[index] === quiz.correct ? 'correct' : 'incorrect'}`}
+          className={`${styles.feedback} ${selectedOptions[index] === quiz.correct ? styles.correct : styles.incorrect}`}
         >
-          {selectedOptions[index] === quiz.correct ? '✅ 正确！' : '❌ 错误！'}
+          {selectedOptions[index] === quiz.correct ? '✔️ 正确！' : '❌ 错误！'}
           {quiz.explanation}
         </div>
       )}

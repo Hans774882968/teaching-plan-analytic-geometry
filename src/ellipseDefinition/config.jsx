@@ -1,14 +1,15 @@
 import TeX from '@matejmazur/react-katex';
+import styles from './EllipseDefinition.module.scss';
 
 export const config = {
   title: '椭圆探索之旅 | 解析几何探秘',
   welcome: {
     title: '欢迎，Hans7！',
-    content: <>我是你的数学学习伙伴柯南！今天我们将一起探索<strong className="highlight">椭圆</strong>的奥秘。椭圆不仅是重要的几何图形，还在天文、物理和工程中有广泛应用。准备好开始我们的数学探案之旅了吗？</>,
+    content: <>我是你的数学学习伙伴柯南！今天我们将一起探索<strong className={styles.highlight}>椭圆</strong>的奥秘。椭圆不仅是重要的几何图形，还在天文、物理和工程中有广泛应用。准备好开始我们的数学探案之旅了吗？</>,
   },
   definition: {
     title: '椭圆的定义',
-    content: <>椭圆是平面上到<strong className="highlight">两个定点（焦点）的距离之和等于常数</strong>的点的集合。这两个定点称为<strong className="important">焦点</strong>，常数必须大于两焦点之间的距离。</>,
+    content: <>椭圆是平面上到<strong className={styles.highlight}>两个定点（焦点）的距离之和等于常数</strong>的点的集合。这两个定点称为<strong className={styles.important}>焦点</strong>，常数必须大于两焦点之间的距离。</>,
     mathExpression: <TeX>{'|PF₁| + |PF₂| = 2a'}</TeX>,
   },
   equation: {
@@ -16,18 +17,18 @@ export const config = {
     content: '当椭圆中心在原点，焦点在x轴上时，标准方程为：',
     formula: <TeX block>{String.raw`\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1`}</TeX>,
     parameters: [
-      <><strong className='highlight'>a</strong> - 半长轴长度 (<TeX>{'a > b'}</TeX>)</>,
-      <><strong className='highlight'>b</strong> - 半短轴长度</>,
-      <><strong className='highlight'>c</strong> - 焦距的一半，满足 <TeX>{'c = \\sqrt{a^2 - b^2}'}</TeX></>,
+      <><strong className={styles.highlight}>a</strong> - 半长轴长度 (<TeX>{'a > b'}</TeX>)</>,
+      <><strong className={styles.highlight}>b</strong> - 半短轴长度</>,
+      <><strong className={styles.highlight}>c</strong> - 焦距的一半，满足 <TeX>{'c = \\sqrt{a^2 - b^2}'}</TeX></>,
     ],
   },
   properties: {
     title: '椭圆的重要性质',
     items: [
-      <><strong className="highlight">离心率</strong>：<TeX>{'e = \\frac{c}{a} \\ (0 < e < 1)'}</TeX>，表示椭圆的扁平程度</>,
-      <><strong className="highlight">焦点性质</strong>：从椭圆一个焦点发出的光线，经椭圆反射后会经过另一个焦点</>,
-      <><strong className="important">对称性</strong>：椭圆关于长轴、短轴和中心对称</>,
-      <><strong className="highlight">面积公式</strong>：<TeX>{'S = \\pi \\times a \\times b'}</TeX></>,
+      <><strong className={styles.highlight}>离心率</strong>：<TeX>{'e = \\frac{c}{a} \\ (0 < e < 1)'}</TeX>，表示椭圆的扁平程度</>,
+      <><strong className={styles.highlight}>焦点性质</strong>：从椭圆一个焦点发出的光线，经椭圆反射后会经过另一个焦点</>,
+      <><strong className={styles.important}>对称性</strong>：椭圆关于长轴、短轴和中心对称</>,
+      <><strong className={styles.highlight}>面积公式</strong>：<TeX>{'S = \\pi \\times a \\times b'}</TeX></>,
     ],
   },
   secondary: [
@@ -77,6 +78,6 @@ export const config = {
   conclusion: {
     title: '恭喜完成椭圆探索！',
     content: 'Hans7，你今天的表现太棒了！你已经掌握了椭圆的定义、基本性质和重要二级结论。数学就像侦探破案，每一步都需要仔细观察和严谨推理。继续努力，你一定能成为数学界的"名侦探"！',
-    tip: <><strong className="highlight">记住：数学不是记忆，而是理解！</strong> 下次我们将探索双曲线，继续我们的数学探案之旅！</>,
+    tip: <><strong className={styles.highlight}>记住：数学不是记忆，而是理解！</strong> 下次我们将探索双曲线，继续我们的数学探案之旅！</>,
   },
 };

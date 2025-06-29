@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { config } from './config';
 import Geogebra from '../component/Geogebra';
 import 'katex/dist/katex.min.css';
-import '../common/teachingPlans.css';
-import './EllipseDefinition.scss';
+import styles from './EllipseDefinition.module.scss';
 import conanThinking from '../assets/conan-thinking-1.png';
 import conanThumbUp from '../assets/conan-thumb-up-1.png';
 import QuizContainer from './QuizContainer';
 import { Helmet } from 'react-helmet-async';
+import TPButton from '../component/TPButton';
 
 const Inner = () => {
   const [showFeedbacks, setShowFeedbacks] = useState({});
@@ -28,7 +28,6 @@ const Inner = () => {
     applet.setCoordSystem(-6, 6, -4, 4);
   };
 
-  // 检查答案
   const checkAnswers = () => {
     const feedbacks = {};
     config.quiz.forEach((_, index) => {
@@ -38,39 +37,39 @@ const Inner = () => {
   };
 
   return (
-    <div className="container">
-      <header className="teaching-plan-header">
-        <h1 className="teaching-plan-h1">🔍 {config.title} 🔍</h1>
+    <div className={styles.container}>
+      <header className={styles.teachingPlanHeader}>
+        <h1 className={styles.teachingPlanH1}>🔭 {config.title} 🔍</h1>
         <p>与名侦探柯南一起揭开椭圆的神秘面纱！</p>
       </header>
 
-      <section className="teaching-plan-section">
-        <div className="conan-container">
+      <section className={styles.teachingPlanSection}>
+        <div className={styles.conanContainer}>
           <div
-            className="floating"
+            className={styles.floating}
           >
-            <img src={conanThinking} className="conan-img" alt="柯南思考中" />
+            <img src={conanThinking} className={styles.conanImg} alt="柯南思考中" />
           </div>
         </div>
-        <div className="card">
-          <h2 className="teaching-plan-h2">{config.welcome.title}</h2>
+        <div className={styles.card}>
+          <h2 className={styles.teachingPlanH2}>👬 {config.welcome.title}</h2>
           <p>{config.welcome.content}</p>
         </div>
       </section>
 
-      <section className="teaching-plan-section">
-        <h2 className="teaching-plan-h2">椭圆的定义与基本性质</h2>
+      <section className={styles.teachingPlanSection}>
+        <h2 className={styles.teachingPlanH2}>📚 椭圆的定义与基本性质</h2>
 
-        <div className="knowledge-point">
-          <h3 className="teaching-plan-h3">📏 {config.definition.title}</h3>
+        <div className={styles.knowledgePoint}>
+          <h3 className={styles.teachingPlanH3}>📏 {config.definition.title}</h3>
           <p>{config.definition.content}</p>
           <p>数学表达式：对于任意点P在椭圆上，有 {config.definition.mathExpression}，其中F₁和F₂是焦点，2a是常数。</p>
         </div>
 
-        <div className="knowledge-point">
-          <h3 className="teaching-plan-h3">📐 {config.equation.title}</h3>
+        <div className={styles.knowledgePoint}>
+          <h3 className={styles.teachingPlanH3}>📐 {config.equation.title}</h3>
           <p>{config.equation.content}</p>
-          <div className="important">{config.equation.formula}</div>
+          <div className={styles.important}>{config.equation.formula}</div>
           <p>其中：</p>
           <ul>
             {
@@ -81,20 +80,20 @@ const Inner = () => {
           </ul>
         </div>
 
-        <div className="knowledge-point">
-          <h3 className="teaching-plan-h3">🔍 {config.properties.title}</h3>
+        <div className={styles.knowledgePoint}>
+          <h3 className={styles.teachingPlanH3}>🔍 {config.properties.title}</h3>
           {config.properties.items.map((item, i) => (
             <p key={i}>{i + 1}. {item}</p>
           ))}
         </div>
       </section>
 
-      <section className="teaching-plan-section">
-        <h2 className="teaching-plan-h2">🔬 椭圆实验室</h2>
+      <section className={styles.teachingPlanSection}>
+        <h2 className={styles.teachingPlanH2}>🔬 椭圆实验室</h2>
         <p>调整参数，实时观察椭圆的变化：</p>
         <Geogebra
           id="ellipse-definition-1"
-          className="ellipse-definition-1-wrapper"
+          className={styles.ellipseDefinition1Wrapper}
           width={1080}
           height={600}
           showToolbar={true}
@@ -111,12 +110,12 @@ const Inner = () => {
         />
       </section>
 
-      <section className="teaching-plan-section">
-        <h2 className="teaching-plan-h2">💡 椭圆二级结论</h2>
+      <section className={styles.teachingPlanSection}>
+        <h2 className={styles.teachingPlanH2}>💡 椭圆二级结论</h2>
 
         {config.secondary.map((item, i) => (
-          <div key={i} className="card">
-            <h3 className="teaching-plan-h3">{item.title}</h3>
+          <div key={i} className={styles.card}>
+            <h3 className={styles.teachingPlanH3}>{item.title}</h3>
             <p>{item.content}</p>
             {item.points && (
               <ul>
@@ -129,8 +128,8 @@ const Inner = () => {
         ))}
       </section>
 
-      <section className="teaching-plan-section">
-        <h2 className="teaching-plan-h2">🧠 知识挑战</h2>
+      <section className={styles.teachingPlanSection}>
+        <h2 className={styles.teachingPlanH2}>🧠 知识挑战</h2>
         <p>测试一下你对椭圆的理解吧！</p>
 
         {
@@ -144,33 +143,30 @@ const Inner = () => {
           ))
         }
 
-        <div className="check-answers-container">
-          <button
-            className="check-answers"
-            onClick={checkAnswers}
-          >
+        <div className={styles.checkAnswersContainer}>
+          <TPButton onClick={checkAnswers}>
             检查答案
-          </button>
+          </TPButton>
         </div>
       </section>
 
-      <section className="teaching-plan-section">
-        <div className="conan-container">
+      <section className={styles.teachingPlanSection}>
+        <div className={styles.conanContainer}>
           <div
-            className="floating"
+            className={styles.floating}
           >
-            <img src={conanThumbUp} className="conan-img" alt="柯南点赞" />
+            <img src={conanThumbUp} className={styles.conanImg} alt="柯南点赞" />
           </div>
         </div>
 
-        <div className="card">
-          <h2 className="teaching-plan-h2">🎉 {config.conclusion.title}</h2>
+        <div className={styles.card}>
+          <h2 className={styles.teachingPlanH2}>🎉 {config.conclusion.title}</h2>
           <p>{config.conclusion.content}</p>
           <p>{config.conclusion.tip}</p>
         </div>
       </section>
 
-      <footer className="teaching-plan-footer">
+      <footer className={styles.teachingPlanFooter}>
         <p>© 2025 椭圆探索之旅 | 为Hans7特别定制 | 数学侦探柯南</p>
       </footer>
     </div>

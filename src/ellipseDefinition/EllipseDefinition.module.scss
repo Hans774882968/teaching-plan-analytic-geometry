@@ -7,7 +7,7 @@
   gap: 30px;
 }
 
-.teaching-plan-header {
+.teachingPlanHeader {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,7 +29,7 @@
   }
 }
 
-.teaching-plan-section {
+.teachingPlanSection {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -47,7 +47,39 @@
   }
 }
 
-.ellipse-definition-1-wrapper {
+.teachingPlanH1,
+.teachingPlanH2,
+.teachingPlanH3 {
+  font-family: 'Fredoka One', cursive;
+  color: var(--text-dark);
+}
+
+.teachingPlanH1 {
+  font-size: var(--title-size);
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.teachingPlanH2 {
+  font-size: var(--section-title-size);
+  color: var(--primary);
+  position: relative;
+  padding-left: 15px;
+}
+
+.teachingPlanH2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 80%;
+  background-color: var(--accent);
+  border-radius: 5px;
+}
+
+.ellipseDefinition1Wrapper {
   display: flex;
   justify-content: center;
 }
@@ -78,43 +110,34 @@
   transition: all 0.3s ease;
 }
 
-.conan-container {
+.conanContainer {
   display: flex;
   justify-content: center;
   position: relative;
-
-  .conan-img {
-    border-radius: 50%;
-    width: 180px;
-    border: 1px solid var(--primary);
-  }
 }
 
-.knowledge-point {
+.conanImg {
+  border-radius: 50%;
+  width: 180px;
+  border: 1px solid var(--primary);
+}
+
+.knowledgePoint {
   padding: 15px;
   border-left: 4px solid #FF6B6B;
   background: var(--card-bg);
   border-radius: 0 16px 16px 0;
 }
 
-.check-answers-container {
-  padding-left: 8px;
-
-  .check-answers {
-    background: #4A90E2;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 30px;
-    font-family: "Nunito", sans-serif;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+.teachingPlanSection ul {
+  padding-left: 16px;
 }
 
-.teaching-plan-footer {
+.checkAnswersContainer {
+  padding-left: 8px;
+}
+
+.teachingPlanFooter {
   text-align: center;
   color: #2D3748;
   font-weight: bold;
