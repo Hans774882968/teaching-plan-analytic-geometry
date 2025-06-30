@@ -5,6 +5,11 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  transition: all 0.3s ease;
+}
+
+.quizContainer:hover {
+  transform: var(--hover-scale);
 }
 
 .question {
@@ -17,6 +22,12 @@
   gap: 12px;
 }
 
+@media (max-width: 768px) {
+  .options {
+    grid-template-columns: 1fr;
+  }
+}
+
 .option {
   background: rgb(130, 205, 230);
   padding: 12px;
@@ -24,6 +35,12 @@
   cursor: pointer;
   transition: all 0.3s ease;
   border: 2px solid transparent;
+}
+
+.option:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-3px);
 }
 
 .option.selected {

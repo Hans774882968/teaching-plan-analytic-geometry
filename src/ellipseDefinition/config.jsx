@@ -14,13 +14,17 @@ export const config = {
   },
   equation: {
     title: '椭圆的标准方程',
-    content: '当椭圆中心在原点，焦点在x轴上时，标准方程为：',
-    formula: <TeX block>{String.raw`\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1`}</TeX>,
+    contentX: '当椭圆中心在原点，焦点在x轴上时，标准方程为：',
+    formulaX: <TeX block>{String.raw`\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1`}</TeX>,
     parameters: [
       <><strong className={styles.highlight}>a</strong> - 半长轴长度 (<TeX>{'a > b'}</TeX>)</>,
       <><strong className={styles.highlight}>b</strong> - 半短轴长度</>,
       <><strong className={styles.highlight}>c</strong> - 焦距的一半，满足 <TeX>{'c = \\sqrt{a^2 - b^2}'}</TeX></>,
     ],
+    contentY: '同理，当椭圆中心在原点，焦点在y轴上时，标准方程为：',
+    formulaY: <TeX block>{String.raw`\frac{y^2}{a^2} + \frac{x^2}{b^2} = 1 \ (a > b)`}</TeX>,
+    think: <p>思考：那当 <TeX>{'a = b'}</TeX> 的时候呢？</p>,
+    answer: <p>回答：焦点合二为一，既在x轴上也在y轴上，此时椭圆退化为圆。</p>,
   },
   properties: {
     title: '椭圆的重要性质',

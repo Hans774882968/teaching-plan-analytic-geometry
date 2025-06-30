@@ -37,7 +37,6 @@
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 
@@ -47,10 +46,24 @@
   }
 }
 
+.teachingPlanSection,
+.knowledgePoint,
+.card,
+.conanImg {
+  transition: all 0.3s ease;
+}
+
+.teachingPlanSection:hover,
+.knowledgePoint:hover,
+.card:hover {
+  transform: var(--hover-scale);
+}
+
 .teachingPlanH1,
 .teachingPlanH2,
 .teachingPlanH3 {
   font-family: 'Fredoka One', cursive;
+  font-weight: bold;
   color: var(--text-dark);
 }
 
@@ -77,6 +90,20 @@
   height: 80%;
   background-color: var(--accent);
   border-radius: 5px;
+}
+
+.teachingPlanH3 {
+  font-size: 1.17em;
+}
+
+@media (max-width: 768px) {
+  .teachingPlanH1 {
+    font-size: 2rem;
+  }
+
+  .teachingPlanH2 {
+    font-size: 1.5rem;
+  }
 }
 
 .ellipseDefinition1Wrapper {
@@ -107,7 +134,6 @@
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
 }
 
 .conanContainer {
@@ -120,6 +146,10 @@
   border-radius: 50%;
   width: 180px;
   border: 1px solid var(--primary);
+}
+
+.conanImg:hover {
+  transform: rotate(5deg) var(--hover-scale);
 }
 
 .knowledgePoint {

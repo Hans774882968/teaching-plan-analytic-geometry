@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>页面未找到 | 几何教案库</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+    :root {
+      --primary: #4361ee;
+      --secondary: #3f37c9;
+      --accent: #4cc9f0;
+      --light: #f8f9fa;
+      --dark: #212529;
+    }
+
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .desert-pattern {
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(67, 97, 238, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 80% 70%, rgba(76, 201, 240, 0.05) 0%, transparent 20%),
+        linear-gradient(to bottom, rgba(245, 247, 250, 0.9), rgba(228, 237, 245, 0.9)),
+        url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%234361ee' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-15px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .desert-sand {
+      background: linear-gradient(to bottom, #f1c27d, #e0ac69);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .cactus {
+      position: relative;
+      width: 20px;
+      height: 80px;
+      background: linear-gradient(to right, #2e8b57, #3cb371);
+      border-radius: 10px;
+    }
+
+    .cactus::before,
+    .cactus::after {
+      content: '';
+      position: absolute;
+      background: linear-gradient(to right, #2e8b57, #3cb371);
+      border-radius: 10px;
+    }
+
+    .cactus::before {
+      width: 30px;
+      height: 15px;
+      top: 20px;
+      left: -25px;
+    }
+
+    .cactus::after {
+      width: 25px;
+      height: 15px;
+      top: 50px;
+      right: -20px;
+    }
+
+    .sun {
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, #ffde59, #ff9d00);
+      border-radius: 50%;
+      box-shadow: 0 0 50px rgba(255, 157, 0, 0.5);
+    }
+
+    .tumbleweed {
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, #a0522d, #8b4513);
+      border-radius: 50%;
+      box-shadow:
+        inset 0 0 20px rgba(0, 0, 0, 0.2),
+        0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .pyramid {
+      width: 0;
+      height: 0;
+      border-left: 60px solid transparent;
+      border-right: 60px solid transparent;
+      border-bottom: 100px solid #d2b48c;
+      position: relative;
+    }
+
+    .pyramid::before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 83px solid #c19a6b;
+      top: 17px;
+      left: -50px;
+    }
+
+    @keyframes waterRipple {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.7;
+      }
+
+      50% {
+        transform: scale(1.1);
+        opacity: 0.9;
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 1.5s ease-in-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .desert-text {
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-sky {
+      background: linear-gradient(to right, #4cc9f0, #4361ee);
+      transition: all 0.3s ease;
+    }
+
+    .btn-sky:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+      background: linear-gradient(to right, #3fbbdf, #3a56d4);
+    }
+  </style>
+</head>
+
+<body class="desert-pattern">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion } = window.Motion;
+
+    // 404页面主组件
+    function NotFoundPage() {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+          {/* 沙漠背景元素 */}
+          <div className="absolute bottom-0 left-0 right-0 h-1/3 desert-sand"></div>
+
+          {/* 浮动几何元素 */}
+          <div className="absolute top-20 left-10 w-10 h-10 rounded-full bg-blue-300 opacity-30 floating" style={{ animationDelay: "1s" }}></div>
+          <div className="absolute bottom-40 right-10 w-14 h-14 rounded-full bg-green-500 opacity-30 floating" style={{ animationDelay: "2s" }}></div>
+          <div className="absolute top-1/4 right-1/4 w-12 h-12 transform rotate-45 bg-yellow-300 opacity-30 floating" style={{ animationDelay: "3s" }}></div>
+
+          {/* 沙漠主题元素 */}
+          <div className="absolute bottom-1/4 left-1/4 cactus floating" style={{ animationDelay: "0.5s" }}></div>
+          <div className="absolute top-[10%] right-[10%] sun floating" style={{ animationDelay: "0s" }}></div>
+          <div className="absolute bottom-1/3 right-[15%] pyramid floating" style={{ animationDelay: "1.5s" }}></div>
+          <div className="absolute bottom-[15%] right-[15%] tumbleweed floating" style={{ animationDelay: "3.5s" }}></div>
+
+          {/* 内容区域 */}
+          <motion.div
+            className="z-10 text-center px-4 max-w-3xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="text-9xl font-bold text-blue-600 mb-4 desert-text"
+            >
+              404
+            </motion.div>
+
+            <motion.h1
+              className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 desert-text"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+            >
+              你来到了<span className="text-orange-500">没有知识的荒原</span>
+            </motion.h1>
+
+            <motion.p
+              className="text-xl text-gray-600 mb-40 max-w-2xl mx-auto desert-text"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+            >
+              这里没有教案，只有沙漠和迷失的几何图形。也许你走错了路，或者我们移除了这个页面。别担心，你可以返回首页继续探索几何的奥秘。
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.5 }}
+            >
+              <a
+                href="/"
+                className="btn-sky text-white font-bold py-4 px-8 rounded-full text-lg inline-flex items-center shadow-lg"
+              >
+                <i className="fas fa-home mr-3"></i>
+                返回首页
+              </a>
+            </motion.div>
+          </motion.div>
+
+          {/* 沙漠中的几何图形 */}
+          <motion.div
+            className="absolute top-1/3 left-[15%] floating"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
+          >
+            <div className="flex items-center justify-center text-blue-500">
+              <i className="fas fa-cube text-2xl"></i>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="absolute bottom-[10%] left-[10%] floating"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.4, duration: 0.8 }}
+          >
+            <div className="w-14 h-14 transform rotate-45 border-4 border-purple-500 flex items-center justify-center text-purple-500">
+              <i className="fas fa-star text-xl"></i>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="absolute top-1/3 right-[5%] floating"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.6, duration: 0.8 }}
+          >
+            <div className="rounded-lg flex items-center justify-center text-purple-300">
+              <i className="fas fa-circle text-xl"></i>
+            </div>
+          </motion.div>
+
+          {/* 页脚 */}
+          <motion.div
+            className="absolute bottom-8 text-gray-500 text-center w-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2, duration: 1 }}
+          >
+            <p>几何教案库 &copy; {new Date().getFullYear()} - 让几何教学更简单</p>
+          </motion.div>
+        </div>
+      );
+    }
+
+    // 渲染应用
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<NotFoundPage />);
+  </script>
+</body>
+
+</html>

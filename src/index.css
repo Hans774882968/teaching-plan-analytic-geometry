@@ -1,8 +1,4 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@import "tailwindcss";
 
 :root {
   --primary: #4A90E2;
@@ -15,7 +11,7 @@
   --text-light: #FFFFFF;
   --border-radius: 16px;
   --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  --hover-scale: scale(1.03);
+  --hover-scale: scale(1.02);
   --transition: all 0.3s ease;
   --title-size: 2.5rem;
   --section-title-size: 1.8rem;

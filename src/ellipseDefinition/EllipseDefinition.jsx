@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { config } from './config';
-import Geogebra from '../component/Geogebra';
+import Geogebra from '@/component/Geogebra';
 import 'katex/dist/katex.min.css';
 import styles from './EllipseDefinition.module.scss';
-import conanThinking from '../assets/conan-thinking-1.png';
-import conanThumbUp from '../assets/conan-thumb-up-1.png';
+import conanThinking from '@/assets/conan-thinking-1.png';
+import conanThumbUp from '@/assets/conan-thumb-up-1.png';
 import QuizContainer from './QuizContainer';
 import { Helmet } from 'react-helmet-async';
-import TPButton from '../component/TPButton';
+import TPButton from '@/component/TPButton';
+import { Link } from 'react-router-dom';
 
 const Inner = () => {
   const [showFeedbacks, setShowFeedbacks] = useState({});
@@ -68,8 +69,8 @@ const Inner = () => {
 
         <div className={styles.knowledgePoint}>
           <h3 className={styles.teachingPlanH3}>📐 {config.equation.title}</h3>
-          <p>{config.equation.content}</p>
-          <div className={styles.important}>{config.equation.formula}</div>
+          <p>{config.equation.contentX}</p>
+          <div className={styles.important}>{config.equation.formulaX}</div>
           <p>其中：</p>
           <ul>
             {
@@ -78,6 +79,10 @@ const Inner = () => {
               ))
             }
           </ul>
+          <p>{config.equation.contentY}</p>
+          <div className={styles.important}>{config.equation.formulaY}</div>
+          {config.equation.think}
+          {config.equation.answer}
         </div>
 
         <div className={styles.knowledgePoint}>
@@ -147,6 +152,11 @@ const Inner = () => {
           <TPButton onClick={checkAnswers}>
             检查答案
           </TPButton>
+        </div>
+
+        <div className={styles.card}>
+          题目太水？试试：
+          <Link to="/ellipse-hard-questions"><TPButton>更难的椭圆习题</TPButton></Link>
         </div>
       </section>
 

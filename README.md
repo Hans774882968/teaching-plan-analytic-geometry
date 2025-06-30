@@ -2,7 +2,7 @@
 
 ## 引言
 
-研究如何让大语言模型生成高中解析几何教案。
+研究如何让大语言模型生成数学教案。
 
 注意，为了减少该项目的占用空间，本项目并未包含geogebra源码，请自行下载[GeoGebra Math Apps Bundle](https://download.geogebra.org/package/geogebra-math-apps-bundle)，并复制里面的web3d文件夹和css文件夹到本项目的`public\geogebra`。
 

@@ -10,7 +10,11 @@
 const config = {
   quiz: [
     {
-      explanation: <>离心率 <TeX>{'e = \\frac{c}{a} = \\frac{\\sqrt{25-9}}{5} = \\frac{4}{5} = 0.8'}</TeX></>,
+      explanation: (
+        <>
+          离心率 <TeX>{`e = \\frac{c}{a} = \\frac{\\sqrt{25-9}}{5} = \\frac{4}{5} = 0.8`}</TeX>
+        </>
+      ),
     },
   ],
 }
@@ -18,5 +22,6 @@ const config = {
 输出规范：
 
 1. 所有的公式都需要用TeX标签包裹，因为TeX标签来自`@matejmazur/react-katex`包：`import TeX from '@matejmazur/react-katex'`。公式应为标准katex格式，如上所示。
-2. 如果公式比较长导致换行，需要把单引号换成反引号。比如：“<TeX>{`a = \\pm1`}</TeX>”
+2. 一律使用反引号。比如：“<TeX>{`a = \\pm1`}</TeX>”。
+3. 请注意转义字符，普通的公式`a = \pm1`进入字符串后要多加一个反斜杠：<TeX>{`a = \\pm1`}</TeX>。
 ```
