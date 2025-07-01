@@ -1,5 +1,8 @@
 import { useState } from 'react';
+import { motion } from 'motion/react';
 import styles from './QuizContainer.module.scss';
+import { HOVER_SCALE } from '@/common/consts';
+import { cn } from '@/lib/utils';
 
 export default function QuizContainer({ index, quiz, showFeedbacks }) {
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -12,7 +15,15 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
   };
 
   return (
-    <div className={styles.quizContainer}>
+    <motion.div
+      className={styles.quizContainer}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: 0.2, duration: 0.4 }}
+      whileHover={{
+        scale: HOVER_SCALE,
+      }}
+    >
       <div className={styles.question}>
         {`${index + 1}. `}{quiz.question}
       </div>
@@ -28,13 +39,19 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
         ))}
       </div>
       {showFeedbacks[index] && (
-        <div
-          className={`${styles.feedback} ${selectedOptions[index] === quiz.correct ? styles.correct : styles.incorrect}`}
+        <motion.div
+          className={cn(
+            styles.feedback,
+            selectedOptions[index] === quiz.correct ? styles.correct : styles.incorrect
+          )}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
         >
           {selectedOptions[index] === quiz.correct ? '✔️ 正确！' : '❌ 错误！'}
           {quiz.explanation}
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }

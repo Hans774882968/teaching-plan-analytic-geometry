@@ -64,29 +64,12 @@
       }
     }
 
-    .pulse {
-      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: 0.5;
-      }
-    }
-
     .desert-sand {
       background: linear-gradient(to bottom, #f1c27d, #e0ac69);
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
     .cactus {
-      position: relative;
       width: 20px;
       height: 80px;
       background: linear-gradient(to right, #2e8b57, #3cb371);
@@ -139,7 +122,6 @@
       border-left: 60px solid transparent;
       border-right: 60px solid transparent;
       border-bottom: 100px solid #d2b48c;
-      position: relative;
     }
 
     .pyramid::before {
@@ -152,36 +134,6 @@
       border-bottom: 83px solid #c19a6b;
       top: 17px;
       left: -50px;
-    }
-
-    @keyframes waterRipple {
-
-      0%,
-      100% {
-        transform: scale(1);
-        opacity: 0.7;
-      }
-
-      50% {
-        transform: scale(1.1);
-        opacity: 0.9;
-      }
-    }
-
-    .fade-in {
-      animation: fadeIn 1.5s ease-in-out forwards;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .desert-text {

@@ -1,0 +1,20 @@
+.teachingPlanSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background-color: rgb(130, 205, 230);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+
+  &>p {
+    color: var(--primary);
+    font-weight: bold;
+  }
+}
+
+.teachingPlanSection ul {
+  padding-left: 16px;
+}

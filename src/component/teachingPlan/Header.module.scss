@@ -1,0 +1,21 @@
+.teachingPlanHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  background: linear-gradient(135deg, #4A90E2, #FFD166);
+  color: white;
+  padding: 30px 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  p {
+    font-size: 1.2rem;
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+  }
+}

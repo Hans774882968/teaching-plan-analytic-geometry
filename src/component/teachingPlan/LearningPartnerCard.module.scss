@@ -1,0 +1,32 @@
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(-10px);
+  }
+
+  50% {
+    transform: translateY(10px);
+  }
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+.conanContainer {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.conanImg {
+  border-radius: 50%;
+  width: 180px;
+  border: 1px solid var(--primary);
+  transition: all 0.3s ease;
+}
+
+.conanImg:hover {
+  transform: rotate(5deg) var(--hover-scale);
+}

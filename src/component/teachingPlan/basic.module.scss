@@ -1,0 +1,88 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+  line-height: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.teachingPlanH1,
+.teachingPlanH2,
+.teachingPlanH3 {
+  font-family: 'Fredoka One', cursive;
+  font-weight: bold;
+  color: var(--text-dark);
+}
+
+.teachingPlanH1 {
+  font-size: var(--title-size);
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.teachingPlanH2 {
+  font-size: var(--section-title-size);
+  color: var(--primary);
+  position: relative;
+  padding-left: 15px;
+}
+
+.teachingPlanH2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 80%;
+  background-color: var(--accent);
+  border-radius: 5px;
+}
+
+.teachingPlanH3 {
+  font-size: 1.17em;
+}
+
+@media (max-width: 768px) {
+  .teachingPlanH1 {
+    font-size: 2rem;
+  }
+
+  .teachingPlanH2 {
+    font-size: 1.5rem;
+  }
+}
+
+.ellipseDefinition1Wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.checkAnswersContainer {
+  padding-left: 8px;
+}
+
+.teachingPlanFooter {
+  text-align: center;
+  color: #2D3748;
+  font-weight: bold;
+}
+
+.highlight {
+  background-color: #FFD166;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+  color: #2D3748;
+}
+
+.important {
+  background-color: rgba(255, 107, 107, 0.2);
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+  color: #2D3748;
+  border: 1px dashed #FF6B6B;
+}

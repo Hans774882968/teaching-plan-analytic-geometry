@@ -1,5 +1,5 @@
 import TeX from '@matejmazur/react-katex';
-import styles from './EllipseDefinition.module.scss';
+import styles from '@/component/teachingPlan/basic.module.scss';
 
 export const config = {
   title: '椭圆探索之旅 | 解析几何探秘',
@@ -23,8 +23,52 @@ export const config = {
     ],
     contentY: '同理，当椭圆中心在原点，焦点在y轴上时，标准方程为：',
     formulaY: <TeX block>{String.raw`\frac{y^2}{a^2} + \frac{x^2}{b^2} = 1 \ (a > b)`}</TeX>,
-    think: <p>思考：那当 <TeX>{'a = b'}</TeX> 的时候呢？</p>,
-    answer: <p>回答：焦点合二为一，既在x轴上也在y轴上，此时椭圆退化为圆。</p>,
+    thinkWhenAEqB: <p>那当 <TeX>{'a = b'}</TeX> 的时候呢？</p>,
+    answerWhenAEqB: <p>焦点合二为一，既在x轴上也在y轴上，此时椭圆退化为圆。</p>,
+    letUsDeriveQ: '一起来推导一下焦点在x轴上时的椭圆方程吧！',
+    letUsDeriveA: (
+      <div>
+        设椭圆的两个焦点为 <TeX>{String.raw`F_1(-c, 0)`}</TeX> 和 <TeX>{String.raw`F_2(c, 0)`}</TeX>（<TeX>{String.raw`c > 0`}</TeX>），椭圆上任意点 <TeX>{String.raw`P(x, y)`}</TeX> 满足：
+        <TeX>{String.raw`|PF_1| + |PF_2| = 2a \quad (a > c > 0)`}</TeX>
+        用距离公式表示：<TeX>{String.raw`\sqrt{(x + c)^2 + y^2} + \sqrt{(x - c)^2 + y^2} = 2a`}</TeX>
+        <br />
+        移项后平方：
+        <br />
+        <TeX block>{String.raw`\sqrt{(x + c)^2 + y^2} = 2a - \sqrt{(x - c)^2 + y^2}`}</TeX>
+        <br />
+        <TeX block>{String.raw`(x + c)^2 + y^2 = 4a^2 - 4a\sqrt{(x - c)^2 + y^2} + (x - c)^2 + y^2`}</TeX>
+        <br />
+        展开化简：
+        <br />
+        <TeX block>{String.raw`x^2 + 2cx + c^2 = 4a^2 - 4a\sqrt{(x - c)^2 + y^2} + x^2 - 2cx + c^2`}</TeX>
+        <br />
+        <TeX block>{String.raw`4cx - 4a^2 = -4a\sqrt{(x - c)^2 + y^2}`}</TeX>
+        <br />
+        <TeX block>{String.raw`a^2 - cx = a\sqrt{(x - c)^2 + y^2}`}</TeX>
+        <br />
+        再次平方：
+        <br />
+        <TeX block>{String.raw`(a^2 - cx)^2 = a^2[(x - c)^2 + y^2]`}</TeX>
+        <br />
+        <TeX block>{String.raw`a^4 - 2a^2cx + c^2x^2 = a^2(x^2 - 2cx + c^2 + y^2)`}</TeX>
+        <br />
+        移项整理：
+        <br />
+        <TeX block>{String.raw`a^4 - 2a^2cx + c^2x^2 - a^2x^2 + 2a^2cx - a^2c^2 - a^2y^2 = 0`}</TeX>
+        <br />
+        <TeX block>{String.raw`a^4 - a^2c^2 = (a^2 - c^2)x^2 + a^2y^2`}</TeX>
+        <br />
+        令 <TeX>{String.raw`b^2 = a^2 - c^2`}</TeX>（<TeX>{String.raw`b > 0`}</TeX>）：
+        <br />
+        <TeX block>{String.raw`a^2(a^2 - c^2) = b^2x^2 + a^2y^2`}</TeX>
+        <br />
+        <TeX block>{String.raw`a^2b^2 = b^2x^2 + a^2y^2`}</TeX>
+        <br />
+        两边同除 <TeX>{String.raw`a^2b^2`}</TeX> 得标准方程：
+        <br />
+        <TeX block>{String.raw`\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 \quad (a > b > 0)`}</TeX>
+      </div>
+    ),
   },
   properties: {
     title: '椭圆的重要性质',

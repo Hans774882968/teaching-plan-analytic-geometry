@@ -1,0 +1,20 @@
+.thinkBox {
+  overflow: hidden;
+  position: relative;
+}
+
+.questionRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.questionText {
+  flex: 1;
+}
+
+.answerRow {
+  overflow: auto;
+}

@@ -1,14 +1,20 @@
 import { useState } from 'react';
+import { motion } from 'motion/react';
 import { config } from './config';
 import Geogebra from '@/component/Geogebra';
-import 'katex/dist/katex.min.css';
-import styles from './EllipseDefinition.module.scss';
+import styles from '@/component/teachingPlan/basic.module.scss';
 import conanThinking from '@/assets/conan-thinking-1.png';
 import conanThumbUp from '@/assets/conan-thumb-up-1.png';
-import QuizContainer from './QuizContainer';
+import QuizContainer from '@/component/QuizContainer';
 import { Helmet } from 'react-helmet-async';
 import TPButton from '@/component/TPButton';
 import { Link } from 'react-router-dom';
+import Section from '@/component/teachingPlan/Section';
+import KnowledgePoint from '@/component/teachingPlan/KnowledgePoint';
+import Card from '@/component/teachingPlan/Card';
+import Header from '@/component/teachingPlan/Header';
+import LearningPartnerCard from '../component/teachingPlan/LearningPartnerCard';
+import Think from '@/component/teachingPlan/Think';
 
 const Inner = () => {
   const [showFeedbacks, setShowFeedbacks] = useState({});
@@ -25,6 +31,7 @@ const Inner = () => {
     applet.evalCommand('s1: Segment(C1, A)');
     applet.evalCommand('s2: Segment(C2, A)');
     applet.evalCommand('lenSum: s1 + s2');
+    applet.evalCommand('e: sqrt(25 - 9) / sqrt(25)');
 
     applet.setCoordSystem(-6, 6, -4, 4);
   };
@@ -39,35 +46,30 @@ const Inner = () => {
 
   return (
     <div className={styles.container}>
-      <header className={styles.teachingPlanHeader}>
+      <Header>
         <h1 className={styles.teachingPlanH1}>🔭 {config.title} 🔍</h1>
         <p>与名侦探柯南一起揭开椭圆的神秘面纱！</p>
-      </header>
+      </Header>
 
-      <section className={styles.teachingPlanSection}>
-        <div className={styles.conanContainer}>
-          <div
-            className={styles.floating}
-          >
-            <img src={conanThinking} className={styles.conanImg} alt="柯南思考中" />
-          </div>
-        </div>
-        <div className={styles.card}>
+      <Section>
+        <LearningPartnerCard
+          imgNode={(lpStyles) => <img src={conanThinking} className={lpStyles.conanImg} alt="柯南思考中" />}
+        >
           <h2 className={styles.teachingPlanH2}>👬 {config.welcome.title}</h2>
           <p>{config.welcome.content}</p>
-        </div>
-      </section>
+        </LearningPartnerCard>
+      </Section>
 
-      <section className={styles.teachingPlanSection}>
+      <Section>
         <h2 className={styles.teachingPlanH2}>📚 椭圆的定义与基本性质</h2>
 
-        <div className={styles.knowledgePoint}>
+        <KnowledgePoint>
           <h3 className={styles.teachingPlanH3}>📏 {config.definition.title}</h3>
           <p>{config.definition.content}</p>
           <p>数学表达式：对于任意点P在椭圆上，有 {config.definition.mathExpression}，其中F₁和F₂是焦点，2a是常数。</p>
-        </div>
+        </KnowledgePoint>
 
-        <div className={styles.knowledgePoint}>
+        <KnowledgePoint>
           <h3 className={styles.teachingPlanH3}>📐 {config.equation.title}</h3>
           <p>{config.equation.contentX}</p>
           <div className={styles.important}>{config.equation.formulaX}</div>
@@ -81,26 +83,33 @@ const Inner = () => {
           </ul>
           <p>{config.equation.contentY}</p>
           <div className={styles.important}>{config.equation.formulaY}</div>
-          {config.equation.think}
-          {config.equation.answer}
-        </div>
+          <Think
+            think={config.equation.thinkWhenAEqB}
+            answer={config.equation.answerWhenAEqB}
+          />
+          <Think
+            think={config.equation.letUsDeriveQ}
+            answer={config.equation.letUsDeriveA}
+            answerRowMaxHeight='300px'
+          ></Think>
+        </KnowledgePoint>
 
-        <div className={styles.knowledgePoint}>
+        <KnowledgePoint>
           <h3 className={styles.teachingPlanH3}>🔍 {config.properties.title}</h3>
           {config.properties.items.map((item, i) => (
             <p key={i}>{i + 1}. {item}</p>
           ))}
-        </div>
-      </section>
+        </KnowledgePoint>
+      </Section>
 
-      <section className={styles.teachingPlanSection}>
+      <Section>
         <h2 className={styles.teachingPlanH2}>🔬 椭圆实验室</h2>
         <p>调整参数，实时观察椭圆的变化：</p>
         <Geogebra
           id="ellipse-definition-1"
           className={styles.ellipseDefinition1Wrapper}
           width={1080}
-          height={600}
+          height={720}
           showToolbar={true}
           showMenuBar={true}
           allowStyleBar={true}
@@ -113,13 +122,13 @@ const Inner = () => {
           showTutorialLink={true}
           appletOnLoad={drawEllipse}
         />
-      </section>
+      </Section>
 
-      <section className={styles.teachingPlanSection}>
+      <Section>
         <h2 className={styles.teachingPlanH2}>💡 椭圆二级结论</h2>
 
         {config.secondary.map((item, i) => (
-          <div key={i} className={styles.card}>
+          <Card key={i}>
             <h3 className={styles.teachingPlanH3}>{item.title}</h3>
             <p>{item.content}</p>
             {item.points && (
@@ -129,11 +138,11 @@ const Inner = () => {
                 ))}
               </ul>
             )}
-          </div>
+          </Card>
         ))}
-      </section>
+      </Section>
 
-      <section className={styles.teachingPlanSection}>
+      <Section>
         <h2 className={styles.teachingPlanH2}>🧠 知识挑战</h2>
         <p>测试一下你对椭圆的理解吧！</p>
 
@@ -154,27 +163,21 @@ const Inner = () => {
           </TPButton>
         </div>
 
-        <div className={styles.card}>
+        <Card>
           题目太水？试试：
           <Link to="/ellipse-hard-questions"><TPButton>更难的椭圆习题</TPButton></Link>
-        </div>
-      </section>
+        </Card>
+      </Section>
 
-      <section className={styles.teachingPlanSection}>
-        <div className={styles.conanContainer}>
-          <div
-            className={styles.floating}
-          >
-            <img src={conanThumbUp} className={styles.conanImg} alt="柯南点赞" />
-          </div>
-        </div>
-
-        <div className={styles.card}>
+      <Section>
+        <LearningPartnerCard
+          imgNode={(lpStyles) => <img src={conanThumbUp} className={lpStyles.conanImg} alt="柯南点赞" />}
+        >
           <h2 className={styles.teachingPlanH2}>🎉 {config.conclusion.title}</h2>
           <p>{config.conclusion.content}</p>
           <p>{config.conclusion.tip}</p>
-        </div>
-      </section>
+        </LearningPartnerCard>
+      </Section>
 
       <footer className={styles.teachingPlanFooter}>
         <p>© 2025 椭圆探索之旅 | 为Hans7特别定制 | 数学侦探柯南</p>

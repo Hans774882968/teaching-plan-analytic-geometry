@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { config } from './hardQuestionsConfig';
-import QuizContainer from './QuizContainer';
+import QuizContainer from '@/component/QuizContainer';
 import { Helmet } from 'react-helmet-async';
-import styles from './EllipseDefinition.module.scss';
+import styles from '@/component/teachingPlan/basic.module.scss';
 import TPButton from '@/component/TPButton';
 import { Link } from 'react-router-dom';
+import Section from '@/component/teachingPlan/Section';
+import Card from '@/component/teachingPlan/Card';
 
 function Inner() {
   const [showFeedbacks, setShowFeedbacks] = useState({});
@@ -19,13 +21,13 @@ function Inner() {
 
   return (
     <div className={styles.container}>
-      <section className={styles.teachingPlanSection}>
+      <Section>
         <h2 className={styles.teachingPlanH2}>🧠 知识大挑战</h2>
         <p>🔥 来测试一下你对椭圆的理解够不够深刻吧！</p>
-        <div className={styles.card}>
+        <Card>
           题目太难？回去学习：
           <Link to="/ellipse-definition"><TPButton>椭圆基础知识讲解</TPButton></Link>
-        </div>
+        </Card>
         {
           config.quiz.map((quiz, index) => (
             <QuizContainer
@@ -41,7 +43,7 @@ function Inner() {
             检查答案
           </TPButton>
         </div>
-      </section>
+      </Section>
     </div>
   );
 }
