@@ -5,6 +5,7 @@ import EllipseDefinition from './ellipseDefinition/EllipseDefinition';
 import TeachingPlanList from './TeachingPlanList';
 import EllipseHardQuestions from './ellipseDefinition/EllipseHardQuestions';
 import NotFound from './NotFound';
+import HyperbolaDefinition from './hyperbolaDefinition/HyperbolaDefinition';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<TeachingPlanList />} />
           <Route path="/ellipse-definition" element={<EllipseDefinition />} />
+          <Route path="/hyperbola-definition" element={<HyperbolaDefinition />} />
           <Route path="/ellipse-hard-questions" element={<EllipseHardQuestions />} />
           <Route path="/404" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />

@@ -150,6 +150,67 @@ return k;
 2. 复制web3d和css两个文件夹到`public\geogebra`。
 3. `geogebra\web3d\web3d.nocache.js`的`k = e(o.location.href)`改成`k = e(o.location.href + 'geogebra/web3d/');`。
 
+## 用Geogebra进行数学教学
+
+可参考[docs\Geogebra组件文档.md](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/docs/Geogebra%E7%BB%84%E4%BB%B6%E6%96%87%E6%A1%A3.md)。
+
+```jsx
+const drawEllipse = (applet) => {
+  applet.evalCommand('ellipse: x^2/25 + y^2/9 = 1'); // 绘制椭圆
+  applet.setColor('ellipse', 255, 0, 0);
+  applet.setLineThickness('ellipse', 3);
+  applet.setCaption('ellipse', '椭圆: \\frac{x^2}{25} + \\frac{y^2}{9} = 1');
+
+  applet.evalCommand('A: Point(ellipse)'); // 绘制椭圆上的动点 A
+  applet.evalCommand('C1: (4, 0)'); // 绘制椭圆的右焦点 C1
+  applet.evalCommand('C2: (-4, 0)'); // 绘制椭圆的左焦点 C2
+  applet.evalCommand('s1: Segment(C1, A)'); // 线段 C1A
+  applet.evalCommand('s2: Segment(C2, A)'); // 线段 C2A
+  applet.evalCommand('lenSum: s1 + s2'); // 验证椭圆上任意一点 A 到两个焦点的距离和为定值
+
+  applet.setCoordSystem(-6, 6, -4, 4);
+};
+
+<Geogebra
+  id="geogebra"
+  width={1200}
+  height={600}
+  appletOnLoad={drawEllipse}
+/>
+```
+
+### 如何快速学习Geogebra的语法？以“双曲线的反函数”为例
+
+除了看官方文档以外，还有一些更简单的方式：
+
+1. 操作一下软件的上方工具栏，比如“Reflect about Point”（设置关于点A关于点B对称的点），然后点击平面直角坐标系中已有的两个对象，比如在这个例子中，就是两个点，就能看到等式列表新增了一条等式。
+2. 可以猜测“Reflect about Point”的命令含有Reflect字样，在等式输入框输入“Reflect”，便能根据软件的提示方便地补全命令。
+
+另外，我还尝试问DeepSeek：
+
+> 大佬，我有如下Geogebra代码：/* 省略 */。请问如何写代码验证A0点确实在hyperbola2上
+
+它确实回答出来了，但给的回答太复杂了。其实，“验证双曲线的反函数还是双曲线”可以通过Reflect和Distance命令简单实现。如下（来自[src\hyperbolaDefinition\config.jsx](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/hyperbolaDefinition/config.jsx)）：
+
+```js
+(applet) => {
+  applet.evalCommand('hyperbola1: x^2/16 - y^2/9 = 1');
+  applet.setColor('hyperbola1', 255, 0, 0);
+  applet.setLineThickness('hyperbola1', 3);
+  applet.evalCommand('hyperbola2: y^2/16 - x^2/9 = 1');
+  applet.setColor('hyperbola2', 0, 0, 255);
+  applet.setLineThickness('hyperbola2', 3);
+
+  applet.evalCommand('A: Point(hyperbola1)');
+  applet.evalCommand('l: y = x');
+  applet.evalCommand('A\': Reflect(A, l)');
+  applet.setLineThickness('l', 1);
+  applet.evalCommand('Distance(A\', hyperbola2)');
+
+  applet.setCoordSystem(-10, 10, -8, 8);
+}
+```
+
 ## React项目如何支持Katex公式
 
 相关文件：
@@ -188,8 +249,8 @@ export const config = {
     items: [
       <><strong className="highlight">离心率</strong>：<TeX>{'e = \\frac{c}{a} \\ (0 < e < 1)'}</TeX>，表示椭圆的扁平程度</>,
       <><strong className="highlight">焦点性质</strong>：从椭圆一个焦点发出的光线，经椭圆反射后会经过另一个焦点</>,
-      <><strong className="important">对称性</strong>：椭圆关于长轴、短轴和中心对称</>,
-      <><strong className="highlight">面积公式</strong>：<TeX>{'S = \\pi \\times a \\times b'}</TeX></>,
+      <><strong className="highlight">对称性</strong>：椭圆关于长轴、短轴和中心对称</>,
+      <><strong className="hard">面积公式</strong>：<TeX>{'S = \\pi \\times a \\times b'}</TeX></>,
     ],
   },
 }

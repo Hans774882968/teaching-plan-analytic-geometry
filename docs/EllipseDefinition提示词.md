@@ -1,6 +1,6 @@
 [TOC]
 
-## 在DeepSeek网页版试探
+## 从0到1：在DeepSeek网页版试探
 
 ```markdown
 ## 角色

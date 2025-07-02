@@ -21,7 +21,7 @@ const lessonPlans = [
   { id: 2, url: '/ellipse-definition', title: '平面向量 (TODO)', category: '平面几何', difficulty: '中级', icon: <FaVectorSquare /> },
   { id: 3, url: '/ellipse-definition', title: '立体几何入门 (TODO)', category: '空间几何', difficulty: '中级', icon: <FaCube /> },
   { id: 4, url: '/ellipse-definition', title: '椭圆的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
-  { id: 5, url: '/ellipse-definition', title: '双曲线的定义与性质 (TODO)', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
+  { id: 5, url: '/hyperbola-definition', title: '双曲线的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
   { id: 6, url: '/parabola-definition', title: '抛物线的定义与性质 (TODO)', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
   { id: 7, url: '/ellipse-definition', title: '空间解析几何 (TODO)', category: '空间几何', difficulty: '中级', icon: <FaGlobeAsia /> },
 ];

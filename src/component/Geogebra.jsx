@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
+import styles from './Geogebra.module.scss';
+import { cn } from '@/lib/utils';
 
-// TODO: 如何 width: 100%
 const Geogebra = (props) => {
   const defaultProps = {
     appName: 'classic',
-    width: 800,
     height: 600,
     showToolBar: true,
     showAlgebraInput: true,
@@ -58,8 +58,8 @@ const Geogebra = (props) => {
   }, [watchPropsChange, debug, id, onAppletReady]);
 
   return (
-    <div id={`${id}-holder`} className={props.className}>
-      <div id={id}></div>
+    <div id={`${id}-holder`} className={cn(styles.geogebraWrapper, props.className)}>
+      <div id={id} style={{ width: '100%' }}></div>
     </div>
   );
 };

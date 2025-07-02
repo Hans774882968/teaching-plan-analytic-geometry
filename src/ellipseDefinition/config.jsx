@@ -9,7 +9,7 @@ export const config = {
   },
   definition: {
     title: '椭圆的定义',
-    content: <>椭圆是平面上到<strong className={styles.highlight}>两个定点（焦点）的距离之和等于常数</strong>的点的集合。这两个定点称为<strong className={styles.important}>焦点</strong>，常数必须大于两焦点之间的距离。</>,
+    content: <>椭圆是平面上到<strong className={styles.highlight}>两个定点（焦点）的距离之和等于常数</strong>的点的集合。这两个定点称为<strong className={styles.highlight}>焦点</strong>，常数必须大于两焦点之间的距离。</>,
     mathExpression: <TeX>{'|PF₁| + |PF₂| = 2a'}</TeX>,
   },
   equation: {
@@ -75,8 +75,8 @@ export const config = {
     items: [
       <><strong className={styles.highlight}>离心率</strong>：<TeX>{'e = \\frac{c}{a} \\ (0 < e < 1)'}</TeX>，表示椭圆的扁平程度</>,
       <><strong className={styles.highlight}>焦点性质</strong>：从椭圆一个焦点发出的光线，经椭圆反射后会经过另一个焦点</>,
-      <><strong className={styles.important}>对称性</strong>：椭圆关于长轴、短轴和中心对称</>,
-      <><strong className={styles.highlight}>面积公式</strong>：<TeX>{'S = \\pi \\times a \\times b'}</TeX></>,
+      <><strong className={styles.highlight}>对称性</strong>：椭圆关于长轴、短轴和中心对称</>,
+      <><strong className={styles.hard}>面积公式</strong>：<TeX>{'S = \\pi \\times a \\times b'}</TeX></>,
     ],
   },
   secondary: [

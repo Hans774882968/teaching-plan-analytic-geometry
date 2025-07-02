@@ -55,19 +55,8 @@
   }
 }
 
-.ellipseDefinition1Wrapper {
-  display: flex;
-  justify-content: center;
-}
-
 .checkAnswersContainer {
   padding-left: 8px;
-}
-
-.teachingPlanFooter {
-  text-align: center;
-  color: #2D3748;
-  font-weight: bold;
 }
 
 .highlight {
@@ -78,7 +67,7 @@
   color: #2D3748;
 }
 
-.important {
+.hard {
   background-color: rgba(255, 107, 107, 0.2);
   padding: 3px 6px;
   border-radius: 4px;

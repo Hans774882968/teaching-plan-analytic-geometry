@@ -25,7 +25,8 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
       }}
     >
       <div className={styles.question}>
-        {`${index + 1}. `}{quiz.question}
+        <div>{`${index + 1}.`}</div>
+        <div>{quiz.question}</div>
       </div>
       <div className={styles.options}>
         {quiz.options.map((option, optIndex) => (
@@ -48,8 +49,8 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
         >
-          {selectedOptions[index] === quiz.correct ? '✔️ 正确！' : '❌ 错误！'}
-          {quiz.explanation}
+          <div>{selectedOptions[index] === quiz.correct ? '✔️' : '❌'}</div>
+          <div>{quiz.explanation}</div>
         </motion.div>
       )}
     </motion.div>

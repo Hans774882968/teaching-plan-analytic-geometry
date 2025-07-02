@@ -15,6 +15,7 @@ import Card from '@/component/teachingPlan/Card';
 import Header from '@/component/teachingPlan/Header';
 import LearningPartnerCard from '../component/teachingPlan/LearningPartnerCard';
 import Think from '@/component/teachingPlan/Think';
+import Footer from '@/component/teachingPlan/Footer';
 
 const Inner = () => {
   const [showFeedbacks, setShowFeedbacks] = useState({});
@@ -72,7 +73,7 @@ const Inner = () => {
         <KnowledgePoint>
           <h3 className={styles.teachingPlanH3}>📐 {config.equation.title}</h3>
           <p>{config.equation.contentX}</p>
-          <div className={styles.important}>{config.equation.formulaX}</div>
+          <div className={styles.highlight}>{config.equation.formulaX}</div>
           <p>其中：</p>
           <ul>
             {
@@ -82,7 +83,7 @@ const Inner = () => {
             }
           </ul>
           <p>{config.equation.contentY}</p>
-          <div className={styles.important}>{config.equation.formulaY}</div>
+          <div className={styles.highlight}>{config.equation.formulaY}</div>
           <Think
             think={config.equation.thinkWhenAEqB}
             answer={config.equation.answerWhenAEqB}
@@ -91,7 +92,7 @@ const Inner = () => {
             think={config.equation.letUsDeriveQ}
             answer={config.equation.letUsDeriveA}
             answerRowMaxHeight='300px'
-          ></Think>
+          />
         </KnowledgePoint>
 
         <KnowledgePoint>
@@ -107,8 +108,6 @@ const Inner = () => {
         <p>调整参数，实时观察椭圆的变化：</p>
         <Geogebra
           id="ellipse-definition-1"
-          className={styles.ellipseDefinition1Wrapper}
-          width={1080}
           height={720}
           showToolbar={true}
           showMenuBar={true}
@@ -179,9 +178,9 @@ const Inner = () => {
         </LearningPartnerCard>
       </Section>
 
-      <footer className={styles.teachingPlanFooter}>
+      <Footer>
         <p>© 2025 椭圆探索之旅 | 为Hans7特别定制 | 数学侦探柯南</p>
-      </footer>
+      </Footer>
     </div>
   );
 };
