@@ -1,3 +1,5 @@
+### @/docs\Geogebra组件文档.md
+
 源码位置：src\Geogebra.jsx
 
 默认参数：

@@ -22,7 +22,7 @@ const lessonPlans = [
   { id: 3, url: '/ellipse-definition', title: '立体几何入门 (TODO)', category: '空间几何', difficulty: '中级', icon: <FaCube /> },
   { id: 4, url: '/ellipse-definition', title: '椭圆的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
   { id: 5, url: '/hyperbola-definition', title: '双曲线的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
-  { id: 6, url: '/parabola-definition', title: '抛物线的定义与性质 (TODO)', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
+  { id: 6, url: '/parabola-definition', title: '抛物线的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
   { id: 7, url: '/ellipse-definition', title: '空间解析几何 (TODO)', category: '空间几何', difficulty: '中级', icon: <FaGlobeAsia /> },
 ];
 
@@ -139,7 +139,7 @@ export default function TeachingPlanList() {
         <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
           数学<span className="text-blue-600">教案</span>库
         </h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
           探索数学世界的教学资源，精选教案助力高效教学
         </p>
       </motion.header>
@@ -194,7 +194,7 @@ export default function TeachingPlanList() {
       <motion.div
         className={cn(
           styles.floating,
-          'fixed top-20 left-10 w-8 h-8 rounded-full bg-blue-300 opacity-30'
+          'fixed top-40 left-10 w-8 h-8 rounded-full bg-blue-300 opacity-30'
         )}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 0.3, scale: 1 }}
@@ -219,7 +219,7 @@ export default function TeachingPlanList() {
         transition={{ delay: 0.6, duration: 0.8 }}
       />
       <motion.div
-        className={cn(styles.floating, 'absolute top-2/3 left-[5%]')}
+        className={cn(styles.floating, 'fixed top-2/3 left-[5%]')}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 0.3, scale: 1 }}
         transition={{ delay: 1.2, duration: 0.8 }}
@@ -229,7 +229,7 @@ export default function TeachingPlanList() {
         </div>
       </motion.div>
       <motion.div
-        className={cn(styles.floating, 'absolute top-1/3 right-[5%]')}
+        className={cn(styles.floating, 'fixed top-1/3 right-[5%]')}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 0.3, scale: 1 }}
         transition={{ delay: 1.6, duration: 0.8 }}

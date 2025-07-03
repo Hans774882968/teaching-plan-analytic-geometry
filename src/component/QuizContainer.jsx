@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 import styles from './QuizContainer.module.scss';
 import { HOVER_SCALE } from '@/common/consts';
+import Think from '@/component/teachingPlan/Think';
 import { cn } from '@/lib/utils';
 
 export default function QuizContainer({ index, quiz, showFeedbacks }) {
@@ -40,18 +41,32 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
         ))}
       </div>
       {showFeedbacks[index] && (
-        <motion.div
-          className={cn(
-            styles.feedback,
-            selectedOptions[index] === quiz.correct ? styles.correct : styles.incorrect
-          )}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
-        >
-          <div>{selectedOptions[index] === quiz.correct ? '✔️' : '❌'}</div>
-          <div className={styles.explanationArea}>{quiz.explanation}</div>
-        </motion.div>
+        <>
+          <motion.div
+            className={cn(
+              styles.feedback,
+              selectedOptions[index] === quiz.correct ? styles.correct : styles.incorrect
+            )}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+          >
+            <div>{selectedOptions[index] === quiz.correct ? '✔️' : '❌'}</div>
+            <div className={styles.explanationArea}>{quiz.explanation}</div>
+          </motion.div>
+          <div>
+            {
+              Array.isArray(quiz.thinks) && quiz.thinks.map((think, index) => {
+                return (
+                  <Think
+                    key={index}
+                    {...think}
+                  />
+                );
+              })
+            }
+          </div>
+        </>
       )}
     </motion.div>
   );

@@ -55,7 +55,7 @@ export default function NotFound() {
         </motion.h1>
 
         <motion.p
-          className={cn(styles.desertText, 'text-xl text-gray-600 mb-40 max-w-2xl mx-auto')}
+          className={cn(styles.desertText, 'text-l md:text-xl text-gray-600 mb-40 max-w-2xl mx-auto')}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.5 }}
@@ -72,10 +72,10 @@ export default function NotFound() {
             to="/"
             className={cn(
               styles.btnSky,
-              'text-white font-bold py-4 px-8 rounded-full text-lg inline-flex items-center shadow-lg'
+              'text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full text-base md:text-lg inline-flex items-center shadow-lg'
             )}
           >
-            <FaHome className="mr-3" />
+            <FaHome className="mr-2 md:mr-3" />
             返回首页
           </Link>
         </motion.div>
@@ -85,7 +85,7 @@ export default function NotFound() {
       <motion.div
         className={cn(styles.floating, 'absolute top-1/3 left-[15%]')}
         initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
+        animate={{ opacity: 0.3, scale: 1 }}
         transition={{ delay: 1.2, duration: 0.8 }}
       >
         <div className="flex items-center justify-center text-blue-500">
@@ -107,7 +107,7 @@ export default function NotFound() {
       <motion.div
         className={cn(styles.floating, 'absolute top-1/3 right-[5%]')}
         initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
+        animate={{ opacity: 0.3, scale: 1 }}
         transition={{ delay: 1.6, duration: 0.8 }}
       >
         <div className="rounded-lg flex items-center justify-center text-purple-300">

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>数海导航 - 高中数学教案资源库</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#82CDE6',
+            secondary: '#4CA1A3',
+            accent: '#FF6B6B',
+            dark: '#2C3E50'
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer base {
+      body {
+        @apply font-sans bg-primary;
+      }
+      .math-bg {
+        background-image: 
+          radial-gradient(#4CA1A3 1.5px, transparent 1.5px),
+          radial-gradient(#FF6B6B 1.5px, transparent 1.5px);
+        background-size: 60px 60px;
+        background-position: 0 0, 30px 30px;
+        opacity: 0.1;
+      }
+      .nav-gradient {
+        background: linear-gradient(135deg, #4CA1A3 0%, #6cbbcb 100%);
+      }
+      .card-hover {
+        @apply transition-all duration-300 hover:scale-[1.03] hover:shadow-xl;
+      }
+  }
+  </style>
+</head>
+
+<body class="min-h-screen">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    // 主组件
+    function MathLearningApp() {
+      return (
+        <div className="flex flex-col min-h-screen">
+          {/* 导航栏 */}
+          <Navbar />
+
+          {/* 主体内容 */}
+          <main className="flex-grow">
+            {/* 英雄区域 */}
+            <HeroSection />
+
+            {/* 特色内容 */}
+            <FeaturesSection />
+
+            {/* 课程展示 */}
+            <CoursesSection />
+
+            {/* 数学工具 */}
+            <ToolsSection />
+          </main>
+
+          {/* 页脚 */}
+          <Footer />
+        </div>
+      );
+    }
+
+    // 导航栏组件
+    function Navbar() {
+      return (
+        <nav className="nav-gradient shadow-lg sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between h-16">
+              {/* 左侧logo和导航项 */}
+              <div className="flex items-center">
+                <div className="flex-shrink-0 flex items-center">
+                  <i className="fas fa-calculator text-white text-2xl mr-2"></i>
+                  <span className="text-white font-bold text-xl tracking-wider">数海导航</span>
+                </div>
+                <div className="hidden md:ml-10 md:flex md:space-x-8">
+                  {['首页', '教案资源', '视频课程', '习题库', '学习工具'].map((item) => (
+                    <a key={item} href="#" className="text-white hover:text-gray-100 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                      {item}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* 右侧按钮 */}
+              <div className="flex items-center">
+                <button className="bg-white text-secondary hover:bg-gray-100 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center">
+                  <i className="fas fa-user-graduate mr-2"></i>
+                  学生登录
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* 移动端导航菜单 */}
+          <div className="md:hidden bg-secondary">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              {['首页', '教案资源', '视频课程', '习题库', '学习工具'].map((item) => (
+                <a key={item} href="#" className="text-white block px-3 py-2 rounded-md text-base font-medium">
+                  {item}
+                </a>
+              ))}
+            </div>
+          </div>
+        </nav>
+      );
+    }
+
+    // 英雄区域组件
+    function HeroSection() {
+      return (
+        <div className="relative overflow-hidden">
+          {/* 背景装饰 */}
+          <div className="absolute inset-0 math-bg"></div>
+
+          {/* 浮动数学元素 */}
+          <div className="absolute top-20 left-10 w-16 h-16 rounded-full bg-accent opacity-20 animate-pulse-slow"></div>
+          <div className="absolute top-1/3 right-20 w-24 h-24 bg-secondary opacity-15 rounded-full animate-pulse-slow"></div>
+          <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-white opacity-20 rotate-45 animate-pulse-slow"></div>
+
+          <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8 relative">
+            <div className="text-center">
+              <h1 className="text-4xl md:text-6xl font-extrabold text-dark tracking-tight">
+                探索数学的<span className="text-secondary">奇妙世界</span>
+              </h1>
+              <p className="mt-6 max-w-2xl mx-auto text-xl text-gray-700">
+                专为高中生设计的数学学习平台，让复杂的公式变得简单有趣
+              </p>
+              <div className="mt-10 flex justify-center space-x-4">
+                <a href="#" className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-secondary hover:bg-teal-700 transition-colors duration-300 shadow-lg">
+                  开始学习
+                </a>
+                <a href="#" className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-secondary bg-white hover:bg-gray-50 transition-colors duration-300 shadow-lg">
+                  查看教案
+                </a>
+              </div>
+            </div>
+
+            <div className="mt-16 flex justify-center">
+              <div className="bg-white rounded-2xl shadow-xl p-6 max-w-4xl w-full">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {[
+                    { icon: 'fa-book', title: '精选教案', desc: '超过500份精心设计的教学方案' },
+                    { icon: 'fa-video', title: '视频课程', desc: '200+小时高清讲解视频' },
+                    { icon: 'fa-lightbulb', title: '解题技巧', desc: '实用解题方法与思维训练' }
+                  ].map((item, index) => (
+                    <div key={index} className="flex flex-col items-center text-center p-4 hover:bg-primary/10 rounded-lg transition-colors duration-300">
+                      <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+                        <i className={`fas ${item.icon} text-secondary text-2xl`}></i>
+                      </div>
+                      <h3 className="text-lg font-bold text-dark">{item.title}</h3>
+                      <p className="mt-2 text-gray-600">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // 特色内容区域
+    function FeaturesSection() {
+      return (
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-extrabold text-dark sm:text-4xl">
+                为什么选择<span className="text-secondary">数海导航</span>?
+              </h2>
+              <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
+                专为高中生设计的数学学习体验
+              </p>
+            </div>
+
+            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                {
+                  icon: 'fa-graduation-cap',
+                  title: '专业教师团队',
+                  desc: '由特级教师和教研专家共同打造教学内容'
+                },
+                {
+                  icon: 'fa-sync-alt',
+                  title: '同步教材更新',
+                  desc: '与最新人教版教材同步，紧跟教学进度'
+                },
+                {
+                  icon: 'fa-puzzle-piece',
+                  title: '难题精讲',
+                  desc: '高考经典题型解析与解题技巧'
+                },
+                {
+                  icon: 'fa-chart-line',
+                  title: '学习进度跟踪',
+                  desc: '个性化学习路径与效果分析'
+                }
+              ].map((feature, index) => (
+                <div key={index} className="bg-primary/10 p-6 rounded-xl hover:shadow-lg transition-shadow duration-300 border border-primary/20">
+                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center mb-4">
+                    <i className={`fas ${feature.icon} text-white text-xl`}></i>
+                  </div>
+                  <h3 className="text-xl font-bold text-dark">{feature.title}</h3>
+                  <p className="mt-2 text-gray-600">{feature.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // 课程展示区域
+    function CoursesSection() {
+      const courses = [
+        {
+          title: "代数精讲",
+          desc: "从基础到进阶，掌握代数核心概念",
+          topics: ["多项式", "方程与不等式", "函数", "数列"],
+          color: "bg-purple-500"
+        },
+        {
+          title: "几何探秘",
+          desc: "空间思维与几何证明训练",
+          topics: ["平面几何", "立体几何", "解析几何", "向量"],
+          color: "bg-green-500"
+        },
+        {
+          title: "概率统计",
+          desc: "数据分析与概率计算",
+          topics: ["概率基础", "统计图表", "随机变量", "假设检验"],
+          color: "bg-yellow-500"
+        },
+        {
+          title: "微积分入门",
+          desc: "为大学数学打下基础",
+          topics: ["极限", "导数", "积分", "微分方程"],
+          color: "bg-red-500"
+        }
+      ];
+
+      return (
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-extrabold text-dark sm:text-4xl">
+                热门<span className="text-secondary">课程模块</span>
+              </h2>
+              <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-600">
+                覆盖高中数学所有核心知识点
+              </p>
+            </div>
+
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {courses.map((course, index) => (
+                <div key={index} className={`${course.color}/10 rounded-2xl overflow-hidden shadow-lg card-hover border ${course.color}/30`}>
+                  <div className={`p-6 ${course.color}/20`}>
+                    <h3 className="text-2xl font-bold text-dark">{course.title}</h3>
+                    <p className="mt-2 text-gray-700">{course.desc}</p>
+                  </div>
+                  <div className="p-6">
+                    <h4 className="font-semibold text-dark">涵盖主题：</h4>
+                    <ul className="mt-3 space-y-2">
+                      {course.topics.map((topic, idx) => (
+                        <li key={idx} className="flex items-center">
+                          <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                          <span>{topic}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <button className="mt-6 w-full py-2 bg-white text-dark border border-dark/20 rounded-lg hover:bg-dark hover:text-white transition-colors duration-300 font-medium">
+                      查看课程
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // 数学工具区域
+    function ToolsSection() {
+      return (
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-extrabold text-dark sm:text-4xl">
+                实用<span className="text-secondary">数学工具</span>
+              </h2>
+              <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
+                辅助学习的强大工具集
+              </p>
+            </div>
+
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  title: "函数绘图器",
+                  desc: "可视化各类函数图像",
+                  icon: "fa-chart-line"
+                },
+                {
+                  title: "几何画板",
+                  desc: "动态演示几何变换",
+                  icon: "fa-draw-polygon"
+                },
+                {
+                  title: "公式编辑器",
+                  desc: "轻松输入复杂数学公式",
+                  icon: "fa-superscript"
+                },
+                {
+                  title: "解题助手",
+                  desc: "分步骤解析数学难题",
+                  icon: "fa-lightbulb"
+                },
+                {
+                  title: "概率模拟器",
+                  desc: "直观展示概率问题",
+                  icon: "fa-dice"
+                },
+                {
+                  title: "单位转换",
+                  desc: "快速转换各类数学单位",
+                  icon: "fa-exchange-alt"
+                }
+              ].map((tool, index) => (
+                <div key={index} className="bg-gradient-to-br from-primary/10 to-secondary/10 p-6 rounded-xl border border-primary/30 hover:shadow-lg transition-all duration-300 flex items-start">
+                  <div className="mr-4 mt-1">
+                    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                      <i className={`fas ${tool.icon} text-secondary text-xl`}></i>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-dark">{tool.title}</h3>
+                    <p className="mt-2 text-gray-600">{tool.desc}</p>
+                    <button className="mt-4 text-secondary font-medium hover:text-secondary/80 transition-colors duration-300 flex items-center">
+                      立即使用 <i className="fas fa-arrow-right ml-2 text-sm"></i>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // 页脚组件
+    function Footer() {
+      return (
+        <footer className="bg-dark text-white">
+          <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <div>
+                <h3 className="text-xl font-bold flex items-center">
+                  <i className="fas fa-calculator mr-2"></i>
+                  数海导航
+                </h3>
+                <p className="mt-4 text-gray-300">
+                  专注于高中数学教育的在线平台，帮助学生轻松掌握数学知识。
+                </p>
+                <div className="mt-4 flex space-x-4">
+                  {['fab fa-weixin', 'fab fa-qq', 'fab fa-weibo', 'fab fa-bilibili'].map((icon, index) => (
+                    <a key={index} href="#" className="text-gray-300 hover:text-white transition-colors duration-300">
+                      <i className={`${icon} text-xl`}></i>
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {[
+                {
+                  title: "资源导航",
+                  links: ["教案下载", "视频课程", "习题库", "学习资料"]
+                },
+                {
+                  title: "学习工具",
+                  links: ["函数绘图", "几何画板", "公式编辑", "解题助手"]
+                },
+                {
+                  title: "关于我们",
+                  links: ["团队介绍", "联系我们", "加入我们", "用户反馈"]
+                }
+              ].map((section, index) => (
+                <div key={index}>
+                  <h4 className="text-lg font-semibold">{section.title}</h4>
+                  <ul className="mt-4 space-y-2">
+                    {section.links.map((link, idx) => (
+                      <li key={idx}>
+                        <a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">
+                          {link}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-12 pt-8 border-t border-gray-700 text-center text-gray-400">
+              <p>© 2023 数海导航 高中数学教案资源库. 保留所有权利.</p>
+              <p className="mt-2">让数学学习更简单、更有趣</p>
+            </div>
+          </div>
+        </footer>
+      );
+    }
+
+    // 渲染应用
+    const rootElement = document.getElementById('root');
+    ReactDOM.render(<MathLearningApp />, rootElement);
+  </script>
+</body>
+
+</html>
