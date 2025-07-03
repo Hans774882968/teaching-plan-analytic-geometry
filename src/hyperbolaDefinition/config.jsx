@@ -59,11 +59,11 @@ export const hyperbolaConfig = {
       ),
       thinks: [
         {
-          question: '渐近线的斜率是如何确定的？',
+          think: '渐近线的斜率是如何确定的？',
           answer: <p>当x趋于无穷时，<TeX>{String.raw`\frac{x^2}{a^2}, \ \frac{y^2}{b^2}`}</TeX>也都趋于无穷，所以可近似认为<TeX>{String.raw`\frac{x^2}{a^2} - \frac{y^2}{b^2} = 0`}</TeX>。简单整理即得渐近线的斜率。</p>,
         },
         {
-          question: '试着从反函数的角度思考这一知识点！',
+          think: '试着从反函数的角度思考这一知识点！',
           answer: <p>焦点在x轴上时，渐近线的斜率是<TeX>{String.raw`\pm \frac{a}{b}`}</TeX>。把x和y互换，便得到焦点在y轴上的双曲线，简单计算发现，渐近线的斜率变为原来的倒数。</p>,
         },
       ],
@@ -96,19 +96,73 @@ export const hyperbolaConfig = {
       ),
       thinks: [
         {
-          question: '如何得到双曲线的参数方程？',
+          think: '如何得到双曲线的参数方程？',
           answer: <p>提示：相关公式：<TeX>{String.raw`\sec^2 \theta = \tan^ 2 \theta + 1, \ sec\theta = \frac{1}{cos\theta}`}</TeX></p>,
+        },
+      ],
+    },
+    {
+      title: '📐 双曲线的第二定义',
+      content: <p>动点P到焦点<TeX>{String.raw`F(c, 0), \ c > 0`}</TeX>的距离与到准线<TeX>{String.raw`l: x = \frac{a^2}{c}`}</TeX>的距离之比等于离心率<TeX>{String.raw`e,\ e > 1`}</TeX>，即为双曲线的右支。</p>,
+      thinks: [
+        {
+          answerRowMaxHeight: '300px',
+          think: '如何由双曲线的第二定义推出其标准方程？',
+          answer: (
+            <div>
+              双曲线上任意点 <TeX>{String.raw`P(x, y)`}</TeX> 满足：
+              <TeX>{String.raw`\frac{\sqrt{(x - c)^2 + y^2}}{\left|x - \frac{a^2}{c}\right|} = \frac{c}{a}`}</TeX>
+              <br />
+              考虑双曲线右支（<TeX>{String.raw`x > \frac{a^2}{c}`}</TeX>）：
+              <br />
+              <TeX>{String.raw`\sqrt{(x - c)^2 + y^2} = \frac{c}{a} \left( x - \frac{a^2}{c} \right)`}</TeX>
+              <br />
+              化简右边：
+              <br />
+              <TeX>{String.raw`\sqrt{(x - c)^2 + y^2} = \frac{c}{a}x - a`}</TeX>
+              <br />
+              两边平方：
+              <br />
+              <TeX>{String.raw`(x - c)^2 + y^2 = \left( \frac{c}{a}x - a \right)^2`}</TeX>
+              <br />
+              展开两边：
+              <br />
+              <TeX>{String.raw`x^2 - 2cx + c^2 + y^2 = \frac{c^2}{a^2}x^2 - 2cx + a^2`}</TeX>
+              <br />
+              移项整理：
+              <br />
+              <TeX>{String.raw`x^2 - \frac{c^2}{a^2}x^2 + y^2 = a^2 - c^2`}</TeX>
+              <br />
+              <TeX>{String.raw`\left(1 - \frac{c^2}{a^2}\right)x^2 + y^2 = a^2 - c^2`}</TeX>
+              <br />
+              因 <TeX>{String.raw`c > a`}</TeX>，令 <TeX>{String.raw`b^2 = c^2 - a^2`}</TeX>（<TeX>{String.raw`b > 0`}</TeX>)：
+              <br />
+              <TeX>{String.raw`\left(\frac{a^2 - c^2}{a^2}\right)x^2 + y^2 = -(c^2 - a^2)`}</TeX>
+              <br />
+              <TeX>{String.raw`-\frac{b^2}{a^2}x^2 + y^2 = -b^2`}</TeX>
+              <br />
+              两边乘以 -1：
+              <br />
+              <TeX>{String.raw`\frac{b^2}{a^2}x^2 - y^2 = b^2`}</TeX>
+              <br />
+              两边同除 <TeX>{String.raw`b^2`}</TeX> 得标准方程：
+              <br />
+              <TeX>{String.raw`\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1`}</TeX>
+              <br />
+              注：左支推导同理（取焦点 <TeX>{String.raw`F(-c,0)`}</TeX> 和准线 <TeX>{String.raw`x = -\frac{a^2}{c}`}</TeX>），得到相同方程。
+            </div>
+          ),
         },
       ],
     },
   ],
   thinks: [
     {
-      question: '为什么双曲线的离心率e必须大于1？',
+      think: '为什么双曲线的离心率e必须大于1？',
       answer: <p>因为根据定义<TeX>{String.raw`c > a`}</TeX>，所以<TeX>{String.raw`e = \frac{c}{a} > 1`}</TeX>。这与椭圆的情况不同，椭圆的离心率<TeX>{String.raw`0 \leq e < 1`}</TeX>。</p>,
     },
     {
-      question: '如何从双曲线的标准方程判断它的开口方向？',
+      think: '如何从双曲线的标准方程判断它的开口方向？',
       answer: <p>看<TeX>{String.raw`x^2`}</TeX>和<TeX>{String.raw`y^2`}</TeX>项系数的符号：如果<TeX>{String.raw`x^2`}</TeX>项为正，开口方向为左右；如果<TeX>{String.raw`y^2`}</TeX>项为正，开口方向为上下。'</p>,
     },
   ],

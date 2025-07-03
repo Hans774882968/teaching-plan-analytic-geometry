@@ -17,15 +17,16 @@
 
 为了方便在React中使用geogebra，我们不妨封装一个`Geogebra.jsx`。我找到了一个叫`react-geogebra`的npm包，但看了眼那个源码。天哪！代码质量不太得，eslint报错有十几个！索性复制下来，自己改改。
 
-[src\Geogebra.jsx](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/Geogebra.jsx), copy from https://github.com/pfaffmann/react-geogebra/blob/master/src/index.js
+[src\component\Geogebra.jsx](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/component/Geogebra.jsx), copy from https://github.com/pfaffmann/react-geogebra/blob/master/src/index.js
 
 ```jsx
 import { useEffect, useState, useRef, useCallback } from 'react';
+import styles from './Geogebra.module.scss';
+import { cn } from '@/lib/utils';
 
 const Geogebra = (props) => {
   const defaultProps = {
     appName: 'classic',
-    width: 800,
     height: 600,
     showToolBar: true,
     showAlgebraInput: true,
@@ -79,8 +80,8 @@ const Geogebra = (props) => {
   }, [watchPropsChange, debug, id, onAppletReady]);
 
   return (
-    <div id={`${id}-holder`}>
-      <div id={id}></div>
+    <div id={`${id}-holder`} className={cn(styles.geogebraWrapper, props.className)}>
+      <div id={id} style={{ width: '100%' }}></div>
     </div>
   );
 };

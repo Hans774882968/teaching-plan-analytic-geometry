@@ -34,39 +34,39 @@ export const config = {
         <br />
         移项后平方：
         <br />
-        <TeX block>{String.raw`\sqrt{(x + c)^2 + y^2} = 2a - \sqrt{(x - c)^2 + y^2}`}</TeX>
+        <TeX>{String.raw`\sqrt{(x + c)^2 + y^2} = 2a - \sqrt{(x - c)^2 + y^2}`}</TeX>
         <br />
-        <TeX block>{String.raw`(x + c)^2 + y^2 = 4a^2 - 4a\sqrt{(x - c)^2 + y^2} + (x - c)^2 + y^2`}</TeX>
+        <TeX>{String.raw`(x + c)^2 + y^2 = 4a^2 - 4a\sqrt{(x - c)^2 + y^2} + (x - c)^2 + y^2`}</TeX>
         <br />
         展开化简：
         <br />
-        <TeX block>{String.raw`x^2 + 2cx + c^2 = 4a^2 - 4a\sqrt{(x - c)^2 + y^2} + x^2 - 2cx + c^2`}</TeX>
+        <TeX>{String.raw`x^2 + 2cx + c^2 = 4a^2 - 4a\sqrt{(x - c)^2 + y^2} + x^2 - 2cx + c^2`}</TeX>
         <br />
-        <TeX block>{String.raw`4cx - 4a^2 = -4a\sqrt{(x - c)^2 + y^2}`}</TeX>
+        <TeX>{String.raw`4cx - 4a^2 = -4a\sqrt{(x - c)^2 + y^2}`}</TeX>
         <br />
-        <TeX block>{String.raw`a^2 - cx = a\sqrt{(x - c)^2 + y^2}`}</TeX>
+        <TeX>{String.raw`a^2 - cx = a\sqrt{(x - c)^2 + y^2}`}</TeX>
         <br />
         再次平方：
         <br />
-        <TeX block>{String.raw`(a^2 - cx)^2 = a^2[(x - c)^2 + y^2]`}</TeX>
+        <TeX>{String.raw`(a^2 - cx)^2 = a^2[(x - c)^2 + y^2]`}</TeX>
         <br />
-        <TeX block>{String.raw`a^4 - 2a^2cx + c^2x^2 = a^2(x^2 - 2cx + c^2 + y^2)`}</TeX>
+        <TeX>{String.raw`a^4 - 2a^2cx + c^2x^2 = a^2(x^2 - 2cx + c^2 + y^2)`}</TeX>
         <br />
         移项整理：
         <br />
-        <TeX block>{String.raw`a^4 - 2a^2cx + c^2x^2 - a^2x^2 + 2a^2cx - a^2c^2 - a^2y^2 = 0`}</TeX>
+        <TeX>{String.raw`a^4 - 2a^2cx + c^2x^2 - a^2x^2 + 2a^2cx - a^2c^2 - a^2y^2 = 0`}</TeX>
         <br />
-        <TeX block>{String.raw`a^4 - a^2c^2 = (a^2 - c^2)x^2 + a^2y^2`}</TeX>
+        <TeX>{String.raw`a^4 - a^2c^2 = (a^2 - c^2)x^2 + a^2y^2`}</TeX>
         <br />
         令 <TeX>{String.raw`b^2 = a^2 - c^2`}</TeX>（<TeX>{String.raw`b > 0`}</TeX>）：
         <br />
-        <TeX block>{String.raw`a^2(a^2 - c^2) = b^2x^2 + a^2y^2`}</TeX>
+        <TeX>{String.raw`a^2(a^2 - c^2) = b^2x^2 + a^2y^2`}</TeX>
         <br />
-        <TeX block>{String.raw`a^2b^2 = b^2x^2 + a^2y^2`}</TeX>
+        <TeX>{String.raw`a^2b^2 = b^2x^2 + a^2y^2`}</TeX>
         <br />
         两边同除 <TeX>{String.raw`a^2b^2`}</TeX> 得标准方程：
         <br />
-        <TeX block>{String.raw`\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 \quad (a > b > 0)`}</TeX>
+        <TeX>{String.raw`\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 \quad (a > b > 0)`}</TeX>
       </div>
     ),
   },

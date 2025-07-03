@@ -1,19 +1,20 @@
 import { Fragment, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { hyperbolaConfig as config } from './config';
-import styles from '../component/teachingPlan/basic.module.scss';
-import QuizContainer from '../component/QuizContainer';
-import Geogebra from '../component/Geogebra';
-import TPButton from '../component/TPButton';
+import styles from '@/component/teachingPlan/basic.module.scss';
+import QuizContainer from '@/component/QuizContainer';
+import Geogebra from '@/component/Geogebra';
+import TPButton from '@/component/TPButton';
 import conanThinking from '@/assets/conan-thinking-1.png';
 import conanThumbUp from '@/assets/conan-thumb-up-1.png';
-import Section from '../component/teachingPlan/Section';
-import KnowledgePoint from '../component/teachingPlan/KnowledgePoint';
-import Card from '../component/teachingPlan/Card';
-import Header from '../component/teachingPlan/Header';
-import LearningPartnerCard from '../component/teachingPlan/LearningPartnerCard';
-import Think from '../component/teachingPlan/Think';
+import Section from '@/component/teachingPlan/Section';
+import KnowledgePoint from '@/component/teachingPlan/KnowledgePoint';
+import Card from '@/component/teachingPlan/Card';
+import Header from '@/component/teachingPlan/Header';
+import LearningPartnerCard from '@/component/teachingPlan/LearningPartnerCard';
+import Think from '@/component/teachingPlan/Think';
 import Footer from '@/component/teachingPlan/Footer';
+import { Link } from 'react-router-dom';
 
 function Inner() {
   const [showFeedbacks, setShowFeedbacks] = useState({});
@@ -52,8 +53,7 @@ function Inner() {
               return (
                 <Think
                   key={index}
-                  think={think.question}
-                  answer={think.answer}
+                  {...think}
                 />
               );
             })}
@@ -63,9 +63,7 @@ function Inner() {
           {config.thinks.map((think, index) => (
             <Think
               key={index}
-              think={think.question}
-              answer={think.answer}
-              answerRowMaxHeight="300px"
+              {...think}
             />
           ))}
         </Card>
@@ -103,6 +101,11 @@ function Inner() {
             检查答案
           </TPButton>
         </div>
+
+        <Card>
+          题目太水？试试：
+          <Link to="/hyperbola-hard-questions"><TPButton>更难的双曲线习题</TPButton></Link>
+        </Card>
       </Section>
 
       <Section>

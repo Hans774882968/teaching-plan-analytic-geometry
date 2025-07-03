@@ -26,7 +26,7 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
     >
       <div className={styles.question}>
         <div>{`${index + 1}.`}</div>
-        <div>{quiz.question}</div>
+        <div className={styles.questionArea}>{quiz.question}</div>
       </div>
       <div className={styles.options}>
         {quiz.options.map((option, optIndex) => (
@@ -50,7 +50,7 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
           transition={{ duration: 0.4 }}
         >
           <div>{selectedOptions[index] === quiz.correct ? '✔️' : '❌'}</div>
-          <div>{quiz.explanation}</div>
+          <div className={styles.explanationArea}>{quiz.explanation}</div>
         </motion.div>
       )}
     </motion.div>

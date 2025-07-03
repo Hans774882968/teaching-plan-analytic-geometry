@@ -14,6 +14,10 @@
   font-weight: bold;
 }
 
+.questionArea {
+  flex: 1;
+}
+
 .options {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -64,4 +68,8 @@
 .feedback.incorrect {
   background: rgba(255, 107, 107, 0.3);
   color: #7a0c2e;
+}
+
+.explanationArea {
+  flex: 1;
 }
