@@ -29,14 +29,14 @@ export default {
       content: (
         <div>
           <p>当顶点在原点，焦点在x轴上时，标准方程为：</p>
-          <TeX>{String.raw`y^2 = 4px`}</TeX>
+          <TeX>{String.raw`y^2 = 2px`}</TeX>
           <p>其中：</p>
           <ul>
-            <li>p 是焦点到顶点的距离</li>
+            <li>p 是焦点到准线的距离</li>
             <li>焦点坐标为 <TeX>{String.raw`(\frac{p}{2}, 0)`}</TeX></li>
             <li>准线方程为 <TeX>{String.raw`x = -\frac{p}{2}`}</TeX></li>
           </ul>
-          <p><strong className={styles.highlight}>重要结论</strong>：开口方向由p的符号决定，p&gt;0时开口向右，p&lt;0时开口向左。</p>
+          <p><strong className={styles.highlight}>重要结论</strong>：开口方向由p的符号决定，<TeX>{String.raw`p > 0`}</TeX>时开口向右，<TeX>{String.raw`p < 0`}</TeX>时开口向左。</p>
         </div>
       ),
     },
@@ -55,8 +55,8 @@ export default {
       title: '🔍 参数方程',
       content: (
         <div>
-          <p>抛物线<TeX>{String.raw`y^2 = 4px`}</TeX>的参数方程为：</p>
-          <TeX block>{String.raw`\begin{cases} x = pt^2 \\ y = 2pt \end{cases}`}</TeX>
+          <p>抛物线<TeX>{String.raw`y^2 = 2px`}</TeX>的参数方程为：</p>
+          <TeX block>{String.raw`\begin{cases} x = 2pt^2 \\ y = 2pt \end{cases}`}</TeX>
           <p>其中t为参数，表示抛物线上点的位置。</p>
           <p><strong className={styles.highlight}>应用</strong>：参数方程在解决与角度相关的问题时非常有用。</p>
         </div>
@@ -66,11 +66,15 @@ export default {
       title: '💡 二级结论',
       content: (
         <div>
-          <p>1. 过抛物线<TeX>{String.raw`y^2 = 4px`}</TeX>上一点<TeX>{String.raw`(x_0, y_0)`}</TeX>的切线方程为：</p>
-          <TeX block>{String.raw`y y_0 = 2p(x + x_0)`}</TeX>
+          <p>1. 过抛物线<TeX>{String.raw`y^2 = 2px`}</TeX>上一点<TeX>{String.raw`(x_0, y_0)`}</TeX>的切线方程为：</p>
+          <TeX block>{String.raw`y y_0 = p(x + x_0)`}</TeX>
 
-          <p>2. 焦点弦性质：过焦点F的弦AB满足：</p>
-          <TeX block>{String.raw`\frac{1}{|AF|} + \frac{1}{|BF|} = \frac{1}{p}`}</TeX>
+          <p>
+            2. 焦点弦性质：过焦点F的弦AB满足：
+            <TeX>{String.raw`\frac{1}{|AF|} + \frac{1}{|BF|} = \frac{1}{p}`}</TeX>，
+            其中<TeX>{String.raw`|AF| = \frac{p}{1 - cos\theta},\ BF = \frac{p}{1 + cos\theta}`}</TeX>，
+            <TeX>{String.raw`tan\theta`}</TeX>为AB的斜率
+          </p>
 
           <p>3. <strong className={styles.hard}>光学性质</strong>：抛物线的切线平分焦点与切点连线和切点与准线垂线的夹角。</p>
         </div>
@@ -83,11 +87,11 @@ export default {
       answerRowMaxHeight: '300px',
       answer: (
         <div>
-          <p>设抛物线<TeX>{String.raw`y^2 = 4px`}</TeX>上一点<TeX>{String.raw`P(x_0, y_0)`}</TeX></p>
-          <p>对抛物线方程两边求导：<TeX>{String.raw`2y \frac{dy}{dx} = 4p`}</TeX></p>
-          <p>得到斜率：<TeX>{String.raw`k = \frac{dy}{dx} = \frac{2p}{y_0}`}</TeX></p>
-          <p>切线方程：<TeX>{String.raw`y - y_0 = \frac{2p}{y_0}(x - x_0)`}</TeX></p>
-          <p>化简得：<TeX>{String.raw`y y_0 = 2p(x + x_0)`}</TeX></p>
+          <p>设抛物线<TeX>{String.raw`y^2 = 2px`}</TeX>上一点<TeX>{String.raw`P(x_0, y_0)`}</TeX></p>
+          <p>对抛物线方程两边求导：<TeX>{String.raw`2y \frac{dy}{dx} = 2p`}</TeX></p>
+          <p>得到斜率：<TeX>{String.raw`k = \frac{dy}{dx} = \frac{p}{y_0}`}</TeX></p>
+          <p>切线方程：<TeX>{String.raw`y - y_0 = \frac{p}{y_0}(x - x_0)`}</TeX></p>
+          <p>化简得：<TeX>{String.raw`y y_0 = p(x + x_0)`}</TeX></p>
         </div>
       ),
     },
@@ -113,37 +117,37 @@ export default {
   },
   quiz: [
     {
-      question: '抛物线 y² = 8x 的焦点坐标是？',
+      question: <p>抛物线 <TeX>{String.raw`y^2 = 8x`}</TeX> 的焦点坐标是？</p>,
       options: [
-        'A. (2, 0)',
-        'B. (4, 0)',
-        'C. (0, 2)',
-        'D. (0, 4)',
+        '(2, 0)',
+        '(4, 0)',
+        '(0, 2)',
+        '(0, 4)',
       ],
       correct: 0,
-      explanation: '标准方程 y²=4px，其中 4p=8，所以 p=2，焦点坐标为 (p, 0) = (2, 0)',
+      explanation: <p>标准方程 <TeX>{String.raw`y^2 = 2px`}</TeX>，其中 <TeX>{String.raw`2p = 8`}</TeX>，所以 <TeX>{String.raw`p = 4`}</TeX>，焦点坐标为 <TeX>{String.raw`(\frac{p}{2}, 0) = (2, 0)`}</TeX></p>,
     },
     {
       question: '下列关于抛物线性质的描述，错误的是？',
       options: [
-        'A. 离心率恒等于1',
-        'B. 是轴对称图形',
-        'C. 是中心对称图形',
-        'D. 有一个焦点和一条准线',
+        '离心率恒等于1',
+        '是轴对称图形',
+        '是中心对称图形',
+        '有一个焦点和一条准线',
       ],
       correct: 2,
       explanation: '抛物线是轴对称图形，但不是中心对称图形，它没有对称中心。',
     },
     {
-      question: '过抛物线 y²=4x 焦点且垂直于x轴的弦长是？',
+      question: <p>过抛物线 <TeX>{String.raw`y^2 = 4x`}</TeX> 焦点且垂直于x轴的弦长是？</p>,
       options: [
-        'A. 2',
-        'B. 4',
-        'C. 8',
-        'D. 16',
+        '2',
+        '4',
+        '8',
+        '16',
       ],
       correct: 1,
-      explanation: '焦点(1,0)，垂直于x轴的直线为x=1，代入方程得 y²=4，所以 y=±2，弦长为|2-(-2)|=4',
+      explanation: <p>焦点<TeX>{String.raw`(1,0)`}</TeX>，垂直于x轴的直线为<TeX>{String.raw`x=1`}</TeX>，代入方程得 <TeX>{String.raw`y^2 = 4`}</TeX>，所以 <TeX>{String.raw`y = \pm2`}</TeX>，弦长为<TeX>{String.raw`|2-(-2)|=4`}</TeX></p>,
     },
   ],
   summary: {

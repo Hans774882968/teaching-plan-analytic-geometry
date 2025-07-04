@@ -8,6 +8,7 @@ import NotFound from './NotFound';
 import HyperbolaDefinition from './hyperbolaDefinition/HyperbolaDefinition';
 import HyperbolaHardQuestions from './hyperbolaDefinition/HyperbolaHardQuestions';
 import ParabolaDefinition from './parabolaDefinition/ParabolaDefinition';
+import ParabolaHardQuestions from './parabolaDefinition/ParabolaHardQuestions';
 import Layout from './component/layout/Layout';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Route path="/parabola-definition" element={<ParabolaDefinition />} />
             <Route path="/ellipse-hard-questions" element={<EllipseHardQuestions />} />
             <Route path="/hyperbola-hard-questions" element={<HyperbolaHardQuestions />} />
+            <Route path="/parabola-hard-questions" element={<ParabolaHardQuestions />} />
             <Route path="/404" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

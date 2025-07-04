@@ -37,18 +37,18 @@
   cursor: pointer;
   transition: all 0.3s ease;
   border: 2px solid transparent;
+  display: flex;
+  gap: 8px;
 }
 
 .option:hover {
-  background: var(--primary);
+  background-color: var(--primary);
   color: white;
   transform: translateY(-3px);
 }
 
 .option.selected {
-  background: #FF6B6B;
-  color: white;
-  border: 2px solid #FFD166;
+  background-color: #FFD166;
 }
 
 .feedback {

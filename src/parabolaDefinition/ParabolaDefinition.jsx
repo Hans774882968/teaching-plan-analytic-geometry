@@ -92,7 +92,7 @@ function Inner() {
           {...config.geogebraConfig}
         />
         <Card>
-          <strong className={styles.highlight}>观察结论</strong>：无论点A在抛物线上如何移动，红色线段|FA|的长度总是等于蓝色线段|AB|的长度，这验证了抛物线的定义。
+          <strong className={styles.highlight}>观察结论</strong>：无论点A在抛物线上如何移动，红色线段|FA|总是等于蓝色线段|AB|，这验证了抛物线的定义。
         </Card>
       </Section>
 

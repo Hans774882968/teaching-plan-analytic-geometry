@@ -4,6 +4,7 @@ import styles from './QuizContainer.module.scss';
 import { HOVER_SCALE } from '@/common/consts';
 import Think from '@/component/teachingPlan/Think';
 import { cn } from '@/lib/utils';
+import MarkdownRenderer from './MarkdownRenderer';
 
 export default function QuizContainer({ index, quiz, showFeedbacks }) {
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -27,7 +28,9 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
     >
       <div className={styles.question}>
         <div>{`${index + 1}.`}</div>
-        <div className={styles.questionArea}>{quiz.question}</div>
+        <div className={styles.questionArea}>
+          <MarkdownRenderer content={quiz.question} />
+        </div>
       </div>
       <div className={styles.options}>
         {quiz.options.map((option, optIndex) => (
@@ -36,7 +39,7 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
             className={`${styles.option} ${selectedOptions[index] === optIndex ? styles.selected : ''}`}
             onClick={() => handleOptionSelect(index, optIndex)}
           >
-            {option}
+            <span>{String.fromCharCode(65 + optIndex)}. </span><MarkdownRenderer className="flex-1" content={option} />
           </div>
         ))}
       </div>
@@ -52,7 +55,9 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
             transition={{ duration: 0.4 }}
           >
             <div>{selectedOptions[index] === quiz.correct ? '✔️' : '❌'}</div>
-            <div className={styles.explanationArea}>{quiz.explanation}</div>
+            <div className={styles.explanationArea}>
+              <MarkdownRenderer content={quiz.explanation} />
+            </div>
           </motion.div>
           <div>
             {
