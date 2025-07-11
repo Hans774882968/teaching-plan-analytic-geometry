@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { hyperbolaConfig as config } from './config';
 import styles from '@/component/teachingPlan/basic.module.scss';
+import MarkdownRenderer from '@/component/MarkdownRenderer';
 import QuizContainer from '@/component/QuizContainer';
 import Geogebra from '@/component/Geogebra';
 import TPButton from '@/component/TPButton';
@@ -16,12 +16,19 @@ import Think from '@/component/teachingPlan/Think';
 import Footer from '@/component/teachingPlan/Footer';
 import { Link } from 'react-router-dom';
 
-function Inner() {
+function wrapStringAsParagraph(node) {
+  if (typeof node === 'string') {
+    return <p>{node}</p>;
+  }
+  return node;
+}
+
+function Inner({ config }) {
   const [showFeedbacks, setShowFeedbacks] = useState({});
 
   const checkAnswers = () => {
     const feedbacks = {};
-    config.quiz.forEach((_, index) => {
+    config.quizSection.quiz.forEach((_, index) => {
       feedbacks[index] = true;
     });
     setShowFeedbacks(feedbacks);
@@ -31,7 +38,7 @@ function Inner() {
     <div className={styles.container}>
       <Header>
         <h1 className={styles.teachingPlanH1}>{config.title}</h1>
-        <p>与名侦探柯南一起探索双曲线的奥秘！</p>
+        {wrapStringAsParagraph(config.header.content)}
       </Header>
 
       <Section>
@@ -39,17 +46,17 @@ function Inner() {
           imgNode={(lpStyles) => <img src={conanThinking} className={lpStyles.conanImg} />}
         >
           <h2 className={styles.teachingPlanH2}>{config.welcome.title}</h2>
-          {config.welcome.content}
+          {wrapStringAsParagraph(config.welcome.content)}
         </LearningPartnerCard>
       </Section>
 
       <Section>
-        <h2 className={styles.teachingPlanH2}>📚 双曲线的定义与基本性质</h2>
-        {config.knowledgePoints.map((point, index) => (
+        <h2 className={styles.teachingPlanH2}>{config.knowledgePointSection.title}</h2>
+        {config.knowledgePointSection.points.map((point, index) => (
           <KnowledgePoint key={index}>
             <h3 className={styles.teachingPlanH3}>{point.title}</h3>
-            {point.content}
-            {point.thinks && point.thinks.map((think, index) => {
+            <MarkdownRenderer content={point.content} />
+            {Array.isArray(point.thinks) && point.thinks.map((think, index) => {
               return (
                 <Think
                   key={index}
@@ -59,14 +66,20 @@ function Inner() {
             })}
           </KnowledgePoint>
         ))}
-        <Card>
-          {config.thinks.map((think, index) => (
-            <Think
-              key={index}
-              {...think}
-            />
-          ))}
-        </Card>
+        {
+          Array.isArray(config.knowledgePointSection.thinks) && (
+            <Card>
+              {
+                config.knowledgePointSection.thinks.map((think, index) => (
+                  <Think
+                    key={index}
+                    {...think}
+                  />
+                ))
+              }
+            </Card>
+          )
+        }
       </Section>
 
       <Section>
@@ -76,9 +89,12 @@ function Inner() {
             return (
               <Fragment key={index}>
                 <Card>
-                  <p>{geogebra.description}</p>
+                  <MarkdownRenderer content={geogebra.description} />
                 </Card>
                 <Geogebra {...geogebra.config} />
+                <Card>
+                  <MarkdownRenderer content={geogebra.conclusion} />
+                </Card>
               </Fragment>
             );
           })
@@ -86,10 +102,10 @@ function Inner() {
       </Section>
 
       <Section>
-        <h2 className={styles.teachingPlanH2}>🧠 知识挑战</h2>
-        <p>测试一下你对双曲线的理解吧！</p>
+        <h2 className={styles.teachingPlanH2}>{config.quizSection.title}</h2>
+        {wrapStringAsParagraph(config.quizSection.description)}
 
-        {config.quiz.map((quiz, index) => (
+        {config.quizSection.quiz.map((quiz, index) => (
           <QuizContainer
             key={index}
             index={index}
@@ -106,7 +122,7 @@ function Inner() {
 
         <Card>
           题目太水？试试：
-          <Link to="/hyperbola-hard-questions"><TPButton>更难的双曲线习题</TPButton></Link>
+          <Link to={config.quizSection.link.url}><TPButton>{config.quizSection.link.text}</TPButton></Link>
         </Card>
       </Section>
 
@@ -115,24 +131,24 @@ function Inner() {
           imgNode={(lpStyles) => <img src={conanThumbUp} className={lpStyles.conanImg} />}
         >
           <h2 className={styles.teachingPlanH2}>{config.summary.title}</h2>
-          <p>{config.summary.content}</p>
+          {wrapStringAsParagraph(config.summary.content)}
         </LearningPartnerCard>
       </Section>
 
       <Footer>
-        <p>© 2025 双曲线探索之旅 | 为Hans7特别定制 | 数学侦探柯南</p>
+        {wrapStringAsParagraph(config.footer.info)}
       </Footer>
     </div>
   );
 }
 
-export default function HyperbolaDefinition() {
+export default function StandardPage({ config }) {
   return (
     <>
       <Helmet>
         <title>{config.title}</title>
       </Helmet>
-      <Inner />
+      <Inner config={config} />
     </>
   );
 }

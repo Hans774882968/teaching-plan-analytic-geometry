@@ -18,7 +18,7 @@ import { addToFavorite } from './lib/utils';
 // 在首页用 Helmet 改标题无效，决定改 index.html 的标题
 const lessonPlans = [
   { id: 1, url: '/ellipse-definition', title: '平面几何基础 (TODO)', category: '平面几何', difficulty: '初级', icon: <FaShapes /> },
-  { id: 2, url: '/ellipse-definition', title: '平面向量 (TODO)', category: '平面几何', difficulty: '中级', icon: <FaVectorSquare /> },
+  { id: 2, url: '/plane-vector-definition', title: '平面向量的定义及其线性运算', category: '平面几何', difficulty: '中级', icon: <FaVectorSquare /> },
   { id: 3, url: '/ellipse-definition', title: '立体几何入门 (TODO)', category: '空间几何', difficulty: '中级', icon: <FaCube /> },
   { id: 4, url: '/ellipse-definition', title: '椭圆的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
   { id: 5, url: '/hyperbola-definition', title: '双曲线的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },

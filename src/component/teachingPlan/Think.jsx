@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import { FaChevronDown } from 'react-icons/fa';
 import styles from './Think.module.scss';
 import { cn } from '@/lib/utils';
+import MarkdownRenderer from '@/component/MarkdownRenderer';
 
 const Think = ({ think, answer, answerRowMaxHeight }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +21,9 @@ const Think = ({ think, answer, answerRowMaxHeight }) => {
         isOpen && 'border-b-1 border-dashed border-[#cbd5e0]'
       )}>
         <span className="px-2 py-1 rounded-md text-xs font-semibold bg-[#FFD166]">思考</span>
-        <div className={styles.questionText}>{think}</div>
+        <div className={styles.questionText}>
+          <MarkdownRenderer content={think} />
+        </div>
         <motion.button
           className="flex items-center gap-1 cursor-pointer text-blue-600 hover:text-blue-800 font-bold"
           onClick={toggleOpen}
@@ -46,7 +49,7 @@ const Think = ({ think, answer, answerRowMaxHeight }) => {
         }}
         transition={{ duration: 0.3 }}
       >
-        {answer}
+        <MarkdownRenderer content={answer} />
       </motion.div>
     </motion.div>
   );

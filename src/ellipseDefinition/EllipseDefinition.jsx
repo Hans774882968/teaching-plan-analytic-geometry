@@ -105,7 +105,9 @@ const Inner = () => {
 
       <Section>
         <h2 className={styles.teachingPlanH2}>🔬 椭圆实验室</h2>
-        <p>调整参数，实时观察椭圆的变化：</p>
+        <Card>
+          <p>移动动点A，实时观察椭圆的变化：</p>
+        </Card>
         <Geogebra
           id="ellipse-definition-1"
           height={720}

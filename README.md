@@ -1,19 +1,28 @@
 [TOC]
 
+# 通过为前端项目接入GeoGebra，初步研究AI时代数学教案的生成方案
+
 ## 引言
 
-研究如何让大语言模型生成数学教案。
+我偶然刷到了[这个视频](https://www.bilibili.com/video/BV1UeK8zAErv)，它给我一种强烈的感觉，就是下一代的每一个学生，只要会说HTML、Tailwind CSS、JavaScript这少数几个词，就能轻松生成属于自己的互动性极强的数学课件。我感受到了极其强烈的焦虑，下一代的学生，肯定能比我们这一代人更快地更新迭代自己的知识体系。我们一天才能学会的东西，他们可能一小时就能学会。以后他们的工作能力肯定能轻松碾压我们。所以至少在LLM尚未十分成熟的2025，我想走在下一代人的前面，哪怕只是用行动骗骗自己，有能力比下一代人更快驾驭LLM……
 
-注意，为了减少该项目的占用空间，本项目并未包含geogebra源码，请自行下载[GeoGebra Math Apps Bundle](https://download.geogebra.org/package/geogebra-math-apps-bundle)，并复制里面的web3d文件夹和css文件夹到本项目的`public\geogebra`。
+咳咳，先不抒情了。我写这个开源项目的初衷有：
+
+1. 研究如何让大语言模型快速生成数学教案。
+2. 研究如何在页面嵌入Geogebra，增强数学教案的互动性。
+
+[本项目GitHub传送门](https://github.com/Hans774882968/teaching-plan-analytic-geometry)
+
+注意：为了减少该项目的占用空间，本项目并未包含geogebra源码。如果想要在本地跑起来这个项目，请自行下载[GeoGebra Math Apps Bundle](https://download.geogebra.org/package/geogebra-math-apps-bundle)，并复制里面的web3d文件夹和css文件夹到本项目的`public\geogebra`。
 
 ## 如何给React项目接入GeoGebra
 
 参考[GeoGebra官方文档](https://geogebra.github.io/docs/reference/en/GeoGebra_Apps_Embedding/)，我们主要需要：
 
 1. 导入：`<script src="GeoGebra/deployggb.js"></script>`。
-2. 如果是自托管，需要加上这句：`applet.setHTML5Codebase('GeoGebra/HTML5/5.0/web3d/');`。否则忽略。
+2. 如果是**自托管**，需要加上这句：`applet.setHTML5Codebase('GeoGebra/HTML5/5.0/web3d/');`。否则忽略。
 
-### Geogebra.jsx
+### 封装 Geogebra.jsx
 
 为了方便在React中使用geogebra，我们不妨封装一个`Geogebra.jsx`。我找到了一个叫`react-geogebra`的npm包，但看了眼那个源码。天哪！代码质量不太得，eslint报错有十几个！索性复制下来，自己改改。
 
@@ -119,7 +128,7 @@ ggbApp.inject(id);
 
 然后就到踩坑时间！
 
-### geogebra的自托管解决方案
+### GeoGebra 的自托管解决方案
 
 如果把`ggbApp.setHTML5Codebase('geogebra/web3d/')`去掉，那么geogebra已经能正常工作，但静态资源必须通过网络下载，而且资源总共有几十MB，所以加载时间有点长。于是我们不得不考虑自托管解决方案。
 
@@ -141,19 +150,19 @@ return k;
 
 之后发现，控制台没有报错了，但样式不对劲。这是因为它请求了`geogebra/css/...`。所以我们不能只复制web3d文件夹，还要把同级的css文件夹复制过去。至此搞定！
 
-### geogebra 的神秘 bug
+### GeoGebra 的神秘 bug
 
 打开控制台，窗口自动缩小，此时点击设置，选择坐标轴的颜色，会发现点击对应格子，选中的颜色却不是鼠标对应的格子的颜色。把控制台关了，窗口无法回到原来的大小，于是问题还在。控制台从未开启则没有这个问题。
 
-### geogebra接入总结
+### GeoGebra 接入总结
 
 1. 按官方文档说的做。
 2. 复制web3d和css两个文件夹到`public\geogebra`。
 3. `geogebra\web3d\web3d.nocache.js`的`k = e(o.location.href)`改成`k = e(o.location.href + 'geogebra/web3d/');`。
 
-## 用Geogebra进行数学教学
+## 用GeoGebra进行数学教学
 
-可参考[docs\Geogebra组件文档.md](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/docs/Geogebra%E7%BB%84%E4%BB%B6%E6%96%87%E6%A1%A3.md)。
+可参考[docs\Geogebra组件文档.md](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/docs/Geogebra%E7%BB%84%E4%BB%B6%E6%96%87%E6%A1%A3.md)。下面仅给出验证椭圆第一定义的示例脚本：
 
 ```jsx
 const drawEllipse = (applet) => {
@@ -214,6 +223,8 @@ const drawEllipse = (applet) => {
 
 ## React项目如何支持Katex公式
 
+### 在ReactNode中：@matejmazur/react-katex
+
 相关文件：
 
 - `src\ellipseDefinition\EllipseDefinition.jsx`
@@ -225,16 +236,17 @@ const drawEllipse = (applet) => {
 bun add katex @matejmazur/react-katex
 ```
 
-接着
+接着在`src\App.jsx`：
 
 ```jsx
 import 'katex/dist/katex.min.css';
-import TeX from '@matejmazur/react-katex';
 ```
 
 然后直接引用：
 
 ```jsx
+import TeX from '@matejmazur/react-katex';
+
 <TeX>{'c = \\sqrt{a^2 - b^2}'}</TeX>
 <TeX block>{String.raw`\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1`}</TeX>
 ```
@@ -268,9 +280,184 @@ export const config = {
 </div>
 ```
 
+### 在 Markdown String 中：marked + marked-katex-extension
+
+为了方便LLM生成课件，我们需要让项目支持渲染Markdown。之后我们只需要在配置文件中写Markdown字符串即可。为了在marked中支持Katex公式，我们可以自己写一个renderer（我确实有搜到采用这种方案的），也可以用现成的包：`marked-katex-extension`。
+
+首先
+
+```powershell
+bun add marked highlight.js marked-katex-extension
+```
+
+接着我们可以直接实现一个React组件`src\component\MarkdownRenderer.jsx`，调用marked，渲染Markdown String：
+
+```jsx
+import { processMarkdown } from '@/lib/marked';
+import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
+import 'highlight.js/styles/paraiso-light.css';
+
+export default function MarkdownRenderer({ className, content, ...rest }) {
+  const [htmlContent, setHtmlContent] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const parseResult = processMarkdown(content);
+    parseResult
+      .then(result => {
+        setHtmlContent(result);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('Error processing markdown:', error);
+        setHtmlContent(content);
+        setIsLoading(false);
+      });
+  }, [content]);
+
+  if (isLoading) {
+    return <div className={className} {...rest}>加载中...</div>;
+  }
+  if (typeof content === 'string') {
+    return (
+      <div
+        dangerouslySetInnerHTML={{ __html: htmlContent }}
+        className={cn('max-w-none', className)}
+        {...rest}
+      />
+    );
+  }
+  return content;
+}
+
+```
+
+我们完全可以把marked初始化`marked-katex-extension`等插件的代码写在jsx文件里，但为了让代码更清晰，我们不妨抽出一个文件`src\lib\marked.js`，专门处理marked的初始化：
+
+```js
+import { marked } from 'marked';
+import markedKatex from 'marked-katex-extension';
+import { markedHighlight } from 'marked-highlight';
+import hljs from 'highlight.js';
+
+marked.use(
+  markedHighlight({
+    emptyLangClass: 'hljs',
+    langPrefix: 'hljs language-',
+    highlight(code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+      return hljs.highlight(code, { language }).value;
+    },
+  })
+);
+
+marked.use(markedKatex({
+  throwOnError: false,
+}));
+
+/**
+ * 注意：
+ * 1. markdown 文本尽量不要以多余的空格开头，否则 marked 会将其解析为代码块，导致结果不合预期
+ * 2. katex 格式的公式和前面的文本留一个空格，否则会报错
+ * @param {string} _content markdown content
+ * @returns {string} html or content
+ */
+export const processMarkdown = async (_content) => {
+  if (typeof _content !== 'string') {
+    return _content;
+  }
+  // _content 以 white spaces 开头时，marked 会将其解析为代码块，因此要 trim
+  const content = _content.trim();
+  // Handle both Promise and string return types from marked()
+  const result = marked(content);
+  const html = typeof result === 'string' ? result : await result;
+  return html;
+  // TODO: 接入 sanitize html 会导致 style 属性被吞，设置 allowedAttributes 未生效
+};
+
+```
+
+这里有一个悬而未决的问题：接入`sanitize-html`会导致 style 属性被吞，导致Katex出现样式错误。官方文档说设置`allowedAttributes`就行，但我设置以后没生效。我懒得研究这个了，先放着吧。
+
+## 数学教案生成方案探究：从抽象出搭积木的组件，到彻底Schema化
+
+我最初的想法是，先用DeepSeek直接生成第一个教案《椭圆的定义与性质》的HTML代码，接着将其改造为React代码，然后编写规范，让LLM根据规范生成其他数学教案的React组件和`config.jsx`。但我发现了不少痛点：
+
+1. LLM生成的教案和已有的教案代码采用完全不一样的代码规范、不一样的技术选型、不一样的CSS代码。要在一个单页应用中统一它们存在困难。
+2. 看似让LLM生成完整HTML代码的方案可以激发其创造力，但实测发现，LLM真的很懒，写东西语焉不详，也不怎么生成第一个教案完全没有的新东西、新模式。
+
+但我的幻想还没完全磨灭。我想着，抽象出一些组件，让LLM像搭积木一样搭出页面。于是有了[docs\新课件提示词\生成jsx.md](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/docs/%E6%96%B0%E8%AF%BE%E4%BB%B6%E6%8F%90%E7%A4%BA%E8%AF%8D/%E7%94%9F%E6%88%90jsx.md)这个提示词文件，以及下面这些组件：
+
+```jsx
+import Section from '@/component/teachingPlan/Section';
+import KnowledgePoint from '@/component/teachingPlan/KnowledgePoint';
+import Card from '@/component/teachingPlan/Card';
+import Header from '@/component/teachingPlan/Header';
+import LearningPartnerCard from '@/component/teachingPlan/LearningPartnerCard';
+import Think from '@/component/teachingPlan/Think';
+import Footer from '@/component/teachingPlan/Footer';
+```
+
+- @/src\component\teachingPlan\Section.jsx ：包裹每个模块
+- @/src/component/teachingPlan/KnowledgePoint.jsx ：包裹一个知识点
+- @/src\component\teachingPlan\Card.jsx ：可用于包裹各种内容
+- @/src\component\teachingPlan\Header.jsx ：标题栏
+- @/src\component\teachingPlan\LearningPartnerCard.jsx ：学习伙伴
+- @/src/component/teachingPlan/Think.jsx ：包裹一道思考题。该组件可出现在 KnowledgePoint 或 Card 中。如果在 Card 中，则它是 KnowledgePoint 的 sibling
+- @/src\component\teachingPlan\Footer.jsx ：页脚
+
+但我发现，只要保留自由度，仍然允许LLM生成整个页面React组件，上面的痛点1和2就无法解决。我仍然需要手动更改大量代码。既然LLM在教案生成方面就是没啥创造力，我就想，干脆彻底Schema化，页面一律用标准页面生成算了。这样，LLM也能专注于内容，就像在生成用于Marp产出PPT文件的Markdown文档一样。
+
+于是有了：
+
+1. [docs\新课件提示词\生成schema.md](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/docs/%E6%96%B0%E8%AF%BE%E4%BB%B6%E6%8F%90%E7%A4%BA%E8%AF%8D/%E7%94%9F%E6%88%90schema.md)
+2. 页面结构的类型描述：[src\component\teachingPlan\StandardPageStructure.d.ts](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/component/teachingPlan/StandardPageStructure.d.ts)
+3. 标准页面：[src\component\teachingPlan\StandardPage.jsx](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/component/teachingPlan/StandardPage.jsx)
+
+我决定先生成《平面向量的定义及其线性运算》课件的`src\planeVectorDefinition\config.jsx`，再看DeepSeek的反馈慢慢调整提示词。
+
 ## 支持路由
 
-支持路由挺常规的，主要需要注意改一下这句`k = e('geogebra/web3d/');`（详见《geogebra的自托管解决方案》一节）。
+我有不止一个课件，所以这个项目自然要支持路由。支持路由挺常规的，跟往常一样`bun add react-router-dom`即可。主要需要注意改一下这句`k = e('geogebra/web3d/');`（详见《geogebra的自托管解决方案》一节）。`src\App.jsx`：
+
+```jsx
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+
+const routes = [
+  { path: '/', element: <TeachingPlanList /> },
+  { path: '/plane-vector-definition', element: <PlaneVectorDefinition /> },
+  // ...
+  { path: '/404', element: <NotFound /> },
+  { path: '*', element: <NotFound /> },
+];
+
+function App() {
+  return (
+    <HelmetProvider>
+      <Router>
+        <Layout>
+          <Routes>
+            {
+              routes.map((route, index) => (
+                <Route
+                  key={route.path || `route-${index}`}
+                  path={route.path}
+                  element={route.element}
+                />
+              ))
+            }
+          </Routes>
+        </Layout>
+      </Router>
+    </HelmetProvider>
+  );
+}
+```
+
+
 
 ## AI生成教案网页场景下如何解决样式冲突
 

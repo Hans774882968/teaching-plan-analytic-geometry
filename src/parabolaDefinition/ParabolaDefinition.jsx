@@ -87,7 +87,9 @@ function Inner() {
 
       <Section>
         <h2 className={styles.teachingPlanH2}>🔬 实验互动</h2>
-        <p>拖动点A，观察焦点到抛物线上点的距离与到准线距离的关系：</p>
+        <Card>
+          <p>拖动点A，观察焦点到抛物线上点的距离与到准线距离的关系：</p>
+        </Card>
         <Geogebra
           {...config.geogebraConfig}
         />

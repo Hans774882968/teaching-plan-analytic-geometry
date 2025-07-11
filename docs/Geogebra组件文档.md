@@ -15,7 +15,8 @@
 }
 ```
 
-该组件支持向`window.GGBApplet()`透传参数。
+- `id`和`height`这两个参数必传，`width`可不传。一般来说，只需要向`Geogebra`组件传入`id, height, appletOnLoad`。
+- 该组件支持向`window.GGBApplet()`透传参数。
 
 使用：
 
