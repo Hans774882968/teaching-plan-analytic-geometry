@@ -17,14 +17,15 @@ import { addToFavorite } from './lib/utils';
 
 // 在首页用 Helmet 改标题无效，决定改 index.html 的标题
 const lessonPlans = [
-  { id: 1, url: '/ellipse-definition', title: '平面几何基础 (TODO)', category: '平面几何', difficulty: '初级', icon: <FaShapes /> },
-  { id: 2, url: '/plane-vector-definition', title: '平面向量的定义及其线性运算', category: '平面几何', difficulty: '中级', icon: <FaVectorSquare /> },
-  { id: 3, url: '/ellipse-definition', title: '立体几何入门 (TODO)', category: '空间几何', difficulty: '中级', icon: <FaCube /> },
-  { id: 4, url: '/ellipse-definition', title: '椭圆的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
-  { id: 5, url: '/hyperbola-definition', title: '双曲线的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
-  { id: 6, url: '/parabola-definition', title: '抛物线的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
-  { id: 7, url: '/ellipse-definition', title: '空间解析几何 (TODO)', category: '空间几何', difficulty: '中级', icon: <FaGlobeAsia /> },
-];
+  { url: '/ellipse-definition', title: '平面几何基础 (TODO)', category: '平面几何', difficulty: '初级', icon: <FaShapes /> },
+  { url: '/function-definition/representation', title: '函数及其表示方法', category: '代数', difficulty: '中级', icon: <FaCube /> },
+  { url: '/plane-vector-definition', title: '平面向量的定义及其线性运算', category: '平面几何', difficulty: '中级', icon: <FaVectorSquare /> },
+  { url: '/ellipse-definition', title: '立体几何入门 (TODO)', category: '空间几何', difficulty: '中级', icon: <FaCube /> },
+  { url: '/ellipse-definition', title: '椭圆的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
+  { url: '/hyperbola-definition', title: '双曲线的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
+  { url: '/parabola-definition', title: '抛物线的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
+  { url: '/ellipse-definition', title: '空间解析几何 (TODO)', category: '空间几何', difficulty: '中级', icon: <FaGlobeAsia /> },
+].map((lesson, index) => ({ ...lesson, id: index + 1 }));
 
 // 难度颜色映射
 const difficultyColors = {
@@ -38,8 +39,8 @@ const categoryColors = {
   '平面几何': 'bg-yellow-100 text-yellow-800',
   '空间几何': 'bg-pink-100 text-pink-800',
   '圆锥曲线': 'bg-teal-100 text-teal-800',
+  '代数': 'bg-indigo-100 text-indigo-800',
   // TODO
-  // '向量': 'bg-indigo-100 text-indigo-800',
   // '线性代数': 'bg-orange-100 text-orange-800',
   // '证明方法': 'bg-red-100 text-red-800',
   // '应用案例': 'bg-cyan-100 text-cyan-800',

@@ -15,6 +15,45 @@
   }
 }
 
-.teachingPlanSection ul {
-  padding-left: 16px;
+.teachingPlanSection {
+
+  ul,
+  ol {
+    padding-left: 20px;
+
+    li {
+      position: relative;
+    }
+  }
+
+  ul {
+    li::before {
+      content: "";
+      position: absolute;
+      left: -16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+  }
+
+  ol {
+    li {
+      counter-increment: hans7-section-counter;
+    }
+
+    li::before {
+      content: counter(hans7-section-counter) ".";
+      position: absolute;
+      left: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+      font-weight: bold;
+      border-radius: 50%;
+    }
+  }
 }

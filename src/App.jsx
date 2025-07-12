@@ -2,10 +2,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import 'katex/dist/katex.min.css';
 import TeachingPlanList from './TeachingPlanList';
-import EllipseDefinition from './ellipseDefinition/EllipseDefinition';
-import PlaneVectorDefinition from './planeVectorDefinition/PlaneVectorDefinition';
-import EllipseHardQuestions from './ellipseDefinition/EllipseHardQuestions';
 import NotFound from './NotFound';
+import FunctionRepresentation from './functionDefinition/FunctionRepresentation';
+import PlaneVectorDefinition from './planeVectorDefinition/PlaneVectorDefinition';
+import EllipseDefinition from './ellipseDefinition/EllipseDefinition';
+import EllipseHardQuestions from './ellipseDefinition/EllipseHardQuestions';
 import HyperbolaDefinition from './hyperbolaDefinition/HyperbolaDefinition';
 import HyperbolaHardQuestions from './hyperbolaDefinition/HyperbolaHardQuestions';
 import ParabolaDefinition from './parabolaDefinition/ParabolaDefinition';
@@ -14,6 +15,7 @@ import Layout from './component/layout/Layout';
 
 const routes = [
   { path: '/', element: <TeachingPlanList /> },
+  { path: '/function-definition/representation', element: <FunctionRepresentation /> },
   { path: '/plane-vector-definition', element: <PlaneVectorDefinition /> },
   { path: '/ellipse-definition', element: <EllipseDefinition /> },
   { path: '/hyperbola-definition', element: <HyperbolaDefinition /> },

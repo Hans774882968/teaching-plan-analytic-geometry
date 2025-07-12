@@ -42,7 +42,7 @@ const Geogebra = (props) => {
       const parameter = JSON.parse(JSON.stringify(refProps.current));
       parameter.appletOnLoad = onAppletReady;
       const ggbApp = new window.GGBApplet(parameter, true);
-      ggbApp.setHTML5Codebase('geogebra/web3d/');
+      ggbApp.setHTML5Codebase('/geogebra/web3d/');
       ggbApp.inject(id);
       setWatchPropsChange(false);
       debug &&

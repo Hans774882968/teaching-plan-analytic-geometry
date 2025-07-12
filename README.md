@@ -6,16 +6,22 @@
 
 我偶然刷到了[这个视频](https://www.bilibili.com/video/BV1UeK8zAErv)，它给我一种强烈的感觉，就是下一代的每一个学生，只要会说HTML、Tailwind CSS、JavaScript这少数几个词，就能轻松生成属于自己的互动性极强的数学课件。我感受到了极其强烈的焦虑，下一代的学生，肯定能比我们这一代人更快地更新迭代自己的知识体系。我们一天才能学会的东西，他们可能一小时就能学会。以后他们的工作能力肯定能轻松碾压我们。所以至少在LLM尚未十分成熟的2025，我想走在下一代人的前面，哪怕只是用行动骗骗自己，有能力比下一代人更快驾驭LLM……
 
-咳咳，先不抒情了。我写这个开源项目的初衷有：
+咳咳，先不抒情了。我写这个开源项目的初衷主要有：
 
 1. 研究如何让大语言模型快速生成数学教案。
-2. 研究如何在页面嵌入Geogebra，增强数学教案的互动性。
+2. 研究如何在前端页面嵌入**GeoGebra**，增强数学教案的互动性。
 
 [本项目GitHub传送门](https://github.com/Hans774882968/teaching-plan-analytic-geometry)
 
-注意：为了减少该项目的占用空间，本项目并未包含geogebra源码。如果想要在本地跑起来这个项目，请自行下载[GeoGebra Math Apps Bundle](https://download.geogebra.org/package/geogebra-math-apps-bundle)，并复制里面的web3d文件夹和css文件夹到本项目的`public\geogebra`。
+注意：为了减少该项目的占用空间，本项目并未包含GeoGebra源码。如果想要在本地跑起来这个项目，请自行下载[GeoGebra Math Apps Bundle](https://download.geogebra.org/package/geogebra-math-apps-bundle)，并复制里面的web3d文件夹和css文件夹到本项目的`public\geogebra`。
 
 ## 如何给React项目接入GeoGebra
+
+翻了下高中数学必修一（进入 https://jc.pep.com.cn/ ，选择高中数学必修第一册B版），现在已经升级为使用GeoGebra了。我还清楚地记得，15年的数学课本还是用几何画板举例的。
+
+![](./README_assets/1-高中数学必修一已经更新为使用GeoGebra.png)
+
+为什么这个项目要接入GeoGebra不用多说了吧~伟大，无需多言！
 
 参考[GeoGebra官方文档](https://geogebra.github.io/docs/reference/en/GeoGebra_Apps_Embedding/)，我们主要需要：
 
@@ -24,7 +30,7 @@
 
 ### 封装 Geogebra.jsx
 
-为了方便在React中使用geogebra，我们不妨封装一个`Geogebra.jsx`。我找到了一个叫`react-geogebra`的npm包，但看了眼那个源码。天哪！代码质量不太得，eslint报错有十几个！索性复制下来，自己改改。
+为了方便在React中使用GeoGebra，我们不妨封装一个`Geogebra.jsx`。我找到了一个叫`react-geogebra`的npm包，但看了眼那个源码。天哪！代码质量不太得，eslint报错有十几个！索性复制下来，自己改改。
 
 [src\component\Geogebra.jsx](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/component/Geogebra.jsx), copy from https://github.com/pfaffmann/react-geogebra/blob/master/src/index.js
 
@@ -73,7 +79,7 @@ const Geogebra = (props) => {
       const parameter = JSON.parse(JSON.stringify(refProps.current));
       parameter.appletOnLoad = onAppletReady;
       const ggbApp = new window.GGBApplet(parameter, true);
-      ggbApp.setHTML5Codebase('geogebra/web3d/');
+      ggbApp.setHTML5Codebase('/geogebra/web3d/');
       ggbApp.inject(id);
       setWatchPropsChange(false);
       debug &&
@@ -102,7 +108,7 @@ export default Geogebra;
 
 ```js
 const ggbApp = new window.GGBApplet(parameter, true);
-ggbApp.setHTML5Codebase('geogebra/web3d/');
+ggbApp.setHTML5Codebase('/geogebra/web3d/');
 ggbApp.inject(id);
 ```
 
@@ -130,15 +136,30 @@ ggbApp.inject(id);
 
 ### GeoGebra 的自托管解决方案
 
-如果把`ggbApp.setHTML5Codebase('geogebra/web3d/')`去掉，那么geogebra已经能正常工作，但静态资源必须通过网络下载，而且资源总共有几十MB，所以加载时间有点长。于是我们不得不考虑自托管解决方案。
+如果把`ggbApp.setHTML5Codebase('/geogebra/web3d/')`去掉，那么geogebra已经能正常工作，但静态资源必须通过网络下载，而且资源总共有几十MB，所以加载时间有点长。于是我们不得不考虑自托管解决方案。
 
-首先，按官方文档指示下载[GeoGebra Math Apps Bundle](https://download.geogebra.org/package/geogebra-math-apps-bundle)，接着设置`ggbApp.setHTML5Codebase('geogebra/web3d/')`，然后把下载的包的web3d文件夹复制到本项目的`public\geogebra\web3d`。
+首先，按[官方文档](https://geogebra.github.io/docs/reference/en/GeoGebra_Apps_Embedding/)指示下载[GeoGebra Math Apps Bundle](https://download.geogebra.org/package/geogebra-math-apps-bundle)，接着设置`ggbApp.setHTML5Codebase('/geogebra/web3d/')`，然后把下载的包的web3d文件夹复制到本项目的`public\geogebra\web3d`。
 
 到此为止都自我感觉良好。运行！不出所料，报错了！这是因为它请求了 http://localhost:5215/261BBF4225A3B6C8FD1B8B949B793666.cache.js 而非预期的 http://localhost:5215/geogebra/web3d/261BBF4225A3B6C8FD1B8B949B793666.cache.js 。直接挪动这个`cache.js`似乎可以解决，但不太优雅。
 
 于是我排查源码，发现这个cache文件的路径是由`web3d.__moduleBase`（位于`geogebra\web3d\web3d.nocache.js`）决定的。搜索这个变量名，发现`web3d.__moduleBase = B()`这句赋值决定了其值，外部没法直接修改它。所以我们继续看B函数，发现最终是这句代码决定其路径：
 
 ```js
+// geogebra\web3d\web3d.nocache.js
+// 我把原有代码的 O, P, W 等还原为常量
+function e(a) {
+  var b = a.lastIndexOf('#');
+  if (b == -1) {
+    b = a.length;
+  }
+  var c = a.indexOf('?');
+  if (c == -1) {
+    c = a.length;
+  }
+  var d = a.lastIndexOf('/', Math.min(c, b));
+  return d >= 0 ? a.substring(0, d + 1) : '';
+}
+
 if(k == W && j()) {k = e(o.location.href);}
 k = f(k);
 return k;
@@ -146,7 +167,7 @@ return k;
 
 我们把它改成`k = e(o.location.href + 'geogebra/web3d/');`，问题解决！
 
-250629更新：接入react-router后，需要改为`k = e('geogebra/web3d/');`。
+250629更新：接入react-router后，需要改为`k = e('/geogebra/web3d/');`。
 
 之后发现，控制台没有报错了，但样式不对劲。这是因为它请求了`geogebra/css/...`。所以我们不能只复制web3d文件夹，还要把同级的css文件夹复制过去。至此搞定！
 
@@ -158,7 +179,7 @@ return k;
 
 1. 按官方文档说的做。
 2. 复制web3d和css两个文件夹到`public\geogebra`。
-3. `geogebra\web3d\web3d.nocache.js`的`k = e(o.location.href)`改成`k = e(o.location.href + 'geogebra/web3d/');`。
+3. `geogebra\web3d\web3d.nocache.js`的`k = e(o.location.href)`改成`k = e('/geogebra/web3d/');`。
 
 ## 用GeoGebra进行数学教学
 
@@ -189,7 +210,7 @@ const drawEllipse = (applet) => {
 />
 ```
 
-### 如何快速学习Geogebra的语法？以“双曲线的反函数”为例
+### 如何快速学习GeoGebra的语法？以“双曲线的反函数”为例
 
 除了看官方文档以外，还有一些更简单的方式：
 
@@ -223,7 +244,7 @@ const drawEllipse = (applet) => {
 
 ## React项目如何支持Katex公式
 
-### 在ReactNode中：@matejmazur/react-katex
+### 在 ReactNode 中：@matejmazur/react-katex
 
 相关文件：
 
@@ -418,9 +439,26 @@ import Footer from '@/component/teachingPlan/Footer';
 
 我决定先生成《平面向量的定义及其线性运算》课件的`src\planeVectorDefinition\config.jsx`，再看DeepSeek的反馈慢慢调整提示词。
 
+### 提示词缺陷修复技巧举例
+
+写一个**多次使用的模板提示词**（在本节中特指[`docs\新课件提示词\生成schema.md`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/docs/%E6%96%B0%E8%AF%BE%E4%BB%B6%E6%8F%90%E7%A4%BA%E8%AF%8D/%E7%94%9F%E6%88%90schema.md)）就像写代码一样，不太可能一次性就考虑到所有的细节。所以我们需要根据LLM的反馈优化自己的模板提示词。比如：
+
+一、我在生成《函数及其表示方法》课件时，看到DeepSeek在深度思考中输出：“我们在配置文件中只需要按照规范写类名，比如`<h4 className={styles.teachingPlanH4}>`，但是这里我们无法获取styles，所以实际上主组件会处理样式类。但是，为了类型正确，我们按照规范写类名字符串？不，这样不行。因为styles是一个模块，我们必须在配置文件中使用与主组件相同的样式模块。但配置文件是独立的，所以主组件在渲染时会传入styles。（省略更多废话）”就立刻意识到我忘记import styles了，而DeepSeek能力太差，推不出实际情况，需要补充：
+
+```jsx
+import styles from '@/component/teachingPlan/basic.module.scss'; // 补上
+<h4 className={styles.teachingPlanH4}></h4>
+<h5 className={styles.teachingPlanH5}></h5>
+<h6 className={styles.teachingPlanH6}></h6>
+```
+
+二、DeepSeek在深度思考中输出：“具体的绘制命令在appletOnLoad中，但这里我们只写命令字符串，因为配置对象中的函数无法序列化，所以实际上在GeogebraItem中，config是一个普通的对象，而绘制命令我们将在描述中说明，或者在conclusion中分析。”
+
+TODO
+
 ## 支持路由
 
-我有不止一个课件，所以这个项目自然要支持路由。支持路由挺常规的，跟往常一样`bun add react-router-dom`即可。主要需要注意改一下这句`k = e('geogebra/web3d/');`（详见《geogebra的自托管解决方案》一节）。`src\App.jsx`：
+我有不止一个课件，所以这个项目自然要支持路由。支持路由挺常规的，跟往常一样`bun add react-router-dom`即可。主要需要注意改一下这句`k = e('/geogebra/web3d/');`（详见《geogebra的自托管解决方案》一节）。`src\App.jsx`：
 
 ```jsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';

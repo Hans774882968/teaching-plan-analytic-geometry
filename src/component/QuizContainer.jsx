@@ -6,6 +6,16 @@ import Think from '@/component/teachingPlan/Think';
 import { cn } from '@/lib/utils';
 import MarkdownRenderer from './MarkdownRenderer';
 
+function isCorrect(selectedIndex, quiz) {
+  if (typeof quiz.correct === 'number') {
+    return selectedIndex === quiz.correct;
+  }
+  if (Array.isArray(quiz.correct)) {
+    return quiz.correct.includes(selectedIndex);
+  }
+  return false;
+}
+
 export default function QuizContainer({ index, quiz, showFeedbacks }) {
   const [selectedOptions, setSelectedOptions] = useState({});
 
@@ -48,13 +58,13 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
           <motion.div
             className={cn(
               styles.feedback,
-              selectedOptions[index] === quiz.correct ? styles.correct : styles.incorrect
+              isCorrect(selectedOptions[index], quiz) ? styles.correct : styles.incorrect
             )}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
           >
-            <div>{selectedOptions[index] === quiz.correct ? '✔️' : '❌'}</div>
+            <div>{isCorrect(selectedOptions[index], quiz) ? '✔️' : '❌'}</div>
             <div className={styles.explanationArea}>
               <MarkdownRenderer content={quiz.explanation} />
             </div>

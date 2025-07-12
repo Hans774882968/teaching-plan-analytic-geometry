@@ -13,46 +13,51 @@
 
 ### 背景和目标
 
-我打算生成一个新课件，详细讲解平面向量的定义及其线性运算。知识点包括：
+我打算生成一个新课件，详细讲解函数及其表示方法。知识点包括：
 
-平面向量的定义：
+函数的概念：
 
-- 位移与向量
-- 向量的相等与平行
+- 指出初中已经学习过一些函数
+- 初中研究函数的方法有什么局限性
+- 函数的概念、定义域、值域、同一个函数
+- 函数定义的演变过程简介
 
-平面向量的线性运算：
+函数的表示方法：
 
-- 向量加法的三角形法则
-- 向量加法的平行四边形法则
-- 多个向量相加
-- 向量的减法
-- 数乘向量
-- 向量的加法与数乘向量的混合运算
-- 向量的线性运算
+- 图像法
+- 描点作图法
+- 分段函数
+- 无法用图像法表示的函数举例
+- 高斯取整函数
+- 探究`f(x)`和`f(x-1)`的关系
+- 探究`f(x)`和`f(2x)`的关系
 
 文件结构如下：
 
-src/planeVectorDefinition/
-├── PlaneVectorDefinition.jsx       # 主组件
-└── config.jsx                      # 内容配置文件，被主组件调用
+src/functionDefinition/
+├── FunctionRepresentation.jsx  # 主组件
+└── RepresentationConfig.jsx    # 内容配置文件，被主组件调用
 
 我们有一个标准页面 @/src\component\teachingPlan\StandardPage.jsx ，需要给它提供一个描述页面结构的配置对象，其类型定义文件在 @/src\component\teachingPlan\StandardPageStructure.d.ts 。你生成的内容配置文件的类型应与该类型定义文件相符。标准页面的“实验互动模块”用到一个 @/src\component\Geogebra.jsx 组件，其组件文档为 @/docs\Geogebra组件文档.md
 
-学习伙伴为名侦探柯南。在 Welcome 模块首次出现，在 Summary 模块再次出现。
-
 主组件已经实现完毕，你不需要生成。
+
+### 目标客户和学习伙伴
+
+15岁的高一学生Hans，其喜爱的卡通形象就是课件的学习伙伴——名侦探柯南。学习伙伴在 Welcome 模块首次出现，在 Summary 模块再次出现。
 
 ### 实现要求
 
 1. 页面所有的title属性的文案，以及`h4, h5, h6`标签的文案的前面都要选择一个emoji。页面标题 config.title 前后各有一个emoji。
 2. 在知识点和思考题中，必须标记重点和难点！
-3. 整个配置文件出现的所有字符串，尤其是**含有公式的字符串**，都必须使用`String.raw`和反引号，以简化转义字符的书写。
+3. 整个配置文件出现的所有字符串，尤其是**含有公式的字符串**，都**必须使用`String.raw`和反引号**，以简化转义字符的书写。
 
 ### 标题标签 h4, h5, h6 的使用规范
 
 在允许 ReactNode 的属性中，如果要用到标题标签，只能使用 h4, h5, h6，并且需要必须包含对应类名。举例：
 
 ```jsx
+import styles from '@/component/teachingPlan/basic.module.scss';
 <h4 className={styles.teachingPlanH4}></h4>
 <h5 className={styles.teachingPlanH5}></h5>
 <h6 className={styles.teachingPlanH6}></h6>
