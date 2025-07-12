@@ -13,30 +13,18 @@
 
 ### 背景和目标
 
-我打算生成一个新课件，详细讲解函数及其表示方法。知识点包括：
+我打算生成一个新课件，详细讲解函数的单调性。知识点包括：
 
-函数的概念：
-
-- 指出初中已经学习过一些函数
-- 初中研究函数的方法有什么局限性
-- 函数的概念、定义域、值域、同一个函数
-- 函数定义的演变过程简介
-
-函数的表示方法：
-
-- 图像法
-- 描点作图法
-- 分段函数
-- 无法用图像法表示的函数举例
-- 高斯取整函数
-- 探究`f(x)`和`f(x-1)`的关系
-- 探究`f(x)`和`f(2x)`的关系
+- 单调性的定义与证明
+- 最大值、最大值点、最小值、最小值点、最值的定义
+- 函数的平均变化率
+- 物理中的变化率
 
 文件结构如下：
 
 src/functionDefinition/
-├── FunctionRepresentation.jsx  # 主组件
-└── RepresentationConfig.jsx    # 内容配置文件，被主组件调用
+├── FunctionMonotonicity.jsx  # 主组件
+└── monotonicityConfig.jsx    # 内容配置文件，被主组件调用
 
 我们有一个标准页面 @/src\component\teachingPlan\StandardPage.jsx ，需要给它提供一个描述页面结构的配置对象，其类型定义文件在 @/src\component\teachingPlan\StandardPageStructure.d.ts 。你生成的内容配置文件的类型应与该类型定义文件相符。标准页面的“实验互动模块”用到一个 @/src\component\Geogebra.jsx 组件，其组件文档为 @/docs\Geogebra组件文档.md
 
@@ -63,6 +51,11 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 <h6 className={styles.teachingPlanH6}></h6>
 ```
 
+### Markdown String 书写规范
+
+1. 可以使用4、5、6级标题。
+2. Markdown String 中的公式生成规范见下文《字符串》一节。
+
 ### 如何标记重点和难点
 
 ```jsx
@@ -82,12 +75,22 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 
 #### ReactNode
 
-这种情况下，所有公式都需要写成被TeX标签包裹的katex公式的形式，且必须使用`String.raw`。以`x^2/a^2 + y^2/b^2 = 1`为例：
+这种情况下，所有公式都需要写成被 TeX 标签包裹的 katex 公式的形式，且必须使用`String.raw`。以`knowledgePointSection`中的公式`x^2/a^2 + y^2/b^2 = 1`为例：
 
 ```jsx
 import TeX from '@matejmazur/react-katex';
 
-<TeX>{String.raw`\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1`}</TeX>
+knowledgePointSection: {
+    title: String.raw`📚 核心知识点`,
+    points: [
+      {
+        title: String.raw`⚡ 椭圆的标准方程`,
+        content: (
+          <p>椭圆的标准方程为：<TeX>{String.raw`\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1`}</TeX></p>
+        )
+      }
+    ]
+}
 ```
 
 #### 字符串

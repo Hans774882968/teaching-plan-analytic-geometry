@@ -1,7 +1,7 @@
-import config from './representationConfig';
+import config from './monotonicityConfig';
 import StandardPage from '@/component/teachingPlan/StandardPage.jsx';
 
-export default function FunctionRepresentation() {
+export default function FunctionMonotonicity() {
   return (
     <StandardPage config={config} />
   );

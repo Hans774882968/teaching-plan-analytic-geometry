@@ -4,6 +4,7 @@ import 'katex/dist/katex.min.css';
 import TeachingPlanList from './TeachingPlanList';
 import NotFound from './NotFound';
 import FunctionRepresentation from './functionDefinition/FunctionRepresentation';
+import FunctionMonotonicity from './functionDefinition/FunctionMonotonicity';
 import PlaneVectorDefinition from './planeVectorDefinition/PlaneVectorDefinition';
 import EllipseDefinition from './ellipseDefinition/EllipseDefinition';
 import EllipseHardQuestions from './ellipseDefinition/EllipseHardQuestions';
@@ -16,6 +17,7 @@ import Layout from './component/layout/Layout';
 const routes = [
   { path: '/', element: <TeachingPlanList /> },
   { path: '/function-definition/representation', element: <FunctionRepresentation /> },
+  { path: '/function-definition/monotonicity', element: <FunctionMonotonicity /> },
   { path: '/plane-vector-definition', element: <PlaneVectorDefinition /> },
   { path: '/ellipse-definition', element: <EllipseDefinition /> },
   { path: '/hyperbola-definition', element: <HyperbolaDefinition /> },

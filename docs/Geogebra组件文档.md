@@ -76,9 +76,10 @@ const drawEllipse = (applet) => {
       // 创建控制显示/隐藏的复选框
       applet.evalCommand('showPiecewise: true');
 
-      // Slider(<Min>, <Max>, <Increment>, <Speed>, <Width>, <Is Angle>, <Horizontal>, <Animating>, <Boolean Random>)
-      applet.evalCommand('s1 = Slider(-4, 4, 0.5)');
-      applet.evalCommand('s2 = Slider(0.5, 3, 0.5)');
+      applet.evalCommand('s1 = Slider(-4, 4, 0.1)');
+      applet.setValue('s1', 1);
+      applet.evalCommand('s2 = Slider(0.5, 3, 0.1)');
+      applet.setValue('s2', 0.6);
 
       applet.evalCommand('SetConditionToShowObject(showPiecewise, false)');
       applet.evalCommand('SetConditionToShowObject(s1, false)');

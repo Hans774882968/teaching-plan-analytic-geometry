@@ -2,6 +2,7 @@ import { marked } from 'marked';
 import markedKatex from 'marked-katex-extension';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
+import styles from '@/component/teachingPlan/basic.module.scss';
 // import sanitizeHtml from 'sanitize-html';
 
 marked.use(
@@ -18,6 +19,13 @@ marked.use(
 marked.use(markedKatex({
   throwOnError: false,
 }));
+
+const addIdToHeadingRenderer = {
+  heading({ text, depth }) {
+    return `<h${depth} class="${styles[`teachingPlanH${depth}`]}">${text}</h${depth}>\n`;
+  },
+};
+marked.use({ renderer: addIdToHeadingRenderer });
 
 /**
  * 注意：

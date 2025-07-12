@@ -441,7 +441,7 @@ import Footer from '@/component/teachingPlan/Footer';
 
 ### 提示词缺陷修复技巧举例
 
-写一个**多次使用的模板提示词**（在本节中特指[`docs\新课件提示词\生成schema.md`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/docs/%E6%96%B0%E8%AF%BE%E4%BB%B6%E6%8F%90%E7%A4%BA%E8%AF%8D/%E7%94%9F%E6%88%90schema.md)）就像写代码一样，不太可能一次性就考虑到所有的细节。所以我们需要根据LLM的反馈优化自己的模板提示词。比如：
+写一个**多次使用的模板提示词**（在本节中特指[`docs\新课件提示词\生成schema.md`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/docs/%E6%96%B0%E8%AF%BE%E4%BB%B6%E6%8F%90%E7%A4%BA%E8%AF%8D/%E7%94%9F%E6%88%90schema.md)）就像写代码一样，不太可能一次性就考虑到所有的细节。所以我们需要根据LLM的反馈，尤其是在“深度思考”过程中的反馈，优化自己的模板提示词。比如：
 
 一、我在生成《函数及其表示方法》课件时，看到DeepSeek在深度思考中输出：“我们在配置文件中只需要按照规范写类名，比如`<h4 className={styles.teachingPlanH4}>`，但是这里我们无法获取styles，所以实际上主组件会处理样式类。但是，为了类型正确，我们按照规范写类名字符串？不，这样不行。因为styles是一个模块，我们必须在配置文件中使用与主组件相同的样式模块。但配置文件是独立的，所以主组件在渲染时会传入styles。（省略更多废话）”就立刻意识到我忘记import styles了，而DeepSeek能力太差，推不出实际情况，需要补充：
 
@@ -452,9 +452,9 @@ import styles from '@/component/teachingPlan/basic.module.scss'; // 补上
 <h6 className={styles.teachingPlanH6}></h6>
 ```
 
-二、DeepSeek在深度思考中输出：“具体的绘制命令在appletOnLoad中，但这里我们只写命令字符串，因为配置对象中的函数无法序列化，所以实际上在GeogebraItem中，config是一个普通的对象，而绘制命令我们将在描述中说明，或者在conclusion中分析。”
+二、发现DeepSeek没有输出`appletOnLoad`函数。一开始有点恼火，但后来注意到，DeepSeek在深度思考中输出：“具体的绘制命令在appletOnLoad中，但这里我们只写命令字符串，因为配置对象中的函数无法序列化，所以实际上在GeogebraItem中，config是一个普通的对象，而绘制命令我们将在描述中说明，或者在conclusion中分析。”
 
-TODO
+后来我们在`docs\Geogebra组件文档.md`中补充了“如何在JS Config中使用”一节，它也就知道如何实现`appletOnLoad`方法了。
 
 ## 支持路由
 
