@@ -13,18 +13,25 @@
 
 ### 背景和目标
 
-我打算生成一个新课件，详细讲解函数的单调性。知识点包括：
+我打算生成一个新课件，详细讲解函数的奇偶性。知识点包括：
 
-- 单调性的定义与证明
-- 最大值、最大值点、最小值、最小值点、最值的定义
-- 函数的平均变化率
-- 物理中的变化率
+函数的奇偶性：
+
+- 偶函数的定义
+- 奇函数的定义
+- 偶函数和奇函数的性质
+
+函数的奇偶性的应用：
+
+- 函数的奇偶性和单调性的关系
+- 如何证明函数关于 x = h 对称？
+- 如何证明函数关于点 (a, b) 对称？
 
 文件结构如下：
 
 src/functionDefinition/
-├── FunctionMonotonicity.jsx  # 主组件
-└── monotonicityConfig.jsx    # 内容配置文件，被主组件调用
+├── FunctionEvenOdd.jsx  # 主组件
+└── evenOddConfig.jsx    # 内容配置文件，被主组件调用
 
 我们有一个标准页面 @/src\component\teachingPlan\StandardPage.jsx ，需要给它提供一个描述页面结构的配置对象，其类型定义文件在 @/src\component\teachingPlan\StandardPageStructure.d.ts 。你生成的内容配置文件的类型应与该类型定义文件相符。标准页面的“实验互动模块”用到一个 @/src\component\Geogebra.jsx 组件，其组件文档为 @/docs\Geogebra组件文档.md
 

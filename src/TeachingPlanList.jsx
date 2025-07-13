@@ -8,6 +8,7 @@ import {
   FaGlobeAsia,
   FaArrowRight,
   FaBookmark,
+  FaChartLine,
 } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 import { motion } from 'motion/react';
@@ -18,8 +19,9 @@ import { addToFavorite } from './lib/utils';
 // 在首页用 Helmet 改标题无效，决定改 index.html 的标题
 const lessonPlans = [
   { url: '/ellipse-definition', title: '平面几何基础 (TODO)', category: '平面几何', difficulty: '初级', icon: <FaShapes /> },
-  { url: '/function-definition/representation', title: '函数及其表示方法', category: '代数', difficulty: '中级', icon: <FaCube /> },
-  { url: '/function-definition/monotonicity', title: '函数的单调性', category: '代数', difficulty: '中级', icon: <FaCube /> },
+  { url: '/function-definition/representation', title: '函数及其表示方法', category: '代数', difficulty: '中级', icon: <FaChartLine /> },
+  { url: '/function-definition/monotonicity', title: '函数的单调性', category: '代数', difficulty: '中级', icon: <FaChartLine /> },
+  { url: '/function-definition/even-odd', title: '函数的奇偶性', category: '代数', difficulty: '中级', icon: <FaChartLine /> },
   { url: '/plane-vector-definition', title: '平面向量的定义及其线性运算', category: '平面几何', difficulty: '中级', icon: <FaVectorSquare /> },
   { url: '/ellipse-definition', title: '立体几何入门 (TODO)', category: '空间几何', difficulty: '中级', icon: <FaCube /> },
   { url: '/ellipse-definition', title: '椭圆的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },

@@ -5,6 +5,7 @@ import TeachingPlanList from './TeachingPlanList';
 import NotFound from './NotFound';
 import FunctionRepresentation from './functionDefinition/FunctionRepresentation';
 import FunctionMonotonicity from './functionDefinition/FunctionMonotonicity';
+import FunctionEvenOdd from './functionDefinition/FunctionEvenOdd';
 import PlaneVectorDefinition from './planeVectorDefinition/PlaneVectorDefinition';
 import EllipseDefinition from './ellipseDefinition/EllipseDefinition';
 import EllipseHardQuestions from './ellipseDefinition/EllipseHardQuestions';
@@ -18,6 +19,7 @@ const routes = [
   { path: '/', element: <TeachingPlanList /> },
   { path: '/function-definition/representation', element: <FunctionRepresentation /> },
   { path: '/function-definition/monotonicity', element: <FunctionMonotonicity /> },
+  { path: '/function-definition/even-odd', element: <FunctionEvenOdd /> },
   { path: '/plane-vector-definition', element: <PlaneVectorDefinition /> },
   { path: '/ellipse-definition', element: <EllipseDefinition /> },
   { path: '/hyperbola-definition', element: <HyperbolaDefinition /> },

@@ -27,7 +27,7 @@
   }
 
   ul {
-    li::before {
+    &>li::before {
       content: "";
       position: absolute;
       left: -16px;
@@ -41,16 +41,15 @@
   }
 
   ol {
-    li {
+    &>li {
       counter-increment: hans7-section-counter;
     }
 
-    li::before {
+    &>li::before {
       content: counter(hans7-section-counter) ".";
       position: absolute;
       left: -18px;
-      top: 50%;
-      transform: translateY(-50%);
+      top: 0;
       color: var(--primary);
       font-weight: bold;
       border-radius: 50%;
