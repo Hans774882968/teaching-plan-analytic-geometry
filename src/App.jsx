@@ -8,6 +8,7 @@ import FunctionRepresentation from './functionDefinition/FunctionRepresentation'
 import FunctionMonotonicity from './functionDefinition/FunctionMonotonicity';
 import FunctionEvenOdd from './functionDefinition/FunctionEvenOdd';
 import PlaneVectorDefinition from './planeVectorDefinition/PlaneVectorDefinition';
+import ObliqueDrawing from './solidGeometryIntro/ObliqueDrawing';
 import EllipseDefinition from './ellipseDefinition/EllipseDefinition';
 import EllipseHardQuestions from './ellipseDefinition/EllipseHardQuestions';
 import HyperbolaDefinition from './hyperbolaDefinition/HyperbolaDefinition';
@@ -23,6 +24,7 @@ const routes = [
   { path: '/function-definition/monotonicity', element: <FunctionMonotonicity /> },
   { path: '/function-definition/even-odd', element: <FunctionEvenOdd /> },
   { path: '/plane-vector-definition', element: <PlaneVectorDefinition /> },
+  { path: '/solid-geometry-intro/oblique-drawing', element: <ObliqueDrawing /> },
   { path: '/ellipse-definition', element: <EllipseDefinition /> },
   { path: '/hyperbola-definition', element: <HyperbolaDefinition /> },
   { path: '/parabola-definition', element: <ParabolaDefinition /> },

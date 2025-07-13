@@ -41,8 +41,8 @@ export default {
             </ul>
             <p>
               <strong className={styles.hard}>旋转公式</strong>：点 <TeX>{String.raw`(x,\ y)`}</TeX> 绕原点逆时针旋转 <TeX>{String.raw`\theta`}</TeX> 角度后，坐标变为：
-              <TeX block>{String.raw`\begin{pmatrix} x' \\ y' \end{pmatrix} = \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix}`}</TeX>
             </p>
+            <TeX block>{String.raw`\begin{pmatrix} x' \\ y' \end{pmatrix} = \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix}`}</TeX>
           </div>
         ),
         thinks: [
@@ -118,7 +118,7 @@ export default {
     title: String.raw`🧪 旋转实验`,
     geogebraList: [
       {
-        description: String.raw`🔄 基础旋转实验：通过拖动滑块，观察三角形绕点O旋转的变化：`,
+        description: String.raw`🔄 基础旋转实验：通过拖动 $ \theta $ ，观察三角形绕点O旋转的变化：`,
         config: {
           id: 'rotation-basic',
           height: 600,

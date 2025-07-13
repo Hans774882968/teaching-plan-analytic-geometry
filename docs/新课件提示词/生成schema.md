@@ -13,17 +13,20 @@
 
 ### 背景和目标
 
-我打算生成一个新课件，详细讲解图形的旋转。知识点包括：
+我打算生成一个新课件，详细讲解空间几何体与斜二测画法。知识点包括：
 
-- 旋转、旋转中心、旋转角、对应点的概念
-- 旋转的性质
-- 可以借助旋转设计出许多美丽的图案
+- 我们以前接触过的几何体
+- 平面图形和立体图形是互相联系的
+- 空间图形的直观图
+- 立体几何中的直观图不都能用斜二测画法作出
+
+请用 GeoGebra 3D 展示等腰梯形ABCD的斜二测画法和长方体的直观图
 
 文件结构如下：
 
-src/rotation/
-├── RotationDefinition.jsx # 主组件
-└── definitionConfig.jsx   # 内容配置文件，被主组件调用
+src/solidGeometryIntro/
+├── ObliqueDrawing.jsx       # 主组件
+└── obliqueDrawingConfig.jsx # 内容配置文件，被主组件调用
 
 我们有一个标准页面 @/src\component\teachingPlan\StandardPage.jsx ，需要给它提供一个描述页面结构的配置对象，其类型定义文件在 @/src\component\teachingPlan\StandardPageStructure.d.ts 。你生成的内容配置文件的类型应与该类型定义文件相符。标准页面的“实验互动模块”用到一个 @/src\component\Geogebra.jsx 组件，其组件文档为 @/docs\Geogebra组件文档.md
 
@@ -31,7 +34,7 @@ src/rotation/
 
 ### 目标客户和学习伙伴
 
-14岁的初三学生Hans，其喜爱的卡通形象就是课件的学习伙伴——名侦探柯南。学习伙伴在 Welcome 模块首次出现，在 Summary 模块再次出现。
+15岁的高一学生Hans，其喜爱的卡通形象就是课件的学习伙伴——名侦探柯南。学习伙伴在 Welcome 模块首次出现，在 Summary 模块再次出现。
 
 ### 实现要求
 

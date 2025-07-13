@@ -108,3 +108,24 @@ const drawEllipse = (applet) => {
 }
 ```
 
+#### 如何绘制3D图形
+
+正方体的旋转：
+
+```js
+{
+  config: {
+    id: 'cube-rotation',
+    appName: '3d',
+    height: 600,
+    appletOnLoad: (applet) => {
+      // Cube(<Point>, <Point>, <Point>)
+      applet.evalCommand('cube: Cube((1,1,0), (1,0,0), (1,0,1))');
+      applet.evalCommand('α: Slider(0°, 360°)');
+      applet.setValue('α', Math.PI); // 180°
+      applet.evalCommand('Rotate(cube, α, zAxis)');
+    },
+  }
+}
+```
+
