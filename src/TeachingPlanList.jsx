@@ -18,16 +18,16 @@ import { addToFavorite } from './lib/utils';
 
 // 在首页用 Helmet 改标题无效，决定改 index.html 的标题
 const lessonPlans = [
-  { url: '/ellipse-definition', title: '平面几何基础 (TODO)', category: '平面几何', difficulty: '初级', icon: <FaShapes /> },
-  { url: '/function-definition/representation', title: '函数及其表示方法', category: '代数', difficulty: '中级', icon: <FaChartLine /> },
-  { url: '/function-definition/monotonicity', title: '函数的单调性', category: '代数', difficulty: '中级', icon: <FaChartLine /> },
-  { url: '/function-definition/even-odd', title: '函数的奇偶性', category: '代数', difficulty: '中级', icon: <FaChartLine /> },
-  { url: '/plane-vector-definition', title: '平面向量的定义及其线性运算', category: '平面几何', difficulty: '中级', icon: <FaVectorSquare /> },
-  { url: '/ellipse-definition', title: '立体几何入门 (TODO)', category: '空间几何', difficulty: '中级', icon: <FaCube /> },
-  { url: '/ellipse-definition', title: '椭圆的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
-  { url: '/hyperbola-definition', title: '双曲线的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
-  { url: '/parabola-definition', title: '抛物线的定义与性质', category: '圆锥曲线', difficulty: '中级', icon: <FaCircle /> },
-  { url: '/ellipse-definition', title: '空间解析几何 (TODO)', category: '空间几何', difficulty: '中级', icon: <FaGlobeAsia /> },
+  { url: '/rotation/definition', title: '图形的旋转', category: '平面几何', difficulty: '初级' },
+  { url: '/function-definition/representation', title: '函数及其表示方法', category: '代数', difficulty: '中级' },
+  { url: '/function-definition/monotonicity', title: '函数的单调性', category: '代数', difficulty: '中级' },
+  { url: '/function-definition/even-odd', title: '函数的奇偶性', category: '代数', difficulty: '中级' },
+  { url: '/plane-vector-definition', title: '平面向量的定义及其线性运算', category: '平面几何', difficulty: '中级' },
+  { url: '/ellipse-definition', title: '立体几何入门 (TODO)', category: '空间几何', difficulty: '中级' },
+  { url: '/ellipse-definition', title: '椭圆的定义与性质', category: '圆锥曲线', difficulty: '中级' },
+  { url: '/hyperbola-definition', title: '双曲线的定义与性质', category: '圆锥曲线', difficulty: '中级' },
+  { url: '/parabola-definition', title: '抛物线的定义与性质', category: '圆锥曲线', difficulty: '中级' },
+  { url: '/ellipse-definition', title: '空间解析几何 (TODO)', category: '空间几何', difficulty: '中级' },
 ].map((lesson, index) => ({ ...lesson, id: index + 1 }));
 
 // 难度颜色映射
@@ -47,6 +47,13 @@ const categoryColors = {
   // '线性代数': 'bg-orange-100 text-orange-800',
   // '证明方法': 'bg-red-100 text-red-800',
   // '应用案例': 'bg-cyan-100 text-cyan-800',
+};
+
+const categoryShapes = {
+  '平面几何': <FaShapes />,
+  '空间几何': <FaCube />,
+  '圆锥曲线': <FaCircle />,
+  '代数': <FaChartLine />,
 };
 
 // 教案卡片组件
@@ -69,16 +76,21 @@ function LessonCard({ lesson, index }) {
     >
       <div className="p-6">
         <div className="flex items-start">
-          <div className={`p-3 rounded-lg ${categoryColors[lesson.category]} mr-4`}>
-            {lesson.icon}
+          <div className={cn('p-3 rounded-lg mr-4', categoryColors[lesson.category])}>
+            {lesson.category && categoryShapes[lesson.category]}
           </div>
           <div className="flex-1">
             <h3 className="text-xl font-bold text-gray-800 mb-2">{lesson.title}</h3>
             <div className="flex items-center mb-4">
-              <span className={`px-2 py-1 rounded-md text-xs font-semibold ${difficultyColors[lesson.difficulty]}`}>
+              <span className={cn(
+                'px-2 py-1 rounded-md text-xs font-semibold',
+                difficultyColors[lesson.difficulty]
+              )}>
                 {lesson.difficulty}
               </span>
-              <span className={`px-2 py-1 rounded-md text-xs font-semibold ml-2 ${categoryColors[lesson.category]}`}>
+              <span className={cn(
+                'px-2 py-1 rounded-md text-xs font-semibold ml-2',
+                categoryColors[lesson.category])}>
                 {lesson.category}
               </span>
             </div>

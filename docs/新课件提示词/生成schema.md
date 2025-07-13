@@ -13,25 +13,17 @@
 
 ### 背景和目标
 
-我打算生成一个新课件，详细讲解函数的奇偶性。知识点包括：
+我打算生成一个新课件，详细讲解图形的旋转。知识点包括：
 
-函数的奇偶性：
-
-- 偶函数的定义
-- 奇函数的定义
-- 偶函数和奇函数的性质
-
-函数的奇偶性的应用：
-
-- 函数的奇偶性和单调性的关系
-- 如何证明函数关于 x = h 对称？
-- 如何证明函数关于点 (a, b) 对称？
+- 旋转、旋转中心、旋转角、对应点的概念
+- 旋转的性质
+- 可以借助旋转设计出许多美丽的图案
 
 文件结构如下：
 
-src/functionDefinition/
-├── FunctionEvenOdd.jsx  # 主组件
-└── evenOddConfig.jsx    # 内容配置文件，被主组件调用
+src/rotation/
+├── RotationDefinition.jsx # 主组件
+└── definitionConfig.jsx   # 内容配置文件，被主组件调用
 
 我们有一个标准页面 @/src\component\teachingPlan\StandardPage.jsx ，需要给它提供一个描述页面结构的配置对象，其类型定义文件在 @/src\component\teachingPlan\StandardPageStructure.d.ts 。你生成的内容配置文件的类型应与该类型定义文件相符。标准页面的“实验互动模块”用到一个 @/src\component\Geogebra.jsx 组件，其组件文档为 @/docs\Geogebra组件文档.md
 
@@ -39,7 +31,7 @@ src/functionDefinition/
 
 ### 目标客户和学习伙伴
 
-15岁的高一学生Hans，其喜爱的卡通形象就是课件的学习伙伴——名侦探柯南。学习伙伴在 Welcome 模块首次出现，在 Summary 模块再次出现。
+14岁的初三学生Hans，其喜爱的卡通形象就是课件的学习伙伴——名侦探柯南。学习伙伴在 Welcome 模块首次出现，在 Summary 模块再次出现。
 
 ### 实现要求
 

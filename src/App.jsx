@@ -3,6 +3,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import 'katex/dist/katex.min.css';
 import TeachingPlanList from './TeachingPlanList';
 import NotFound from './NotFound';
+import RotationDefinition from './rotation/RotationDefinition';
 import FunctionRepresentation from './functionDefinition/FunctionRepresentation';
 import FunctionMonotonicity from './functionDefinition/FunctionMonotonicity';
 import FunctionEvenOdd from './functionDefinition/FunctionEvenOdd';
@@ -17,6 +18,7 @@ import Layout from './component/layout/Layout';
 
 const routes = [
   { path: '/', element: <TeachingPlanList /> },
+  { path: '/rotation/definition', element: <RotationDefinition /> },
   { path: '/function-definition/representation', element: <FunctionRepresentation /> },
   { path: '/function-definition/monotonicity', element: <FunctionMonotonicity /> },
   { path: '/function-definition/even-odd', element: <FunctionEvenOdd /> },
