@@ -15,7 +15,9 @@ export default function Navbar() {
             <div className="bg-white/[0.2] p-2 rounded-lg">
               <FaBookOpen />
             </div>
-            <h1 className={cn(styles.logoText, 'font-bold')}>数学教案库</h1>
+            <h1 className={cn(styles.logoText, 'font-bold')}>
+              数学教案库
+            </h1>
           </Link>
         </div>
 

@@ -9,6 +9,7 @@ import FunctionMonotonicity from './functionDefinition/FunctionMonotonicity';
 import FunctionEvenOdd from './functionDefinition/FunctionEvenOdd';
 import PlaneVectorDefinition from './planeVectorDefinition/PlaneVectorDefinition';
 import ObliqueDrawing from './solidGeometryIntro/ObliqueDrawing';
+import SpVecFundamentalTheorem from './spatialVector/SpVecFundamentalTheorem';
 import EllipseDefinition from './ellipseDefinition/EllipseDefinition';
 import EllipseHardQuestions from './ellipseDefinition/EllipseHardQuestions';
 import HyperbolaDefinition from './hyperbolaDefinition/HyperbolaDefinition';
@@ -25,6 +26,7 @@ const routes = [
   { path: '/function-definition/even-odd', element: <FunctionEvenOdd /> },
   { path: '/plane-vector-definition', element: <PlaneVectorDefinition /> },
   { path: '/solid-geometry-intro/oblique-drawing', element: <ObliqueDrawing /> },
+  { path: '/spatial-vector/fundamental-theorem', element: <SpVecFundamentalTheorem /> },
   { path: '/ellipse-definition', element: <EllipseDefinition /> },
   { path: '/hyperbola-definition', element: <HyperbolaDefinition /> },
   { path: '/parabola-definition', element: <ParabolaDefinition /> },

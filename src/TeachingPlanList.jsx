@@ -2,10 +2,8 @@ import { useState } from 'react';
 import {
   FaDraftingCompass,
   FaShapes,
-  FaVectorSquare,
   FaCube,
   FaCircle,
-  FaGlobeAsia,
   FaArrowRight,
   FaBookmark,
   FaChartLine,
@@ -15,6 +13,7 @@ import { motion } from 'motion/react';
 import styles from './TeachingPlanList.module.scss';
 import { Link } from 'react-router-dom';
 import { addToFavorite } from './lib/utils';
+import NoData from './component/NoData';
 
 // 在首页用 Helmet 改标题无效，决定改 index.html 的标题
 const lessonPlans = [
@@ -24,11 +23,14 @@ const lessonPlans = [
   { url: '/function-definition/even-odd', title: '函数的奇偶性', category: '代数', difficulty: '中级' },
   { url: '/plane-vector-definition', title: '平面向量的定义及其线性运算', category: '平面几何', difficulty: '中级' },
   { url: '/solid-geometry-intro/oblique-drawing', title: '空间几何体与斜二测画法', category: '空间几何', difficulty: '中级' },
+  { url: '/spatial-vector/fundamental-theorem', title: '空间向量基本定理', category: '空间几何', difficulty: '中级' },
   { url: '/ellipse-definition', title: '椭圆的定义与性质', category: '圆锥曲线', difficulty: '中级' },
   { url: '/hyperbola-definition', title: '双曲线的定义与性质', category: '圆锥曲线', difficulty: '中级' },
   { url: '/parabola-definition', title: '抛物线的定义与性质', category: '圆锥曲线', difficulty: '中级' },
-  { url: '/ellipse-definition', title: '空间解析几何 (TODO)', category: '空间几何', difficulty: '中级' },
 ].map((lesson, index) => ({ ...lesson, id: index + 1 }));
+
+const categories = [...new Set(lessonPlans.map(lesson => lesson.category))];
+const difficulties = [...new Set(lessonPlans.map(lesson => lesson.difficulty))];
 
 // 难度颜色映射
 const difficultyColors = {
@@ -119,16 +121,39 @@ function LessonCard({ lesson, index }) {
   );
 }
 
+function FilterButton({ children, className, selected, ...rest }) {
+  return (
+    <button
+      className={
+        cn(
+          'px-4 py-2 rounded-full font-medium transition-all',
+          selected ? 'bg-blue-500 text-white shadow-lg' : 'bg-white text-gray-700 hover:bg-gray-100',
+          className
+        )
+      }
+      {...rest}
+    >
+      {children}
+    </button>
+  );
+}
+
+function getFilteredLessons(lessonPlans, categoryFilter, difficultyFilter) {
+  const filteredByCategoryLessons = categoryFilter === 'all'
+    ? lessonPlans
+    : lessonPlans.filter((lesson) => lesson.category === categoryFilter);
+  const filteredByDifficultyLessons = difficultyFilter === 'all' ?
+    filteredByCategoryLessons
+    : filteredByCategoryLessons.filter((lesson) => lesson.difficulty === difficultyFilter);
+  return filteredByDifficultyLessons;
+}
+
 // 主组件
 export default function TeachingPlanList() {
-  const [filter, setFilter] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [difficultyFilter, setDifficultyFilter] = useState('all');
 
-  const filteredLessons = filter === 'all'
-    ? lessonPlans
-    : lessonPlans.filter(lesson => lesson.category === filter);
-
-  // 获取所有分类
-  const categories = [...new Set(lessonPlans.map(lesson => lesson.category))];
+  const filteredLessons = getFilteredLessons(lessonPlans, categoryFilter, difficultyFilter);
 
   return (
     <div
@@ -160,50 +185,80 @@ export default function TeachingPlanList() {
         </p>
       </motion.header>
 
-      {/* 分类过滤 */}
+      {/* 按类别过滤 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
+        className="max-w-4xl mx-auto mb-6"
+      >
+        <div className="flex flex-wrap justify-center gap-3">
+          <FilterButton
+            onClick={() => setCategoryFilter('all')}
+            selected={categoryFilter === 'all'}
+          >
+            所有类别
+          </FilterButton>
+
+          {categories.map((category, index) => (
+            <FilterButton
+              key={index}
+              onClick={() => setCategoryFilter(category)}
+              selected={categoryFilter === category}
+            >
+              {category}
+            </FilterButton>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* 按难度过滤 */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
         className="max-w-4xl mx-auto mb-12"
       >
         <div className="flex flex-wrap justify-center gap-3">
-          <button
-            onClick={() => setFilter('all')}
-            className={cn(
-              'px-4 py-2 rounded-full font-medium transition-all',
-              filter === 'all' ? 'bg-blue-500 text-white shadow-lg' : 'bg-white text-gray-700 hover:bg-gray-100'
-            )}
+          <FilterButton
+            onClick={() => setDifficultyFilter('all')}
+            selected={difficultyFilter === 'all'}
           >
-            全部教案
-          </button>
+            所有难度
+          </FilterButton>
 
-          {categories.map((category, index) => (
-            <button
+          {difficulties.map((difficulty, index) => (
+            <FilterButton
               key={index}
-              onClick={() => setFilter(category)}
-              className={
-                cn(
-                  'px-4 py-2 rounded-full font-medium transition-all',
-                  filter === category ? 'bg-blue-500 text-white shadow-lg' : 'bg-white text-gray-700 hover:bg-gray-100'
-                )}
+              onClick={() => setDifficultyFilter(difficulty)}
+              selected={difficultyFilter === difficulty}
             >
-              {category}
-            </button>
+              {difficulty}
+            </FilterButton>
           ))}
         </div>
       </motion.div>
 
       {/* 教案列表 */}
       <motion.div
-        className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6"
+        className="max-w-4xl mx-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ staggerChildren: 0.1 }}
       >
-        {filteredLessons.map((lesson, index) => (
-          <LessonCard key={lesson.id} lesson={lesson} index={index} />
-        ))}
+        {
+          Array.isArray(filteredLessons) && filteredLessons.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {
+                filteredLessons.map((lesson, index) => (
+                  <LessonCard key={lesson.id} lesson={lesson} index={index} />
+                ))
+              }
+            </div>
+          ) : (
+            <NoData text="暂无教案" />
+          )
+        }
       </motion.div>
 
       {/* 浮动几何元素 */}

@@ -13,20 +13,20 @@
 
 ### 背景和目标
 
-我打算生成一个新课件，详细讲解空间几何体与斜二测画法。知识点包括：
+我打算生成一个新课件，详细讲解空间向量基本定理。知识点包括：
 
-- 我们以前接触过的几何体
-- 平面图形和立体图形是互相联系的
-- 空间图形的直观图
-- 立体几何中的直观图不都能用斜二测画法作出
-
-请用 GeoGebra 3D 展示等腰梯形ABCD的斜二测画法和长方体的直观图
+- 共线向量基本定理、平面向量基本定理在空间中仍成立吗？如何判断空间中的三个向量是否共面？
+- 共面向量定理
+- 由共面向量定理得到判断空间中四点是否共面的方法
+- 空间向量基本定理
+- 向量的线性组合或线性表达式
+- 基底、基向量
 
 文件结构如下：
 
-src/solidGeometryIntro/
-├── ObliqueDrawing.jsx       # 主组件
-└── obliqueDrawingConfig.jsx # 内容配置文件，被主组件调用
+src/spatialVector/
+├── SpVecFundamentalTheorem.jsx       # 主组件
+└── spVecFundamentalTheoremConfig.jsx # 内容配置文件，被主组件调用
 
 我们有一个标准页面 @/src\component\teachingPlan\StandardPage.jsx ，需要给它提供一个描述页面结构的配置对象，其类型定义文件在 @/src\component\teachingPlan\StandardPageStructure.d.ts 。你生成的内容配置文件的类型应与该类型定义文件相符。标准页面的“实验互动模块”用到一个 @/src\component\Geogebra.jsx 组件，其组件文档为 @/docs\Geogebra组件文档.md
 
