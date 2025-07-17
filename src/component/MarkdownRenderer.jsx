@@ -2,10 +2,13 @@ import { processMarkdown } from '@/lib/marked';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import 'highlight.js/styles/paraiso-light.css';
+import useCodeBlockSetup from '../hooks/useCodeBlockSetup';
 
 export default function MarkdownRenderer({ className, content, ...rest }) {
   const [htmlContent, setHtmlContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const tpmMdContainerRef = useCodeBlockSetup();
 
   useEffect(() => {
     setIsLoading(true);
@@ -28,8 +31,9 @@ export default function MarkdownRenderer({ className, content, ...rest }) {
   if (typeof content === 'string') {
     return (
       <div
+        ref={tpmMdContainerRef}
         dangerouslySetInnerHTML={{ __html: htmlContent }}
-        className={cn('max-w-none', className)}
+        className={cn('tpm-markdown-container max-w-none', className)}
         {...rest}
       />
     );

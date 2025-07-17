@@ -27,9 +27,11 @@
 
 请生成一个新课件，详细讲解抛物线的定义、性质和二级结论。文件结构如下：
 
+```
 src/parabolaDefinition/
 ├── ParabolaDefinition.jsx       # 主组件
 └── config.jsx                   # 内容配置文件，被主组件调用
+```
 
 ### 实现要求
 

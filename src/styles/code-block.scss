@@ -1,0 +1,121 @@
+.code-block-wrapper {
+  --code-divider-color: #c5c5c5;
+  --code-line-numbers-width: 32px;
+  --code-bg: #e7e9db; // TODO
+  --code-color: #4f424c; // TODO
+  --code-line-height: 1.7;
+  --code-font-size: 14px;
+  --code-copy-btn-radius: 4px;
+  --code-body-initial-max-height: 64px;
+
+  background-color: var(--code-bg);
+  color: var(--code-color);
+  border-radius: 1rem;
+  overflow: hidden;
+  line-height: var(--code-line-height);
+  font-size: var(--code-font-size);
+
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
+    border-bottom: 1px solid var(--code-divider-color);
+
+    .header-left-part {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+
+      .svg-wrapper {
+        padding-left: 2px;
+        cursor: pointer;
+
+        .svg-wrapper-img {
+          width: 12px;
+          transform: rotate(0deg);
+          transition: transform 0.3s ease;
+
+          &.expanded {
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      .language-tag {
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+
+    .copy-button {
+      border: 1px solid var(--code-divider-color);
+      border-radius: 4px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='rgba(128,128,128,1)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3C/svg%3E");
+      background-position: 50%;
+      background-size: 16px;
+      background-repeat: no-repeat;
+      transition: border-color 0.25s, background-color 0.25s, opacity 0.25s;
+
+      &.copied {
+        /*rtl:ignore*/
+        border-radius: 0 var(--code-copy-btn-radius) var(--code-copy-btn-radius) 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='rgba(128,128,128,1)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3Cpath d='m9 14 2 2 4-4'/%3E%3C/svg%3E");
+      }
+
+      &.copied::before {
+        position: relative;
+        top: -1px;
+        /*rtl:ignore*/
+        transform: translateX(calc(-100% - 1px));
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid var(--code-divider-color);
+        /*rtl:ignore*/
+        border-right: 0;
+        /*rtl:ignore*/
+        border-radius: 4px 0 0 4px;
+        padding: 0 10px;
+        width: fit-content;
+        height: 32px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--code-color);
+        background-color: var(--code-bg);
+        white-space: nowrap;
+        content: '已复制';
+      }
+    }
+  }
+
+  .code-body {
+    display: flex;
+    transition: max-height 0.3s ease;
+    max-height: var(--code-body-initial-max-height);
+
+    .line-numbers-wrapper {
+      border-right: 1px solid var(--code-divider-color);
+      padding: 1em 0;
+      width: var(--code-line-numbers-width);
+      text-align: center;
+      transition: border-color 0.5s, color 0.5s;
+    }
+
+    .code-pre {
+      flex: 1;
+      overflow-x: auto;
+
+      .highlighted-code {
+        max-height: var(--code-body-initial-max-height);
+        // pre code.hljs 已经设置 overflow-x ，在此把 x 和 y 的都写上了
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+    }
+  }
+}

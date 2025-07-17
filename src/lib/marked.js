@@ -1,20 +1,10 @@
 import { marked } from 'marked';
 import markedKatex from 'marked-katex-extension';
-import { markedHighlight } from 'marked-highlight';
-import hljs from 'highlight.js';
+import hljsRenderer from './hljsRenderer';
 import styles from '@/component/teachingPlan/basic.module.scss';
 // import sanitizeHtml from 'sanitize-html';
 
-marked.use(
-  markedHighlight({
-    emptyLangClass: 'hljs',
-    langPrefix: 'hljs language-',
-    highlight(code, lang) {
-      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-      return hljs.highlight(code, { language }).value;
-    },
-  })
-);
+marked.use({ renderer: hljsRenderer });
 
 marked.use(markedKatex({
   throwOnError: false,

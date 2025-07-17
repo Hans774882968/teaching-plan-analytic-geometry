@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styles from '@/component/teachingPlan/basic.module.scss';
 import MarkdownRenderer from '@/component/MarkdownRenderer';
@@ -15,6 +15,8 @@ import LearningPartnerCard from '@/component/teachingPlan/LearningPartnerCard';
 import Think from '@/component/teachingPlan/Think';
 import Footer from '@/component/teachingPlan/Footer';
 import { Link } from 'react-router-dom';
+import { js_beautify } from 'js-beautify';
+import { JS_BEAUTIFY_OPTIONS } from '@/common/consts';
 
 function wrapStringAsParagraph(node) {
   if (typeof node === 'string') {
@@ -25,6 +27,19 @@ function wrapStringAsParagraph(node) {
 
 function Inner({ config }) {
   const [showFeedbacks, setShowFeedbacks] = useState({});
+
+  const appletOnLoadCodeBlockList = useMemo(() => {
+    return config.geogebraSection.geogebraList.map((geogebra) => {
+      const appletOnLoadSrcCode = geogebra.config.appletOnLoad.toString();
+      const appletOnLoadFormattedCode = js_beautify(appletOnLoadSrcCode, JS_BEAUTIFY_OPTIONS);
+      const res = `
+\`\`\`js
+${appletOnLoadFormattedCode}
+\`\`\`
+`;
+      return res;
+    });
+  }, [config]);
 
   const checkAnswers = () => {
     const feedbacks = {};
@@ -86,10 +101,13 @@ function Inner({ config }) {
         <h2 className={styles.teachingPlanH2}>{config.geogebraSection.title}</h2>
         {
           config.geogebraSection.geogebraList.map((geogebra, index) => {
+            const appletOnLoadCodeBlock = appletOnLoadCodeBlockList[index];
+
             return (
               <Fragment key={index}>
                 <Card>
                   <MarkdownRenderer content={geogebra.description} />
+                  <MarkdownRenderer content={appletOnLoadCodeBlock} />
                 </Card>
                 <Geogebra {...geogebra.config} />
                 <Card>

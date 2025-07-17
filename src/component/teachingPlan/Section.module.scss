@@ -19,14 +19,14 @@
 
   ul,
   ol {
-    padding-left: 20px;
-
     li {
       position: relative;
     }
   }
 
   ul {
+    padding-left: 20px;
+
     &>li::before {
       content: "";
       position: absolute;
@@ -41,6 +41,8 @@
   }
 
   ol {
+    padding-left: 24px;
+
     &>li {
       counter-increment: hans7-section-counter;
     }
@@ -48,7 +50,7 @@
     &>li::before {
       content: counter(hans7-section-counter) ".";
       position: absolute;
-      left: -18px;
+      left: -24px;
       top: 0;
       color: var(--primary);
       font-weight: bold;

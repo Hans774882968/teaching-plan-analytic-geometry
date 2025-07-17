@@ -24,9 +24,11 @@
 
 文件结构如下：
 
+```
 src/spatialVector/
 ├── SpVecFundamentalTheorem.jsx       # 主组件
 └── spVecFundamentalTheoremConfig.jsx # 内容配置文件，被主组件调用
+```
 
 我们有一个标准页面 @/src\component\teachingPlan\StandardPage.jsx ，需要给它提供一个描述页面结构的配置对象，其类型定义文件在 @/src\component\teachingPlan\StandardPageStructure.d.ts 。你生成的内容配置文件的类型应与该类型定义文件相符。标准页面的“实验互动模块”用到一个 @/src\component\Geogebra.jsx 组件，其组件文档为 @/docs\Geogebra组件文档.md
 

@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import styles from './Section.module.scss';
 import { HOVER_SCALE } from '@/common/consts';
 
-export default function Section({ children, ...rest }) {
+export default function Section({ children, whileHover, ...rest }) {
   return (
     <motion.section
       className={styles.teachingPlanSection}
@@ -11,6 +11,7 @@ export default function Section({ children, ...rest }) {
       transition={{ delay: 0.2, duration: 0.4 }}
       whileHover={{
         scale: HOVER_SCALE,
+        ...whileHover,
       }}
       {...rest}
     >

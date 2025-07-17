@@ -3,7 +3,7 @@ import styles from './Card.module.scss';
 import { HOVER_SCALE } from '@/common/consts';
 import { cn } from '@/lib/utils';
 
-export default function Card({ children, className, ...rest }) {
+export default function Card({ children, className, whileHover, ...rest }) {
   return (
     <motion.div
       className={cn(
@@ -15,6 +15,7 @@ export default function Card({ children, className, ...rest }) {
       transition={{ delay: 0.2, duration: 0.4 }}
       whileHover={{
         scale: HOVER_SCALE,
+        ...whileHover,
       }}
       {...rest}
     >

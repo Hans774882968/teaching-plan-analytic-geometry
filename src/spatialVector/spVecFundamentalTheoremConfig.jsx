@@ -28,12 +28,12 @@ export default {
         content: (
           <div>
             <h5 className={styles.teachingPlanH5}>🔍 共线向量基本定理在空间中</h5>
-            <p>
+            <div>
               共线向量基本定理在空间中仍然成立：如果向量 <TeX>{String.raw`\vec{a} \neq \vec{0}`}</TeX>，
               则向量 <TeX>{String.raw`\vec{b}`}</TeX> 与 <TeX>{String.raw`\vec{a}`}</TeX> 共线的充要条件是
               <strong className={styles.highlight}>存在唯一实数 λ</strong>，使得
               <TeX block>{String.raw`\vec{b} = \lambda \vec{a}`}</TeX>
-            </p>
+            </div>
 
             <h5 className={styles.teachingPlanH5}>📐 平面向量基本定理在空间中</h5>
             <p>
@@ -118,31 +118,31 @@ $ \overrightarrow{OD} = (1 - x - y)\overrightarrow{OA} + x\overrightarrow{OB} + 
         content: (
           <div>
             <h5 className={styles.teachingPlanH5}>🔢 线性组合的定义</h5>
-            <p>
+            <div>
               对于向量 <TeX>{String.raw`\vec{v}_1,\ \vec{v}_2,\ \cdots,\ \vec{v}_n`}</TeX> 和实数
               <TeX>{String.raw`k_1,\ k_2,\ \cdots,\ k_n`}</TeX>，表达式
               <TeX block>{String.raw`\vec{w} = k_1\vec{v}_1 + k_2\vec{v}_2 + \cdots + k_n\vec{v}_n`}</TeX>
               称为向量 <TeX>{String.raw`\vec{v}_1, \vec{v}_2, \cdots, \vec{v}_n`}</TeX> 的一个
               <strong className={styles.highlight}>线性组合</strong>
-            </p>
+            </div>
 
             <h5 className={styles.teachingPlanH5}>🌐 线性表达式的几何意义</h5>
-            <p>
+            <div>
               在空间中，线性组合表示：
               <ul>
                 <li><strong className={styles.highlight}>缩放</strong>：系数 k 缩放向量长度</li>
                 <li><strong className={styles.highlight}>叠加</strong>：多个缩放后的向量相加</li>
                 <li><strong className={styles.highlight}>方向合成</strong>：结果向量在多个向量张成的平面或空间中</li>
               </ul>
-            </p>
+            </div>
 
             <h5 className={styles.teachingPlanH5}>⚖️ 线性相关与线性无关</h5>
-            <p>
+            <div>
               <strong className={styles.hard}>关键概念</strong>：如果存在<strong className={styles.highlight}>不全为零</strong>的实数
               <TeX>{String.raw`k_1,\ k_2,\ \cdots,\ k_n`}</TeX> 使得
               <TeX block>{String.raw`k_1\vec{v}_1 + k_2\vec{v}_2 + \cdots + k_n\vec{v}_n = \vec{0}`}</TeX>
               则称这些向量<strong className={styles.highlight}>线性相关</strong>，否则称为<strong className={styles.highlight}>线性无关</strong>
-            </p>
+            </div>
           </div>
         ),
         thinks: [
@@ -166,14 +166,14 @@ $ \overrightarrow{OD} = (1 - x - y)\overrightarrow{OA} + x\overrightarrow{OB} + 
             </p>
 
             <h5 className={styles.teachingPlanH5}>🔑 基向量的特性</h5>
-            <p>
+            <div>
               基底中的每个向量 <TeX>{String.raw`\vec{a},\ \vec{b},\ \vec{c}`}</TeX> 称为
               <strong className={styles.highlight}>基向量</strong>，它们必须满足：
               <ul>
                 <li><strong className={styles.highlight}>线性无关</strong>：任意一个不能表示为其他两个的线性组合</li>
                 <li><strong className={styles.highlight}>张成空间</strong>：空间中任意向量都可由它们线性表示</li>
               </ul>
-            </p>
+            </div>
           </div>
         ),
         thinks: [
