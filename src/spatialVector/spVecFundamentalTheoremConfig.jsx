@@ -227,6 +227,7 @@ $ \overrightarrow{OD} = (1 - x - y)\overrightarrow{OA} + x\overrightarrow{OB} + 
             applet.evalCommand('SetVisibleInView(sliderZ, 1, false)');
           },
         },
+        appletOnLoadId: 'src%5CspatialVector%5CspVecFundamentalTheoremConfig.jsx-spatial-vector-basis',
         conclusion: String.raw`✅ **结论**：空间任一向量都可以唯一表示为三个不共面向量的线性组合`,
       },
       {
@@ -269,6 +270,7 @@ $ \overrightarrow{OD} = (1 - x - y)\overrightarrow{OA} + x\overrightarrow{OB} + 
             // TODO: 暂未查到如何验证 sol 的 x + y + z = 1
           },
         },
+        appletOnLoadId: 'src%5CspatialVector%5CspVecFundamentalTheoremConfig.jsx-coplanar-points',
         conclusion: String.raw`✅ **结论**：空间四点 $ A,\ B,\ C,\ D $ 共面 ⇔ 存在实数 $ x,\ y,\ z $ 满足 $ x + y + z = 1 $ 且 $ \overrightarrow{OD} = x\overrightarrow{OA} + y\overrightarrow{OB} + z\overrightarrow{OC} $`,
       },
     ],

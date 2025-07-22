@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { config } from './config';
 import Geogebra from '@/component/Geogebra';
 import styles from '@/component/teachingPlan/basic.module.scss';
+import MarkdownRenderer from '@/component/MarkdownRenderer';
 import conanThinking from '@/assets/conan-thinking-1.png';
 import conanThumbUp from '@/assets/conan-thumb-up-1.png';
 import QuizContainer from '@/component/QuizContainer';
@@ -16,26 +17,16 @@ import Header from '@/component/teachingPlan/Header';
 import LearningPartnerCard from '../component/teachingPlan/LearningPartnerCard';
 import Think from '@/component/teachingPlan/Think';
 import Footer from '@/component/teachingPlan/Footer';
+import appletOnLoadCollection from '@/appletOnLoadCollection';
 
 const Inner = () => {
   const [showFeedbacks, setShowFeedbacks] = useState({});
 
-  const drawEllipse = (applet) => {
-    applet.evalCommand('ellipse: x^2/25 + y^2/9 = 1');
-    applet.setColor('ellipse', 255, 0, 0);
-    applet.setLineThickness('ellipse', 3);
-    applet.setCaption('ellipse', '椭圆: \\frac{x^2}{25} + \\frac{y^2}{9} = 1');
-
-    applet.evalCommand('A: Point(ellipse)');
-    applet.evalCommand('C1: (4, 0)');
-    applet.evalCommand('C2: (-4, 0)');
-    applet.evalCommand('s1: Segment(C1, A)');
-    applet.evalCommand('s2: Segment(C2, A)');
-    applet.evalCommand('lenSum: s1 + s2');
-    applet.evalCommand('e: sqrt(25 - 9) / sqrt(25)');
-
-    applet.setCoordSystem(-6, 6, -4, 4);
-  };
+  const appletOnLoadCodeBlock = `
+\`\`\`js
+${appletOnLoadCollection[config.geogebraObject.appletOnLoadId] || ''}
+\`\`\`
+`;
 
   const checkAnswers = () => {
     const feedbacks = {};
@@ -107,9 +98,10 @@ const Inner = () => {
         <h2 className={styles.teachingPlanH2}>🔬 椭圆实验室</h2>
         <Card>
           <p>移动动点A，实时观察椭圆的变化：</p>
+          <MarkdownRenderer content={appletOnLoadCodeBlock} />
         </Card>
         <Geogebra
-          id="ellipse-definition-1"
+          id={config.geogebraObject.config.id}
           height={720}
           showToolbar={true}
           showMenuBar={true}
@@ -121,7 +113,7 @@ const Inner = () => {
           showToolBarHelp={false}
           errorDialogsActive={true}
           showTutorialLink={true}
-          appletOnLoad={drawEllipse}
+          appletOnLoad={config.geogebraObject.config.appletOnLoad}
         />
       </Section>
 

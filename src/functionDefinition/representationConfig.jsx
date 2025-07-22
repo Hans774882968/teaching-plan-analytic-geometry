@@ -212,6 +212,7 @@ $ f(2x) = (2x)^2 + 1 = 4x^2 + 1 $`,
             applet.setCoordSystem(-5, 5, -3.5, 7);
           },
         },
+        appletOnLoadId: 'src%5CfunctionDefinition%5CrepresentationConfig.jsx-function-representation-1',
         conclusion: String.raw`实验结论：  
 - 分段函数的图像在不同区间呈现不同形态  
 - 高斯取整函数 $ y = [x] $ 呈阶梯状，在整数点发生跳跃  

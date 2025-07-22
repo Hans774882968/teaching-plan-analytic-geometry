@@ -166,6 +166,7 @@ export default {
             applet.setCoordSystem(-5, 5, -4, 4);
           },
         },
+        appletOnLoadId: 'src%5Crotation%5CdefinitionConfig.jsx-rotation-basic',
         conclusion: String.raw`#### 📝 实验结论  
 1. 旋转后图形与原图形全等
 2. 对应点到旋转中心距离相等
@@ -205,6 +206,7 @@ export default {
             applet.setCoordSystem(-3, 3, -3, 3);
           },
         },
+        appletOnLoadId: 'src%5Crotation%5CdefinitionConfig.jsx-rotation-pattern',
         conclusion: String.raw`$ n = 10 $ 的时候，像不像一个太阳🌞？
 #### 📝 设计技巧
 1. 基本图形越简单，旋转效果越好

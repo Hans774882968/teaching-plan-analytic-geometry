@@ -98,6 +98,29 @@ export const config = {
       content: '从椭圆一个焦点发出的光线，经椭圆反射后必经过另一个焦点。这一性质在卫星天线和声学设计中应用广泛。',
     },
   ],
+  geogebraObject: {
+    config: {
+      id: 'ellipse-definition-1',
+      appletOnLoad: (applet) => {
+        const a = 5, b = 3, a2 = a * a, b2 = b * b, c = Math.sqrt(a2 - b2);
+        applet.evalCommand(`ellipse: x^2/${a2} + y^2/${b2} = 1`); // 绘制椭圆
+        applet.setColor('ellipse', 255, 0, 0);
+        applet.setLineThickness('ellipse', 3);
+        applet.setCaption('ellipse', `椭圆: \\frac{x^2}{${a2}} + \\frac{y^2}{${b2}} = 1`);
+
+        applet.evalCommand('A: Point(ellipse)'); // 绘制椭圆上的动点 A
+        applet.evalCommand(`C1: (${c}, 0)`); // 绘制椭圆的右焦点 C1
+        applet.evalCommand(`C2: (-${c}, 0)`); // 绘制椭圆的左焦点 C2
+        applet.evalCommand('s1: Segment(C1, A)'); // 线段 C1A
+        applet.evalCommand('s2: Segment(C2, A)'); // 线段 C2A
+        applet.evalCommand('lenSum: s1 + s2'); // 验证椭圆上任意一点 A 到两个焦点的距离和为定值
+        applet.evalCommand(`e: sqrt(${a2} - ${b2}) / sqrt(${a2})`);
+
+        applet.setCoordSystem(-6, 6, -4, 4);
+      },
+    },
+    appletOnLoadId: 'src%5CellipseDefinition%5Cconfig.jsx-ellipse-definition-1',
+  },
   quiz: [
     {
       question: <>椭圆 <TeX>{'\\frac{x^2}{25} + \\frac{y^2}{9} = 1'}</TeX> 的离心率是多少？</>,

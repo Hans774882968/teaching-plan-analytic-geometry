@@ -9,7 +9,7 @@ const promptFilePaths = [genSchemaPromptPath, genJsxPromptPath];
 
 function getEncodedPromptContent(filePath) {
   const content = fs.readFileSync(filePath, 'utf-8');
-  return encodeURIComponent(content);
+  return encodeURI(content);
 }
 
 export default function promptDisplayPlugin() {
@@ -19,9 +19,10 @@ export default function promptDisplayPlugin() {
   return {
     name: 'vite-plugin-prompt-display',
     configureServer(server) {
-      // 监听 Markdown 文件变化
-      server.watcher.add(genSchemaPromptPath);
-      server.watcher.add(genJsxPromptPath);
+      // 监听提示词文件变化
+      promptFilePaths.forEach((promptFilePath) => {
+        server.watcher.add(promptFilePath);
+      });
 
       // 文件变化时触发 HMR
       server.watcher.on('change', (file) => {
@@ -55,8 +56,8 @@ export default function promptDisplayPlugin() {
           export const genSchemaRelativePath = String.raw\`${genSchemaRelativePath}\`;
           export const genJsxRelativePath = String.raw\`${genJsxRelativePath}\`;
 
-          export const genSchemaPrompt = decodeURIComponent(\`${genSchemaPromptContent}\`);
-          export const genJsxPrompt = decodeURIComponent(\`${genJsxPromptContent}\`);
+          export const genSchemaPrompt = decodeURI(\`${genSchemaPromptContent}\`);
+          export const genJsxPrompt = decodeURI(\`${genJsxPromptContent}\`);
         `.trim();
       }
     },

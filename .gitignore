@@ -25,3 +25,4 @@ dist-ssr
 
 # custom
 public/geogebra
+tests/__snapshots__

@@ -100,9 +100,10 @@ export default {
     id: 'parabola-definition',
     height: 600,
     appletOnLoad: (applet) => {
-      applet.evalCommand('parabola: y^2 = 4x'); // 抛物线 y²=4x
-      applet.evalCommand('F: (1, 0)'); // 焦点
-      applet.evalCommand('d: x = -1'); // 准线
+      const p = 2;
+      applet.evalCommand(`parabola: y^2 = ${2 * p}x`); // 抛物线 y²=4x
+      applet.evalCommand(`F: (${p / 2}, 0)`); // 焦点
+      applet.evalCommand(`d: x = -${p / 2}`); // 准线
       applet.evalCommand('A: Point(parabola)'); // 抛物线上动点
       applet.evalCommand('s1: Segment(F, A)'); // 焦点到A的线段
       applet.evalCommand('h: PerpendicularLine(A, d)');
@@ -110,11 +111,14 @@ export default {
       applet.evalCommand('s2: Segment(A, B)'); // A到准线垂线
       applet.setColor('s1', 255, 0, 0);
       applet.setColor('s2', 0, 0, 255);
-      applet.setLineThickness('s1', 3);
-      applet.setLineThickness('s2', 3);
+      applet.setColor('h', 0, 0, 255);
+      applet.setLineStyle('h', 1);
+      applet.setLineThickness('s1', 5);
+      applet.setLineThickness('s2', 5);
       applet.setCoordSystem(-5, 5, -5, 5);
     },
   },
+  appletOnLoadId: 'src%5CparabolaDefinition%5Cconfig.jsx-parabola-definition',
   quiz: [
     {
       question: <p>抛物线 <TeX>{String.raw`y^2 = 8x`}</TeX> 的焦点坐标是？</p>,

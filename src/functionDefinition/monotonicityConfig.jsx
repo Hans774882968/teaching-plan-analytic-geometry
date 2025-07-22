@@ -189,6 +189,7 @@ export default {
             applet.setCoordSystem(-5, 5, -10, 10);
           },
         },
+        appletOnLoadId: 'src%5CfunctionDefinition%5CmonotonicityConfig.jsx-function-monotonicity-1',
         conclusion: String.raw`实验结论：
 1. 当 $ a > 0 $ 时，函数开口向上，在对称轴左侧单调递减，右侧单调递增
 2. 当 $ a < 0 $ 时，函数开口向下，在对称轴左侧单调递增，右侧单调递减

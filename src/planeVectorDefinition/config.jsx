@@ -135,6 +135,7 @@ const config = {
             applet.setCoordSystem(-1, 5, -1, 6);
           },
         },
+        appletOnLoadId: 'src%5CplaneVectorDefinition%5Cconfig.jsx-plane-vector-definition-1',
         conclusion: String.raw`通过拖动点A、B、C，验证了 $\overrightarrow{AB} + \overrightarrow{BC} = \overrightarrow{AC}$ 。无论3个向量位置如何，三角形法则始终成立`,
       },
       {
@@ -162,6 +163,7 @@ const config = {
             applet.setCoordSystem(-10, 10, -5, 5);
           },
         },
+        appletOnLoadId: 'src%5CplaneVectorDefinition%5Cconfig.jsx-plane-vector-definition-2',
         conclusion: '数乘向量实现向量的伸缩和方向反转。当 $k>0$ 时同向伸缩， $k<0$ 时反向伸缩， $|k|$ 决定伸缩倍数',
       },
     ],

@@ -1,8 +1,6 @@
 import {
   genSchemaPrompt,
-  genJsxPrompt,
   genSchemaRelativePath,
-  genJsxRelativePath,
 } from 'virtual:prompt-display';
 import { Helmet } from 'react-helmet-async';
 import styles from '@/component/teachingPlan/basic.module.scss';
@@ -22,12 +20,6 @@ function Inner() {
         </Card>
       </Section>
 
-      <Section whileHover={{ scale: LONG_ELEMENT_HOVER_SCALE }}>
-        <h2 className={styles.teachingPlanH2}>📝 {genJsxRelativePath}</h2>
-        <Card whileHover={{ scale: LONG_ELEMENT_HOVER_SCALE }}>
-          <MarkdownRenderer content={genJsxPrompt} />
-        </Card>
-      </Section>
       <Footer>
         <p>数学教案库 &copy; {new Date().getFullYear()} - 让数学教学更简单</p>
       </Footer>
@@ -39,7 +31,7 @@ export default function PromptDisplay() {
   return (
     <>
       <Helmet>
-        <title>让 LLM 生成教案的提示词</title>
+        <title>让 LLM 生成教案的提示词 - Schema</title>
       </Helmet>
       <Inner />
     </>

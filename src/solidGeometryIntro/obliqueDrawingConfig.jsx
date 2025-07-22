@@ -153,6 +153,7 @@ export default {
             applet.setCoordSystem(-1, 5, -1, 3, -1, 1);
           },
         },
+        appletOnLoadId: 'src%5CsolidGeometryIntro%5CobliqueDrawingConfig.jsx-oblique-trapezoid',
         conclusion: String.raw`**结论：**
 1. 斜二测画法中，Y轴方向尺寸变为原来的 $ \frac{1}{2} $
 2. 角度关系保持不变，平行线仍然平行`,
@@ -213,6 +214,7 @@ export default {
             applet.setCoordSystem(-1, 6, -1, 4, -1, 4);
           },
         },
+        appletOnLoadId: 'src%5CsolidGeometryIntro%5CobliqueDrawingConfig.jsx-oblique-cuboid',
         conclusion: String.raw`**结论：**
 1. 长方体斜二测图中，深度方向(Y轴)尺寸减半
 2. 垂直方向(Z轴)和水平方向(X轴)保持原尺寸

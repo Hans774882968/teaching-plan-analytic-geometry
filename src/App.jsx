@@ -17,7 +17,8 @@ import HyperbolaHardQuestions from './hyperbolaDefinition/HyperbolaHardQuestions
 import ParabolaDefinition from './parabolaDefinition/ParabolaDefinition';
 import ParabolaHardQuestions from './parabolaDefinition/ParabolaHardQuestions';
 import Layout from './component/layout/Layout';
-import PromptDisplay from './promptDisplay/promptDisplay';
+import PromptDisplaySchema from './promptDisplay/promptDisplaySchema';
+import PromptDisplayJsx from './promptDisplay/promptDisplayJsx';
 
 const routes = [
   { path: '/', element: <TeachingPlanList /> },
@@ -34,7 +35,8 @@ const routes = [
   { path: '/ellipse-hard-questions', element: <EllipseHardQuestions /> },
   { path: '/hyperbola-hard-questions', element: <HyperbolaHardQuestions /> },
   { path: '/parabola-hard-questions', element: <ParabolaHardQuestions /> },
-  { path: '/prompt-display', element: <PromptDisplay /> },
+  { path: '/prompt-display-schema', element: <PromptDisplaySchema /> },
+  { path: '/prompt-display-jsx', element: <PromptDisplayJsx /> },
   { path: '/404', element: <NotFound /> },
   { path: '*', element: <NotFound /> },
 ];

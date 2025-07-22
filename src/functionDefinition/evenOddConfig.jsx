@@ -171,6 +171,7 @@ export default {
             applet.setCoordSystem(-4, 4, -5, 5);
           },
         },
+        appletOnLoadId: 'src%5CfunctionDefinition%5CevenOddConfig.jsx-function-symmetry-1',
         conclusion: String.raw`📝 实验结论：
 1. 红色曲线 $ f(x) = x^3 - 3x $ 是**奇函数**，图像关于**原点对称**
 2. 蓝色曲线 $ g(x) = x^2 - 2 $ 是**偶函数**，图像关于**y轴对称**
@@ -215,6 +216,7 @@ export default {
             applet.setCoordSystem(-2, 4, -2, 6);
           },
         },
+        appletOnLoadId: 'src%5CfunctionDefinition%5CevenOddConfig.jsx-function-symmetry-2',
         conclusion: String.raw`📝 实验结论：
 1. 绿色曲线 $ f(x) = (x-1)^3 + 2 $ 的图像关于点 $ (1, 2) $ 对称
 2. 紫色点 $ P_{sym} $ 是点P关于 $ (1, 2) $ 的对称点

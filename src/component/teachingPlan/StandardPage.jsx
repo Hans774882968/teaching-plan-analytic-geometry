@@ -15,8 +15,7 @@ import LearningPartnerCard from '@/component/teachingPlan/LearningPartnerCard';
 import Think from '@/component/teachingPlan/Think';
 import Footer from '@/component/teachingPlan/Footer';
 import { Link } from 'react-router-dom';
-import { js_beautify } from 'js-beautify';
-import { JS_BEAUTIFY_OPTIONS } from '@/common/consts';
+import appletOnLoadCollection from '@/appletOnLoadCollection';
 
 function wrapStringAsParagraph(node) {
   if (typeof node === 'string') {
@@ -30,11 +29,10 @@ function Inner({ config }) {
 
   const appletOnLoadCodeBlockList = useMemo(() => {
     return config.geogebraSection.geogebraList.map((geogebra) => {
-      const appletOnLoadSrcCode = geogebra.config.appletOnLoad.toString();
-      const appletOnLoadFormattedCode = js_beautify(appletOnLoadSrcCode, JS_BEAUTIFY_OPTIONS);
+      const appletOnLoadSrcCode = appletOnLoadCollection[geogebra.appletOnLoadId] || '';
       const res = `
 \`\`\`js
-${appletOnLoadFormattedCode}
+${appletOnLoadSrcCode}
 \`\`\`
 `;
       return res;

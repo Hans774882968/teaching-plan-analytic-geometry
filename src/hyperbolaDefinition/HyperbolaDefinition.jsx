@@ -1,7 +1,8 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { hyperbolaConfig as config } from './config';
 import styles from '@/component/teachingPlan/basic.module.scss';
+import MarkdownRenderer from '@/component/MarkdownRenderer';
 import QuizContainer from '@/component/QuizContainer';
 import Geogebra from '@/component/Geogebra';
 import TPButton from '@/component/TPButton';
@@ -15,9 +16,22 @@ import LearningPartnerCard from '@/component/teachingPlan/LearningPartnerCard';
 import Think from '@/component/teachingPlan/Think';
 import Footer from '@/component/teachingPlan/Footer';
 import { Link } from 'react-router-dom';
+import appletOnLoadCollection from '@/appletOnLoadCollection';
 
 function Inner() {
   const [showFeedbacks, setShowFeedbacks] = useState({});
+
+  const appletOnLoadCodeBlockList = useMemo(() => {
+    return config.geogebraSection.geogebraList.map((geogebra) => {
+      const appletOnLoadSrcCode = appletOnLoadCollection[geogebra.appletOnLoadId] || '';
+      const res = `
+\`\`\`js
+${appletOnLoadSrcCode}
+\`\`\`
+`;
+      return res;
+    });
+  }, []);
 
   const checkAnswers = () => {
     const feedbacks = {};
@@ -73,10 +87,13 @@ function Inner() {
         <h2 className={styles.teachingPlanH2}>{config.geogebraSection.title}</h2>
         {
           config.geogebraSection.geogebraList.map((geogebra, index) => {
+            const appletOnLoadCodeBlock = appletOnLoadCodeBlockList[index];
+
             return (
               <Fragment key={index}>
                 <Card>
                   <p>{geogebra.description}</p>
+                  <MarkdownRenderer content={appletOnLoadCodeBlock} />
                 </Card>
                 <Geogebra {...geogebra.config} />
               </Fragment>

@@ -17,7 +17,7 @@ export default {
     const language = hljs.getLanguage(lang) ? lang : 'plaintext';
     const highlighted = hljs.highlight(code, { language }).value;
 
-    const dataCode = encodeURIComponent(code);
+    const dataCode = encodeURI(code);
 
     const lineLength = code.split('\n').length;
     const lineNumbersHtml = getLineNumbersHtml(lineLength);

@@ -198,6 +198,7 @@ export const hyperbolaConfig = {
             applet.setCoordSystem(-10, 10, -8, 8);
           },
         },
+        appletOnLoadId: 'src%5ChyperbolaDefinition%5Cconfig.jsx-hyperbola-definition-1',
       },
       {
         description: '双曲线的反函数： A\' 确实在 hyperbola2 上',
@@ -221,6 +222,7 @@ export const hyperbolaConfig = {
             applet.setCoordSystem(-10, 10, -8, 8);
           },
         },
+        appletOnLoadId: 'src%5ChyperbolaDefinition%5Cconfig.jsx-hyperbola-definition-2',
       },
     ],
   },

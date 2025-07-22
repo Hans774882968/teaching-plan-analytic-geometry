@@ -37,7 +37,7 @@ export default function useCodeBlockSetup() {
 
       tpmMdContainerRef.current?.querySelectorAll('.code-block-wrapper .copy-button')?.forEach((button) => {
         button.addEventListener('click', () => {
-          const code = decodeURIComponent(button.dataset.code);
+          const code = decodeURI(button.dataset.code);
           navigator.clipboard.writeText(code);
           button.classList.add('copied');
           setTimeout(() => button.classList.remove('copied'), 2000);

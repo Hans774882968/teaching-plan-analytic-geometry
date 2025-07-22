@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styles from '@/component/teachingPlan/basic.module.scss';
 
+import MarkdownRenderer from '@/component/MarkdownRenderer';
+
 // 导入教学组件
 import Section from '@/component/teachingPlan/Section';
 import KnowledgePoint from '@/component/teachingPlan/KnowledgePoint';
@@ -22,8 +24,16 @@ import conanThumbUp from '@/assets/conan-thumb-up-1.png';
 import config from './config';
 import { Link } from 'react-router-dom';
 
+import appletOnLoadCollection from '@/appletOnLoadCollection';
+
 function Inner() {
   const [showFeedbacks, setShowFeedbacks] = useState({});
+
+  const appletOnLoadCodeBlock = `
+\`\`\`js
+${appletOnLoadCollection[config.appletOnLoadId] || ''}
+\`\`\`
+`;
 
   const checkAnswers = () => {
     const feedbacks = {};
@@ -89,6 +99,7 @@ function Inner() {
         <h2 className={styles.teachingPlanH2}>🔬 实验互动</h2>
         <Card>
           <p>拖动点A，观察焦点到抛物线上点的距离与到准线距离的关系：</p>
+          <MarkdownRenderer content={appletOnLoadCodeBlock} />
         </Card>
         <Geogebra
           {...config.geogebraConfig}
