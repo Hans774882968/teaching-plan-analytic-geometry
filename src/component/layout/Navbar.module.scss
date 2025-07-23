@@ -1,5 +1,5 @@
 .navbar {
-  background: linear-gradient(135deg, #6cbbcb 0%, #8fcddc 100%);
+  background: linear-gradient(135deg, #67cbeb 0%, #77cce8 100%);
 }
 
 .logoText {
@@ -13,5 +13,17 @@
 }
 
 .navDropdown {
-  background: linear-gradient(135deg, #6cbbcb 0%, #8fcddc 100%);
+  background: linear-gradient(135deg, #67cbeb 0%, #77cce8 100%);
+}
+
+.navDropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s ease;
+  padding: 12px 16px;
+}
+
+.navDropdownItem:hover {
+  transform: translateX(4px);
 }

@@ -17,39 +17,45 @@ import NoData from './component/NoData';
 
 // 在首页用 Helmet 改标题无效，决定改 index.html 的标题
 const lessonPlans = [
-  { url: '/rotation/definition', title: '图形的旋转', category: '平面几何', difficulty: '初级' },
-  { url: '/function-definition/representation', title: '函数及其表示方法', category: '代数', difficulty: '中级' },
-  { url: '/function-definition/monotonicity', title: '函数的单调性', category: '代数', difficulty: '中级' },
-  { url: '/function-definition/even-odd', title: '函数的奇偶性', category: '代数', difficulty: '中级' },
-  { url: '/plane-vector-definition', title: '平面向量的定义及其线性运算', category: '平面几何', difficulty: '中级' },
-  { url: '/solid-geometry-intro/oblique-drawing', title: '空间几何体与斜二测画法', category: '空间几何', difficulty: '中级' },
-  { url: '/spatial-vector/fundamental-theorem', title: '空间向量基本定理', category: '空间几何', difficulty: '中级' },
-  { url: '/ellipse-definition', title: '椭圆的定义与性质', category: '圆锥曲线', difficulty: '中级' },
-  { url: '/hyperbola-definition', title: '双曲线的定义与性质', category: '圆锥曲线', difficulty: '中级' },
-  { url: '/parabola-definition', title: '抛物线的定义与性质', category: '圆锥曲线', difficulty: '中级' },
+  { url: '/rotation/definition', title: '图形的旋转', category: '平面几何', difficulty: '初中' },
+  { url: '/function-definition/representation', title: '函数及其表示方法', category: '代数', difficulty: '高中' },
+  { url: '/function-definition/monotonicity', title: '函数的单调性', category: '代数', difficulty: '高中' },
+  { url: '/function-definition/even-odd', title: '函数的奇偶性', category: '代数', difficulty: '高中' },
+  { url: '/plane-vector-definition', title: '平面向量的定义及其线性运算', category: '平面几何', difficulty: '高中' },
+  { url: '/solid-geometry-intro/oblique-drawing', title: '空间几何体与斜二测画法', category: '空间几何', difficulty: '高中' },
+  { url: '/spatial-vector/fundamental-theorem', title: '空间向量基本定理', category: '空间几何', difficulty: '高中' },
+  { url: '/ellipse-definition', title: '椭圆的定义与性质', category: '圆锥曲线', difficulty: '高中' },
+  { url: '/hyperbola-definition', title: '双曲线的定义与性质', category: '圆锥曲线', difficulty: '高中' },
+  { url: '/parabola-definition', title: '抛物线的定义与性质', category: '圆锥曲线', difficulty: '高中' },
 ].map((lesson, index) => ({ ...lesson, id: index + 1 }));
 
-const categories = [...new Set(lessonPlans.map(lesson => lesson.category))];
+const categories = [...new Set(lessonPlans.map(lesson => lesson.category))].sort();
 const difficulties = [...new Set(lessonPlans.map(lesson => lesson.difficulty))];
 
 // 难度颜色映射
 const difficultyColors = {
-  '初级': 'bg-green-100 text-green-800',
-  '中级': 'bg-blue-100 text-blue-800',
-  '高级': 'bg-purple-100 text-purple-800',
+  '小学': 'bg-green-100 text-green-800 hover:bg-green-200 hover:text-green-900',
+  '初中': 'bg-blue-100 text-blue-800 hover:bg-blue-200 hover:text-blue-900',
+  '高中': 'bg-purple-100 text-purple-800 hover:bg-purple-200 hover:text-purple-900',
+  '大学': 'bg-orange-100 text-orange-800 hover:bg-orange-200 hover:text-orange-900',
+  '数专/研究生': 'bg-red-100 text-red-800 hover:bg-red-200 hover:text-red-900',
 };
 
+const categoryColorList = [
+  'bg-yellow-100 text-yellow-800 hover:bg-yellow-200 hover:text-yellow-900',
+  'bg-pink-100 text-pink-800 hover:bg-pink-200 hover:text-pink-900',
+  'bg-teal-100 text-teal-800 hover:bg-teal-200 hover:text-teal-900',
+  'bg-indigo-100 text-indigo-800 hover:bg-indigo-200 hover:text-indigo-900',
+  'bg-orange-100 text-orange-800 hover:bg-orange-200 hover:text-orange-900',
+  'bg-red-100 text-red-800 hover:bg-red-200 hover:text-red-900',
+  'bg-cyan-100 text-cyan-800 hover:bg-cyan-200 hover:text-cyan-900',
+];
+
 // 分类颜色映射
-const categoryColors = {
-  '平面几何': 'bg-yellow-100 text-yellow-800',
-  '空间几何': 'bg-pink-100 text-pink-800',
-  '圆锥曲线': 'bg-teal-100 text-teal-800',
-  '代数': 'bg-indigo-100 text-indigo-800',
-  // TODO
-  // '线性代数': 'bg-orange-100 text-orange-800',
-  // '证明方法': 'bg-red-100 text-red-800',
-  // '应用案例': 'bg-cyan-100 text-cyan-800',
-};
+const categoryColors = categories.reduce((categoryColors, category, index) => {
+  categoryColors[category] = categoryColorList[index % categoryColorList.length];
+  return categoryColors;
+}, {});
 
 const categoryShapes = {
   '平面几何': <FaShapes />,
@@ -78,21 +84,22 @@ function LessonCard({ lesson, index }) {
     >
       <div className="p-6">
         <div className="flex items-start">
-          <div className={cn('p-3 rounded-lg mr-4', categoryColors[lesson.category])}>
+          <div className={cn('p-3 rounded-lg mr-4 transition-colors duration-300', categoryColors[lesson.category])}>
             {lesson.category && categoryShapes[lesson.category]}
           </div>
           <div className="flex-1">
             <h3 className="text-xl font-bold text-gray-800 mb-2">{lesson.title}</h3>
             <div className="flex items-center mb-4">
               <span className={cn(
-                'px-2 py-1 rounded-md text-xs font-semibold',
+                'px-2 py-1 rounded-md text-xs font-semibold transition-colors duration-300',
                 difficultyColors[lesson.difficulty]
               )}>
                 {lesson.difficulty}
               </span>
               <span className={cn(
-                'px-2 py-1 rounded-md text-xs font-semibold ml-2',
-                categoryColors[lesson.category])}>
+                'px-2 py-1 rounded-md text-xs font-semibold transition-colors duration-300 ml-2',
+                categoryColors[lesson.category]
+              )}>
                 {lesson.category}
               </span>
             </div>
@@ -121,13 +128,13 @@ function LessonCard({ lesson, index }) {
   );
 }
 
-function FilterButton({ children, className, selected, ...rest }) {
+function FilterButton({ children, className, defaultColorCls, selected, ...rest }) {
   return (
     <button
       className={
         cn(
-          'px-4 py-2 rounded-full font-medium transition-all',
-          selected ? 'bg-blue-500 text-white shadow-lg' : 'bg-white text-gray-700 hover:bg-gray-100',
+          'px-4 py-2 rounded-full font-medium transition-all duration-300',
+          selected ? 'bg-blue-500 text-white shadow-lg' : (defaultColorCls || 'bg-white text-gray-700 hover:bg-gray-100'),
           className
         )
       }
@@ -202,6 +209,7 @@ export default function TeachingPlanList() {
 
           {categories.map((category, index) => (
             <FilterButton
+              defaultColorCls={categoryColors[category]}
               key={index}
               onClick={() => setCategoryFilter(category)}
               selected={categoryFilter === category}
@@ -229,6 +237,7 @@ export default function TeachingPlanList() {
 
           {difficulties.map((difficulty, index) => (
             <FilterButton
+              defaultColorCls={difficultyColors[difficulty]}
               key={index}
               onClick={() => setDifficultyFilter(difficulty)}
               selected={difficultyFilter === difficulty}

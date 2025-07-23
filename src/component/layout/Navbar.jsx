@@ -1,4 +1,4 @@
-import { FaBookOpen, FaGithub, FaLink } from 'react-icons/fa';
+import { FaBookOpen, FaGithub, FaLink, FaPuzzlePiece, FaReact } from 'react-icons/fa';
 import styles from './Navbar.module.scss';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
@@ -41,26 +41,26 @@ export default function Navbar() {
               <div className="absolute top-full left-0 pt-4 bg-transparent">
                 <div className={cn(
                   styles.navDropdown,
-                  'rounded-lg shadow-lg overflow-hidden min-w-45 border border-white/20'
+                  'rounded-lg shadow-lg overflow-hidden min-w-50 border-2 border-white/20'
                 )}>
-                  <Link
-                    to="/prompt-display-schema"
-                    className={cn(
-                      styles.navDropdownItem,
-                      'block px-4 py-3 hover:bg-white/[0.1] transition-colors duration-200 text-base font-bold'
-                    )}
-                  >
-                    生成schema（新）
-                  </Link>
-                  <Link
-                    to="/prompt-display-jsx"
-                    className={cn(
-                      styles.navDropdownItem,
-                      'block px-4 py-3 hover:bg-white/[0.1] transition-colors duration-200 text-base font-bold border-t border-white'
-                    )}
-                  >
-                    生成jsx（旧）
-                  </Link>
+                  <div className="text-base font-bold hover:bg-white/[0.2] transition-colors duration-200">
+                    <Link
+                      to="/prompt-display-schema"
+                      className={styles.navDropdownItem}
+                    >
+                      <FaPuzzlePiece />
+                      生成schema（新）
+                    </Link>
+                  </div>
+                  <div className="text-base font-bold hover:bg-white/[0.2] transition-colors duration-200 border-t-2 border-white">
+                    <Link
+                      to="/prompt-display-jsx"
+                      className={styles.navDropdownItem}
+                    >
+                      <FaReact />
+                      生成jsx（旧）
+                    </Link>
+                  </div>
                 </div>
               </div>
             )}

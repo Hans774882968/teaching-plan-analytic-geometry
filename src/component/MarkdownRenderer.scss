@@ -1,0 +1,17 @@
+.tpm-markdown-container {
+
+  [class^="_teachingPlanH1"] {
+    margin-bottom: 20px;
+  }
+
+  [class^="_teachingPlanH2"] {
+    margin-bottom: 16px;
+  }
+
+  [class^="_teachingPlanH3"],
+  [class^="_teachingPlanH4"],
+  [class^="_teachingPlanH5"],
+  [class^="_teachingPlanH6"] {
+    margin-bottom: 8px;
+  }
+}

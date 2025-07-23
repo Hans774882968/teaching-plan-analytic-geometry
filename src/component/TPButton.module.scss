@@ -1,10 +1,11 @@
+// 配色来自 antd primary
 .tpButton {
-  background: #4A90E2;
+  background-color: #1677ff;
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 30px;
-  font-family: "Nunito", sans-serif;
+  border-radius: 16px;
+  font-family: 'Zhan Ku Kuai Le Ti', 'Nunito', sans-serif;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -12,7 +13,7 @@
 }
 
 .tpButton:hover {
-  background: var(--secondary);
+  background-color: #4096ff;
   transform: translateY(-3px);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }

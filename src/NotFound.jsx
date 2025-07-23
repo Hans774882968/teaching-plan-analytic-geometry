@@ -60,7 +60,7 @@ export default function NotFound() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.5 }}
         >
-          这里没有教案，只有沙漠和迷失的几何图形。也许你走错了路，或者我们移除了这个页面。别担心，你可以返回首页继续探索数学的奥秘。
+          这里没有教案，只有沙漠和迷失的几何图形。也许你走错了路，或者我们移除了这个页面。别担心，你可以返回首页继续探索数学的奥秘~
         </motion.p>
 
         <motion.div

@@ -8,14 +8,14 @@
 
 咳咳，先不抒情了。我写这个开源项目的初衷主要有：
 
-1. 研究如何让大语言模型快速生成数学教案。
+1. 研究如何用大语言模型快速生成覆盖从小学到数学专业/研究生难度的，不同类型的数学教案。
 2. 研究如何在前端页面嵌入**GeoGebra**，增强数学教案的互动性。
 
 [本项目GitHub传送门](https://github.com/Hans774882968/teaching-plan-analytic-geometry)
 
 注意：为了减少该项目的占用空间，本项目并未包含GeoGebra源码。如果想要在本地跑起来这个项目，请自行下载[GeoGebra Math Apps Bundle](https://download.geogebra.org/package/geogebra-math-apps-bundle)，并复制里面的web3d文件夹和css文件夹到本项目的`public\geogebra`。
 
-## 如何给React项目接入GeoGebra
+## 【困难】如何给React项目接入GeoGebra
 
 翻了下高中数学必修一（进入 https://jc.pep.com.cn/ ，选择高中数学必修第一册B版），现在已经升级为使用GeoGebra了。我还清楚地记得，15年的数学课本还是用几何画板举例的。
 
@@ -242,7 +242,7 @@ const drawEllipse = (applet) => {
 }
 ```
 
-## React项目如何支持Katex公式
+## 【常规】React项目如何支持Katex公式
 
 ### 在 ReactNode 中：@matejmazur/react-katex
 
@@ -402,7 +402,7 @@ export const processMarkdown = async (_content) => {
 
 这里有一个悬而未决的问题：接入`sanitize-html`会导致 style 属性被吞，导致Katex出现样式错误。官方文档说设置`allowedAttributes`就行，但我设置以后没生效。我懒得研究这个了，先放着吧。
 
-## 数学教案生成方案探究：从抽象出搭积木的组件，到彻底Schema化
+## 【常规】数学教案生成方案探究：从抽象出搭积木的组件，到彻底Schema化
 
 我最初的想法是，先用DeepSeek直接生成第一个教案《椭圆的定义与性质》的HTML代码，接着将其改造为React代码，然后编写规范，让LLM根据规范生成其他数学教案的React组件和`config.jsx`。但我发现了不少痛点：
 
@@ -437,7 +437,95 @@ import Footer from '@/component/teachingPlan/Footer';
 2. 页面结构的类型描述：[src\component\teachingPlan\StandardPageStructure.d.ts](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/component/teachingPlan/StandardPageStructure.d.ts)
 3. 标准页面：[src\component\teachingPlan\StandardPage.jsx](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/component/teachingPlan/StandardPage.jsx)
 
-我决定先生成《平面向量的定义及其线性运算》课件的`src\planeVectorDefinition\config.jsx`，再看DeepSeek的反馈慢慢调整提示词。
+我决定先用提示词《生成schema.md》生成《平面向量的定义及其线性运算》课件的`src\planeVectorDefinition\config.jsx`，再看DeepSeek的反馈慢慢调整提示词。实验表明，这条路走得通，只需要依据DeepSeek欠考虑的点微调上述几个文档即可。TODO: 开发一个网页，方便地完成提示词的拼接。左边是编辑器，右边是预览区。仍然是用vite的虚拟模块实现。
+
+### 【常规】Vite的虚拟模块：在页面中展示提示词的Markdown文档
+
+这是一类静态站点生成的需求，vitepress之类的框架都有这个能力，但我们在此想要一个足够轻量的方案。我通过搜索引擎已经了解到，Vite的虚拟模块借用了Vite的开发服务器的能力，可以达到类似于后端接口的效果。于是我问了DeepSeek：“大佬，你是一名专家前端工程师，精通前端工程化。请叫我hans7。我有一个React+vite+react-router-dom+marked的项目，希望实现以下功能：在打包时能够读取一个本地文件系统的markdown文件的内容，如README.md，通过marked渲染，然后生成一个新的组件，这个组件的路由是/prompt-display。请问如何用自定义vite插件实现？”DeepSeek就给了我完整代码。可惜它的代码不能跑，因为Vite的虚拟模块不支持JSX。所以我改了下代码，让虚拟模块仅返回markdown字符串。[`src\plugins\vite-plugin-prompt-display.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/plugins/vite-plugin-prompt-display.js)：
+
+```js
+import fs from 'fs';
+import path from 'path';
+
+const genSchemaPromptPath = path.resolve(process.cwd(), 'docs', '新课件提示词', '生成schema.md');
+const genSchemaRelativePath = path.relative(process.cwd(), genSchemaPromptPath);
+const genJsxPromptPath = path.resolve(process.cwd(), 'docs', '新课件提示词', '生成jsx.md');
+const genJsxRelativePath = path.relative(process.cwd(), genJsxPromptPath);
+const promptFilePaths = [genSchemaPromptPath, genJsxPromptPath];
+
+function getEncodedPromptContent(filePath) {
+  const content = fs.readFileSync(filePath, 'utf-8');
+  return encodeURI(content);
+}
+
+export default function promptDisplayPlugin() {
+  const virtualModuleId = 'virtual:prompt-display';
+  const resolvedVirtualModuleId = '\0' + virtualModuleId;
+
+  return {
+    name: 'vite-plugin-prompt-display',
+    configureServer(server) {
+      // 监听提示词文件变化
+      promptFilePaths.forEach((promptFilePath) => {
+        server.watcher.add(promptFilePath);
+      });
+
+      // 文件变化时触发 HMR
+      server.watcher.on('change', (file) => {
+        if (!promptFilePaths.includes(file)) {
+          return;
+        }
+        // 1. 使虚拟模块缓存失效
+        const module = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
+        if (module) {
+          server.moduleGraph.invalidateModule(module);
+        }
+
+        // 2. 通知客户端重新加载模块
+        server.ws.send({
+          type: 'full-reload',
+          path: '*',
+        });
+
+        console.log('[tpm] 📄 提示词文件更新', file);
+      });
+    },
+    resolveId(id) {
+      if (id === virtualModuleId) return resolvedVirtualModuleId;
+    },
+    load(id) {
+      if (id === resolvedVirtualModuleId) {
+        const genSchemaPromptContent = getEncodedPromptContent(genSchemaPromptPath);
+        const genJsxPromptContent = getEncodedPromptContent(genJsxPromptPath);
+
+        return `
+          export const genSchemaRelativePath = String.raw\`${genSchemaRelativePath}\`;
+          export const genJsxRelativePath = String.raw\`${genJsxRelativePath}\`;
+
+          export const genSchemaPrompt = decodeURI(\`${genSchemaPromptContent}\`);
+          export const genJsxPrompt = decodeURI(\`${genJsxPromptContent}\`);
+        `.trim();
+      }
+    },
+  };
+}
+```
+
+一些说明：
+
+1. 这个虚拟模块的格式挺标准的，适合教学。
+2. 之所以使用`decodeURI`是因为原始字符串有单引号、双引号之类的字符，无法直接拼接为JS代码，我们需要找一种最简单的方式转义这些字符。
+
+在React组件中，直接像import其他文件一样import即可：
+
+```js
+import {
+  genSchemaPrompt,
+  genSchemaRelativePath,
+} from 'virtual:prompt-display';
+```
+
+查看打包产物可知，Markdown字符串会在构建阶段被完整地打包进JS文件。
 
 ### 提示词缺陷修复技巧举例
 
@@ -456,7 +544,7 @@ import styles from '@/component/teachingPlan/basic.module.scss'; // 补上
 
 后来我们在`docs\Geogebra组件文档.md`中补充了“如何在JS Config中使用”一节，它也就知道如何实现`appletOnLoad`方法了。
 
-## 支持路由
+## 【常规】支持路由
 
 我有不止一个课件，所以这个项目自然要支持路由。支持路由挺常规的，跟往常一样`bun add react-router-dom`即可。主要需要注意改一下这句`k = e('/geogebra/web3d/');`（详见《geogebra的自托管解决方案》一节）。`src\App.jsx`：
 
@@ -497,16 +585,16 @@ function App() {
 
 
 
-## AI生成教案网页场景下如何解决样式冲突
+## 【常规】AI生成教案网页场景下如何解决样式冲突
 
 我们先生成第一个教案网页，然后研究如何生成其他教案网页。这就有一个绕不过去的问题：如何解决样式冲突？我想到两条路：
 
-1. 尽量少更改AI生成的第一个教案网页，将其放入shadow dom。我尝试了一下，发现主要的困难在于geogebra。这条路也许能走通，但风险太高，舍弃。
+1. 尽量少更改AI生成的第一个教案网页，将其放入shadow dom。我尝试了一下，发现主要的困难在于geogebra。这条路也许能走通，但风险太高，**舍弃**。
     1. 它的源码引用了`document.getElementById、document.querySelector`等方法。这些方法都会失效。这个是可解的，hook它们就行。
     2. geogebra引入了5个CSS文件（可以用`document.querySelectorAll('link.ggw_resource')`拿到）。它们无法作用到shadow dom内部。这个也好处理，写段JS手动把它们插入到shadow dom里即可。
     3. 处理上面两点了，就不再有大错误了，但还有一些隐蔽的报错。比如：`:root`指定的CSS变量无法引用到，导致设置坐标轴颜色的OK按钮失去背景色。修改`geogebra/css/bundles/bundle.css`的`:root`为`:root, :host`可解决。
     4. 等式栏的每个条目左上角的三个点点击两次才能出现菜单栏。这个确实不懂怎么解了。
-2. 引入scss和css modules。手动或者让AI改好第一个教案网页。然后用第一个教案网页的代码生成开发规范，在后续生成其他教案网页时将开发规范一起输入到提示词里。
+2. 引入scss和css modules。手动或者让AI改好第一个教案网页。然后用第一个教案网页的代码生成开发规范，在后续生成其他教案网页时将开发规范一起输入到提示词里。最后我**选择**了这条路。
 
 附：如何hook `document.getElementById`：
 
@@ -534,7 +622,153 @@ export function hookGetEleById() {
 }
 ```
 
+## 【困难】Markdown 代码块交互升级：展示行号、支持展开代码块、复制代码
 
+效果：
+
+![](./README_assets/2-增强的Markdown代码块效果展示.png)
+
+如果只使用marked-highlight插件，拿到的代码块什么都没有。但我们看DeepSeek官网等人们熟悉的页面，代码块都是有行号，支持复制，支持展开代码等功能的。我问LLM以及在互联网上搜，都没有搜到现成的解决方案，所以我认定这是要自己实现的。我觉得掘金的展开代码块的设计和vitepress的复制按钮的点击效果不错，因此决定把它们抄过来。
+
+### 【困难】不得不在React中写原生HTML代码
+
+我翻了marked-highlight的源码，发现它提供的自定义能力太弱了，所以我决定抛弃marked-highlight，自定义renderer（这其实也是marked-highlight的实现方式）。[`src\lib\hljsRenderer.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/lib/hljsRenderer.js)：
+
+```js
+import hljs from 'highlight.js';
+
+function getLineNumbersHtml(lineLength) {
+  const lineNumbersCode = [...Array(lineLength)]
+    .map(
+      (_, index) =>
+        `<span class="line-number">${index + 1}</span><br>`
+    )
+    .join('');
+
+  const lineNumbersWrapperCode = `<div class="line-numbers-wrapper" aria-hidden="true">${lineNumbersCode}</div>`;
+  return lineNumbersWrapperCode;
+}
+
+export default {
+  code({ lang, text: code }) {
+    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+    const highlighted = hljs.highlight(code, { language }).value;
+
+    const dataCode = encodeURI(code);
+
+    const lineLength = code.split('\n').length;
+    const lineNumbersHtml = getLineNumbersHtml(lineLength);
+
+    return `
+<div class="code-block-wrapper" data-line-count="${lineLength}">
+  <div class="code-header">
+    <div class="header-left-part">
+      <div class="svg-wrapper" title="展开代码块"></div>
+      <span class="language-tag">${language}</span>
+    </div>
+    <button title="复制代码" class="copy-button" data-code="${dataCode}" />
+  </div>
+  <div class="code-body">
+    ${lineNumbersHtml}
+    <pre class="code-pre"><code class="highlighted-code hljs language-${language}">${highlighted}</code></pre>
+  </div>
+</div>`.trim();
+  },
+};
+```
+
+在renderer里拼接一大段HTML确实挺难绷的，而且有XSS风险，但我确实没找到能在React中完成这件事的方案。可以看到上面有一个留空的`svg-wrapper`，这是为了插入展开代码块的svg图标。为了给这些HTML代码加上CSS，我写了[`src\styles\code-block.scss`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/styles/code-block.scss)，供入口`main.jsx`调用。 为了实现复制代码等功能，我们需要写大段大段的原生JS。为此，我们写一个自定义hook（[`src\hooks\useCodeBlockSetup.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/hooks/useCodeBlockSetup.js)），供`MarkdownRenderer`组件调用。
+
+TODO
+
+### 【常规】展开、收起代码块支持过渡动画
+
+这个可以直接挪用我之前的[Think组件](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/component/teachingPlan/Think.jsx)的实现方案。我们让DeepSeek把motion转为原生CSS：
+
+```markdown
+大佬，你是一名专家前端工程师，精通前端工程化。请叫我hans7。我有一个react + framer-motion项目，有如下代码：
+请忽略其他代码，将motion.span和motion.div的initial、animate、transition属性翻译为css代码，类名分别叫.span和.div。
+```
+
+[`src\styles\code-block.scss`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/styles/code-block.scss)相关代码大致如下：
+
+```scss
+.copy-button {
+  // 默认的 svg
+  background-image: url("svg1");
+
+  // 复制成功的 svg
+  &.copied {
+    /*rtl:ignore*/
+    background-image: url("svg2");
+  }
+
+  // 复制成功时，展示“已复制”文字
+  &.copied::before {
+    content: '已复制';
+  }
+}
+```
+
+
+
+### 复制按钮
+
+为了减轻工作量，我决定~~抄袭~~参考vitepress的源码。结合vitepress渲染出的HTML，不难定位到复制按钮的HTML位于[`src\node\markdown\plugins\preWrapper.ts`](https://github.com/vuejs/vitepress/blob/db58af5c66e563e7663084057a9853d8f2da984c/src/node/markdown/plugins/preWrapper.ts)，搜copied类名，不难定位到其CSS位于[`src\client\theme-default\styles\components\vp-doc.css`](https://github.com/vuejs/vitepress/blob/a64334753079a5b874a482508d9ee255d2a0ea38/src/client/theme-default/styles/components/vp-doc.css)。
+
+## 字体选择
+
+效果：
+
+![](./README_assets/3-字体展示.png)
+
+我选择在body标签设置默认字体为“站酷快乐体”，标题标签h1到h6我则选择了“荆南波波黑”（来源都是： https://zhuanlan.zhihu.com/p/690446851/）。我觉得这两个字体的颜值都不错，但荆南波波黑默认就是加粗的，再设置加粗就会太拥挤了，所以我没有把它设为默认字体，而是仅用在标题。
+
+`public\chinese-fonts.css`：
+
+```css
+/* 来源： https://zhuanlan.zhihu.com/p/690446851/ */
+
+@font-face {
+  font-family: 'Jing Nan Bo Bo Hei';
+  font-display: swap;
+  src: url(jing-nan-bo-bo-hei-bold.ttf);
+}
+
+@font-face {
+  font-family: 'Zhan Ku Kuai Le Ti';
+  font-display: swap;
+  src: url(zhan-ku-kuai-le-ti.ttf);
+}
+```
+
+`index.html`：
+
+```html
+<link
+  href="/chinese-fonts.css"
+  rel="stylesheet"
+>
+```
+
+使用：
+
+```scss
+body {
+  font-family: 'Zhan Ku Kuai Le Ti', 'Fredoka One', sans-serif;
+}
+
+.teachingPlanH1,
+.teachingPlanH2,
+.teachingPlanH3,
+.teachingPlanH4,
+.teachingPlanH5,
+.teachingPlanH6 {
+  font-family: 'Jing Nan Bo Bo Hei', 'Fredoka One', cursive;
+  font-weight: bold;
+  color: var(--text-dark);
+}
+```
 
 ## 参考资料
 

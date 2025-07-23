@@ -119,7 +119,9 @@ ${appletOnLoadSrcCode}
 
       <Section>
         <h2 className={styles.teachingPlanH2}>{config.quizSection.title}</h2>
-        {wrapStringAsParagraph(config.quizSection.description)}
+        <Card>
+          {wrapStringAsParagraph(config.quizSection.description)}
+        </Card>
 
         {config.quizSection.quiz.map((quiz, index) => (
           <QuizContainer

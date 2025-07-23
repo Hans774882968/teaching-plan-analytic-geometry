@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import 'highlight.js/styles/paraiso-light.css';
 import useCodeBlockSetup from '../hooks/useCodeBlockSetup';
+import './MarkdownRenderer.scss';
 
 export default function MarkdownRenderer({ className, content, ...rest }) {
   const [htmlContent, setHtmlContent] = useState('');
