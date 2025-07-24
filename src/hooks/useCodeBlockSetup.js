@@ -7,10 +7,23 @@ export default function useCodeBlockSetup() {
 
   useEffect(() => {
     const codeBlockWrapperSetup = () => {
-      document.querySelectorAll('.code-block-wrapper .svg-wrapper')?.forEach((svgWrapper) => {
+      tpmMdContainerRef.current?.querySelectorAll('.code-block-wrapper')?.forEach((codeBlockWrapper) => {
+        const codeNode = codeBlockWrapper.querySelector('.highlighted-code');
+        const codeNodeComputedStyle = getComputedStyle(codeNode, null);
+        const codeNodeBgColor = codeNodeComputedStyle.getPropertyValue('background-color');
+        const codeNodeColor = codeNodeComputedStyle.getPropertyValue('color');
+        codeBlockWrapper.style.backgroundColor = codeNodeBgColor;
+        codeBlockWrapper.style.color = codeNodeColor;
+      });
+
+      tpmMdContainerRef.current?.querySelectorAll('.code-block-wrapper .svg-wrapper')?.forEach((svgWrapper) => {
         if (svgWrapper.children.length) {
           return;
         }
+
+        // 依赖 src\lib\hljsRenderer.js 所定义的结构
+        const targetCodeBlockWrapper = svgWrapper.parentElement.parentElement.parentElement;
+
         const img = document.createElement('img');
         img.classList.add('svg-wrapper-img');
         img.src = ChevronDown;
@@ -18,8 +31,6 @@ export default function useCodeBlockSetup() {
           const hasExpanded = img.classList.contains('expanded');
           img.classList.toggle('expanded');
 
-          // 依赖 src\lib\hljsRenderer.js 所定义的结构
-          const targetCodeBlockWrapper = svgWrapper.parentElement.parentElement.parentElement;
           svgWrapper.title = hasExpanded ? '展开代码块' : '收起代码块';
           const codeBody = targetCodeBlockWrapper.querySelector('.code-body');
           if (!codeBody) return;
@@ -28,7 +39,7 @@ export default function useCodeBlockSetup() {
           codeBody.classList.toggle('expanded');
           codeBody.style.maxHeight = `${maxHeight}px`;
 
-          const codeNode = codeBody.querySelector('.code-body .highlighted-code');
+          const codeNode = codeBody.querySelector('.highlighted-code');
           if (!codeNode) return;
           codeNode.style.maxHeight = `${maxHeight}px`;
         });

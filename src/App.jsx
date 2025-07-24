@@ -19,6 +19,7 @@ import ParabolaHardQuestions from './parabolaDefinition/ParabolaHardQuestions';
 import Layout from './component/layout/Layout';
 import PromptDisplaySchema from './promptDisplay/promptDisplaySchema';
 import PromptDisplayJsx from './promptDisplay/promptDisplayJsx';
+import ReadmeDisplay from './readmeDisplay/ReadmeDisplay';
 
 const routes = [
   { path: '/', element: <TeachingPlanList /> },
@@ -37,6 +38,7 @@ const routes = [
   { path: '/parabola-hard-questions', element: <ParabolaHardQuestions /> },
   { path: '/prompt-display-schema', element: <PromptDisplaySchema /> },
   { path: '/prompt-display-jsx', element: <PromptDisplayJsx /> },
+  { path: '/tpm-dev-doc', element: <ReadmeDisplay /> },
   { path: '/404', element: <NotFound /> },
   { path: '*', element: <NotFound /> },
 ];

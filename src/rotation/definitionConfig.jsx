@@ -303,6 +303,6 @@ export default {
   },
 
   footer: {
-    info: String.raw`📅 课件更新日期：2025年7月13日 | 👨‍🏫 授课教师：数学侦探组`,
+    info: String.raw`📅 课件更新日期：2025年7月13日 | 👨‍🏫 授课教师：DeepSeek老师（数学侦探组）`,
   },
 };

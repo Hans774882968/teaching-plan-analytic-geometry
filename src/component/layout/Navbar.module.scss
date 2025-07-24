@@ -2,28 +2,29 @@
   background: linear-gradient(135deg, #67cbeb 0%, #77cce8 100%);
 }
 
+.logoIcon {
+  animation: shake 2s infinite;
+}
+
 .logoText {
   letter-spacing: 1px;
   position: relative;
+  animation: shake 2s infinite;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: scale(0.98);
+  }
+
+  50% {
+    transform: scale(1.03);
+  }
 }
 
 .linkBtn {
   position: relative;
   overflow: hidden;
-}
-
-.navDropdown {
-  background: linear-gradient(135deg, #67cbeb 0%, #77cce8 100%);
-}
-
-.navDropdownItem {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: transform 0.2s ease;
-  padding: 12px 16px;
-}
-
-.navDropdownItem:hover {
-  transform: translateX(4px);
 }

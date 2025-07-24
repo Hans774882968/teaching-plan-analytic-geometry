@@ -15,11 +15,23 @@
 
 注意：为了减少该项目的占用空间，本项目并未包含GeoGebra源码。如果想要在本地跑起来这个项目，请自行下载[GeoGebra Math Apps Bundle](https://download.geogebra.org/package/geogebra-math-apps-bundle)，并复制里面的web3d文件夹和css文件夹到本项目的`public\geogebra`。
 
+现阶段的整体效果：
+
+![5-现阶段的整体效果.png](./README_assets/5-现阶段的整体效果.png)
+
+本文 52pojie：https://www.52pojie.cn/thread-2048343-1-1.html
+
+本文 CSDN：https://blog.csdn.net/hans774882968/article/details/149613117
+
+本文 juejin：https://juejin.cn/post/7530464752063348782
+
+**作者：[hans774882968](https://blog.csdn.net/hans774882968)以及[hans774882968](https://juejin.cn/user/1464964842528888)以及[hans774882968](https://www.52pojie.cn/home.php?mod=space&uid=1906177)**
+
 ## 【困难】如何给React项目接入GeoGebra
 
 翻了下高中数学必修一（进入 https://jc.pep.com.cn/ ，选择高中数学必修第一册B版），现在已经升级为使用GeoGebra了。我还清楚地记得，15年的数学课本还是用几何画板举例的。
 
-![](./README_assets/1-高中数学必修一已经更新为使用GeoGebra.png)
+![1-高中数学必修一已经更新为使用GeoGebra.png](./README_assets/1-高中数学必修一已经更新为使用GeoGebra.png)
 
 为什么这个项目要接入GeoGebra不用多说了吧~伟大，无需多言！
 
@@ -242,6 +254,26 @@ const drawEllipse = (applet) => {
 }
 ```
 
+## 在React项目中用`framer-motion`实现动画
+
+`framer-motion`其实很强大，但是我在此只是把它当作CSS动画的语法糖。看一个例子就秒懂了（[`src\TeachingPlanList.jsx`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/TeachingPlanList.jsx)）：
+
+```jsx
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ scale: 1.03 }}
+      className={cn(
+        styles.lessonCard,
+        styles.bounceInAnimation,
+        'bg-white rounded-xl overflow-hidden shadow-lg'
+      )}
+    />
+```
+
+`y`控制盒子往上飞，鼠标放上去盒子会变大。
+
 ## 【常规】React项目如何支持Katex公式
 
 ### 在 ReactNode 中：@matejmazur/react-katex
@@ -311,17 +343,21 @@ export const config = {
 bun add marked highlight.js marked-katex-extension
 ```
 
-接着我们可以直接实现一个React组件`src\component\MarkdownRenderer.jsx`，调用marked，渲染Markdown String：
+接着我们可以直接实现一个React组件[`src\component\MarkdownRenderer.jsx`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/component/MarkdownRenderer.jsx)，调用marked，渲染Markdown String：
 
 ```jsx
 import { processMarkdown } from '@/lib/marked';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import 'highlight.js/styles/paraiso-light.css';
+import useCodeBlockSetup from '../hooks/useCodeBlockSetup';
+import './MarkdownRenderer.scss';
 
 export default function MarkdownRenderer({ className, content, ...rest }) {
   const [htmlContent, setHtmlContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const tpmMdContainerRef = useCodeBlockSetup();
 
   useEffect(() => {
     setIsLoading(true);
@@ -344,15 +380,15 @@ export default function MarkdownRenderer({ className, content, ...rest }) {
   if (typeof content === 'string') {
     return (
       <div
+        ref={tpmMdContainerRef}
         dangerouslySetInnerHTML={{ __html: htmlContent }}
-        className={cn('max-w-none', className)}
+        className={cn('tpm-markdown-container max-w-none', className)}
         {...rest}
       />
     );
   }
   return content;
 }
-
 ```
 
 我们完全可以把marked初始化`marked-katex-extension`等插件的代码写在jsx文件里，但为了让代码更清晰，我们不妨抽出一个文件`src\lib\marked.js`，专门处理marked的初始化：
@@ -363,6 +399,7 @@ import markedKatex from 'marked-katex-extension';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
 
+// 为了简单，先使用 marked-highlight ，后面会改成古法手作 renderer
 marked.use(
   markedHighlight({
     emptyLangClass: 'hljs',
@@ -409,7 +446,7 @@ export const processMarkdown = async (_content) => {
 1. LLM生成的教案和已有的教案代码采用完全不一样的代码规范、不一样的技术选型、不一样的CSS代码。要在一个单页应用中统一它们存在困难。
 2. 看似让LLM生成完整HTML代码的方案可以激发其创造力，但实测发现，LLM真的很懒，写东西语焉不详，也不怎么生成第一个教案完全没有的新东西、新模式。
 
-但我的幻想还没完全磨灭。我想着，抽象出一些组件，让LLM像搭积木一样搭出页面。于是有了[docs\新课件提示词\生成jsx.md](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/docs/%E6%96%B0%E8%AF%BE%E4%BB%B6%E6%8F%90%E7%A4%BA%E8%AF%8D/%E7%94%9F%E6%88%90jsx.md)这个提示词文件，以及下面这些组件：
+但我的幻想还没完全磨灭。我想着，抽象出一些组件，让LLM像搭积木一样搭出页面，也许能激发其创造力。于是有了[docs\新课件提示词\生成jsx.md](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/docs/%E6%96%B0%E8%AF%BE%E4%BB%B6%E6%8F%90%E7%A4%BA%E8%AF%8D/%E7%94%9F%E6%88%90jsx.md)这个提示词文件，以及下面这些组件：
 
 ```jsx
 import Section from '@/component/teachingPlan/Section';
@@ -441,7 +478,9 @@ import Footer from '@/component/teachingPlan/Footer';
 
 ### 【常规】Vite的虚拟模块：在页面中展示提示词的Markdown文档
 
-这是一类静态站点生成的需求，vitepress之类的框架都有这个能力，但我们在此想要一个足够轻量的方案。我通过搜索引擎已经了解到，Vite的虚拟模块借用了Vite的开发服务器的能力，可以达到类似于后端接口的效果。于是我问了DeepSeek：“大佬，你是一名专家前端工程师，精通前端工程化。请叫我hans7。我有一个React+vite+react-router-dom+marked的项目，希望实现以下功能：在打包时能够读取一个本地文件系统的markdown文件的内容，如README.md，通过marked渲染，然后生成一个新的组件，这个组件的路由是/prompt-display。请问如何用自定义vite插件实现？”DeepSeek就给了我完整代码。可惜它的代码不能跑，因为Vite的虚拟模块不支持JSX。所以我改了下代码，让虚拟模块仅返回markdown字符串。[`src\plugins\vite-plugin-prompt-display.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/plugins/vite-plugin-prompt-display.js)：
+我希望在我的网站展示项目用到的提示词。这是一类静态站点生成的需求，vitepress之类的框架都有这个能力，但我们在此想要一个足够轻量的方案。我通过搜索引擎已经了解到，Vite的**虚拟模块**借用了Vite的开发服务器的能力，可以达到类似于后端接口的效果。
+
+于是我问DeepSeek：“大佬，你是一名专家前端工程师，精通前端工程化。请叫我hans7。我有一个React+vite+react-router-dom+marked的项目，希望实现以下功能：在打包时能够读取一个本地文件系统的markdown文件的内容，如README.md，通过marked渲染，然后生成一个新的组件，这个组件的路由是/prompt-display。请问如何用自定义vite插件实现？”DeepSeek给了我完整代码，可惜它的代码不能跑，因为Vite的虚拟模块不支持JSX。所以我改了下代码，让虚拟模块仅返回markdown字符串。[`src\plugins\vite-plugin-prompt-display.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/plugins/vite-plugin-prompt-display.js)：
 
 ```js
 import fs from 'fs';
@@ -515,6 +554,7 @@ export default function promptDisplayPlugin() {
 
 1. 这个虚拟模块的格式挺标准的，适合教学。
 2. 之所以使用`decodeURI`是因为原始字符串有单引号、双引号之类的字符，无法直接拼接为JS代码，我们需要找一种最简单的方式转义这些字符。
+3. 这版代码和最新版代码功能一致，区别是最新版封装了两个函数。
 
 在React组件中，直接像import其他文件一样import即可：
 
@@ -526,6 +566,23 @@ import {
 ```
 
 查看打包产物可知，Markdown字符串会在构建阶段被完整地打包进JS文件。
+
+### 在网站中展示README
+
+类似地，我还在网站中展示了`README.md`，传送门：[`src\plugins\vite-plugin-readme-display.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/plugins/vite-plugin-readme-display.js)。我项目的README有图片，所以还需要手动把图片复制到`dist`文件夹。配置`rollup-plugin-copy`：
+
+```js
+ import copy from 'rollup-plugin-copy';
+
+    copy({
+      targets: [
+        { src: 'README_assets', dest: 'dist' },
+      ],
+      hook: 'writeBundle',
+    }),
+```
+
+
 
 ### 提示词缺陷修复技巧举例
 
@@ -622,17 +679,43 @@ export function hookGetEleById() {
 }
 ```
 
+## 【常规】`Think`组件
+
+效果：
+
+![4-Think组件效果.png](./README_assets/4-Think组件效果.png)
+
+这个组件唯一值得说的就是如何实现展开/收起的过渡动画。我们用一个变量记录是否展开：`const [isOpen, setIsOpen] = useState(false);`，然后用CSS transition或者`framer-motion`控制`max-height`的增减。
+
+```jsx
+<motion.div
+  className={styles.answerRow}
+  initial={{ maxHeight: 0, marginTop: '0' }}
+  animate={{
+    maxHeight: isOpen ? answerRowMaxHeight || '100px' : 0,
+    marginTop: isOpen ? '8px' : '0',
+  }}
+  transition={{ duration: 0.3 }}
+>
+  <MarkdownRenderer content={answer} />
+</motion.div>
+```
+
+我们必须要指定一个具体的`max-height`，否则不会有动画。因此我选择让外界传入这个属性，然后手工调整。
+
+另外，上面设置的`marginTop`是为了照顾问题和答案之间的分割线。
+
 ## 【困难】Markdown 代码块交互升级：展示行号、支持展开代码块、复制代码
 
 效果：
 
-![](./README_assets/2-增强的Markdown代码块效果展示.png)
+![2-增强的Markdown代码块效果展示.png](./README_assets/2-增强的Markdown代码块效果展示.png)
 
-如果只使用marked-highlight插件，拿到的代码块什么都没有。但我们看DeepSeek官网等人们熟悉的页面，代码块都是有行号，支持复制，支持展开代码等功能的。我问LLM以及在互联网上搜，都没有搜到现成的解决方案，所以我认定这是要自己实现的。我觉得掘金的展开代码块的设计和vitepress的复制按钮的点击效果不错，因此决定把它们抄过来。
+如果只使用`marked-highlight`插件，拿到的代码块就只展示了代码块。但我们看DeepSeek官网等人们熟悉的页面，里面的代码块都有行号，支持复制，支持展开代码等功能。我问LLM以及在互联网上搜，都没有搜到现成的解决方案，所以我认定这是要古法手作编程的。网上冲浪一小会以后，我觉得掘金的“展开代码块”的设计和`vitepress`的复制按钮的点击效果不错，因此决定把它们抄过来。
 
 ### 【困难】不得不在React中写原生HTML代码
 
-我翻了marked-highlight的源码，发现它提供的自定义能力太弱了，所以我决定抛弃marked-highlight，自定义renderer（这其实也是marked-highlight的实现方式）。[`src\lib\hljsRenderer.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/lib/hljsRenderer.js)：
+我翻了`marked-highlight`的源码，发现它提供的自定义能力太弱了，所以我决定抛弃`marked-highlight`，自定义renderer实现（这其实也是marked-highlight的实现方式）。我们不妨把相关逻辑单独提取出一个文件，于是有了[`src\lib\hljsRenderer.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/lib/hljsRenderer.js)：
 
 ```js
 import hljs from 'highlight.js';
@@ -677,9 +760,81 @@ export default {
 };
 ```
 
-在renderer里拼接一大段HTML确实挺难绷的，而且有XSS风险，但我确实没找到能在React中完成这件事的方案。可以看到上面有一个留空的`svg-wrapper`，这是为了插入展开代码块的svg图标。为了给这些HTML代码加上CSS，我写了[`src\styles\code-block.scss`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/styles/code-block.scss)，供入口`main.jsx`调用。 为了实现复制代码等功能，我们需要写大段大段的原生JS。为此，我们写一个自定义hook（[`src\hooks\useCodeBlockSetup.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/hooks/useCodeBlockSetup.js)），供`MarkdownRenderer`组件调用。
+在renderer里拼接一大段HTML确实挺难绷的，而且有XSS风险，但我确实没找到能在React中优雅地完成这件事的方案。可以看到我在上面设置了一个留空的`svg-wrapper`，这是为了方便JS插入“展开代码块”的svg图标。
 
-TODO
+1. 为了给这些HTML代码加上CSS，我写了[`src\styles\code-block.scss`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/styles/code-block.scss)，供入口`main.jsx`调用。
+2. 为了实现复制代码等功能，我们需要写大段大段的原生JS。为此，我们写一个自定义hook（[`src\hooks\useCodeBlockSetup.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/hooks/useCodeBlockSetup.js)），供`MarkdownRenderer`组件调用。
+
+### `src\hooks\useCodeBlockSetup.js`的大致框架
+
+```js
+import { useEffect, useRef } from 'react';
+import ChevronDown from '@/assets/fa-chevron-down.svg';
+import { CODE_BODY_INITIAL_MAX_HEIGHT } from '@/common/consts';
+
+export default function useCodeBlockSetup() {
+  const tpmMdContainerRef = useRef(null);
+
+  useEffect(() => {
+    const codeBlockWrapperSetup = () => {
+      tpmMdContainerRef.current?.querySelectorAll('.code-block-wrapper')?.forEach((codeBlockWrapper) => {
+        // 设置 code-block-wrapper 的样式
+      });
+
+      tpmMdContainerRef.current?.querySelectorAll('.code-block-wrapper .svg-wrapper')?.forEach((svgWrapper) => {
+        if (svgWrapper.children.length) {
+          return;
+        }
+        // 插入展开代码块的 svg 图标、注册点击事件
+      });
+
+      tpmMdContainerRef.current?.querySelectorAll('.code-block-wrapper .copy-button')?.forEach((button) => {
+        // 注册点击事件
+      });
+    };
+
+    codeBlockWrapperSetup();
+
+    const setupObserver = new MutationObserver(codeBlockWrapperSetup);
+    tpmMdContainerRef.current && setupObserver.observe(tpmMdContainerRef.current, {
+      subtree: true,
+      childList: true,
+    });
+
+    return () => {
+      setupObserver.disconnect();
+    };
+  }, []);
+
+  return tpmMdContainerRef;
+}
+```
+
+在`useEffect`里用`MutationObserver`是基础操作了，而对`tpmMdContainerRef.current`的操作就是在管理一个`Markdown`块下所有的`code-block-wrapper`。
+
+`MarkdownRenderer`调用：
+
+```jsx
+const tpmMdContainerRef = useCodeBlockSetup();
+<div ref={tpmMdContainerRef} />
+```
+
+
+
+### 【常规】让`code-block-wrapper`的样式与代码块保持一致
+
+我之前引用了`paraiso-light`主题，这个主题会设置代码块的背景色和默认文字颜色，所以我的`code-block-wrapper`需要拿到这个主题设置以后的CSS。这个活我认为只能用JS实现。
+
+```js
+const codeNode = codeBlockWrapper.querySelector('.highlighted-code');
+const codeNodeComputedStyle = getComputedStyle(codeNode, null);
+const codeNodeBgColor = codeNodeComputedStyle.getPropertyValue('background-color');
+const codeNodeColor = codeNodeComputedStyle.getPropertyValue('color');
+codeBlockWrapper.style.backgroundColor = codeNodeBgColor;
+codeBlockWrapper.style.color = codeNodeColor;
+```
+
+
 
 ### 【常规】展开、收起代码块支持过渡动画
 
@@ -693,13 +848,68 @@ TODO
 [`src\styles\code-block.scss`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/styles/code-block.scss)相关代码大致如下：
 
 ```scss
+.code-body {
+  // ...
+  transition: max-height 0.3s ease;
+  max-height: var(--code-body-initial-max-height);
+
+  .line-numbers-wrapper {
+    // ...
+  }
+
+  .code-pre {
+    flex: 1;
+    overflow-x: auto;
+
+    .highlighted-code {
+      max-height: var(--code-body-initial-max-height);
+      // pre code.hljs 已经设置 overflow-x ，在此把 x 和 y 的都写上了
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+  }
+}
+```
+
+然后在JS中（[`src\hooks\useCodeBlockSetup.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/hooks/useCodeBlockSetup.js)）：
+
+```js
+const img = document.createElement('img');
+img.classList.add('svg-wrapper-img');
+img.src = ChevronDown;
+img.addEventListener('click', () => {
+  const hasExpanded = img.classList.contains('expanded');
+  img.classList.toggle('expanded');
+
+  svgWrapper.title = hasExpanded ? '展开代码块' : '收起代码块';
+  const codeBody = targetCodeBlockWrapper.querySelector('.code-body');
+  if (!codeBody) return;
+  // 每行其实不到 28px ，但设置这个稍大的数并不太影响动画效果
+  const maxHeight = hasExpanded ? CODE_BODY_INITIAL_MAX_HEIGHT : (28 + targetCodeBlockWrapper.dataset.lineCount * 28);
+  codeBody.classList.toggle('expanded');
+  codeBody.style.maxHeight = `${maxHeight}px`;
+
+  const codeNode = codeBody.querySelector('.highlighted-code');
+  if (!codeNode) return;
+  codeNode.style.maxHeight = `${maxHeight}px`;
+});
+svgWrapper.appendChild(img);
+```
+
+### 复制按钮
+
+为了减轻工作量，我决定~~抄袭~~参考vitepress的源码。结合vitepress渲染出的HTML，不难定位到复制按钮的HTML位于[`src\node\markdown\plugins\preWrapper.ts`](https://github.com/vuejs/vitepress/blob/db58af5c66e563e7663084057a9853d8f2da984c/src/node/markdown/plugins/preWrapper.ts)，搜copied类名，不难定位到其CSS位于[`src\client\theme-default\styles\components\vp-doc.css`](https://github.com/vuejs/vitepress/blob/a64334753079a5b874a482508d9ee255d2a0ea38/src/client/theme-default/styles/components/vp-doc.css)。
+
+复制按钮的样式：
+
+```scss
 .copy-button {
   // 默认的 svg
   background-image: url("svg1");
 
-  // 复制成功的 svg
   &.copied {
     /*rtl:ignore*/
+    // 复制成功的 svg
     background-image: url("svg2");
   }
 
@@ -710,17 +920,64 @@ TODO
 }
 ```
 
+为了拿到原汁原味的代码，我们并没有直接取`code`标签的`innerText`，而是给button添加一个`data-code`属性。所以相关代码如下：
 
+```js
+button.addEventListener('click', () => {
+  const code = decodeURI(button.dataset.code);
+  navigator.clipboard.writeText(code);
+  button.classList.add('copied');
+  // 模仿 vitepress 2s 后由“已复制”恢复原状
+  setTimeout(() => button.classList.remove('copied'), 2000);
+});
+```
 
-### 复制按钮
+## 用插值算法确定网站的配色
 
-为了减轻工作量，我决定~~抄袭~~参考vitepress的源码。结合vitepress渲染出的HTML，不难定位到复制按钮的HTML位于[`src\node\markdown\plugins\preWrapper.ts`](https://github.com/vuejs/vitepress/blob/db58af5c66e563e7663084057a9853d8f2da984c/src/node/markdown/plugins/preWrapper.ts)，搜copied类名，不难定位到其CSS位于[`src\client\theme-default\styles\components\vp-doc.css`](https://github.com/vuejs/vitepress/blob/a64334753079a5b874a482508d9ee255d2a0ea38/src/client/theme-default/styles/components/vp-doc.css)。
+作为一名前端工程师，没有设计基础，确定网站的配色这件事还是有点伤脑筋。
+
+- 如果项目用到`antd`，那么不太需要思考这个问题，选背景色和字体就OK。
+- 如果项目用到`shadcn-ui`，那么可以去 https://tweakcn.com/ 找现成的主题。
+
+我的项目没有用以上组件库，但我们已经进入LLM时代，不妨借助LLM确定初始的网站样式风格。我目前采用的思路是：先让DeepSeek生成一个网站，看着样式OK，就用它的配色和字体了。之后再用**插值算法**确定一些配色的细节。
+
+DeepSeek给我生成了一个天蓝色（`b = RGB(178, 222, 236)`）背景的HTML，我的目标是确定导航栏等部分的配色。LLM生成的配色一般都是大渐变，我只要确定渐变的两端即可。我在DeepSeek的输出中找到了一种更鲜艳的天蓝色`#4cc9f0`，这个就作为起点，然后用下面这段代码在两者之间取点作为终点即可：
+
+```js
+function getGradientColor(color1, color2, percent) {
+  // HEX转RGB函数
+  const hexToRgb = hex =>
+    hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (_, r, g, b) => '#' + r + r + g + g + b + b)
+      .substring(1).match(/.{2}/g)
+      .map(x => parseInt(x, 16));
+
+  // RGB转HEX函数
+  const rgbToHex = (r, g, b) =>
+    '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+
+  const [r1, g1, b1] = hexToRgb(color1);
+  const [r2, g2, b2] = hexToRgb(color2);
+  const ratio = percent / 100;
+
+  const r = Math.round(r1 + (r2 - r1) * ratio);
+  const g = Math.round(g1 + (g2 - g1) * ratio);
+  const b = Math.round(b1 + (b2 - b1) * ratio);
+
+  return rgbToHex(r, g, b);
+}
+
+// 使用示例（获取50%位置的颜色）
+const midColor = getGradientColor('#4CA1A3', '#82CDE6', 50);
+console.log(midColor); // 输出 #67b7c5
+```
+
+这段代码也不需要自己写，只需要问DeepSeek要：“大佬，如何获得CSS线性渐变的两个颜色之间的某个颜色值？以background: linear-gradient(135deg, #4CA1A3 0%, #82CDE6 100%);为例。”
 
 ## 字体选择
 
 效果：
 
-![](./README_assets/3-字体展示.png)
+![3-字体展示.png](./README_assets/3-字体展示.png)
 
 我选择在body标签设置默认字体为“站酷快乐体”，标题标签h1到h6我则选择了“荆南波波黑”（来源都是： https://zhuanlan.zhihu.com/p/690446851/）。我觉得这两个字体的颜值都不错，但荆南波波黑默认就是加粗的，再设置加粗就会太拥挤了，所以我没有把它设为默认字体，而是仅用在标题。
 
@@ -770,6 +1027,94 @@ body {
 }
 ```
 
+## 【困难】类似于组件库文档展示部分源码的需求：在课件中展示GeoGebra的`appletOnLoad`的代码
+
+我的所有课件的`appletOnLoad`方法都是写在配置文件里的，因此我最开始采用了非常简单粗暴的实现（`src\component\teachingPlan\StandardPage.jsx`）：
+
+```jsx
+function Inner({ config }) {
+  // ...
+  const appletOnLoadCodeBlockList = useMemo(() => {
+    return config.geogebraSection.geogebraList.map((geogebra) => {
+      const appletOnLoadSrcCode = geogebra.config.appletOnLoad.toString();
+      const appletOnLoadFormattedCode = js_beautify(appletOnLoadSrcCode, JS_BEAUTIFY_OPTIONS);
+      const res = `
+\`\`\`js
+${appletOnLoadFormattedCode}
+\`\`\`
+`;
+      return res;
+    });
+  }, [config]);
+  // ...
+}
+```
+
+这个实现的问题是，开发阶段能拿到源码，但构建阶段源码被压缩了，信息丢失了。因此我打算写一个nodejs脚本（传送门：[`src\scripts\geogebra-src-code-collect.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/scripts/geogebra-src-code-collect.js)），用Babel读取这些配置文件，找到这些代码后把它们收集起来，放到一个叫`src\appletOnLoadCollection.js`的新文件里。简单总结一下想达到的效果：
+
+1. 收集所有`appletOnLoad`函数，生成`src\appletOnLoadCollection.js`。它是一个哈希表。
+2. 为了让`StandardPage.jsx`方便拿到代码，脚本需要自动修改课件配置文件，加上访问key（我命名为`appletOnLoadId`）。并且我们希望修改得尽量少，让git diff更好看。
+3. 监听课件配置文件的更改，自动执行以上流程。
+
+这个自然不可能古法手作，当然是让DeepSeek生成。我们最终确定的技术栈如下：
+
+1. 用Babel提取信息，但不能直接使用`@babel/generator`重新生成代码，因为会有大量git diff。我们需要以行或字符为单位，直接进行字符串拼接。为此，我们不得不依赖**文件的特定格式**，比如：每个键值对都单独占一行，且每个属性后都有逗号。幸好我们已经配置了eslint。
+2. 生成`src\appletOnLoadCollection.js`时，我们不妨对键排序，以减少git diff。
+3. 用`glob`定位所有的课件配置文件，用`chokidar`监听文件修改。
+
+代码总共有300多行，就不完整贴出来了。有兴趣的同学可查看：[`src\scripts\geogebra-src-code-collect.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/scripts/geogebra-src-code-collect.js)。
+
+最后还需要配个命令：
+
+```json
+"dev": "concurrently -n 'geog,vite' 'bun watch:geogebra' 'bunx --bun vite'",
+"watch:geogebra": "bun src/scripts/geogebra-src-code-collect.js",
+```
+
+我们希望同时执行vite命令和`watch:geogebra`命令，所以需要下一个叫`concurrently`的包：`bun add -D concurrently`。
+
+### vitest单测
+
+给DeepSeek的提示词：
+
+```markdown
+大佬，你是一名专家前端工程师，精通前端工程化。请叫我hans7。我有一个react + vite项目，有src\scripts\geogebra-src-code-collect.js代码如下：
+
+请编写里面除main函数以外的所有函数的单元测试。注意：框架为vitest。
+```
+
+它生成的代码挺敷衍的，但修改一下勉强能用。传送门：[`tests\geogebra-src-code-collect.test.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/tests/geogebra-src-code-collect.test.js)。
+
+如何mock模块：
+
+```js
+vi.mock('fs');
+vi.mock('path');
+vi.mock('glob');
+vi.mock('chokidar', () => ({
+  default: {
+    watch: vi.fn().mockImplementation(() => {
+      const ret = {};
+      ret.on = vi.fn().mockImplementation(() => {
+        return ret;
+      });
+      return ret;
+    }),
+  },
+}));
+vi.mock('js-beautify', () => ({
+  js_beautify: vi.fn().mockImplementation(code => `beautified(${code})`),
+}));
+
+  // describe 中：
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+```
+
+如何在VSCode中调试vitest：[参考链接2](https://cn.vitest.dev/guide/debugging)。打开一个新的`JavaScript Debug Terminal`，然后正常执行`bun run test`即可。
+
 ## 参考资料
 
-1. GeoGebra官方文档：https://geogebra.github.io/docs/reference/en/GeoGebra_Apps_Embedding/
+1. GeoGebra官方文档： https://geogebra.github.io/docs/reference/en/GeoGebra_Apps_Embedding/
+2. 如何在VSCode中调试vitest： https://cn.vitest.dev/guide/debugging

@@ -1,12 +1,115 @@
-import { FaBookOpen, FaGithub, FaLink, FaPuzzlePiece, FaReact } from 'react-icons/fa';
+import {
+  FaBlog,
+  FaBook,
+  FaCode,
+  FaDatabase,
+  FaDraftingCompass,
+  FaGem,
+  FaGithub,
+  FaInfoCircle,
+  FaKey,
+  FaLockOpen,
+  FaReact,
+  FaUser,
+} from 'react-icons/fa';
 import styles from './Navbar.module.scss';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import NavDropdown from './NavDropdown';
+
+const promptDisplayUrls = [
+  {
+    label: (
+      <>
+        <FaDatabase />
+        生成schema
+        <span className={cn(
+          'px-1.5 py-0.5 rounded-md text-xs font-semibold transition-colors duration-300',
+          'bg-red-400 text-white'
+        )}>
+          NEW
+        </span>
+      </>
+    ),
+    url: '/prompt-display-schema',
+  },
+  {
+    label: (
+      <>
+        <FaReact />
+        生成jsx
+      </>
+    ),
+    url: '/prompt-display-jsx',
+  },
+];
+
+const aboutUsUrls = [
+  {
+    label: (
+      <>
+        <FaGithub />
+        GitHub
+      </>
+    ),
+    url: 'https://github.com/Hans774882968',
+    openInNewTab: true,
+  },
+  {
+    label: (
+      <>
+        <FaLockOpen />
+        52破解
+      </>
+    ),
+    url: 'https://www.52pojie.cn/home.php?mod=space&uid=1906177',
+    openInNewTab: true,
+  },
+  {
+    label: (
+      <>
+        <FaGem />
+        掘金
+      </>
+    ),
+    url: 'https://juejin.cn/user/1464964842528888',
+    openInNewTab: true,
+  },
+  {
+    label: (
+      <>
+        <FaBlog />
+        CSDN
+      </>
+    ),
+    url: 'https://blog.csdn.net/hans774882968',
+    openInNewTab: true,
+  },
+];
+
+const aboutThisProjectUrls = [
+  {
+    label: (
+      <>
+        <FaBook />
+        开发笔记
+      </>
+    ),
+    url: '/tpm-dev-doc',
+  },
+  {
+    label: (
+      <>
+        <FaCode />
+        项目源码
+      </>
+    ),
+    url: 'https://github.com/Hans774882968/teaching-plan-analytic-geometry',
+    openInNewTab: true,
+  },
+];
 
 export default function Navbar() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   return (
     <nav className={cn(
       styles.navbar,
@@ -15,81 +118,29 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-2 md:space-x-4">
           <Link to="/" className="flex items-center space-x-2 md:space-x-4" rel="noopener noreferrer">
-            <div className="bg-white/[0.2] p-2 rounded-lg">
-              <FaBookOpen />
+            <div className={cn(styles.logoIcon, 'bg-white/[0.2] p-2 rounded-lg')}>
+              <FaDraftingCompass />
             </div>
-            <h1 className={cn(styles.logoText, 'p-2 rounded-lg font-bold hover:bg-white/[0.1]')}>
+            <h1 className={cn(styles.logoText, 'p-2 rounded-lg font-bold hover:bg-white/[0.2]')}>
               数学教案库
             </h1>
           </Link>
 
-          <div
-            className="relative"
-            onMouseEnter={() => setIsDropdownOpen(true)}
-            onMouseLeave={() => setIsDropdownOpen(false)}
-          >
-            <button
-              className={cn(
-                styles.linkBtn,
-                'flex items-center space-x-2 font-bold p-2 rounded-lg transition-colors duration-200 hover:bg-white/[0.1]'
-              )}
-            >
-              <span>提示词公开</span>
-            </button>
-
-            {isDropdownOpen && (
-              <div className="absolute top-full left-0 pt-4 bg-transparent">
-                <div className={cn(
-                  styles.navDropdown,
-                  'rounded-lg shadow-lg overflow-hidden min-w-50 border-2 border-white/20'
-                )}>
-                  <div className="text-base font-bold hover:bg-white/[0.2] transition-colors duration-200">
-                    <Link
-                      to="/prompt-display-schema"
-                      className={styles.navDropdownItem}
-                    >
-                      <FaPuzzlePiece />
-                      生成schema（新）
-                    </Link>
-                  </div>
-                  <div className="text-base font-bold hover:bg-white/[0.2] transition-colors duration-200 border-t-2 border-white">
-                    <Link
-                      to="/prompt-display-jsx"
-                      className={styles.navDropdownItem}
-                    >
-                      <FaReact />
-                      生成jsx（旧）
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+          <NavDropdown items={promptDisplayUrls}>
+            <FaKey />
+            <span>提示词公开</span>
+          </NavDropdown>
         </div>
 
         <div className="flex items-center space-x-4 md:space-x-8">
-          <Link
-            to="https://www.52pojie.cn/home.php?mod=space&uid=1906177"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              styles.linkBtn,
-              'p-2 rounded-lg flex items-center space-x-2 font-bold hover:bg-white/[0.1]'
-            )}>
-            <FaLink />
-            <span>52破解</span>
-          </Link>
-          <Link
-            to="https://github.com/Hans774882968/teaching-plan-analytic-geometry"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              styles.linkBtn,
-              'p-2 rounded-lg flex items-center space-x-2 font-bold hover:bg-white/[0.1]'
-            )}>
-            <FaGithub />
-            <span>项目源码</span>
-          </Link>
+          <NavDropdown items={aboutThisProjectUrls} navDropdownClasses="min-w-36">
+            <FaInfoCircle />
+            <span>关于此项目</span>
+          </NavDropdown>
+          <NavDropdown items={aboutUsUrls} navDropdownClasses="min-w-36">
+            <FaUser />
+            <span>我的个人主页</span>
+          </NavDropdown>
         </div>
       </div>
     </nav>

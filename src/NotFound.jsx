@@ -96,7 +96,7 @@ export default function NotFound() {
       <motion.div
         className={cn(styles.floating, 'absolute bottom-[10%] left-[10%]')}
         initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
+        animate={{ opacity: 0.5, scale: 1 }}
         transition={{ delay: 1.4, duration: 0.8 }}
       >
         <div className="w-14 h-14 transform rotate-45 border-4 border-purple-500 flex items-center justify-center text-purple-500">

@@ -2,6 +2,22 @@
   font-family: 'Zhan Ku Kuai Le Ti', 'Noto Sans SC', sans-serif;
 }
 
+.indexTitle {
+  animation: shake 2s infinite;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: scale(0.98);
+  }
+
+  50% {
+    transform: scale(1.02);
+  }
+}
+
 .lessonCard {
   transition: all 0.3s ease;
   border-left: 4px solid #4cc9f0;

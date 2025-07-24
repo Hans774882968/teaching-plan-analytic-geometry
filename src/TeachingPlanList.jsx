@@ -8,6 +8,7 @@ import {
   FaBookmark,
   FaChartLine,
 } from 'react-icons/fa';
+import { FaCircleDollarToSlot } from 'react-icons/fa6';
 import { cn } from '@/lib/utils';
 import { motion } from 'motion/react';
 import styles from './TeachingPlanList.module.scss';
@@ -184,7 +185,7 @@ export default function TeachingPlanList() {
             <FaDraftingCompass className="text-2xl" />
           </div>
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+        <h1 className={cn(styles.indexTitle, 'text-4xl md:text-5xl font-bold text-gray-800 mb-4')}>
           数学<span className="text-blue-600">教案</span>库
         </h1>
         <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
@@ -278,7 +279,7 @@ export default function TeachingPlanList() {
         )}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 0.3, scale: 1 }}
-        transition={{ delay: 0.6, duration: 0.8 }}
+        transition={{ delay: 0.3, duration: 0.4 }}
       />
       <motion.div
         className={cn(
@@ -287,7 +288,7 @@ export default function TeachingPlanList() {
         )}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 0.3, scale: 1 }}
-        transition={{ delay: 0.6, duration: 0.8 }}
+        transition={{ delay: 0.3, duration: 0.4 }}
       />
       <motion.div
         className={cn(
@@ -296,26 +297,36 @@ export default function TeachingPlanList() {
         )}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 0.3, scale: 1 }}
-        transition={{ delay: 0.6, duration: 0.8 }}
+        transition={{ delay: 0.3, duration: 0.4 }}
       />
       <motion.div
         className={cn(styles.floating, 'fixed top-2/3 left-[5%]')}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 0.3, scale: 1 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
+        transition={{ delay: 0.6, duration: 0.4 }}
       >
         <div className="flex items-center justify-center text-blue-500">
           <FaCube className="text-2xl" />
         </div>
       </motion.div>
       <motion.div
-        className={cn(styles.floating, 'fixed top-1/3 right-[5%]')}
+        className={cn(styles.floating, 'fixed top-1/2 right-[10%]')}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 0.3, scale: 1 }}
-        transition={{ delay: 1.6, duration: 0.8 }}
+        transition={{ delay: 0.6, duration: 0.4 }}
+      >
+        <div className="flex items-center justify-center text-blue-500">
+          <FaDraftingCompass className="text-2xl" />
+        </div>
+      </motion.div>
+      <motion.div
+        className={cn(styles.floating, 'fixed top-1/3 right-[5%]')}
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 0.5, scale: 1 }}
+        transition={{ delay: 0.6, duration: 0.4 }}
       >
         <div className="rounded-lg flex items-center justify-center text-purple-300">
-          <FaCircle className="text-xl" />
+          <FaCircleDollarToSlot className="text-2xl" />
         </div>
       </motion.div>
     </div>

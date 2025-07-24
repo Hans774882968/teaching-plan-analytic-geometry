@@ -1,15 +1,11 @@
 .code-block-wrapper {
   --code-divider-color: #c5c5c5;
   --code-line-numbers-width: 32px;
-  --code-bg: #e7e9db; // TODO
-  --code-color: #4f424c; // TODO
   --code-line-height: 1.7;
   --code-font-size: 14px;
   --code-copy-btn-radius: 4px;
   --code-body-initial-max-height: 64px;
 
-  background-color: var(--code-bg);
-  color: var(--code-color);
   border-radius: 1rem;
   overflow: hidden;
   line-height: var(--code-line-height);
@@ -86,8 +82,6 @@
         text-align: center;
         font-size: 12px;
         font-weight: 500;
-        color: var(--code-color);
-        background-color: var(--code-bg);
         white-space: nowrap;
         content: '已复制';
       }

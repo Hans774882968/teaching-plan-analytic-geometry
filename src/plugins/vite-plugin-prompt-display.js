@@ -1,16 +1,11 @@
-import fs from 'fs';
 import path from 'path';
+import { getEncodedFileContent, serverNotifyReload } from './utils';
 
 const genSchemaPromptPath = path.resolve(process.cwd(), 'docs', '新课件提示词', '生成schema.md');
 const genSchemaRelativePath = path.relative(process.cwd(), genSchemaPromptPath);
 const genJsxPromptPath = path.resolve(process.cwd(), 'docs', '新课件提示词', '生成jsx.md');
 const genJsxRelativePath = path.relative(process.cwd(), genJsxPromptPath);
 const promptFilePaths = [genSchemaPromptPath, genJsxPromptPath];
-
-function getEncodedPromptContent(filePath) {
-  const content = fs.readFileSync(filePath, 'utf-8');
-  return encodeURI(content);
-}
 
 export default function promptDisplayPlugin() {
   const virtualModuleId = 'virtual:prompt-display';
@@ -29,17 +24,7 @@ export default function promptDisplayPlugin() {
         if (!promptFilePaths.includes(file)) {
           return;
         }
-        // 1. 使虚拟模块缓存失效
-        const module = server.moduleGraph.getModuleById(resolvedVirtualModuleId);
-        if (module) {
-          server.moduleGraph.invalidateModule(module);
-        }
-
-        // 2. 通知客户端重新加载模块
-        server.ws.send({
-          type: 'full-reload',
-          path: '*',
-        });
+        serverNotifyReload(server, resolvedVirtualModuleId);
 
         console.log('[tpm] 📄 提示词文件更新', file);
       });
@@ -49,8 +34,8 @@ export default function promptDisplayPlugin() {
     },
     load(id) {
       if (id === resolvedVirtualModuleId) {
-        const genSchemaPromptContent = getEncodedPromptContent(genSchemaPromptPath);
-        const genJsxPromptContent = getEncodedPromptContent(genJsxPromptPath);
+        const genSchemaPromptContent = getEncodedFileContent(genSchemaPromptPath);
+        const genJsxPromptContent = getEncodedFileContent(genJsxPromptPath);
 
         return `
           export const genSchemaRelativePath = String.raw\`${genSchemaRelativePath}\`;

@@ -266,7 +266,7 @@ export default {
   footer: {
     info: (
       <div>
-        <p>© 2025 数学侦探社 | 制作：Hans7</p>
+        <p>© 2025 数学侦探社 | 制作：DeepSeek老师</p>
         <p>学习伙伴：名侦探柯南</p>
       </div>
     ),
