@@ -6,6 +6,8 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -30,12 +32,15 @@ jobs:
         bun install
 
     - name: Build Project
-      run:
+      run: |
         bun run build
+      env:
+        # TODO: try to make vars.VITE_DEPLOY_TARGET accessible
+        VITE_DEPLOY_TARGET: ${{ vars.VITE_DEPLOY_TARGET || 'github-pages' }}
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./dist
-        commit_message: "Deploy tpm - $(date +'%Y-%m-%d')"
+        commit_message: "Deploy tpm - ${{ github.event.head_commit.message }}"

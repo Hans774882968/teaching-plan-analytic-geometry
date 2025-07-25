@@ -15,6 +15,10 @@
 
 注意：为了减少该项目的占用空间，本项目并未包含GeoGebra源码。如果想要在本地跑起来这个项目，请自行下载[GeoGebra Math Apps Bundle](https://download.geogebra.org/package/geogebra-math-apps-bundle)，并复制里面的web3d文件夹和css文件夹到本项目的`public\geogebra`。
 
+### 250726：本项目已部署到 GitHub Pages
+
+[传送门](https://hans774882968.github.io/teaching-plan-analytic-geometry)。欢迎参观~
+
 现阶段的整体效果：
 
 ![5-现阶段的整体效果.png](./README_assets/5-现阶段的整体效果.png)
@@ -179,7 +183,26 @@ return k;
 
 我们把它改成`k = e(o.location.href + 'geogebra/web3d/');`，问题解决！
 
-250629更新：接入react-router后，需要改为`k = e('/geogebra/web3d/');`。
+#### 250629更新
+
+接入react-router后，需要改为`k = e('/geogebra/web3d/');`。
+
+#### 250726更新
+
+为了能够部署到GitHub Pages，我们进一步更新为：`k = e(window.GGB_WEB3D_NO_CACHE_BASE_PATH);`。这个全局变量我们约定在`main.jsx`设置：
+
+```js
+window.GGB_WEB3D_NO_CACHE_BASE_PATH = getGeogebraHTML5Codebase();
+
+// src\lib\getWebsiteBasePath.js
+export function getGeogebraHTML5Codebase() {
+  const isGitHubPages = import.meta.env.VITE_DEPLOY_TARGET === 'github-pages';
+  const codebase = isGitHubPages ? `${GITHUB_PAGE_BASE}geogebra/web3d/` : '/geogebra/web3d/';
+  return codebase;
+}
+```
+
+详见后文《部署到GitHub Pages》一节。
 
 之后发现，控制台没有报错了，但样式不对劲。这是因为它请求了`geogebra/css/...`。所以我们不能只复制web3d文件夹，还要把同级的css文件夹复制过去。至此搞定！
 
@@ -1007,7 +1030,7 @@ function downloadCode(codeBlockWrapper) {
 
 Tailwind可以引用CSS变量，在`src\index.css`配一下就行。
 
-### `hljsLangToExtName`函数：将`highlight.js`的`language`信息转为恰当的文件后缀名
+### 【简单】`hljsLangToExtName`函数：将`highlight.js`的`language`信息转为恰当的文件后缀名
 
 DeepSeek给了我两个方案：
 
@@ -1220,7 +1243,157 @@ vi.mock('js-beautify', () => ({
 
 如何在VSCode中调试vitest：[参考链接2](https://cn.vitest.dev/guide/debugging)。打开一个新的`JavaScript Debug Terminal`，然后正常执行`bun run test`即可。
 
+## 【常规】部署到 GitHub Pages
+
+GitHub Pages不是部署到根路径的，而是部署到你的仓库名的。以我的项目为例，我项目的访问URL将是：`https://hans774882968.github.io/teaching-plan-analytic-geometry`。所以：
+
+1. vite项目需要修改`base`为`/teaching-plan-analytic-geometry/`。
+2. 项目用到了`react-router-dom`，所以我们需要传入`basename`为`/teaching-plan-analytic-geometry/`。
+3. GeoGebra的codebase也需要相应地更改。
+
+我希望可随时通过环境变量切换是部署到根路径，还是部署到仓库名。并且希望代码容易测试，所以抽象了一个公共文件[`src\lib\getWebsiteBasePath.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/lib/getWebsiteBasePath.js)。
+
+```js
+const GITHUB_PAGE_BASE = '/teaching-plan-analytic-geometry/';
+
+export function getWebsiteBasePath() {
+  const isGitHubPages = import.meta.env.VITE_DEPLOY_TARGET === 'github-pages';
+  const basePath = isGitHubPages ? GITHUB_PAGE_BASE : '/';
+  return basePath;
+}
+
+export function getGeogebraHTML5Codebase() {
+  const isGitHubPages = import.meta.env.VITE_DEPLOY_TARGET === 'github-pages';
+  const codebase = isGitHubPages ? `${GITHUB_PAGE_BASE}geogebra/web3d/` : '/geogebra/web3d/';
+  return codebase;
+}
+```
+
+
+
+### `vite.config.js`修改`base`
+
+```js
+export default defineConfig(() => {
+  const basePath = getWebsiteBasePath();
+
+  console.log(`[tpm] Base path: ${basePath}`);
+
+  return {
+    base: basePath,
+  };
+});
+```
+
+### `react-router-dom`传入`basename`
+
+```js
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+const basePath = getWebsiteBasePath();
+<Router basename={basePath} />
+```
+
+### 修改GeoGebra的codebase
+
+`src\component\Geogebra.jsx`：
+
+```js
+const ggbApp = new window.GGBApplet(parameter, true);
+ggbApp.setHTML5Codebase(ggbHTML5Codebase);
+```
+
+我们还需要修改上文提到的`k = e('...')`这句话。但这句话在静态资源中，无法直接拿到环境变量。所以我采用最简单粗暴的做法：用全局变量通信。首先在`src\main.jsx`写入环境变量：
+
+```js
+window.GGB_WEB3D_NO_CACHE_BASE_PATH = getGeogebraHTML5Codebase();
+
+// src\lib\getWebsiteBasePath.js
+export function getGeogebraHTML5Codebase() {
+  const isGitHubPages = import.meta.env.VITE_DEPLOY_TARGET === 'github-pages';
+  const codebase = isGitHubPages ? `${GITHUB_PAGE_BASE}geogebra/web3d/` : '/geogebra/web3d/';
+  return codebase;
+}
+```
+
+然后在`web3d.nocache.js`中引用：
+
+```js
+k = e(window.GGB_WEB3D_NO_CACHE_BASE_PATH);
+```
+
+### 调试踩坑：环境变量问题
+
+做完上面3步以后，这个项目的开发阶段和打包产物应该都是OK的，`bun preview`也能正常执行。如果踩坑，那就是因为环境变量没有配置好。
+
+接下来配置[`.github\workflows\main.yml`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/.github/workflows/main.yml)：
+
+```yaml
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Setup Bun
+      run: npm install -g bun
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Fetch geogebra assets
+      run: |
+        git clone https://github.com/Hans774882968/geogebra-resource.git temp_geogebra
+        mkdir -p public/geogebra
+        cp -r temp_geogebra/* public/geogebra/
+        rm -rf temp_geogebra
+
+    - name: Install dependencies
+      run:
+        bun install
+
+    - name: Build Project
+      run: |
+        bun run build
+      env:
+        # TODO: 不知道为什么配置了 GitHub Pages 的 environment  variables 以后，这里还是拿不到。暂且这么写着兜底
+        VITE_DEPLOY_TARGET: ${{ vars.VITE_DEPLOY_TARGET || 'github-pages' }}
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist
+        commit_message: "Deploy tpm - ${{ github.event.head_commit.message }}"
+```
+
+知识点：
+
+1. `name`可以自定义一个步骤。在这里写我们的`bun run build`之类的命令。
+2. `jobs`下一个job的名字可以任取，但一般是叫`build`或`build-and-deploy`。
+3. 为了将`public\geogebra`复制到部署服务器的对应文件夹下，我采用的解决方案是：新建一个独立的仓库，然后在部署阶段手动复制过去。相关命令：
+
+```bash
+git clone https://github.com/Hans774882968/geogebra-resource.git temp_geogebra
+mkdir -p public/geogebra
+cp -r temp_geogebra/* public/geogebra/
+rm -rf temp_geogebra
+```
+
+最后根据[参考链接3](https://blog.csdn.net/qq_20042935/article/details/133920722)，设置一下开源项目的GitHub Pages和Environments tab里的environment  variables。刷新一下就OK~
+
 ## 参考资料
 
 1. GeoGebra官方文档： https://geogebra.github.io/docs/reference/en/GeoGebra_Apps_Embedding/
 2. 如何在VSCode中调试vitest： https://cn.vitest.dev/guide/debugging
+3. 保姆级教程：从零构建GitHub Pages静态网站： https://blog.csdn.net/qq_20042935/article/details/133920722
+

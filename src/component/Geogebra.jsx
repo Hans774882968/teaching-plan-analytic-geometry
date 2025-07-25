@@ -1,6 +1,9 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import styles from './Geogebra.module.scss';
 import { cn } from '@/lib/utils';
+import { getGeogebraHTML5Codebase } from '../lib/getWebsiteBasePath';
+
+const ggbHTML5Codebase = getGeogebraHTML5Codebase();
 
 const Geogebra = (props) => {
   const defaultProps = {
@@ -43,7 +46,7 @@ const Geogebra = (props) => {
       const parameter = JSON.parse(JSON.stringify(refProps.current));
       parameter.appletOnLoad = onAppletReady;
       const ggbApp = new window.GGBApplet(parameter, true);
-      ggbApp.setHTML5Codebase('/geogebra/web3d/');
+      ggbApp.setHTML5Codebase(ggbHTML5Codebase);
       ggbApp.inject(id);
       setWatchPropsChange(false);
       debug &&

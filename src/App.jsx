@@ -21,6 +21,7 @@ import Layout from './component/layout/Layout';
 import PromptDisplaySchema from './promptDisplay/promptDisplaySchema';
 import PromptDisplayJsx from './promptDisplay/promptDisplayJsx';
 import ReadmeDisplay from './readmeDisplay/ReadmeDisplay';
+import { getWebsiteBasePath } from './lib/getWebsiteBasePath';
 
 const routes = [
   { path: '/', element: <TeachingPlanList /> },
@@ -44,10 +45,12 @@ const routes = [
   { path: '*', element: <NotFound /> },
 ];
 
+const basePath = getWebsiteBasePath();
+
 function App() {
   return (
     <HelmetProvider>
-      <Router>
+      <Router basename={basePath}>
         <Toaster
           position='top-center'
           toastOptions={{

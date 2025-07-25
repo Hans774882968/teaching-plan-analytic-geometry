@@ -26,3 +26,5 @@ dist-ssr
 # custom
 public/geogebra
 tests/__snapshots__
+
+.env*
