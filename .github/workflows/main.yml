@@ -12,6 +12,9 @@ jobs:
       with:
         node-version: 20
 
+    - name: Setup Bun
+      run: npm install -g bun
+
     - name: Checkout
       uses: actions/checkout@v4
 

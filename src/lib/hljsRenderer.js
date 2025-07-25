@@ -23,13 +23,16 @@ export default {
     const lineNumbersHtml = getLineNumbersHtml(lineLength);
 
     return `
-<div class="code-block-wrapper" data-line-count="${lineLength}">
+<div class="code-block-wrapper" data-language="${language}" data-line-count="${lineLength}">
   <div class="code-header">
     <div class="header-left-part">
-      <div class="svg-wrapper" title="展开代码块"></div>
+      <div class="svg-chevron-down-wrapper" title="展开代码块"></div>
       <span class="language-tag">${language}</span>
     </div>
-    <button title="复制代码" class="copy-button" data-code="${dataCode}" />
+    <div class="header-right-part">
+      <button title="复制代码" class="copy-button" data-code="${dataCode}"></button>
+      <div class="svg-download-wrapper" title="下载代码"></div>
+    </div>
   </div>
   <div class="code-body">
     ${lineNumbersHtml}

@@ -705,7 +705,7 @@ export function hookGetEleById() {
 
 另外，上面设置的`marginTop`是为了照顾问题和答案之间的分割线。
 
-## 【困难】Markdown 代码块交互升级：展示行号、支持展开代码块、复制代码
+## 【困难】Markdown 代码块交互升级：展示行号、支持展开代码块、复制代码、下载代码
 
 效果：
 
@@ -743,13 +743,16 @@ export default {
     const lineNumbersHtml = getLineNumbersHtml(lineLength);
 
     return `
-<div class="code-block-wrapper" data-line-count="${lineLength}">
+<div class="code-block-wrapper" data-language="${language}" data-line-count="${lineLength}">
   <div class="code-header">
     <div class="header-left-part">
-      <div class="svg-wrapper" title="展开代码块"></div>
+      <div class="svg-chevron-down-wrapper" title="展开代码块"></div>
       <span class="language-tag">${language}</span>
     </div>
-    <button title="复制代码" class="copy-button" data-code="${dataCode}" />
+    <div class="header-right-part">
+      <button title="复制代码" class="copy-button" data-code="${dataCode}"></button>
+      <div class="svg-download-wrapper" title="下载代码"></div>
+    </div>
   </div>
   <div class="code-body">
     ${lineNumbersHtml}
@@ -760,7 +763,7 @@ export default {
 };
 ```
 
-在renderer里拼接一大段HTML确实挺难绷的，而且有XSS风险，但我确实没找到能在React中优雅地完成这件事的方案。可以看到我在上面设置了一个留空的`svg-wrapper`，这是为了方便JS插入“展开代码块”的svg图标。
+在renderer里拼接一大段HTML确实挺难绷的，而且有XSS风险，但我确实没找到能在React中优雅地完成这件事的方案。可以看到我在上面设置了一个留空的`svg-chevron-down-wrapper`，这是为了方便JS插入“展开代码块”的svg图标。
 
 1. 为了给这些HTML代码加上CSS，我写了[`src\styles\code-block.scss`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/styles/code-block.scss)，供入口`main.jsx`调用。
 2. 为了实现复制代码等功能，我们需要写大段大段的原生JS。为此，我们写一个自定义hook（[`src\hooks\useCodeBlockSetup.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/hooks/useCodeBlockSetup.js)），供`MarkdownRenderer`组件调用。
@@ -781,8 +784,8 @@ export default function useCodeBlockSetup() {
         // 设置 code-block-wrapper 的样式
       });
 
-      tpmMdContainerRef.current?.querySelectorAll('.code-block-wrapper .svg-wrapper')?.forEach((svgWrapper) => {
-        if (svgWrapper.children.length) {
+      tpmMdContainerRef.current?.querySelectorAll('.code-block-wrapper .svg-chevron-down-wrapper')?.forEach((svgChevronDownWrapper) => {
+        if (svgChevronDownWrapper.children.length) {
           return;
         }
         // 插入展开代码块的 svg 图标、注册点击事件
@@ -875,13 +878,13 @@ codeBlockWrapper.style.color = codeNodeColor;
 
 ```js
 const img = document.createElement('img');
-img.classList.add('svg-wrapper-img');
+img.classList.add('svg-chevron-down-wrapper-img');
 img.src = ChevronDown;
 img.addEventListener('click', () => {
   const hasExpanded = img.classList.contains('expanded');
   img.classList.toggle('expanded');
 
-  svgWrapper.title = hasExpanded ? '展开代码块' : '收起代码块';
+  svgChevronDownWrapper.title = hasExpanded ? '展开代码块' : '收起代码块';
   const codeBody = targetCodeBlockWrapper.querySelector('.code-body');
   if (!codeBody) return;
   // 每行其实不到 28px ，但设置这个稍大的数并不太影响动画效果
@@ -893,10 +896,10 @@ img.addEventListener('click', () => {
   if (!codeNode) return;
   codeNode.style.maxHeight = `${maxHeight}px`;
 });
-svgWrapper.appendChild(img);
+svgChevronDownWrapper.appendChild(img);
 ```
 
-### 复制按钮
+### 【常规】复制按钮
 
 为了减轻工作量，我决定~~抄袭~~参考vitepress的源码。结合vitepress渲染出的HTML，不难定位到复制按钮的HTML位于[`src\node\markdown\plugins\preWrapper.ts`](https://github.com/vuejs/vitepress/blob/db58af5c66e563e7663084057a9853d8f2da984c/src/node/markdown/plugins/preWrapper.ts)，搜copied类名，不难定位到其CSS位于[`src\client\theme-default\styles\components\vp-doc.css`](https://github.com/vuejs/vitepress/blob/a64334753079a5b874a482508d9ee255d2a0ea38/src/client/theme-default/styles/components/vp-doc.css)。
 
@@ -931,6 +934,109 @@ button.addEventListener('click', () => {
   setTimeout(() => button.classList.remove('copied'), 2000);
 });
 ```
+
+### 【常规】下载代码
+
+我们发现 [DeepSeek官网](https://chat.deepseek.com/) 的Markdown代码块有一个“下载”按钮，我们不妨也实现一个。[`src\hooks\useCodeBlockSetup.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/hooks/useCodeBlockSetup.js)：
+
+```js
+tpmMdContainerRef.current?.querySelectorAll('.code-block-wrapper')?.forEach((codeBlockWrapper) => {
+  const downloadWrapper = codeBlockWrapper.querySelector('.svg-download-wrapper');
+  if (downloadWrapper.children.length) {
+    return;
+  }
+
+  const img = document.createElement('img');
+  img.classList.add('svg-download-wrapper-img');
+  img.src = DownloadSvg;
+  img.addEventListener('click', () => {
+    downloadCode(codeBlockWrapper);
+  });
+  downloadWrapper.appendChild(img);
+});
+```
+
+`downloadCode`函数把字符串装进`Blob`里，然后创建`a`标签、设置`download`属性，属于模板了，已经刻在每一位前端工程师的DNA里。
+
+```js
+function downloadCode(codeBlockWrapper) {
+  const copyBtn = codeBlockWrapper.querySelector('.copy-button');
+  if (!copyBtn) {
+    console.error('[tpm] failed to find .copy-button');
+    return;
+  }
+  const language = codeBlockWrapper.dataset.language;
+  const extName = hljsLangToExtName(language);
+  const code = decodeURI(copyBtn.dataset.code);
+  const blob = new Blob([code], { type: 'text/plain' });
+  const downloadUrl = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = downloadUrl;
+  a.download = `tpm-${document.title}.${extName}`;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(downloadUrl);
+    toast.success('下载成功！');
+  }, 100);
+}
+```
+
+这里用到`sonner`包的`toast`实现消息提示，以及`hljsLangToExtName`函数获取正确的文件后缀名，我将在下面两个小节分别细讲。
+
+### 【常规】`sonner`包配置
+
+查[`sonner`官方文档](https://sonner.emilkowal.ski/styling)可知，可以用`style`配外层盒子的样式，用`classNames`写Tailwind CSS可以配置里面各个UI元素的样式。
+
+```jsx
+<Toaster
+  position='top-center'
+  toastOptions={{
+    style: {
+      color: 'white',
+      backgroundColor: 'var(--vivid-blue-bg)',
+      borderColor: '#4cc9f0',
+    },
+    classNames: {
+      title: '!font-(family-name:--tpm-font-family) !font-bold !text-base',
+    },
+  }}
+/>
+```
+
+Tailwind可以引用CSS变量，在`src\index.css`配一下就行。
+
+### `hljsLangToExtName`函数：将`highlight.js`的`language`信息转为恰当的文件后缀名
+
+DeepSeek给了我两个方案：
+
+- [language-map](https://github.com/blakeembrey/language-map)
+- [mime-types](https://github.com/jshttp/mime-types)
+
+前者不符合我需求，后者OK。[`src\lib\hljsLangToExtName.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/lib/hljsLangToExtName.js)：
+
+```js
+import mimeTypes from 'mime-types';
+
+export default function hljsLangToExtName(language) {
+  const contentType = mimeTypes.lookup(language) || 'txt';
+  const extName = mimeTypes.extension(contentType) || 'txt';
+  return extName;
+}
+```
+
+直接运行会遇到报错：`extname`未定义。稍微瞟一眼源码，不难发现是因为在浏览器环境引用了node环境的`path`包。`bun add -D vite-ping-plan-analytic-geometry`，然后配置一下`polyfill`即可：
+
+```js
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
+
+plugins: [
+  nodePolyfills(),
+]
+```
+
+
 
 ## 用插值算法确定网站的配色
 

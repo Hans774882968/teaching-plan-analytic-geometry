@@ -85,15 +85,15 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 import TeX from '@matejmazur/react-katex';
 
 knowledgePointSection: {
-    title: String.raw`📚 核心知识点`,
-    points: [
-      {
-        title: String.raw`⚡ 椭圆的标准方程`,
-        content: (
-          <p>椭圆的标准方程为：<TeX>{String.raw`\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1`}</TeX></p>
-        )
-      }
-    ]
+  title: String.raw`📚 核心知识点`,
+  points: [
+    {
+      title: String.raw`⚡ 椭圆的标准方程`,
+      content: (
+        <p>椭圆的标准方程为：<TeX>{String.raw`\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1`}</TeX></p>
+      )
+    }
+  ]
 }
 ```
 

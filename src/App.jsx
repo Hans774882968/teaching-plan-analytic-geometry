@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import 'katex/dist/katex.min.css';
+import { Toaster } from 'sonner';
 import TeachingPlanList from './TeachingPlanList';
 import NotFound from './NotFound';
 import RotationDefinition from './rotation/RotationDefinition';
@@ -47,6 +48,19 @@ function App() {
   return (
     <HelmetProvider>
       <Router>
+        <Toaster
+          position='top-center'
+          toastOptions={{
+            style: {
+              color: 'white',
+              backgroundColor: 'var(--vivid-blue-bg)',
+              borderColor: '#4cc9f0',
+            },
+            classNames: {
+              title: '!font-(family-name:--tpm-font-family) !font-bold !text-base',
+            },
+          }}
+        />
         <Layout>
           <Routes>
             {

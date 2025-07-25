@@ -7,6 +7,7 @@
   --background: RGB(178, 222, 236);
   --section-bg: RGB(130, 205, 230);
   --card-bg: rgba(255, 255, 255, 0.8);
+  --vivid-blue-bg: linear-gradient(135deg, #4cc9f0, #77cce8);
   --text-dark: #2D3748;
   --text-light: #FFFFFF;
   --border-radius: 16px;
@@ -15,10 +16,14 @@
   --transition: all 0.3s ease;
   --title-size: 2.5rem;
   --section-title-size: 1.8rem;
+
+  --tpm-font-family: 'Zhan Ku Kuai Le Ti', 'Fredoka One', sans-serif;
+  --index-404-font-family: 'Zhan Ku Kuai Le Ti', 'Noto Sans SC', sans-serif;
+  --standard-page-title-font-family: 'Jing Nan Bo Bo Hei', 'Fredoka One', cursive;
 }
 
 body {
-  font-family: 'Zhan Ku Kuai Le Ti', 'Fredoka One', sans-serif;
+  font-family: var(--tpm-font-family);
   background-color: var(--background);
   color: #333;
   overflow-x: hidden;

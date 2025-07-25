@@ -5,6 +5,7 @@
   --code-font-size: 14px;
   --code-copy-btn-radius: 4px;
   --code-body-initial-max-height: 64px;
+  --code-hljs-padding: 1em;
 
   border-radius: 1rem;
   overflow: hidden;
@@ -16,19 +17,21 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 1rem 0.5rem 0.5rem;
+    padding: 0.5rem 1.5rem 0.5rem 0;
     border-bottom: 1px solid var(--code-divider-color);
 
     .header-left-part {
       display: flex;
       align-items: center;
-      gap: 26px;
+      gap: var(--code-hljs-padding);
 
-      .svg-wrapper {
-        padding-left: 2px;
-        cursor: pointer;
+      .svg-chevron-down-wrapper {
+        display: flex;
+        justify-content: center;
+        width: var(--code-line-numbers-width);
 
-        .svg-wrapper-img {
+        .svg-chevron-down-wrapper-img {
+          cursor: pointer;
           width: 12px;
           transform: rotate(0deg);
           transition: transform 0.3s ease;
@@ -45,45 +48,57 @@
       }
     }
 
-    .copy-button {
-      border: 1px solid var(--code-divider-color);
-      border-radius: 4px;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='rgba(128,128,128,1)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3C/svg%3E");
-      background-position: 50%;
-      background-size: 16px;
-      background-repeat: no-repeat;
-      transition: border-color 0.25s, background-color 0.25s, opacity 0.25s;
+    .header-right-part {
+      display: flex;
+      align-items: center;
+      gap: 24px;
 
-      &.copied {
-        /*rtl:ignore*/
-        border-radius: 0 var(--code-copy-btn-radius) var(--code-copy-btn-radius) 0;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='rgba(128,128,128,1)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3Cpath d='m9 14 2 2 4-4'/%3E%3C/svg%3E");
+      .svg-download-wrapper {
+        .svg-download-wrapper-img {
+          cursor: pointer;
+        }
       }
 
-      &.copied::before {
-        position: relative;
-        top: -1px;
-        /*rtl:ignore*/
-        transform: translateX(calc(-100% - 1px));
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      .copy-button {
         border: 1px solid var(--code-divider-color);
-        /*rtl:ignore*/
-        border-right: 0;
-        /*rtl:ignore*/
-        border-radius: 4px 0 0 4px;
-        padding: 0 10px;
-        width: fit-content;
+        border-radius: 4px;
+        width: 32px;
         height: 32px;
-        text-align: center;
-        font-size: 12px;
-        font-weight: 500;
-        white-space: nowrap;
-        content: '已复制';
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='rgba(128,128,128,1)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3C/svg%3E");
+        background-position: 50%;
+        background-size: 16px;
+        background-repeat: no-repeat;
+        transition: border-color 0.25s, background-color 0.25s, opacity 0.25s;
+
+        &.copied {
+          /*rtl:ignore*/
+          border-radius: 0 var(--code-copy-btn-radius) var(--code-copy-btn-radius) 0;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='rgba(128,128,128,1)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3Cpath d='m9 14 2 2 4-4'/%3E%3C/svg%3E");
+        }
+
+        &.copied::before {
+          position: relative;
+          top: -1px;
+          /*rtl:ignore*/
+          transform: translateX(calc(-100% - 1px));
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: 1px solid var(--code-divider-color);
+          /*rtl:ignore*/
+          border-right: 0;
+          /*rtl:ignore*/
+          border-radius: 4px 0 0 4px;
+          padding: 0 10px;
+          width: fit-content;
+          height: 32px;
+          text-align: center;
+          font-size: 12px;
+          font-weight: 500;
+          white-space: nowrap;
+          content: '已复制';
+        }
       }
     }
   }
@@ -95,7 +110,7 @@
 
     .line-numbers-wrapper {
       border-right: 1px solid var(--code-divider-color);
-      padding: 1em 0;
+      padding: var(--code-hljs-padding) 0;
       width: var(--code-line-numbers-width);
       text-align: center;
       transition: border-color 0.5s, color 0.5s;
