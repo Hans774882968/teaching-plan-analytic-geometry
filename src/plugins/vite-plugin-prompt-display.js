@@ -33,18 +33,19 @@ export default function promptDisplayPlugin() {
       if (id === virtualModuleId) return resolvedVirtualModuleId;
     },
     load(id) {
-      if (id === resolvedVirtualModuleId) {
-        const genSchemaPromptContent = getEncodedFileContent(genSchemaPromptPath);
-        const genJsxPromptContent = getEncodedFileContent(genJsxPromptPath);
-
-        return `
-          export const genSchemaRelativePath = String.raw\`${genSchemaRelativePath}\`;
-          export const genJsxRelativePath = String.raw\`${genJsxRelativePath}\`;
-
-          export const genSchemaPrompt = decodeURI(\`${genSchemaPromptContent}\`);
-          export const genJsxPrompt = decodeURI(\`${genJsxPromptContent}\`);
-        `.trim();
+      if (id !== resolvedVirtualModuleId) {
+        return;
       }
+      const genSchemaPromptContent = getEncodedFileContent(genSchemaPromptPath);
+      const genJsxPromptContent = getEncodedFileContent(genJsxPromptPath);
+
+      return `
+export const genSchemaRelativePath = String.raw\`${genSchemaRelativePath}\`;
+export const genJsxRelativePath = String.raw\`${genJsxRelativePath}\`;
+
+export const genSchemaPrompt = decodeURI(\`${genSchemaPromptContent}\`);
+export const genJsxPrompt = decodeURI(\`${genJsxPromptContent}\`);
+      `.trim();
     },
   };
 }

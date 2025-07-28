@@ -1,6 +1,5 @@
-// 配色来自 antd primary
 .tpButton {
-  background-color: #1677ff;
+  background-color: var(--tpm-btn-primary-bg);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -13,7 +12,7 @@
 }
 
 .tpButton:hover {
-  background-color: #4096ff;
+  background-color: var(--tpm-btn-primary-hover-bg);
   transform: translateY(-3px);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }

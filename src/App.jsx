@@ -22,6 +22,8 @@ import PromptDisplaySchema from './promptDisplay/promptDisplaySchema';
 import PromptDisplayJsx from './promptDisplay/promptDisplayJsx';
 import ReadmeDisplay from './readmeDisplay/ReadmeDisplay';
 import { getWebsiteBasePath } from './lib/getWebsiteBasePath';
+import BlogDetail from './mathBlog/BlogDetail';
+import BlogList from './mathBlog/BlogList';
 
 const routes = [
   { path: '/', element: <TeachingPlanList /> },
@@ -42,6 +44,8 @@ const routes = [
   { path: '/prompt-display-jsx', element: <PromptDisplayJsx /> },
   { path: '/tpm-dev-doc', element: <ReadmeDisplay /> },
   { path: '/404', element: <NotFound /> },
+  { path: '/blogs', element: <BlogList /> },
+  { path: '/blog/:title', element: <BlogDetail /> },
   { path: '*', element: <NotFound /> },
 ];
 

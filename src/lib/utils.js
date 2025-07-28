@@ -17,10 +17,16 @@ export function addToFavorite(url, title) {
       return true;
     }
   } catch (e) {
-    console.error('添加收藏失败:', e);
+    console.error('[tpm] 添加收藏失败:', e);
   }
 
   // 现代浏览器显示提示
   alert(`请进入教案网页后按 ${navigator.userAgent.includes('Mac') ? 'Cmd + D' : 'Ctrl + D'} 手动收藏`);
   return false;
+}
+
+export function calcReadTime(contentLength) {
+  const wordsPerMinute = 400;
+  const readTime = Math.max(1, Math.round(contentLength / wordsPerMinute));
+  return readTime;
 }

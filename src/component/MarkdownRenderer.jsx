@@ -20,7 +20,7 @@ export default function MarkdownRenderer({ className, content, ...rest }) {
         setIsLoading(false);
       })
       .catch(error => {
-        console.error('Error processing markdown:', error);
+        console.error('[tpm] Error processing markdown:', error);
         setHtmlContent(content);
         setIsLoading(false);
       });

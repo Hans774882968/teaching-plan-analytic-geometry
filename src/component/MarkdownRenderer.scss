@@ -14,4 +14,12 @@
   [class^="_teachingPlanH6"] {
     margin-bottom: 8px;
   }
+
+  a {
+    color: var(--tpm-color-link);
+  }
+
+  a:hover {
+    color: var(--tpm-color-link-hover);
+  }
 }

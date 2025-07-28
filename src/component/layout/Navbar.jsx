@@ -44,6 +44,18 @@ const promptDisplayUrls = [
   },
 ];
 
+const blogUrls = [
+  {
+    label: (
+      <>
+        <FaBook />
+        博客列表
+      </>
+    ),
+    url: '/blogs',
+  },
+];
+
 const aboutUsUrls = [
   {
     label: (
@@ -129,6 +141,11 @@ export default function Navbar() {
           <NavDropdown items={promptDisplayUrls}>
             <FaKey />
             <span>提示词公开</span>
+          </NavDropdown>
+
+          <NavDropdown items={blogUrls}>
+            <FaBook />
+            <span>博客</span>
           </NavDropdown>
         </div>
 

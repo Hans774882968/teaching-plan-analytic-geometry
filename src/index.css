@@ -12,6 +12,13 @@
   --text-light: #FFFFFF;
   --border-radius: 16px;
   --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  /* 配色来自 antd */
+  --tpm-color-link: #1677ff;
+  --tpm-color-link-hover: #69b1ff;
+  --tpm-btn-primary-bg: #1677ff;
+  --tpm-btn-primary-hover-bg: #4096ff;
+
   --hover-scale: scale(1.02);
   --transition: all 0.3s ease;
   --title-size: 2.5rem;

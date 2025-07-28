@@ -1243,6 +1243,12 @@ vi.mock('js-beautify', () => ({
 
 如何在VSCode中调试vitest：[参考链接2](https://cn.vitest.dev/guide/debugging)。打开一个新的`JavaScript Debug Terminal`，然后正常执行`bun run test`即可。
 
+## 实现博客列表和博客详情页
+
+### 虚拟模块：`virtual:blog-data`
+
+TODO
+
 ## 【常规】部署到 GitHub Pages
 
 GitHub Pages不是部署到根路径的，而是部署到你的仓库名的。以我的项目为例，我项目的访问URL将是：`https://hans774882968.github.io/teaching-plan-analytic-geometry`。所以：
@@ -1390,6 +1396,10 @@ rm -rf temp_geogebra
 ```
 
 最后根据[参考链接3](https://blog.csdn.net/qq_20042935/article/details/133920722)，设置一下开源项目的GitHub Pages和Environments tab里的environment  variables。刷新一下就OK~
+
+### GitHub Pages直接通过链接访问只能拿到404的问题
+
+TODO
 
 ## 参考资料
 

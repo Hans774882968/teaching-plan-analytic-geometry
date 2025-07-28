@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>博客列表 | hans7</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+  <style>
+    /* .blog-card {
+      transition: all 0.3s ease;
+    }
+
+    .blog-card:hover {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    } */
+
+    .truncate-lines {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .tag {
+      transition: all 0.2s ease;
+    }
+
+    .tag:hover {
+      transform: translateY(-2px);
+      background-color: #3b82f6;
+      color: white;
+    }
+  </style>
+</head>
+
+<body class="bg-sky-100 min-h-screen">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    function BlogListPage() {
+      // 示例博客数据
+      const blogs = [
+        {
+          id: "1",
+          title: "深入理解React Hooks的工作原理",
+          titleEncoded: "understanding-react-hooks",
+          content: "React Hooks自16.8版本引入以来，已经彻底改变了我们编写React组件的方式。Hooks提供了一种更直接的方式来使用React的特性，如状态和生命周期方法，而无需编写类组件。本文将深入探讨Hooks的内部工作机制，帮助您更好地理解和使用这一强大的特性。好的，你说求求我求求我求求我求求我求求我求求我求求我求求我求求我求求我求求我求求我，我还是可以考虑考虑滴！",
+          ctime: "2023-10-15",
+          mtime: "2023-11-20",
+          tags: ["React", "JavaScript", "前端"],
+          prev: "",
+          next: "2"
+        },
+        {
+          id: "2",
+          title: "使用Tailwind CSS构建现代UI",
+          titleEncoded: "building-modern-ui-with-tailwind",
+          content: "Tailwind CSS是一个功能类优先的CSS框架，它允许您直接在HTML中构建任何设计。与传统的CSS框架不同，Tailwind没有预定义的组件，而是提供了低级的实用类，让您可以快速构建自定义设计。本文将展示如何使用Tailwind CSS创建美观且响应式的用户界面。",
+          ctime: "2023-09-22",
+          mtime: "2023-10-05",
+          tags: ["CSS", "Tailwind", "UI设计"],
+          prev: "1",
+          next: "3"
+        },
+        {
+          id: "3",
+          title: "TypeScript高级类型技巧与实践",
+          titleEncoded: "typescript-advanced-types",
+          content: "TypeScript的类型系统非常强大，它远远超出了简单的类型注解。通过使用条件类型、映射类型、类型推断和类型守卫等高级特性，您可以创建灵活且类型安全的代码。本文将探讨一些实用的TypeScript高级类型技巧，并通过实际案例展示如何应用这些技巧解决复杂问题。",
+          ctime: "2023-08-17",
+          mtime: "2023-09-10",
+          tags: ["TypeScript", "JavaScript", "编程"],
+          prev: "2",
+          next: "4"
+        },
+        {
+          id: "4",
+          title: "前端性能优化最佳实践",
+          titleEncoded: "frontend-performance-optimization",
+          content: "在现代Web应用中，性能优化至关重要。用户期望快速加载和流畅交互的体验。本文将介绍一系列前端性能优化的最佳实践，包括代码分割、懒加载、资源优化、缓存策略等。通过实施这些技术，您可以显著提升应用的加载速度和运行时性能。",
+          ctime: "2023-07-05",
+          mtime: "2023-07-20",
+          tags: ["性能优化", "前端", "Web开发"],
+          prev: "3",
+          next: "5"
+        },
+        {
+          id: "5",
+          title: "GraphQL在前端应用中的实践",
+          titleEncoded: "graphql-in-frontend-applications",
+          content: "GraphQL是一种用于API的查询语言，它允许客户端精确地指定需要的数据。与传统的REST API相比，GraphQL提供了更高的灵活性和效率。本文将介绍如何在前端应用中使用GraphQL，包括设置Apollo Client、执行查询和变更、处理缓存等。",
+          ctime: "2023-06-12",
+          mtime: "2023-06-28",
+          tags: ["GraphQL", "API", "前端"],
+          prev: "4",
+          next: ""
+        }
+      ];
+
+      // 将Markdown转换为纯文本（用于预览）
+      const markdownToText = (markdown) => {
+        if (!markdown) return "";
+        // 简单替换Markdown标记
+        return markdown
+          .replace(/#{1,6}\s/g, "") // 移除标题
+          .replace(/\*{1,2}(.*?)\*{1,2}/g, "$1") // 移除粗体和斜体
+          .replace(/!?\[(.*?)\]\(.*?\)/g, "$1") // 移除图片和链接
+          .replace(/`{1,3}(.*?)`{1,3}/g, "$1") // 移除代码块
+          .replace(/\n/g, " ") // 替换换行符
+          .replace(/\s{2,}/g, " ") // 压缩多个空格
+          .trim();
+      };
+
+      return (
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">hans7的技术博客</h1>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              分享前端开发、JavaScript框架、UI设计以及Web性能优化等方面的知识和经验
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between mb-6">
+            <div className="text-2xl font-bold text-gray-800">
+              <i className="fas fa-book-open mr-2 text-blue-500"></i>
+              所有文章
+            </div>
+            <div className="text-gray-600">
+              <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">
+                {blogs.length} 篇文章
+              </span>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-md overflow-hidden">
+            {blogs.map((blog, index) => (
+              <div key={blog.id}>
+                <a
+                  href={`#/blog/${blog.titleEncoded}`}
+                  className="blog-card block p-6 hover:bg-sky-50 transition-colors"
+                >
+                  <div className="flex flex-col md:flex-row">
+                    <div className="flex-1">
+                      <h2 className="text-xl font-bold text-gray-800 mb-2">
+                        {blog.title}
+                      </h2>
+
+                      <div className="flex flex-wrap items-center text-gray-500 text-sm mb-3">
+                        <div className="flex items-center mr-4">
+                          <i className="fas fa-user-circle mr-1 text-blue-500"></i>
+                          <span>hans7</span>
+                        </div>
+                        <div className="flex items-center mr-4">
+                          <i className="fas fa-calendar-plus mr-1 text-blue-500"></i>
+                          <span>{blog.ctime}</span>
+                        </div>
+                        <div className="flex items-center">
+                          <i className="fas fa-tags mr-1 text-blue-500"></i>
+                          <div className="flex flex-wrap gap-1">
+                            {blog.tags.map(tag => (
+                              <span key={tag} className="tag bg-gray-100 px-2 py-1 rounded text-xs font-medium">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-gray-600 mb-4 truncate-lines">
+                        {markdownToText(blog.content)}
+                      </p>
+
+                      <div className="flex items-center text-blue-500 font-medium">
+                        <span>阅读全文</span>
+                        <i className="fas fa-arrow-right ml-2 text-sm"></i>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 md:mt-0 md:ml-6 flex items-center justify-center">
+                      <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+                    </div>
+                  </div>
+                </a>
+
+                {index < blogs.length - 1 && (
+                  <div className="border-t border-gray-200 mx-6"></div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 flex justify-between items-center">
+            <div className="text-gray-600">
+              显示 {blogs.length} 篇文章中的 1-{blogs.length}
+            </div>
+            <div className="flex space-x-2">
+              <button className="px-4 py-2 bg-white rounded-lg shadow text-gray-700 hover:bg-gray-50 disabled:opacity-50">
+                <i className="fas fa-chevron-left mr-2"></i>
+                上一页
+              </button>
+              <button className="px-4 py-2 bg-blue-500 rounded-lg shadow text-white hover:bg-blue-600">
+                下一页
+                <i className="fas fa-chevron-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <footer className="mt-12 text-center text-gray-600 py-6 border-t border-gray-200">
+            <p>© 2023 hans7的技术博客. 保留所有权利</p>
+            <div className="flex justify-center space-x-4 mt-2">
+              <a href="#" className="text-blue-500 hover:text-blue-700">
+                <i className="fab fa-github"></i>
+              </a>
+              <a href="#" className="text-blue-500 hover:text-blue-700">
+                <i className="fab fa-twitter"></i>
+              </a>
+              <a href="#" className="text-blue-500 hover:text-blue-700">
+                <i className="fab fa-linkedin"></i>
+              </a>
+              <a href="#" className="text-blue-500 hover:text-blue-700">
+                <i className="fas fa-envelope"></i>
+              </a>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    // 渲染应用
+    const rootElement = document.getElementById('root');
+    ReactDOM.render(<BlogListPage />, rootElement);
+  </script>
+</body>
+
+</html>

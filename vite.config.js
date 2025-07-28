@@ -7,6 +7,7 @@ import readmeDisplayPlugin from './src/plugins/vite-plugin-readme-display';
 import copy from 'rollup-plugin-copy';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { getWebsiteBasePath } from './src/lib/getWebsiteBasePath';
+import blogDataPlugin from './src/plugins/vite-plugin-blog-data';
 
 // https://vite.dev/config/
 export default defineConfig(() => {
@@ -21,6 +22,7 @@ export default defineConfig(() => {
       tailwindcss(),
       promptDisplayPlugin(),
       readmeDisplayPlugin(),
+      blogDataPlugin(),
       copy({
         targets: [
           { src: 'README_assets', dest: 'dist' },

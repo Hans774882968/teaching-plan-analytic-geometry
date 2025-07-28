@@ -27,14 +27,15 @@ export default function readmeDisplayPlugin() {
       if (id === virtualModuleId) return resolvedVirtualModuleId;
     },
     load(id) {
-      if (id === resolvedVirtualModuleId) {
-        const readmeContent = getEncodedFileContent(readmePath);
-
-        return `
-          export const readmeRelativePath = String.raw\`${readmeRelativePath}\`;
-          export const readmeContent = decodeURI(\`${readmeContent}\`);
-        `.trim();
+      if (id !== resolvedVirtualModuleId) {
+        return;
       }
+      const readmeContent = getEncodedFileContent(readmePath);
+
+      return `
+export const readmeRelativePath = String.raw\`${readmeRelativePath}\`;
+export const readmeContent = decodeURI(\`${readmeContent}\`);
+      `.trim();
     },
   };
 }

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>博客文章详情 | hans7</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+  <style>
+    .prose {
+      max-width: 65ch;
+      line-height: 1.75;
+    }
+
+    .prose h2 {
+      margin-top: 2em;
+      margin-bottom: 0.5em;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .prose p {
+      margin-top: 1em;
+      margin-bottom: 1em;
+    }
+
+    .prose ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      margin-top: 1em;
+      margin-bottom: 1em;
+    }
+
+    .prose code {
+      background-color: #e5e7eb;
+      padding: 0.2em 0.4em;
+      border-radius: 0.25rem;
+      font-family: monospace;
+    }
+
+    .prose pre {
+      background-color: #1e293b;
+      color: #f8fafc;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin-top: 1.5em;
+      margin-bottom: 1.5em;
+    }
+
+    .prose blockquote {
+      border-left: 4px solid #94a3b8;
+      padding-left: 1rem;
+      color: #475569;
+      font-style: italic;
+      margin-top: 1.5em;
+      margin-bottom: 1.5em;
+    }
+
+    .prose a {
+      color: #3b82f6;
+      text-decoration: underline;
+    }
+
+    .prose img {
+      max-width: 100%;
+      border-radius: 0.5rem;
+      margin-top: 1.5em;
+      margin-bottom: 1.5em;
+    }
+  </style>
+</head>
+
+<body class="bg-sky-100 min-h-screen">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    function BlogPostDetail() {
+      // 示例文章数据
+      const post = {
+        title: "深入理解React Hooks的工作原理",
+        createdAt: "2023-10-15",
+        updatedAt: "2023-11-20",
+        readingTime: "8分钟",
+        content: `
+## 引言
+
+React Hooks自16.8版本引入以来，已经彻底改变了我们编写React组件的方式。Hooks提供了一种更直接的方式来使用React的特性，如状态和生命周期方法，而无需编写类组件。
+
+## Hooks的核心概念
+
+### useState
+
+\`useState\` 是最基本的Hook，它允许你在函数组件中添加状态。下面是一个计数器示例：
+
+\`\`\`jsx
+import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>你点击了 {count} 次</p>
+      <button onClick={() => setCount(count + 1)}>
+        点击
+      </button>
+    </div>
+  );
+}
+\`\`\`
+
+### useEffect
+
+\`useEffect\` Hook 允许你在函数组件中执行副作用操作：
+
+\`\`\`jsx
+import { useState, useEffect } from 'react';
+
+function Example() {
+  const [count, setCount] = useState(0);
+
+  // 类似于 componentDidMount 和 componentDidUpdate
+  useEffect(() => {
+    // 使用浏览器API更新文档标题
+    document.title = \`你点击了 \${count} 次\`;
+  }, [count]); // 仅在count更改时更新
+
+  return (
+    <div>
+      <p>你点击了 {count} 次</p>
+      <button onClick={() => setCount(count + 1)}>
+        点击
+      </button>
+    </div>
+  );
+}
+\`\`\`
+
+## 自定义Hooks
+
+自定义Hook是一个函数，其名称以"use"开头，可以调用其他Hook。这让你能够将组件逻辑提取到可重用的函数中。
+
+### 示例：使用自定义Hook获取窗口大小
+
+\`\`\`jsx
+import { useState, useEffect } from 'react';
+
+function useWindowSize() {
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return windowSize;
+}
+
+function ShowWindowDimensions() {
+  const { width, height } = useWindowSize();
+  return (
+    <div>
+      当前窗口尺寸: {width} x {height}
+    </div>
+  );
+}
+\`\`\`
+
+## Hooks的优势
+
+1. **简化代码**：Hooks减少了组件嵌套，使代码更简洁
+2. **逻辑复用**：自定义Hook解决了高阶组件和render props带来的嵌套问题
+3. **更直观**：相关的代码被组织在一起，而不是分散在不同的生命周期方法中
+4. **无需类组件**：开发者可以完全使用函数组件构建应用
+
+## 注意事项
+
+- 只在最顶层使用Hooks
+- 只在React函数中调用Hooks
+- 自定义Hook必须以"use"开头
+- 确保依赖数组正确设置，避免不必要的重渲染
+
+## 结语
+
+React Hooks代表了React未来的发展方向，它们提供了一种更简单、更强大的方式来构建组件。通过掌握Hooks，你可以编写更清晰、更易维护的React代码。
+
+> "Hooks是React自发布以来最重要的改变之一。" - React核心团队成员
+`
+      };
+
+      // 上一篇和下一篇文章
+      const prevPost = {
+        title: "使用Tailwind CSS构建现代UI",
+        url: "#"
+      };
+
+      const nextPost = {
+        title: "深入理解React Fiber架构",
+        url: "#"
+      };
+
+      return (
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          {/* 文章头部信息 */}
+          <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">{post.title}</h1>
+
+            <div className="flex flex-wrap items-center text-gray-600 text-sm mb-6">
+              <div className="flex items-center mr-6 mb-2 md:mb-0">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>创建时间: {post.createdAt}</span>
+              </div>
+              <div className="flex items-center mr-6 mb-2 md:mb-0">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                <span>更新时间: {post.updatedAt}</span>
+              </div>
+              <div className="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>阅读时间: {post.readingTime}</span>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 pt-6 prose">
+              <div dangerouslySetInnerHTML={{ __html: marked.parse(post.content) }} />
+            </div>
+          </div>
+
+          {/* 上一篇/下一篇文章导航 */}
+          <div className="flex flex-col sm:flex-row justify-between gap-4">
+            {prevPost && (
+              <a href={prevPost.url} className="bg-white rounded-xl shadow p-5 flex-1 group hover:bg-blue-50 transition-colors">
+                <div className="flex items-center text-blue-500 mb-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  <span className="text-sm font-medium">上一篇</span>
+                </div>
+                <h3 className="font-medium text-gray-800 group-hover:text-blue-600 transition-colors">{prevPost.title}</h3>
+              </a>
+            )}
+
+            {nextPost && (
+              <a href={nextPost.url} className="bg-white rounded-xl shadow p-5 flex-1 group text-right hover:bg-blue-50 transition-colors">
+                <div className="flex items-center justify-end text-blue-500 mb-1">
+                  <span className="text-sm font-medium">下一篇</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+                <h3 className="font-medium text-gray-800 group-hover:text-blue-600 transition-colors">{nextPost.title}</h3>
+              </a>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // 渲染应用
+    const rootElement = document.getElementById('root');
+    ReactDOM.render(<BlogPostDetail />, rootElement);
+  </script>
+</body>
+
+</html>

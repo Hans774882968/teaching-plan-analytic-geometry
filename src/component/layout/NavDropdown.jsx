@@ -1,3 +1,4 @@
+import { motion } from 'motion/react';
 import { useState } from 'react';
 import styles from './NavDropdown.module.scss';
 import { cn } from '@/lib/utils';
@@ -26,42 +27,45 @@ export default function NavDropdown({
       </button>
 
       {
-        isDropdownOpen && (
-          <div className="absolute top-full left-0 pt-4 bg-transparent">
-            <div className={cn(
-              styles.navDropdown,
-              'rounded-lg shadow-lg overflow-hidden min-w-50 border-2 border-white/20',
-              navDropdownClasses
-            )}>
-              {
-                items.map((item, index) => {
-                  const openInNewTabProps = item.openInNewTab && {
-                    target: '_blank',
-                    rel: 'noopener noreferrer',
-                  };
+        <motion.div
+          className="absolute top-full left-0 pt-4 bg-transparent"
+          initial={{ scale: 0 }}
+          animate={{ scale: isDropdownOpen ? 1 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <div className={cn(
+            styles.navDropdown,
+            'rounded-lg shadow-lg overflow-hidden min-w-50 border-2 border-white/20',
+            navDropdownClasses
+          )}>
+            {
+              items.map((item, index) => {
+                const openInNewTabProps = item.openInNewTab && {
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+                };
 
-                  return (
-                    <div
-                      key={item.url}
-                      className={cn(
-                        'text-base font-bold hover:bg-white/[0.2] transition-colors duration-200',
-                        index > 0 && 'border-t-2 border-white'
-                      )}
+                return (
+                  <div
+                    key={item.url}
+                    className={cn(
+                      'text-base font-bold hover:bg-white/[0.2] transition-colors duration-200',
+                      index > 0 && 'border-t-2 border-white'
+                    )}
+                  >
+                    <Link
+                      to={item.url}
+                      className={styles.navDropdownItem}
+                      {...openInNewTabProps}
                     >
-                      <Link
-                        to={item.url}
-                        className={styles.navDropdownItem}
-                        {...openInNewTabProps}
-                      >
-                        {item.label}
-                      </Link>
-                    </div>
-                  );
-                })
-              }
-            </div>
+                      {item.label}
+                    </Link>
+                  </div>
+                );
+              })
+            }
           </div>
-        )
+        </motion.div>
       }
     </div>
   );
