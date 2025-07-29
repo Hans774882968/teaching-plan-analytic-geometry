@@ -11,9 +11,10 @@ import { Link } from 'react-router-dom';
 
 export default function NotFound() {
   return (
+    // min-height 减去导航栏高度
     <div className={cn(
       styles.notFound,
-      'min-h-screen flex flex-col items-center justify-center relative overflow-hidden'
+      'min-h-[calc(100vh-80px)] flex flex-col items-center justify-center relative overflow-hidden'
     )}>
       {/* 沙漠背景元素 */}
       <div className={cn(styles.desertSand, 'absolute bottom-0 left-0 right-0 h-1/3')}></div>
@@ -62,23 +63,6 @@ export default function NotFound() {
         >
           这里没有教案，只有沙漠和迷失的几何图形。也许你走错了路，或者我们移除了这个页面。别担心，你可以返回首页继续探索数学的奥秘~
         </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-        >
-          <Link
-            to="/"
-            className={cn(
-              styles.btnSky,
-              'text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full text-base md:text-lg inline-flex items-center shadow-lg'
-            )}
-          >
-            <FaHome className="mr-2 md:mr-3" />
-            返回首页
-          </Link>
-        </motion.div>
       </motion.div>
 
       {/* 沙漠中的几何图形 */}
@@ -115,15 +99,35 @@ export default function NotFound() {
         </div>
       </motion.div>
 
-      {/* 页脚 */}
-      <motion.div
-        className="absolute bottom-8 text-gray-500 text-center w-full"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 1 }}
-      >
-        <p>数学教案库 &copy; {new Date().getFullYear()} - 让数学教学更简单</p>
-      </motion.div>
+      <div className="absolute bottom-8 flex flex-col gap-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+          className="flex justify-center"
+        >
+          <Link
+            to="/"
+            className={cn(
+              styles.btnSky,
+              'text-white font-bold py-3 px-6 md:py-4 md:px-8 rounded-full text-base md:text-lg inline-flex items-center shadow-lg'
+            )}
+          >
+            <FaHome className="mr-2 md:mr-3" />
+            返回首页
+          </Link>
+        </motion.div>
+
+        {/* 页脚 */}
+        <motion.div
+          className="text-gray-500 text-center w-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2, duration: 1 }}
+        >
+          <p>数学教案库 &copy; {new Date().getFullYear()} - 让数学教学更简单</p>
+        </motion.div>
+      </div>
     </div>
   );
 }

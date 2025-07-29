@@ -17,6 +17,15 @@ export default defineConfig(() => {
 
   return {
     base: basePath,
+    build: {
+      outDir: 'dist',
+      rollupOptions: {
+        input: {
+          main: 'index.html',
+          '404': '404.html',
+        },
+      },
+    },
     plugins: [
       react(),
       tailwindcss(),

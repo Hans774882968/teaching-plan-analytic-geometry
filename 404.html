@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>404 - 数学教案库</title>
+  <style>
+    /* 基础样式重置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      background: linear-gradient(to bottom, #a1c4fd, #c2e9fb);
+      color: #333;
+    }
+
+    /* 容器样式 */
+    .not-found-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 浮动动画 */
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-15px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    /* 沙漠背景 */
+    .desert-sand {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 30%;
+      background: linear-gradient(to bottom, #f1c27d, #e0ac69);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 几何元素样式 */
+    .geometric-element {
+      position: absolute;
+      border-radius: 9999px;
+      opacity: 0.3;
+    }
+
+    .geometric-1 {
+      top: 80px;
+      left: 40px;
+      width: 40px;
+      height: 40px;
+      background-color: #7dd3fc;
+    }
+
+    .geometric-2 {
+      bottom: 160px;
+      right: 40px;
+      width: 56px;
+      height: 56px;
+      background-color: #22c55e;
+    }
+
+    .geometric-3 {
+      top: 25%;
+      right: 25%;
+      width: 48px;
+      height: 48px;
+      transform: rotate(45deg);
+      background-color: #fde047;
+    }
+
+    /* 沙漠主题元素 */
+    .desert-element {
+      position: absolute;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .cactus {
+      bottom: 25%;
+      left: 25%;
+      width: 20px;
+      height: 80px;
+      background: linear-gradient(to right, #2e8b57, #3cb371);
+      border-radius: 10px;
+    }
+
+    .cactus::before,
+    .cactus::after {
+      content: '';
+      position: absolute;
+      background: linear-gradient(to right, #2e8b57, #3cb371);
+      border-radius: 10px;
+    }
+
+    .cactus::before {
+      width: 30px;
+      height: 15px;
+      top: 20px;
+      left: -25px;
+    }
+
+    .cactus::after {
+      width: 25px;
+      height: 15px;
+      top: 50px;
+      right: -20px;
+    }
+
+    .sun {
+      top: 10%;
+      right: 10%;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, #ffde59, #ff9d00);
+      border-radius: 50%;
+      box-shadow: 0 0 50px rgba(255, 157, 0, 0.5);
+    }
+
+    .pyramid {
+      bottom: 33.333333%;
+      right: 15%;
+      width: 0;
+      height: 0;
+      border-left: 60px solid transparent;
+      border-right: 60px solid transparent;
+      border-bottom: 100px solid #d2b48c;
+    }
+
+    .pyramid::before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 83px solid #c19a6b;
+      top: 17px;
+      left: -50px;
+    }
+
+    .tumbleweed {
+      bottom: 15%;
+      right: 15%;
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, #a0522d, #8b4513);
+      border-radius: 50%;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 内容区域样式 */
+    .content-area {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 0 16px;
+      max-width: 768px;
+      width: 100%;
+    }
+
+    .error-code {
+      font-size: 8rem;
+      font-weight: 700;
+      color: #3b82f6;
+      margin-bottom: 16px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      animation: fadeInScale 0.8s ease-out forwards;
+      opacity: 0;
+      transform: scale(0.8);
+    }
+
+    .title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 24px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.5s ease 0.4s forwards;
+      opacity: 0;
+    }
+
+    .highlight {
+      color: #f97316;
+    }
+
+    .description {
+      font-size: 1.125rem;
+      color: #4b5563;
+      margin-bottom: 160px;
+      max-width: 42rem;
+      margin-left: auto;
+      margin-right: auto;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.5s ease 0.6s forwards;
+      opacity: 0;
+    }
+
+    /* 按钮样式 */
+    .btn-container {
+      animation: fadeInUp 0.5s ease 0.8s forwards;
+      opacity: 0;
+      transform: translateY(20px);
+      display: flex;
+      justify-content: center;
+    }
+
+    .home-btn {
+      display: inline-flex;
+      align-items: center;
+      color: white;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 9999px;
+      text-decoration: none;
+      background: linear-gradient(to right, #4cc9f0, #4361ee);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-size: 1rem;
+    }
+
+    .home-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+      background: linear-gradient(to right, #3fbbdf, #3a56d4);
+    }
+
+    .btn-icon {
+      margin-right: 8px;
+      width: 1em;
+      height: 1em;
+      fill: currentColor;
+    }
+
+    .bottom-area {
+      position: absolute;
+      bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* 页脚样式 */
+    .footer {
+      width: 100%;
+      text-align: center;
+      color: #6b7280;
+      animation: fadeIn 1s ease 2s forwards;
+      opacity: 0;
+    }
+
+    /* 动画关键帧 */
+    @keyframes fadeInScale {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 响应式调整 */
+    @media (min-width: 768px) {
+      .title {
+        font-size: 2.5rem;
+      }
+
+      .description {
+        font-size: 1.25rem;
+      }
+
+      .home-btn {
+        padding: 16px 32px;
+        font-size: 1.125rem;
+      }
+
+      .btn-icon {
+        margin-right: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="not-found-container">
+    <!-- 沙漠背景元素 -->
+    <div class="desert-sand"></div>
+
+    <!-- 浮动几何元素 -->
+    <div
+      class="geometric-element geometric-1 floating"
+      style="animation-delay: 1s;"
+    ></div>
+    <div
+      class="geometric-element geometric-2 floating"
+      style="animation-delay: 2s;"
+    ></div>
+    <div
+      class="geometric-element geometric-3 floating"
+      style="animation-delay: 3s;"
+    ></div>
+
+    <!-- 沙漠主题元素 -->
+    <div
+      class="desert-element cactus floating"
+      style="animation-delay: 0.5s;"
+    ></div>
+    <div
+      class="desert-element sun floating"
+      style="animation-delay: 0s;"
+    ></div>
+    <div
+      class="desert-element pyramid floating"
+      style="animation-delay: 1.5s;"
+    ></div>
+    <div
+      class="desert-element tumbleweed floating"
+      style="animation-delay: 3.5s;"
+    ></div>
+
+    <!-- 内容区域 -->
+    <div class="content-area">
+      <div class="error-code">404</div>
+
+      <h1 class="title">
+        别担心，这是为了<span class="highlight">适配 GitHub Pages</span>
+      </h1>
+
+      <p class="description">
+        我们正在把你送往你的目的地~
+      </p>
+    </div>
+
+    <div class="bottom-area">
+      <div class="btn-container">
+        <a
+          href="/"
+          class="home-btn"
+        >
+          <svg
+            class="btn-icon"
+            viewBox="0 0 576 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"></path>
+          </svg>
+          返回首页
+        </a>
+      </div>
+
+      <!-- 页脚 -->
+      <div class="footer">
+        <p>数学教案库 &copy; <span id="currentYear">2025</span> - 让数学教学更简单</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    const basePath = '/teaching-plan-analytic-geometry/';
+    const currentPath = window.location.pathname.replace(basePath, '');
+    // 重定向到 SPA
+    window.location.href = `${basePath}?redirect=${encodeURIComponent(currentPath)}`;
+  </script>
+</body>
+
+</html>

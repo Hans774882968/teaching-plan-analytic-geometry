@@ -24,6 +24,7 @@ import ReadmeDisplay from './readmeDisplay/ReadmeDisplay';
 import { getWebsiteBasePath } from './lib/getWebsiteBasePath';
 import BlogDetail from './mathBlog/BlogDetail';
 import BlogList from './mathBlog/BlogList';
+import NavigateForGitHubPages from './NavigateForGitHubPages';
 
 const routes = [
   { path: '/', element: <TeachingPlanList /> },
@@ -43,9 +44,9 @@ const routes = [
   { path: '/prompt-display-schema', element: <PromptDisplaySchema /> },
   { path: '/prompt-display-jsx', element: <PromptDisplayJsx /> },
   { path: '/tpm-dev-doc', element: <ReadmeDisplay /> },
-  { path: '/404', element: <NotFound /> },
   { path: '/blogs', element: <BlogList /> },
   { path: '/blog/:title', element: <BlogDetail /> },
+  { path: '/404', element: <NotFound /> },
   { path: '*', element: <NotFound /> },
 ];
 
@@ -68,19 +69,21 @@ function App() {
             },
           }}
         />
-        <Layout>
-          <Routes>
-            {
-              routes.map((route, index) => (
-                <Route
-                  key={route.path || `route-${index}`}
-                  path={route.path}
-                  element={route.element}
-                />
-              ))
-            }
-          </Routes>
-        </Layout>
+        <NavigateForGitHubPages>
+          <Layout>
+            <Routes>
+              {
+                routes.map((route, index) => (
+                  <Route
+                    key={route.path || `route-${index}`}
+                    path={route.path}
+                    element={route.element}
+                  />
+                ))
+              }
+            </Routes>
+          </Layout>
+        </NavigateForGitHubPages>
       </Router>
     </HelmetProvider>
   );
