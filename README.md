@@ -702,6 +702,43 @@ export function hookGetEleById() {
 }
 ```
 
+## 【常规】接入`shadcn-ui`组件库
+
+我发现这个项目还是需要一些表单组件的，所以我决定接入`shadcn-ui`组件库。我们已经配过Tailwind CSS了，根据官方文档，接下来大致要做：
+
+- 引入shadcn用到的几十个CSS变量
+- 引入`jsconfig.json`
+- 新建`components.json`
+
+引入CSS变量：我们不妨去 https://tweakcn.com/editor/theme 直接拿好看的主题，我选择的是`modern-minimal`，目前和我项目的蓝色主题比较配。
+
+`components.json`不需要特别配置，直接从官方文档复制粘贴，改下`css`和`components`属性就行。
+
+`jsconfig.json`可以理解为`tsconfig.json`在无TS的开发环境的简化版，可以方便IDE实现智能补全等特性，但shadcn的CLI也会用到，所以我们不得不配置一下。
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "include": [
+    "src/**/*",
+    "tests/**/*"
+  ]
+}
+```
+
+接下来可以直接尝试下载 21st.dev 这个网站提供的一些好看的组件：`bunx --bun shadcn@latest add "https://21st.dev/r/originui/numbered-pagination"`。
+
 ## 【常规】`Think`组件
 
 效果：
@@ -1242,6 +1279,32 @@ vi.mock('js-beautify', () => ({
 ```
 
 如何在VSCode中调试vitest：[参考链接2](https://cn.vitest.dev/guide/debugging)。打开一个新的`JavaScript Debug Terminal`，然后正常执行`bun run test`即可。
+
+### 250729：如何解决配置`VITE_DEPLOY_TARGET`环境变量后，vitest单测运行失败的问题
+
+我问DeepSeek的Prompt：
+
+```markdown
+大佬，我执行`bun run test`时发现，测试用例运行之前会运行vite.config.js，而它引用了`import.meta.env.VITE_DEPLOY_TARGET`环境变量，导致报错：
+
+failed to load config from teaching-plan-analytic-geometry\vite.config.js
+
+TypeError: Cannot read properties of undefined (reading 'VITE_DEPLOY_TARGET')
+
+请问如何解决？
+```
+
+它给的解决方案大都不靠谱，但我选择了其中一个：新建一个空的`vitest.config.js`，亲测OK。
+
+```js
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    // ... Specify options here.
+  },
+});
+```
 
 ## 实现博客列表和博客详情页
 

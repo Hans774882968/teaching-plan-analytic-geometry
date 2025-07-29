@@ -27,7 +27,7 @@
 
 .teachingPlanH2 {
   font-size: var(--section-title-size);
-  color: var(--primary);
+  color: var(--tpm-primary);
   position: relative;
   padding-left: 15px;
 }
@@ -40,7 +40,7 @@
   transform: translateY(-50%);
   width: 5px;
   height: 80%;
-  background-color: var(--accent);
+  background-color: #FFD166;
   border-radius: 5px;
 }
 

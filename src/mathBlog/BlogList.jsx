@@ -1,4 +1,11 @@
 import { blogMap, blogList, tags } from 'virtual:blog-data';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/component/ui/select';
 import { motion } from 'motion/react';
 import { FaArrowRight, FaRegCalendarAlt, FaTags, FaUserCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -12,6 +19,10 @@ import { FaRegPenToSquare } from 'react-icons/fa6';
 import Header from '@/component/teachingPlan/Header';
 import Card from '@/component/teachingPlan/Card';
 import { useState } from 'react';
+import { DEFAULT_ITEMS_PER_PAGE } from '@/common/consts';
+import { PaginationWithToolbar } from '@/component/ui/pagination-with-toolbar';
+import { getPaginationItems } from '@/lib/pagination';
+import NoData from '@/component/NoData';
 
 // 将Markdown转换为纯文本（用于预览）
 function markdownToText(markdown) {
@@ -27,40 +38,60 @@ function markdownToText(markdown) {
     .trim();
 }
 
-const displayBlogs = blogList.map((blogTitle) => ({
+const displayableBlogs = blogList.map((blogTitle) => ({
   ...blogMap[blogTitle],
   previewContent: markdownToText(blogMap[blogTitle].content.substring(0, 280)),
 }));
 const displayTags = ['全部', ...tags];
 
-function getFilteredBlogs(displayBlogs, tagFilter) {
+function getFilteredBlogs(displayableBlogs, tagFilter) {
   const filteredByTagBlogs = tagFilter === '全部'
-    ? displayBlogs
-    : displayBlogs.filter((blog) => blog.tags.includes(tagFilter));
+    ? displayableBlogs
+    : displayableBlogs.filter((blog) => blog.tags.includes(tagFilter));
   return filteredByTagBlogs;
 }
 
-function TagArea({ tags, tagFilter, setTagFilter }) {
+function TagArea({ tags, tagFilter, onTagChange }) {
   return (
     <div className="flex flex-wrap items-center gap-3">
       选择标签：
       {
-        tags.map((tag, index) => {
-          const selected = tagFilter === tag;
+        // TODO: 支持多选
+        tags.length <= 100 ? (
+          tags.map((tag, index) => {
+            const selected = tagFilter === tag;
 
-          return (
-            <Tag
-              key={tag}
-              className={cn(
-                'cursor-pointer',
-                selected ? 'bg-blue-500 text-white' : getTagColorByIndex(index)
-              )}
-              onClick={() => setTagFilter(tag)}
-            >
-              {tag}
-            </Tag>
-          );
-        })
+            return (
+              <Tag
+                key={tag}
+                className={cn(
+                  'cursor-pointer',
+                  selected ? 'bg-blue-500 text-white' : getTagColorByIndex(index)
+                )}
+                onClick={() => onTagChange(tag)}
+              >
+                {tag}
+              </Tag>
+            );
+          })
+        ) : (
+          <Select onValueChange={onTagChange}>
+            <SelectTrigger className="w-45">
+              <SelectValue placeholder="全部" />
+            </SelectTrigger>
+            <SelectContent>
+              {
+                displayTags.map((tag) => {
+                  return (
+                    <SelectItem key={tag} value={tag}>
+                      {tag}
+                    </SelectItem>
+                  );
+                })
+              }
+            </SelectContent>
+          </Select>
+        )
       }
     </div>
   );
@@ -68,22 +99,44 @@ function TagArea({ tags, tagFilter, setTagFilter }) {
 
 export default function BlogList() {
   const [tagFilter, setTagFilter] = useState('全部');
-  const filteredBlogs = getFilteredBlogs(displayBlogs, tagFilter);
+  const filteredBlogs = getFilteredBlogs(displayableBlogs, tagFilter);
+
+  const onTagChange = (tag) => {
+    setTagFilter(tag);
+    setCurrentPage(1);
+  };
+
+  const [itemsPerPage, setItemsPerPage] = useState(DEFAULT_ITEMS_PER_PAGE);
+  // 所有导致数据个数变化的场景都需要重置页码
+  const [currentPage, setCurrentPage] = useState(1);
+  const {
+    pageItems: displayBlogs,
+  } = getPaginationItems({ itemsPerPage, currentPage, items: filteredBlogs });
 
   return (
     <div className={basicStyles.container}>
       <Header>
         <h1 className={basicStyles.teachingPlanH1}>📚 博客列表 🔍</h1>
-        <p>这里汇聚了各种足够硬核的数学博客~</p>
+        <p>这里汇聚了各类足够硬核的数学博客~</p>
       </Header>
 
       <Card className="flex flex-col gap-4">
         <TagArea
           tags={displayTags}
           tagFilter={tagFilter}
-          setTagFilter={setTagFilter}
+          onTagChange={onTagChange}
         />
-        <div>共{filteredBlogs.length}篇</div>
+
+        <div className="flex gap-4 items-center">
+          <PaginationWithToolbar
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            onPageChange={setCurrentPage}
+            setItemsPerPage={setItemsPerPage}
+            showTotal={(total, ranges) => `第${ranges[0]} ~ ${ranges[1]}篇，共${total}篇`}
+            total={filteredBlogs.length}
+          />
+        </div>
       </Card>
 
       <motion.div
@@ -92,8 +145,13 @@ export default function BlogList() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.4 }}
       >
-        {filteredBlogs.map((blog, index) => (
+        {displayBlogs.length ? displayBlogs.map((blog, index) => (
           <div key={blog.title}>
+            {
+              index > 0 && (
+                <div className="border-b border-gray-200 mx-6"></div>
+              )
+            }
             <div className="blog-card block p-6 hover:bg-sky-50 transition-colors">
               <div className="flex flex-col md:flex-row">
                 <div className="flex-1">
@@ -150,12 +208,12 @@ export default function BlogList() {
                 </div>
               </div>
             </div>
-
-            {index < filteredBlogs.length - 1 && (
-              <div className="border-t border-gray-200 mx-6"></div>
-            )}
           </div>
-        ))}
+        )) : (
+          <div className="py-5">
+            <NoData text="暂无博客" />
+          </div>
+        )}
       </motion.div>
     </div>
   );

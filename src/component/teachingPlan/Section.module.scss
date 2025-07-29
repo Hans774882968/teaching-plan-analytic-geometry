@@ -10,7 +10,7 @@
   overflow: hidden;
 
   &>p {
-    color: var(--primary);
+    color: var(--tpm-primary);
     font-weight: bold;
   }
 }
@@ -35,7 +35,7 @@
       transform: translateY(-50%);
       width: 6px;
       height: 6px;
-      background: var(--primary);
+      background: var(--tpm-primary);
       border-radius: 50%;
     }
   }
@@ -52,7 +52,7 @@
       position: absolute;
       left: -24px;
       top: 0;
-      color: var(--primary);
+      color: var(--tpm-primary);
       font-weight: bold;
       border-radius: 50%;
     }

@@ -1,5 +1,5 @@
 .quizContainer {
-  background: var(--card-bg);
+  background: var(--tpm-card-bg);
   border-radius: 16px;
   padding: 20px;
   display: flex;
@@ -42,7 +42,7 @@
 }
 
 .option:hover {
-  background-color: var(--primary);
+  background-color: var(--tpm-primary);
   color: white;
   transform: translateY(-3px);
 }

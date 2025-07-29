@@ -16,6 +16,10 @@ import { Link } from 'react-router-dom';
 import { addToFavorite } from './lib/utils';
 import NoData from './component/NoData';
 import { tagColorList } from './lib/getTagColor';
+import Card from './component/teachingPlan/Card';
+import { TP_ITEMS_PER_PAGE, TP_PER_PAGE_OPTIONS } from './common/consts';
+import { getPaginationItems } from './lib/pagination';
+import { PaginationWithToolbar } from './component/ui/pagination-with-toolbar';
 
 // 在首页用 Helmet 改标题无效，决定改 index.html 的标题
 const lessonPlans = [
@@ -154,6 +158,23 @@ export default function TeachingPlanList() {
 
   const filteredLessons = getFilteredLessons(lessonPlans, categoryFilter, difficultyFilter);
 
+  const [itemsPerPage, setItemsPerPage] = useState(TP_ITEMS_PER_PAGE);
+  // 所有导致数据个数变化的场景都需要重置页码
+  const [currentPage, setCurrentPage] = useState(1);
+  const {
+    pageItems: displayLessons,
+  } = getPaginationItems({ itemsPerPage, currentPage, items: filteredLessons });
+
+  const onCategoryFilterChange = (category) => {
+    setCategoryFilter(category);
+    setCurrentPage(1);
+  };
+
+  const onDifficultyFilterChange = (difficulty) => {
+    setDifficultyFilter(difficulty);
+    setCurrentPage(1);
+  };
+
   return (
     <div
       className={cn(
@@ -184,61 +205,78 @@ export default function TeachingPlanList() {
         </p>
       </motion.header>
 
-      {/* 按类别过滤 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="max-w-4xl mx-auto mb-6"
+      <Card
+        className="max-w-4xl mx-auto mb-12 flex flex-col gap-6"
+        initial={{ opacity: 0, scale: 0.95, y: 32 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
       >
-        <div className="flex flex-wrap justify-center gap-3">
-          <FilterButton
-            onClick={() => setCategoryFilter('all')}
-            selected={categoryFilter === 'all'}
-          >
-            所有类别
-          </FilterButton>
-
-          {categories.map((category, index) => (
+        {/* 按类别过滤 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="flex flex-wrap justify-center gap-3">
             <FilterButton
-              defaultColorCls={categoryColors[category]}
-              key={index}
-              onClick={() => setCategoryFilter(category)}
-              selected={categoryFilter === category}
+              onClick={() => onCategoryFilterChange('all')}
+              selected={categoryFilter === 'all'}
             >
-              {category}
+              所有类别
             </FilterButton>
-          ))}
-        </div>
-      </motion.div>
 
-      {/* 按难度过滤 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="max-w-4xl mx-auto mb-12"
-      >
-        <div className="flex flex-wrap justify-center gap-3">
-          <FilterButton
-            onClick={() => setDifficultyFilter('all')}
-            selected={difficultyFilter === 'all'}
-          >
-            所有难度
-          </FilterButton>
+            {categories.map((category, index) => (
+              <FilterButton
+                defaultColorCls={categoryColors[category]}
+                key={index}
+                onClick={() => onCategoryFilterChange(category)}
+                selected={categoryFilter === category}
+              >
+                {category}
+              </FilterButton>
+            ))}
+          </div>
+        </motion.div>
 
-          {difficulties.map((difficulty, index) => (
+        {/* 按难度过滤 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="flex flex-wrap justify-center gap-3">
             <FilterButton
-              defaultColorCls={difficultyColors[difficulty]}
-              key={index}
-              onClick={() => setDifficultyFilter(difficulty)}
-              selected={difficultyFilter === difficulty}
+              onClick={() => onDifficultyFilterChange('all')}
+              selected={difficultyFilter === 'all'}
             >
-              {difficulty}
+              所有难度
             </FilterButton>
-          ))}
+
+            {difficulties.map((difficulty, index) => (
+              <FilterButton
+                defaultColorCls={difficultyColors[difficulty]}
+                key={index}
+                onClick={() => onDifficultyFilterChange(difficulty)}
+                selected={difficultyFilter === difficulty}
+              >
+                {difficulty}
+              </FilterButton>
+            ))}
+          </div>
+        </motion.div>
+
+        <div className="flex justify-center">
+          <PaginationWithToolbar
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            itemsPerPageOptions={TP_PER_PAGE_OPTIONS}
+            onPageChange={setCurrentPage}
+            setItemsPerPage={setItemsPerPage}
+            total={filteredLessons.length}
+          />
         </div>
-      </motion.div>
+      </Card>
 
       {/* 教案列表 */}
       <motion.div
@@ -248,16 +286,18 @@ export default function TeachingPlanList() {
         transition={{ staggerChildren: 0.1 }}
       >
         {
-          Array.isArray(filteredLessons) && filteredLessons.length > 0 ? (
+          displayLessons.length ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {
-                filteredLessons.map((lesson, index) => (
+                displayLessons.map((lesson, index) => (
                   <LessonCard key={lesson.id} lesson={lesson} index={index} />
                 ))
               }
             </div>
           ) : (
-            <NoData text="暂无教案" />
+            <Card>
+              <NoData text="暂无教案" />
+            </Card>
           )
         }
       </motion.div>

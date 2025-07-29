@@ -30,3 +30,7 @@ export function calcReadTime(contentLength) {
   const readTime = Math.max(1, Math.round(contentLength / wordsPerMinute));
   return readTime;
 }
+
+export function isNonEmptyArray(arr) {
+  return Array.isArray(arr) && arr.length > 0;
+}
