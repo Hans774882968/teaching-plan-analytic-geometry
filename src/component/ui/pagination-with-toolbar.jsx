@@ -31,11 +31,13 @@ export function PaginationWithToolbar({
   };
 
   return (
-    <div className="flex gap-4 items-center">
+    <div className="flex flex-col items-baseline md:flex-row md:items-center gap-4">
       <div>{totalNode}</div>
 
-      <div className="flex gap-4 items-center">
+      {/* 这一层是为了让 select 限制 NumberedPagination 的宽度 */}
+      <div className="flex flex-col items-baseline md:flex-row md:items-center gap-4">
         <NumberedPagination
+          paginationClassName="justify-start md:justify-center"
           totalPages={totalPages}
           {...props}
         />

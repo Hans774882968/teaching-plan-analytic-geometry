@@ -53,7 +53,7 @@ export default function BlogDetail() {
           <div>
             <div className="flex items-center gap-1.5">
               <FaTags className="text-blue-500" />
-              <div className="flex items-center gap-2.5">
+              <div className="flex flex-wrap items-center gap-2.5">
                 <span>标签: </span>
                 {
                   blog.tags && blog.tags.length > 0 ? (

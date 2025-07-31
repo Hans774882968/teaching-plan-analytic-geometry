@@ -12,6 +12,7 @@
   --tpm-color-link-hover: #69b1ff;
   --tpm-btn-primary-bg: #1677ff;
   --tpm-btn-primary-hover-bg: #4096ff;
+  --navbar-bg: linear-gradient(135deg, #67cbeb 0%, #77cce8 100%);
 
   --hover-scale: scale(1.02);
   --transition: all 0.3s ease;

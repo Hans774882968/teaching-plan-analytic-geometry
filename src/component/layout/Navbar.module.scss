@@ -1,5 +1,5 @@
 .navbar {
-  background: linear-gradient(135deg, #67cbeb 0%, #77cce8 100%);
+  background: var(--navbar-bg);
 }
 
 .logoIcon {
@@ -16,7 +16,7 @@
 
   0%,
   100% {
-    transform: scale(0.98);
+    transform: scale(0.97);
   }
 
   50% {

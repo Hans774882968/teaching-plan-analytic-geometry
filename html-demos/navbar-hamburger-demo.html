@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>数学教案库 - 高中生学习资源平台</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    }
+
+    :root {
+      --primary: #ffffff;
+      --secondary: #f8f9fa;
+      --accent: #ffd166;
+      --text: #2a4365;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      background: linear-gradient(135deg, #6cbbcb 0%, #8fcddc 100%);
+      min-height: 200vh;
+      padding-top: 80px;
+      color: white;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 15px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 0 0 15px 15px;
+      backdrop-filter: blur(10px);
+      transition: all 0.4s ease;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, #6cbbcb 0%, #8fcddc 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: white;
+      box-shadow: 0 4px 10px rgba(108, 187, 203, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    .logo-text {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #2a4365 0%, #4a6fa8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-btn {
+      padding: 12px 22px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      border: none;
+      color: var(--text);
+      background: var(--secondary);
+      box-shadow: 0 4px 10px var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-btn:active {
+      transform: translateY(1px);
+    }
+
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(108, 187, 203, 0.2) 0%, rgba(143, 205, 220, 0.2) 100%);
+      border-radius: 50px;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-btn:hover::before {
+      opacity: 1;
+    }
+
+    .nav-btn i {
+      font-size: 18px;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-btn:hover i {
+      transform: scale(1.2);
+    }
+
+    .right-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 35px;
+      height: 30px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .hamburger div {
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(135deg, #2a4365 0%, #4a6fa8 100%);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 992px) {
+      .nav-btn {
+        padding: 10px 18px;
+        font-size: 15px;
+      }
+
+      .logo-text {
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: white;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 100px 30px 30px;
+        transition: right 0.4s ease;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        justify-content: flex-start;
+        gap: 25px;
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .right-buttons {
+        flex-direction: column;
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .nav-btn {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 14px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 12px 4%;
+      }
+
+      .logo-text {
+        font-size: 18px;
+      }
+
+      .logo-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+    }
+
+    /* 动画效果 */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(108, 187, 203, 0.6);
+      }
+
+      70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 12px rgba(108, 187, 203, 0);
+      }
+
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(108, 187, 203, 0);
+      }
+    }
+
+    /* 内容区域样式 */
+    .content {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .welcome-section {
+      text-align: center;
+      margin-bottom: 60px;
+      animation: fadeIn 1s ease;
+    }
+
+    .welcome-section h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .welcome-section p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto 30px;
+      line-height: 1.6;
+    }
+
+    .math-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .math-card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease;
+      color: var(--text);
+    }
+
+    .math-card:hover {
+      transform: translateY(-10px) scale(1.02);
+    }
+
+    .math-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      color: #2a4365;
+    }
+
+    .math-card p {
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: #6cbbcb;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fas fa-calculator"></i>
+      </div>
+      <div class="logo-text">数学教案库</div>
+    </div>
+
+    <div
+      class="nav-links"
+      id="navLinks"
+    >
+      <button class="nav-btn">
+        <i class="fas fa-lightbulb"></i>
+        提示词公开
+      </button>
+      <button class="nav-btn">
+        <i class="fas fa-blog"></i>
+        博客
+      </button>
+
+      <div class="right-buttons">
+        <button class="nav-btn">
+          <i class="fas fa-info-circle"></i>
+          关于此项目
+        </button>
+        <button class="nav-btn">
+          <i class="fas fa-user"></i>
+          我的个人主页
+        </button>
+      </div>
+    </div>
+
+    <div
+      class="hamburger"
+      id="hamburger"
+    >
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </header>
+
+  <div class="content">
+    <section class="welcome-section">
+      <h1>欢迎来到数学教案库</h1>
+      <p>专为高中生设计的数学学习平台，提供丰富的教学资源、互动练习和解题技巧，让数学学习变得有趣而高效！</p>
+    </section>
+
+    <div class="math-grid">
+      <div class="math-card">
+        <div class="card-icon">
+          <i class="fas fa-function"></i>
+        </div>
+        <h3>函数与方程</h3>
+        <p>掌握各类函数的性质和图像，学习解方程的有效方法。</p>
+      </div>
+
+      <div class="math-card">
+        <div class="card-icon">
+          <i class="fas fa-shapes"></i>
+        </div>
+        <h3>几何与空间</h3>
+        <p>探索平面几何和立体几何的奥秘，培养空间想象力。</p>
+      </div>
+
+      <div class="math-card">
+        <div class="card-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h3>概率与统计</h3>
+        <p>学习数据分析的基本方法，理解概率在实际生活中的应用。</p>
+      </div>
+
+      <div class="math-card">
+        <div class="card-icon">
+          <i class="fas fa-infinity"></i>
+        </div>
+        <h3>微积分基础</h3>
+        <p>了解极限、导数和积分的基本概念，为高等数学打下基础。</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 移动端菜单切换
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+
+      // 汉堡菜单动画
+      hamburger.classList.toggle('active');
+    });
+
+    // 滚动时导航栏效果
+    window.addEventListener('scroll', () => {
+      const header = document.querySelector('header');
+      if (window.scrollY > 50) {
+        header.style.padding = '10px 5%';
+        header.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+      } else {
+        header.style.padding = '15px 5%';
+        header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+      }
+    });
+
+    // 按钮悬停动画增强
+    const buttons = document.querySelectorAll('.nav-btn');
+    buttons.forEach(button => {
+      button.addEventListener('mouseenter', () => {
+        button.querySelector('i').style.transform = 'rotate(10deg) scale(1.2)';
+      });
+
+      button.addEventListener('mouseleave', () => {
+        button.querySelector('i').style.transform = '';
+      });
+    });
+  </script>
+</body>
+
+</html>

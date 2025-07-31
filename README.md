@@ -282,17 +282,17 @@ const drawEllipse = (applet) => {
 `framer-motion`其实很强大，但是我在此只是把它当作CSS动画的语法糖。看一个例子就秒懂了（[`src\TeachingPlanList.jsx`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/TeachingPlanList.jsx)）：
 
 ```jsx
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ scale: 1.03 }}
-      className={cn(
-        styles.lessonCard,
-        styles.bounceInAnimation,
-        'bg-white rounded-xl overflow-hidden shadow-lg'
-      )}
-    />
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, delay: index * 0.1 }}
+  whileHover={{ scale: 1.03 }}
+  className={cn(
+    styles.lessonCard,
+    styles.bounceInAnimation,
+    'bg-white rounded-xl overflow-hidden shadow-lg'
+  )}
+/>
 ```
 
 `y`控制盒子往上飞，鼠标放上去盒子会变大。

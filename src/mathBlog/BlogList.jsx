@@ -1,11 +1,4 @@
-import { blogMap, blogList, tags } from 'virtual:blog-data';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/component/ui/select';
+import { blogMap, blogList, tags as displayTags } from 'virtual:blog-data';
 import { motion } from 'motion/react';
 import { FaArrowRight, FaRegCalendarAlt, FaTags, FaUserCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -19,87 +12,24 @@ import { FaRegPenToSquare } from 'react-icons/fa6';
 import Header from '@/component/teachingPlan/Header';
 import Card from '@/component/teachingPlan/Card';
 import { useState } from 'react';
-import { DEFAULT_ITEMS_PER_PAGE } from '@/common/consts';
+import {
+  DEFAULT_ITEMS_PER_PAGE,
+} from '@/common/consts';
 import { PaginationWithToolbar } from '@/component/ui/pagination-with-toolbar';
 import { getPaginationItems } from '@/lib/pagination';
 import NoData from '@/component/NoData';
-
-// 将Markdown转换为纯文本（用于预览）
-function markdownToText(markdown) {
-  if (!markdown) return '';
-  // 简单替换Markdown标记
-  return markdown
-    .replace(/#{1,6}\s/g, '') // 移除标题
-    .replace(/\*{1,2}(.*?)\*{1,2}/g, '$1') // 移除粗体和斜体
-    .replace(/!?\[(.*?)\]\(.*?\)/g, '$1') // 移除图片和链接
-    .replace(/`{1,3}(.*?)`{1,3}/g, '$1') // 移除代码块
-    .replace(/\n/g, ' ') // 替换换行符
-    .replace(/\s{2,}/g, ' ') // 压缩多个空格
-    .trim();
-}
+import TagArea from './TagArea';
+import { useFilterStore } from './states/filterState';
+import { getFilteredBlogs, markdownToText } from './utils';
 
 const displayableBlogs = blogList.map((blogTitle) => ({
   ...blogMap[blogTitle],
   previewContent: markdownToText(blogMap[blogTitle].content.substring(0, 280)),
 }));
-const displayTags = ['全部', ...tags];
-
-function getFilteredBlogs(displayableBlogs, tagFilter) {
-  const filteredByTagBlogs = tagFilter === '全部'
-    ? displayableBlogs
-    : displayableBlogs.filter((blog) => blog.tags.includes(tagFilter));
-  return filteredByTagBlogs;
-}
-
-function TagArea({ tags, tagFilter, onTagChange }) {
-  return (
-    <div className="flex flex-wrap items-center gap-3">
-      选择标签：
-      {
-        // TODO: 支持多选
-        tags.length <= 100 ? (
-          tags.map((tag, index) => {
-            const selected = tagFilter === tag;
-
-            return (
-              <Tag
-                key={tag}
-                className={cn(
-                  'cursor-pointer',
-                  selected ? 'bg-blue-500 text-white' : getTagColorByIndex(index)
-                )}
-                onClick={() => onTagChange(tag)}
-              >
-                {tag}
-              </Tag>
-            );
-          })
-        ) : (
-          <Select onValueChange={onTagChange}>
-            <SelectTrigger className="w-45">
-              <SelectValue placeholder="全部" />
-            </SelectTrigger>
-            <SelectContent>
-              {
-                displayTags.map((tag) => {
-                  return (
-                    <SelectItem key={tag} value={tag}>
-                      {tag}
-                    </SelectItem>
-                  );
-                })
-              }
-            </SelectContent>
-          </Select>
-        )
-      }
-    </div>
-  );
-}
 
 export default function BlogList() {
-  const [tagFilter, setTagFilter] = useState('全部');
-  const filteredBlogs = getFilteredBlogs(displayableBlogs, tagFilter);
+  const { mode, tagFilter, setTagFilter } = useFilterStore();
+  const filteredBlogs = getFilteredBlogs(displayableBlogs, tagFilter, mode);
 
   const onTagChange = (tag) => {
     setTagFilter(tag);
@@ -120,7 +50,13 @@ export default function BlogList() {
         <p>这里汇聚了各类足够硬核的数学博客~</p>
       </Header>
 
-      <Card className="flex flex-col gap-4">
+      {/* 取消 hover scale 规避博客标题的公式出现在下拉框之上的问题 */}
+      <Card
+        className="flex flex-col gap-4"
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        whileHover={{ scale: 1 }}
+      >
         <TagArea
           tags={displayTags}
           tagFilter={tagFilter}
@@ -141,8 +77,8 @@ export default function BlogList() {
 
       <motion.div
         className="bg-white rounded-xl shadow-md overflow-hidden"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.4 }}
       >
         {displayBlogs.length ? displayBlogs.map((blog, index) => (

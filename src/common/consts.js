@@ -13,3 +13,9 @@ export const DEFAULT_ITEMS_PER_PAGE = 10;
 export const ITEMS_PER_PAGE_OPTIONS = [10, 20, 50, 100];
 export const TP_ITEMS_PER_PAGE = 10;
 export const TP_PER_PAGE_OPTIONS = [4, 10, 16, 20];
+
+export const SELECT_MODES = {
+  AND: '同时包含',
+  OR: '包含任一',
+};
+export const SELECT_MODE_ARR = Object.values(SELECT_MODES);

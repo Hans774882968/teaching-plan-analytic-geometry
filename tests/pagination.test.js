@@ -1,4 +1,4 @@
-import { getPaginationItems } from '../src/lib/pagination';
+import { getPaginationItems } from '@/lib/pagination';
 import { describe, it, expect } from 'vitest';
 
 describe('getPaginationItems', () => {

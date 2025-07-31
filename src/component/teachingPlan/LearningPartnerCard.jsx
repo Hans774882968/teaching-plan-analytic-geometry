@@ -10,7 +10,7 @@ export default function LearningPartnerCard({ children, imgNode }) {
         <div
           className={cn(
             styles.floating,
-            'w-45'
+            'w-20 md:w-30 lg:w-45'
           )}
         >
           {imgNode(styles)}

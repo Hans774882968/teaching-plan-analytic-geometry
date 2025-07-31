@@ -12,20 +12,22 @@ import blogDataPlugin from './src/plugins/vite-plugin-blog-data';
 // https://vite.dev/config/
 export default defineConfig(() => {
   const basePath = getWebsiteBasePath();
+  const isGitHubPages = import.meta.env.VITE_DEPLOY_TARGET === 'github-pages';
+  const buildOptions = isGitHubPages ? {
+    outDir: 'dist',
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        '404': '404.html',
+      },
+    },
+  } : {};
 
   console.log(`[tpm] Base path: ${basePath}`);
 
   return {
     base: basePath,
-    build: {
-      outDir: 'dist',
-      rollupOptions: {
-        input: {
-          main: 'index.html',
-          '404': '404.html',
-        },
-      },
-    },
+    build: buildOptions,
     plugins: [
       react(),
       tailwindcss(),

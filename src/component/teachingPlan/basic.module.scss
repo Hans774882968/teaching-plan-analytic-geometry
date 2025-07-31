@@ -1,11 +1,10 @@
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 30px 0;
+  padding: 24px;
   line-height: 2;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  align-items: stretch;
+  gap: 24px;
 }
 
 .teachingPlanH1,
@@ -77,4 +76,17 @@
   font-weight: bold;
   color: #2D3748;
   border: 1px dashed #FF6B6B;
+}
+
+@media (min-width: 48rem) {
+  .container {
+    padding: 30px;
+    gap: 30px;
+  }
+}
+
+@media (min-width: 64rem) {
+  .container {
+    padding: 30px 100px;
+  }
 }

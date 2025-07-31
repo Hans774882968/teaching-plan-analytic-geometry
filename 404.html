@@ -357,14 +357,18 @@
 
     <!-- 内容区域 -->
     <div class="content-area">
-      <div class="error-code">404</div>
+      <div class="error-code">别担心</div>
 
       <h1 class="title">
-        别担心，这是为了<span class="highlight">适配 GitHub Pages</span>
+        这是为了<span class="highlight">适配 GitHub Pages</span>
       </h1>
 
       <p class="description">
-        我们正在把你送往你的目的地~
+        我们正在把你送往你的目的地：
+        <span
+          id="target-path"
+          class="highlight"
+        ></span>
       </p>
     </div>
 
@@ -397,6 +401,7 @@
 
     const basePath = '/teaching-plan-analytic-geometry/';
     const currentPath = window.location.pathname.replace(basePath, '');
+    document.getElementById('target-path').textContent = currentPath;
     // 重定向到 SPA
     window.location.href = `${basePath}?redirect=${encodeURIComponent(currentPath)}`;
   </script>

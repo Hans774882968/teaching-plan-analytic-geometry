@@ -1,5 +1,6 @@
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { SELECT_MODES } from '../common/consts';
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -33,4 +34,28 @@ export function calcReadTime(contentLength) {
 
 export function isNonEmptyArray(arr) {
   return Array.isArray(arr) && arr.length > 0;
+}
+
+export function addOrDeleteItem(a, v) {
+  if (typeof v === 'number' && isNaN(v)) {
+    const res = a.includes(v) ? a.filter((tmp) => !isNaN(tmp)) : [...a, v];
+    return res;
+  }
+  const res = a.includes(v) ? a.filter((tmp) => tmp !== v) : [...a, v];
+  return res;
+}
+
+export function filterBySelections(a, attr, selection, mode) {
+  if (!isNonEmptyArray(selection)) return a;
+
+  const res = a.filter((item) => {
+    if (mode === SELECT_MODES.AND) {
+      const isItemLegal = item && Array.isArray(item[attr]);
+      return selection.every(s => isItemLegal && item[attr].includes(s));
+    } else {
+      const isItemLegal = item && Array.isArray(item[attr]);
+      return selection.some(s => isItemLegal && item[attr].includes(s));
+    }
+  });
+  return res;
 }

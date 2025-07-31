@@ -9,7 +9,7 @@ import {
   getAddedAppletOnLoadIdsCode,
   geogebraSrcCodeCollect,
   setupWatcher,
-} from '../src/scripts/geogebra-src-code-collect';
+} from '@/scripts/geogebra-src-code-collect';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import fs from 'fs';
 import { glob } from 'glob';

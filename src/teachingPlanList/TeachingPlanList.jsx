@@ -9,33 +9,37 @@ import {
   FaChartLine,
 } from 'react-icons/fa';
 import { FaCircleDollarToSlot } from 'react-icons/fa6';
-import { cn } from '@/lib/utils';
+import { addToFavorite, cn } from '@/lib/utils';
 import { motion } from 'motion/react';
 import styles from './TeachingPlanList.module.scss';
 import { Link } from 'react-router-dom';
-import { addToFavorite } from './lib/utils';
-import NoData from './component/NoData';
-import { tagColorList } from './lib/getTagColor';
-import Card from './component/teachingPlan/Card';
-import { TP_ITEMS_PER_PAGE, TP_PER_PAGE_OPTIONS } from './common/consts';
-import { getPaginationItems } from './lib/pagination';
-import { PaginationWithToolbar } from './component/ui/pagination-with-toolbar';
+import NoData from '@/component/NoData';
+import { tagColorList } from '@/lib/getTagColor';
+import Card from '@/component/teachingPlan/Card';
+import { TP_ITEMS_PER_PAGE, TP_PER_PAGE_OPTIONS } from '@/common/consts';
+import { getPaginationItems } from '@/lib/pagination';
+import { PaginationWithToolbar } from '@/component/ui/pagination-with-toolbar';
+import CategorySelector from './CategorySelector';
+import DifficultySelector from './DifficultySelector';
+import SelectMode from '@/component/SelectMode';
+import { useLessonFilterStore } from './states/lessonFilterState';
+import { getFilteredLessons } from './utils';
 
 // 在首页用 Helmet 改标题无效，决定改 index.html 的标题
 const lessonPlans = [
-  { url: '/rotation/definition', title: '图形的旋转', category: '平面几何', difficulty: '初中' },
-  { url: '/function-definition/representation', title: '函数及其表示方法', category: '代数', difficulty: '高中' },
-  { url: '/function-definition/monotonicity', title: '函数的单调性', category: '代数', difficulty: '高中' },
-  { url: '/function-definition/even-odd', title: '函数的奇偶性', category: '代数', difficulty: '高中' },
-  { url: '/plane-vector-definition', title: '平面向量的定义及其线性运算', category: '平面几何', difficulty: '高中' },
-  { url: '/solid-geometry-intro/oblique-drawing', title: '空间几何体与斜二测画法', category: '空间几何', difficulty: '高中' },
-  { url: '/spatial-vector/fundamental-theorem', title: '空间向量基本定理', category: '空间几何', difficulty: '高中' },
-  { url: '/ellipse-definition', title: '椭圆的定义与性质', category: '圆锥曲线', difficulty: '高中' },
-  { url: '/hyperbola-definition', title: '双曲线的定义与性质', category: '圆锥曲线', difficulty: '高中' },
-  { url: '/parabola-definition', title: '抛物线的定义与性质', category: '圆锥曲线', difficulty: '高中' },
+  { url: '/rotation/definition', title: '图形的旋转', category: ['平面几何'], difficulty: '初中' },
+  { url: '/function-definition/representation', title: '函数及其表示方法', category: ['代数'], difficulty: '高中' },
+  { url: '/function-definition/monotonicity', title: '函数的单调性', category: ['代数'], difficulty: '高中' },
+  { url: '/function-definition/even-odd', title: '函数的奇偶性', category: ['代数'], difficulty: '高中' },
+  { url: '/plane-vector-definition', title: '平面向量的定义及其线性运算', category: ['平面几何'], difficulty: '高中' },
+  { url: '/solid-geometry-intro/oblique-drawing', title: '空间几何体与斜二测画法', category: ['空间几何'], difficulty: '高中' },
+  { url: '/spatial-vector/fundamental-theorem', title: '空间向量基本定理', category: ['空间几何'], difficulty: '高中' },
+  { url: '/ellipse-definition', title: '椭圆的定义与性质', category: ['圆锥曲线', '代数'], difficulty: '高中' },
+  { url: '/hyperbola-definition', title: '双曲线的定义与性质', category: ['圆锥曲线', '代数'], difficulty: '高中' },
+  { url: '/parabola-definition', title: '抛物线的定义与性质', category: ['圆锥曲线', '代数'], difficulty: '高中' },
 ].map((lesson, index) => ({ ...lesson, id: index + 1 }));
 
-const categories = [...new Set(lessonPlans.map(lesson => lesson.category))].sort();
+const categories = [...new Set(lessonPlans.flatMap(lesson => lesson.category))].sort();
 const difficulties = [...new Set(lessonPlans.map(lesson => lesson.difficulty))];
 
 // 难度颜色映射
@@ -78,10 +82,17 @@ function LessonCard({ lesson, index }) {
         'bg-white rounded-xl overflow-hidden shadow-lg'
       )}
     >
-      <div className="p-6">
-        <div className="flex items-start">
-          <div className={cn('p-3 rounded-lg mr-4 transition-colors duration-300', categoryColors[lesson.category])}>
-            {lesson.category && categoryShapes[lesson.category]}
+      <div className="p-6 flex flex-col gap-4 justify-between h-full">
+        <div className="flex items-start gap-4">
+          <div className="flex flex-col gap-4">
+            {
+              // 允许 2 个，再多就影响观感
+              lesson.category.slice(0, 2).map(cat => (
+                <div key={cat} className={cn('p-3 rounded-lg transition-colors duration-300', categoryColors[cat])}>
+                  {cat && categoryShapes[cat]}
+                </div>
+              ))
+            }
           </div>
           <div className="flex-1">
             <h3 className="text-xl font-bold text-gray-800 mb-2">{lesson.title}</h3>
@@ -92,17 +103,24 @@ function LessonCard({ lesson, index }) {
               )}>
                 {lesson.difficulty}
               </span>
-              <span className={cn(
-                'px-2 py-1 rounded-md text-xs font-semibold transition-colors duration-300 ml-2',
-                categoryColors[lesson.category]
-              )}>
-                {lesson.category}
-              </span>
+              {
+                lesson.category.map(cat => (
+                  <span
+                    key={cat}
+                    className={cn(
+                      'px-2 py-1 rounded-md text-xs font-semibold transition-colors duration-300 ml-2',
+                      categoryColors[cat]
+                    )}
+                  >
+                    {cat}
+                  </span>
+                ))
+              }
             </div>
           </div>
         </div>
 
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-between items-center">
           <button className="text-blue-600 hover:text-blue-800 font-medium">
             <Link className="flex items-center" to={lesson.url}>
               查看
@@ -124,39 +142,18 @@ function LessonCard({ lesson, index }) {
   );
 }
 
-function FilterButton({ children, className, defaultColorCls, selected, ...rest }) {
-  return (
-    <button
-      className={
-        cn(
-          'px-4 py-2 rounded-full font-medium transition-all duration-300',
-          selected ? 'bg-blue-500 text-white shadow-lg' : (defaultColorCls || 'bg-white text-gray-700 hover:bg-gray-100'),
-          className
-        )
-      }
-      {...rest}
-    >
-      {children}
-    </button>
-  );
-}
-
-function getFilteredLessons(lessonPlans, categoryFilter, difficultyFilter) {
-  const filteredByCategoryLessons = categoryFilter === 'all'
-    ? lessonPlans
-    : lessonPlans.filter((lesson) => lesson.category === categoryFilter);
-  const filteredByDifficultyLessons = difficultyFilter === 'all' ?
-    filteredByCategoryLessons
-    : filteredByCategoryLessons.filter((lesson) => lesson.difficulty === difficultyFilter);
-  return filteredByDifficultyLessons;
-}
-
 // 主组件
 export default function TeachingPlanList() {
-  const [categoryFilter, setCategoryFilter] = useState('all');
-  const [difficultyFilter, setDifficultyFilter] = useState('all');
+  const {
+    mode,
+    categoryFilter,
+    difficultyFilter,
+    setMode,
+    setCategoryFilter,
+    setDifficultyFilter,
+  } = useLessonFilterStore();
 
-  const filteredLessons = getFilteredLessons(lessonPlans, categoryFilter, difficultyFilter);
+  const filteredLessons = getFilteredLessons(lessonPlans, categoryFilter, difficultyFilter, mode);
 
   const [itemsPerPage, setItemsPerPage] = useState(TP_ITEMS_PER_PAGE);
   // 所有导致数据个数变化的场景都需要重置页码
@@ -173,6 +170,13 @@ export default function TeachingPlanList() {
   const onDifficultyFilterChange = (difficulty) => {
     setDifficultyFilter(difficulty);
     setCurrentPage(1);
+  };
+
+  const onModeChange = (val) => {
+    setMode(val);
+    // 清空原来选择的标签
+    onCategoryFilterChange([]);
+    onDifficultyFilterChange('all');
   };
 
   return (
@@ -210,72 +214,35 @@ export default function TeachingPlanList() {
         initial={{ opacity: 0, scale: 0.95, y: 32 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
       >
-        {/* 按类别过滤 */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="max-w-4xl mx-auto"
-        >
-          <div className="flex flex-wrap justify-center gap-3">
-            <FilterButton
-              onClick={() => onCategoryFilterChange('all')}
-              selected={categoryFilter === 'all'}
-            >
-              所有类别
-            </FilterButton>
-
-            {categories.map((category, index) => (
-              <FilterButton
-                defaultColorCls={categoryColors[category]}
-                key={index}
-                onClick={() => onCategoryFilterChange(category)}
-                selected={categoryFilter === category}
-              >
-                {category}
-              </FilterButton>
-            ))}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            筛选模式：
+            <SelectMode defaultValue={mode} onValueChange={onModeChange} />
           </div>
-        </motion.div>
 
-        {/* 按难度过滤 */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="max-w-4xl mx-auto"
-        >
-          <div className="flex flex-wrap justify-center gap-3">
-            <FilterButton
-              onClick={() => onDifficultyFilterChange('all')}
-              selected={difficultyFilter === 'all'}
-            >
-              所有难度
-            </FilterButton>
+          <CategorySelector
+            categories={categories}
+            categoryFilter={categoryFilter}
+            onCategoryFilterChange={onCategoryFilterChange}
+            categoryColors={categoryColors}
+          />
 
-            {difficulties.map((difficulty, index) => (
-              <FilterButton
-                defaultColorCls={difficultyColors[difficulty]}
-                key={index}
-                onClick={() => onDifficultyFilterChange(difficulty)}
-                selected={difficultyFilter === difficulty}
-              >
-                {difficulty}
-              </FilterButton>
-            ))}
-          </div>
-        </motion.div>
-
-        <div className="flex justify-center">
-          <PaginationWithToolbar
-            currentPage={currentPage}
-            itemsPerPage={itemsPerPage}
-            itemsPerPageOptions={TP_PER_PAGE_OPTIONS}
-            onPageChange={setCurrentPage}
-            setItemsPerPage={setItemsPerPage}
-            total={filteredLessons.length}
+          <DifficultySelector
+            difficulties={difficulties}
+            difficultyFilter={difficultyFilter}
+            onDifficultyFilterChange={onDifficultyFilterChange}
+            difficultyColors={difficultyColors}
           />
         </div>
+
+        <PaginationWithToolbar
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          itemsPerPageOptions={TP_PER_PAGE_OPTIONS}
+          onPageChange={setCurrentPage}
+          setItemsPerPage={setItemsPerPage}
+          total={filteredLessons.length}
+        />
       </Card>
 
       {/* 教案列表 */}
