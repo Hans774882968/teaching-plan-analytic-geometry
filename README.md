@@ -1298,10 +1298,17 @@ TypeError: Cannot read properties of undefined (reading 'VITE_DEPLOY_TARGET')
 
 ```js
 import { defineConfig } from 'vitest/config';
+import path from 'path';
 
 export default defineConfig({
   test: {
     // ... Specify options here.
+  },
+  // 应和 vite.config.js 配的一样
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
   },
 });
 ```

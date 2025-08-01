@@ -13,7 +13,7 @@ export default function SelectMode({
 }) {
   return (
     <Select onValueChange={onValueChange} defaultValue={defaultValue}>
-      <SelectTrigger className="w-45">
+      <SelectTrigger className="w-50 sm:w-70 md:w-80">
         <SelectValue placeholder="请选择" />
       </SelectTrigger>
       <SelectContent>

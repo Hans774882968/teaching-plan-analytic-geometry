@@ -181,7 +181,9 @@ export default function Navbar() {
   return (
     <nav className={cn(
       styles.navbar,
-      'sticky top-0 z-114514 text-white text-sm md:text-base lg:text-2xl py-4 px-6 shadow-[0_4px_12px_0px_rgba(0,0,0,0.3)]'
+      // 让 z-index 比 shadcn-ui dialog 小
+      // md 以下都展示 hamburger ，所以文字反而可以大一点
+      'sticky top-0 z-49 text-white text-2xl md:text-base lg:text-2xl py-4 px-6 shadow-[0_4px_12px_0px_rgba(0,0,0,0.3)]'
     )}>
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-2 md:space-x-4">
@@ -275,10 +277,10 @@ export default function Navbar() {
                           <Link
                             key={subItem.url}
                             to={subItem.url}
-                            className="px-3 flex justify-between items-center hover:bg-white/[0.2]"
+                            className="px-3 text-sm flex justify-between items-center hover:bg-white/[0.2]"
                             {...subOpenInNewTabProps}
                           >
-                            <p className="w-full flex items-center gap-2 transition-transform duration-200 ease-in-out hover:translate-x-1">
+                            <p className="py-1 w-full flex items-center gap-2 transition-transform duration-200 ease-in-out hover:translate-x-1">
                               {subItem.label}
                             </p>
                           </Link>

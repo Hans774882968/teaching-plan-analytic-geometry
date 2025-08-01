@@ -174,6 +174,22 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
+
+  /* Animation variables polyfill for Tailwind 3.x (shadcn uses) */
+  --animate-in: animate-in 0.15s ease-out;
+  --animate-out: animate-out 0.15s ease-in;
+  --animate-fade-in: fade-in 0.15s ease-out;
+  --animate-fade-out: fade-out 0.15s ease-in;
+  --animate-zoom-in-95: zoom-in-95 0.15s ease-out;
+  --animate-zoom-out-95: zoom-out-95 0.15s ease-in;
+  --animate-slide-in-from-left-1\/2: slide-in-from-left-0.5 0.15s ease-out;
+  --animate-slide-in-from-right-1\/2: slide-in-from-right-0.5 0.15s ease-out;
+  --animate-slide-in-from-top-1\/2: slide-in-from-top-0.5 0.15s ease-out;
+  --animate-slide-in-from-bottom-1\/2: slide-in-from-bottom-0.5 0.15s ease-out;
+  --animate-slide-out-to-left-1\/2: slide-out-to-left-0.5 0.15s ease-in;
+  --animate-slide-out-to-right-1\/2: slide-out-to-right-0.5 0.15s ease-in;
+  --animate-slide-out-to-top-1\/2: slide-out-to-top-0.5 0.15s ease-in;
+  --animate-slide-out-to-bottom-1\/2: slide-out-to-bottom-0.5 0.15s ease-in;
 }
 
 body {
@@ -181,4 +197,20 @@ body {
   background-color: var(--body-bg);
   color: #333;
   overflow-x: hidden;
+}
+
+.floating {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(-10px);
+  }
+
+  50% {
+    transform: translateY(10px);
+  }
 }

@@ -25,6 +25,7 @@ import { getWebsiteBasePath } from './lib/getWebsiteBasePath';
 import BlogDetail from './mathBlog/BlogDetail';
 import BlogList from './mathBlog/BlogList';
 import NavigateForGitHubPages from './NavigateForGitHubPages';
+import { ThemeProvider } from '@/component/theme-provider';
 
 const routes = [
   { path: '/', element: <TeachingPlanList /> },
@@ -70,19 +71,21 @@ function App() {
           }}
         />
         <NavigateForGitHubPages>
-          <Layout>
-            <Routes>
-              {
-                routes.map((route, index) => (
-                  <Route
-                    key={route.path || `route-${index}`}
-                    path={route.path}
-                    element={route.element}
-                  />
-                ))
-              }
-            </Routes>
-          </Layout>
+          <ThemeProvider defaultTheme="light">
+            <Layout>
+              <Routes>
+                {
+                  routes.map((route, index) => (
+                    <Route
+                      key={route.path || `route-${index}`}
+                      path={route.path}
+                      element={route.element}
+                    />
+                  ))
+                }
+              </Routes>
+            </Layout>
+          </ThemeProvider>
         </NavigateForGitHubPages>
       </Router>
     </HelmetProvider>

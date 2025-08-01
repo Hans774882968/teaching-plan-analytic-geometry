@@ -273,6 +273,7 @@ export default function TeachingPlanList() {
       <motion.div
         className={cn(
           styles.floating,
+          'hidden xl:block',
           'fixed top-40 left-10 w-8 h-8 rounded-full bg-blue-300 opacity-30'
         )}
         initial={{ opacity: 0, scale: 0 }}
@@ -282,6 +283,7 @@ export default function TeachingPlanList() {
       <motion.div
         className={cn(
           styles.floating,
+          'hidden xl:block',
           'fixed bottom-40 right-10 w-12 h-12 rounded-full bg-purple-300 opacity-30'
         )}
         initial={{ opacity: 0, scale: 0 }}
@@ -291,14 +293,19 @@ export default function TeachingPlanList() {
       <motion.div
         className={cn(
           styles.floating,
-          'fixed top-[20%] right-[15%] w-10 h-10 transform rotate-45 bg-yellow-300 opacity-30'
+          'hidden xl:block',
+          'fixed top-[40%] left-[10%] w-10 h-10 transform rotate-45 bg-yellow-300 opacity-30'
         )}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 0.3, scale: 1 }}
         transition={{ delay: 0.3, duration: 0.4 }}
       />
       <motion.div
-        className={cn(styles.floating, 'fixed top-2/3 left-[5%]')}
+        className={cn(
+          styles.floating,
+          'hidden xl:block',
+          'fixed top-2/3 left-[5%]'
+        )}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 0.3, scale: 1 }}
         transition={{ delay: 0.6, duration: 0.4 }}
@@ -308,7 +315,11 @@ export default function TeachingPlanList() {
         </div>
       </motion.div>
       <motion.div
-        className={cn(styles.floating, 'fixed top-1/2 right-[10%]')}
+        className={cn(
+          styles.floating,
+          'hidden xl:block',
+          'fixed top-1/2 right-[10%]'
+        )}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 0.3, scale: 1 }}
         transition={{ delay: 0.6, duration: 0.4 }}
@@ -318,7 +329,11 @@ export default function TeachingPlanList() {
         </div>
       </motion.div>
       <motion.div
-        className={cn(styles.floating, 'fixed top-1/3 right-[5%]')}
+        className={cn(
+          styles.floating,
+          'hidden xl:block',
+          'fixed top-1/3 right-[5%]'
+        )}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 0.5, scale: 1 }}
         transition={{ delay: 0.6, duration: 0.4 }}

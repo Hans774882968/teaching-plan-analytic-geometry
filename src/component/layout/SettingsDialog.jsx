@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { FILTER_STYLE, useSettingsStore } from './states/settingsState';
 import { FaGear } from 'react-icons/fa6';
 import { Button } from '@/component/ui/button';
@@ -21,7 +20,6 @@ import { Label } from '@/component/ui/label';
 
 export default function SettingsDialog() {
   const { filterStyle, setFilterStyle, reset } = useSettingsStore();
-  const [open, setOpen] = useState(false);
 
   const handleFilterStyleChange = (value) => {
     setFilterStyle(value);
@@ -32,7 +30,7 @@ export default function SettingsDialog() {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog>
       <DialogTrigger asChild>
         <div
           className="p-2 rounded-lg cursor-pointer hover:bg-white/[0.2] transition-colors"

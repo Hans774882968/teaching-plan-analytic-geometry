@@ -19,13 +19,19 @@ A React-based interactive mathematics teaching plan generator that integrates Ge
 
 ```bash
 # Development
-bun dev                  # Start dev server with hot reload
-bun build               # Build for production
+bun dev                  # Start dev server with hot reload + GeoGebra watcher
+bun run build               # Build for production
 bun preview             # Preview production build
 bun serve               # Serve built files locally
-bun lint                # Run ESLint
-bun test                # Run tests with Vitest
+bun lint --fix                # Run ESLint
+bun run test                # Run tests with Vitest
+bun run test --ui          # Run tests with UI
+bun run test --reporter=verbose # Verbose test output
 ```
+
+### Environment Variables
+- `VITE_DEPLOY_TARGET=github-pages` - Configure for GitHub Pages deployment
+- Default: local development with root path
 
 ## Project Architecture
 
@@ -61,7 +67,8 @@ src/
 │   ├── teachingPlan/     # Reusable lesson plan components
 │   ├── Geogebra.jsx      # GeoGebra integration
 │   ├── layout/           # Layout components
-│   └── MarkdownRenderer.jsx
+│   ├── MarkdownRenderer.jsx  # Enhanced markdown rendering
+│   └── ui/               # shadcn-ui components
 ├── [lesson-name]/        # Individual lesson pages
 │   ├── config.jsx        # Schema-based configuration
 │   └── [Component].jsx   # React component
@@ -69,7 +76,10 @@ src/
 │   ├── marked.js         # Markdown processing
 │   ├── hljsRenderer.js   # Code block enhancements
 │   └── utils.js          # Utility functions
-└── promptDisplay/        # LLM prompt generation tools
+├── plugins/              # Vite plugins for virtual modules
+├── scripts/              # Build-time scripts (GeoGebra code collection)
+├── promptDisplay/        # LLM prompt generation tools
+└── mathBlog/            # Blog system components
 ```
 
 ## Key Features
@@ -131,13 +141,36 @@ appletOnLoad: (applet) => {
 }
 ```
 
+### Build System Architecture
+- **Vite Plugins**: Custom virtual modules for prompt display, README display, and blog data
+- **Asset Processing**: Automatic GeoGebra code collection via `src/scripts/geogebra-src-code-collect.js`
+- **Static Assets**: README and `docs/blogs` assets automatically copied to dist folder
+- **Path Resolution**: Dynamic base path handling for GitHub Pages vs local development
+
+### Testing Strategy
+- **Unit Tests**: Vitest for utility functions and build scripts
+- **Snapshot Testing**: GeoGebra source code collection validation
+- **Mock Strategy**: File system and module mocking for build-time scripts
+- **IDE Integration**: Debug terminal support for VS Code
+
 ## Development Notes
 
-- **GeoGebra Setup**: Requires manual download of GeoGebra Math Apps Bundle to `public/geogebra/`
-- **Path Resolution**: Modified GeoGebra's `web3d.nocache.js` for correct asset paths
-- **Styling**: Uses SCSS modules with Tailwind CSS utility classes
-- **Testing**: Vitest for unit tests, includes snapshot testing for code generation
-- **Build**: Uses bun as package manager and runtime
+### Setup Requirements
+1. **GeoGebra Setup**: Download [GeoGebra Math Apps Bundle](https://download.geogebra.org/package/geogebra-math-apps-bundle) to `public/geogebra/`
+2. **Asset Structure**: Copy both `web3d/` and `css/` folders from the bundle
+3. **Path Fixes**: Modified `web3d.nocache.js` to use `window.GGB_WEB3D_NO_CACHE_BASE_PATH`
+
+### Build System
+- **Package Manager**: Bun (faster than npm for this project)
+- **Concurrent Tasks**: `bun dev` runs both GeoGebra watcher and Vite dev server
+- **Asset Processing**: Automatic README and blog asset copying during build
+- **GitHub Pages**: Environment-based path configuration via `VITE_DEPLOY_TARGET`
+
+### Key Configuration Files
+- **Vite Config**: `vite.config.js` - Handles path resolution, plugins, and build options
+- **JS Config**: `jsconfig.json` - IDE support and path mapping
+- **ESLint**: `eslint.config.js` - Code linting rules
+- **Test Config**: `vitest.config.js` - Separate config for test environment
 
 ## Special Considerations
 
@@ -145,3 +178,4 @@ appletOnLoad: (applet) => {
 2. **Browser Compatibility**: GeoGebra has known console-related display issues
 3. **Content Generation**: LLM-generated content uses standardized schemas for consistency
 4. **Code Blocks**: Custom renderer for enhanced markdown code blocks with copy/expand features
+5. **Deployment**: GitHub Pages requires special path handling and 404.html setup
