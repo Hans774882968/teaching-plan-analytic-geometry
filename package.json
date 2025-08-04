@@ -4,12 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently -n 'geog,vite' 'bun watch:geogebra' 'bunx --bun vite'",
+    "dev": "concurrently -n 'geog,blog,vite' 'bun watch:geogebra' 'bun watch:blog' 'bunx --bun vite'",
     "build": "bunx --bun vite build",
     "lint": "eslint .",
     "preview": "bunx --bun vite preview",
     "serve": "bunx serve -s dist",
     "watch:geogebra": "bun src/scripts/geogebra-src-code-collect.js",
+    "watch:blog": "bun src/scripts/blog-metadata-processor.js",
     "test": "vitest"
   },
   "dependencies": {

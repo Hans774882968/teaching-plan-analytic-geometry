@@ -81,8 +81,8 @@ export default function blogDataPlugin() {
           const title = data.title || path.basename(mdFile, '.md');
 
           const titleEncoded = encodeURIComponent(title);
-          const ctime = dayjs(stats.birthtime).format('YYYY-MM-DD HH:mm:ss');
-          const mtime = dayjs(stats.mtime).format('YYYY-MM-DD HH:mm:ss');
+          const ctime = data.ctime_f || dayjs(stats.birthtime).format('YYYY-MM-DD HH:mm:ss');
+          const mtime = data.mtime_f || dayjs(stats.mtime).format('YYYY-MM-DD HH:mm:ss');
 
           let tags = [];
           if (Array.isArray(data.tags)) {

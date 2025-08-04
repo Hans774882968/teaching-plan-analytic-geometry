@@ -1,6 +1,6 @@
 [TOC]
 
-# 通过为前端项目接入GeoGebra，初步研究AI时代数学教案的生成方案
+# 通过为前端项目接入GeoGebra，初步研究AI时代数学教案的生成方案（已部署GitHub Pages）
 
 ## 引言
 

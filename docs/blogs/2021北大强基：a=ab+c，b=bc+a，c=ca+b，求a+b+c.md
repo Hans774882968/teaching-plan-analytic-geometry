@@ -2,6 +2,10 @@
 tags:
   - 对称性
 title: 2021北大强基： $a=ab+c$ ， $b=bc+a$ ， $c=ca+b$ ，求 $a+b+c$
+ctime: '1753667613431'
+ctime_f: '2025-07-28 09:53:33'
+mtime: '1754214022378'
+mtime_f: '2025-08-03 17:40:22'
 ---
 
 题目来源： https://www.bilibili.com/video/BV1nh4y1M7h9 。强调一下，a、b、c是三个 不全相等的实数。
