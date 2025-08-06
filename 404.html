@@ -186,7 +186,7 @@
     }
 
     .error-code {
-      font-size: 8rem;
+      font-size: 6rem;
       font-weight: 700;
       color: #3b82f6;
       margin-bottom: 16px;
@@ -197,7 +197,7 @@
     }
 
     .title {
-      font-size: 2.25rem;
+      font-size: 1.75rem;
       font-weight: 700;
       color: #1f2937;
       margin-bottom: 24px;
@@ -275,6 +275,24 @@
       opacity: 0;
     }
 
+    *::-webkit-scrollbar {
+      display: flex;
+      touch-action: none;
+      padding: 1px;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+      user-select: none;
+      height: 100%;
+      width: 6px;
+      border-left: 1px solid transparent;
+    }
+
+    *::-webkit-scrollbar-thumb {
+      position: relative;
+      flex: 1 1 0%;
+      border-radius: 9999px;
+      background-color: #4A90E2;
+    }
+
     /* 动画关键帧 */
     @keyframes fadeInScale {
       to {
@@ -298,6 +316,10 @@
 
     /* 响应式调整 */
     @media (min-width: 768px) {
+      .error-code {
+        font-size: 8rem;
+      }
+
       .title {
         font-size: 2.5rem;
       }
