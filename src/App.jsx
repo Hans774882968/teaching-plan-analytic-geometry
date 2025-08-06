@@ -63,7 +63,7 @@ function App() {
             style: {
               color: 'white',
               backgroundColor: 'var(--vivid-blue-bg)',
-              borderColor: '#4cc9f0',
+              borderColor: 'var(--vivid-blue-bg-start)',
             },
             classNames: {
               title: '!font-(family-name:--tpm-font-family) !font-bold !text-base',

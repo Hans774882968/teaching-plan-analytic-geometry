@@ -14,6 +14,15 @@ import {
 import { FaRegPenToSquare } from 'react-icons/fa6';
 import Tag from '@/component/Tag';
 import { getTagColorByIndex } from '../lib/getTagColor';
+import { TOO_LONG_ELEMENT_HOVER_SCALE } from '@/common/consts';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/component/ui/breadcrumb';
 
 export default function BlogDetail() {
   const { title: blogTitle } = useParams();
@@ -30,8 +39,34 @@ export default function BlogDetail() {
 
   return (
     <div className={styles.container}>
-      <Card>
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">
+      <Card whileHover={{ scale: TOO_LONG_ELEMENT_HOVER_SCALE }}>
+        <div className="border-b border-gray-200 pb-6">
+          <Breadcrumb>
+            <BreadcrumbList className="text-xl">
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link to="/">首页</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+
+              <BreadcrumbSeparator />
+              
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link to="/blogs">博客列表</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+
+              <BreadcrumbSeparator />
+
+              <BreadcrumbItem>
+                <BreadcrumbPage className="font-bold">正文</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+
+        <h1 className="text-4xl font-bold text-gray-800 mt-6 mb-4">
           <MarkdownRenderer content={blog.title} />
         </h1>
 

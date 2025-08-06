@@ -64,7 +64,7 @@ export default function SettingsDialog() {
           </div>
 
           <div className="flex justify-end">
-            <Button variant="destructive" onClick={handleReset}>
+            <Button variant="default" onClick={handleReset}>
               重置
             </Button>
           </div>

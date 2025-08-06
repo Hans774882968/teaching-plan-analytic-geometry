@@ -2,7 +2,9 @@
 
 :root {
   --tpm-primary: #4A90E2;
-  --vivid-blue-bg: linear-gradient(135deg, #4cc9f0, #77cce8);
+  --vivid-blue-bg-start: #4cc9f0;
+  --vivid-blue-bg-end: #77cce8;
+  --vivid-blue-bg: linear-gradient(135deg, var(--vivid-blue-bg-start), var(--vivid-blue-bg-end));
   --text-dark: #2D3748;
 
   --body-bg: #b2deec;
@@ -12,7 +14,9 @@
   --tpm-color-link-hover: #69b1ff;
   --tpm-btn-primary-bg: #1677ff;
   --tpm-btn-primary-hover-bg: #4096ff;
-  --navbar-bg: linear-gradient(135deg, #67cbeb 0%, #77cce8 100%);
+  --navbar-bg-start: #67cbeb;
+  --navbar-bg-end: #77cce8;
+  --navbar-bg: linear-gradient(135deg, var(--navbar-bg-start) 0%, var(--navbar-bg-end) 100%);
 
   --hover-scale: scale(1.02);
   --transition: all 0.3s ease;
@@ -213,4 +217,13 @@ body {
   50% {
     transform: translateY(10px);
   }
+}
+
+*::-webkit-scrollbar {
+  @apply flex touch-none p-px transition-colors select-none h-full w-1.5 border-l border-l-transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply relative flex-1 rounded-full;
+  background-color: var(--tpm-primary);
 }

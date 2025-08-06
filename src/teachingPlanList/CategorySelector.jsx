@@ -54,7 +54,7 @@ export default function CategorySelector({
             <MultipleSelector
               commandProps={{
                 label: '请选择',
-                className: 'w-50 sm:w-70 md:w-80',
+                className: 'w-50 sm:w-70 md:w-90',
               }}
               value={categoryOptions.filter(opt => categoryFilter.includes(opt.value))}
               onChange={onCategorySelectorChange}

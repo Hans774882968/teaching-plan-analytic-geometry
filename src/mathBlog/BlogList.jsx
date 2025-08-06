@@ -20,7 +20,21 @@ import { getPaginationItems } from '@/lib/pagination';
 import NoData from '@/component/NoData';
 import TagArea from './TagArea';
 import { useFilterStore } from './states/filterState';
-import { getFilteredBlogs, markdownToText } from './utils';
+import {
+  getFilteredBlogs,
+  markdownToText,
+  sortBlogs,
+} from './utils';
+import DatetimeRangePicker from '@/component/ui/datetime-range-picker';
+import { Input } from '@/component/ui/input';
+import { Button } from '@/component/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/component/ui/select';
 
 const displayableBlogs = blogList.map((blogTitle) => ({
   ...blogMap[blogTitle],
@@ -28,11 +42,68 @@ const displayableBlogs = blogList.map((blogTitle) => ({
 }));
 
 export default function BlogList() {
+  const [ctimeRange, setCtimeRange] = useState({
+    from: undefined,
+    to: undefined,
+  });
+  const [mtimeRange, setMtimeRange] = useState({
+    from: undefined,
+    to: undefined,
+  });
+  const [titleFilter, setTitleFilter] = useState('');
+  const [contentFilter, setContentFilter] = useState('');
+  const [sortRule, setSortRule] = useState('mtime-desc');
+
   const { mode, tagFilter, setTagFilter } = useFilterStore();
-  const filteredBlogs = getFilteredBlogs(displayableBlogs, tagFilter, mode);
+  const filteredBlogs = sortBlogs(
+    getFilteredBlogs(
+      displayableBlogs,
+      tagFilter,
+      mode,
+      ctimeRange,
+      mtimeRange,
+      titleFilter,
+      contentFilter
+    ),
+    sortRule
+  );
 
   const onTagChange = (tag) => {
     setTagFilter(tag);
+    setCurrentPage(1);
+  };
+
+  const handleCtimeRangeChange = (range) => {
+    setCtimeRange(range);
+    setCurrentPage(1);
+  };
+
+  const handleMtimeRangeChange = (range) => {
+    setMtimeRange(range);
+    setCurrentPage(1);
+  };
+
+  const handleTitleFilterChange = (value) => {
+    setTitleFilter(value);
+    setCurrentPage(1);
+  };
+
+  const handleContentFilterChange = (value) => {
+    setContentFilter(value);
+    setCurrentPage(1);
+  };
+
+  const onSortRuleChange = (value) => {
+    setSortRule(value);
+    setCurrentPage(1);
+  };
+
+  const handleResetFilters = () => {
+    setTagFilter([]);
+    setCtimeRange({ from: undefined, to: undefined });
+    setMtimeRange({ from: undefined, to: undefined });
+    setTitleFilter('');
+    setContentFilter('');
     setCurrentPage(1);
   };
 
@@ -52,7 +123,7 @@ export default function BlogList() {
 
       {/* 取消 hover scale 规避博客标题的公式出现在下拉框之上的问题 */}
       <Card
-        className="flex flex-col gap-4"
+        className="flex flex-col gap-4 !overflow-x-visible"
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         whileHover={{ scale: 1 }}
@@ -62,6 +133,77 @@ export default function BlogList() {
           tagFilter={tagFilter}
           onTagChange={onTagChange}
         />
+
+        <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
+          <div className="flex flex-wrap items-center gap-3">
+            搜索标题：
+            <Input
+              className="w-50 sm:w-70 md:w-90"
+              name="标题"
+              placeholder="请输入"
+              value={titleFilter}
+              onChange={(e) => handleTitleFilterChange(e.target.value)}
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            搜索内容：
+            <Input
+              className="w-50 sm:w-70 md:w-90"
+              name="内容"
+              placeholder="请输入"
+              value={contentFilter}
+              onChange={(e) => handleContentFilterChange(e.target.value)}
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            创建时间：
+            <DatetimeRangePicker
+              date={ctimeRange}
+              setDate={handleCtimeRangeChange}
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            修改时间：
+            <DatetimeRangePicker
+              date={mtimeRange}
+              setDate={handleMtimeRangeChange}
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            排序规则：
+            <Select
+              value={sortRule}
+              onValueChange={onSortRuleChange}
+            >
+              <SelectTrigger className="w-50 sm:w-70 md:w-90">
+                <SelectValue placeholder="请选择" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="title-asc">标题升序</SelectItem>
+                <SelectItem value="title-desc">标题降序</SelectItem>
+                <SelectItem value="content-asc">内容升序</SelectItem>
+                <SelectItem value="content-desc">内容降序</SelectItem>
+                <SelectItem value="ctime-asc">创建时间升序</SelectItem>
+                <SelectItem value="ctime-desc">创建时间降序</SelectItem>
+                <SelectItem value="mtime-asc">修改时间升序</SelectItem>
+                <SelectItem value="mtime-desc">修改时间降序</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <div>
+          <Button
+            onClick={handleResetFilters}
+            variant="default"
+          >
+            重置
+          </Button>
+        </div>
 
         <div className="flex gap-4 items-center">
           <PaginationWithToolbar
@@ -98,23 +240,24 @@ export default function BlogList() {
                   <div className="flex flex-wrap items-center gap-4 text-gray-500 text-sm mb-3">
                     <Link
                       className="flex items-center gap-2.5"
+                      title="作者"
                       to="https://github.com/Hans774882968"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <FaUserCircle className="text-blue-500" />
-                      <span>hans7</span>
+                      <span>{blog.author}</span>
                     </Link>
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-2.5" title="最近修改时间">
                       <FaRegPenToSquare className="text-blue-500" />
                       <span>{blog.mtime}</span>
                     </div>
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-2.5" title="创建时间">
                       <FaRegCalendarAlt className="text-blue-500" />
                       <span>{blog.ctime}</span>
                     </div>
                     <div className="flex items-center gap-2.5">
-                      <FaTags className="text-blue-500" />
+                      <FaTags className="text-blue-500" title="标签" />
                       <div className="flex flex-wrap gap-2.5">
                         {
                           blog.tags && blog.tags.length > 0 ? (

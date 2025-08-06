@@ -22,4 +22,23 @@
   a:hover {
     color: var(--tpm-color-link-hover);
   }
+
+  table {
+    table-layout: auto;
+    margin: 16px 0;
+
+    tr {
+      border-bottom: 1px solid var(--color-gray-200);
+
+      th,
+      td {
+        padding: 8px 12px;
+      }
+
+      th:hover,
+      td:hover {
+        background-color: var(--color-sky-100);
+      }
+    }
+  }
 }

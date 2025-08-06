@@ -85,7 +85,7 @@ const aboutUsDropdown = {
   children: (
     <>
       <FaUser />
-      <span>我的个人主页</span>
+      <span>关于作者</span>
     </>
   ),
   urls: [

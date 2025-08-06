@@ -81,6 +81,8 @@ export default function blogDataPlugin() {
           const title = data.title || path.basename(mdFile, '.md');
 
           const titleEncoded = encodeURIComponent(title);
+          const author = data.author || 'hans7';
+
           const ctime = data.ctime_f || dayjs(stats.birthtime).format('YYYY-MM-DD HH:mm:ss');
           const mtime = data.mtime_f || dayjs(stats.mtime).format('YYYY-MM-DD HH:mm:ss');
 
@@ -94,6 +96,7 @@ export default function blogDataPlugin() {
           blogs.push({
             title,
             titleEncoded,
+            author,
             content,
             ctime,
             mtime,

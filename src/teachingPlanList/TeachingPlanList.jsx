@@ -210,7 +210,7 @@ export default function TeachingPlanList() {
       </motion.header>
 
       <Card
-        className="max-w-4xl mx-auto mb-12 flex flex-col gap-6"
+        className="max-w-4xl mx-auto mb-12 flex flex-col gap-6 !overflow-x-visible"
         initial={{ opacity: 0, scale: 0.95, y: 32 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
       >

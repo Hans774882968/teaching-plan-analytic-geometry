@@ -3,6 +3,7 @@ type ID = string;
 interface Blog {
   title: ID;
   titleEncoded: ID;
+  author: string;
   content: string;
   ctime: string;
   mtime: string;

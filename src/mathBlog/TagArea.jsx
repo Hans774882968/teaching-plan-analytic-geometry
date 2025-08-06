@@ -29,7 +29,7 @@ export default function TagArea({ tags, onTagChange }) {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap">
       <div className="flex flex-wrap items-center gap-3">
         筛选模式：
         <SelectMode onValueChange={onModeChange} />
@@ -58,7 +58,7 @@ export default function TagArea({ tags, onTagChange }) {
             <MultipleSelector
               commandProps={{
                 label: '请选择',
-                className: 'w-50 sm:w-70 md:w-80',
+                className: 'w-50 sm:w-70 md:w-90',
               }}
               value={tagOptions.filter(opt => tagFilter.includes(opt.value))}
               onChange={onTagSelectorChange}
