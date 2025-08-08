@@ -19,7 +19,7 @@ A React-based interactive mathematics teaching plan generator that integrates Ge
 
 ```bash
 # Development
-bun dev                  # Start dev server with hot reload + GeoGebra watcher
+bun dev                  # Start dev server with hot reload + GeoGebra watcher + blog watcher
 bun run build               # Build for production
 bun preview             # Preview production build
 bun serve               # Serve built files locally
@@ -27,6 +27,8 @@ bun lint --fix                # Run ESLint
 bun run test                # Run tests with Vitest
 bun run test --ui          # Run tests with UI
 bun run test --reporter=verbose # Verbose test output
+# install shadcn components
+bunx --bun shadcn@latest add breadcrumb
 ```
 
 ### Environment Variables

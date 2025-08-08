@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@config "../tailwind.config.js";
 
 :root {
   --tpm-primary: #4A90E2;
@@ -17,6 +19,11 @@
   --navbar-bg-start: #67cbeb;
   --navbar-bg-end: #77cce8;
   --navbar-bg: linear-gradient(135deg, var(--navbar-bg-start) 0%, var(--navbar-bg-end) 100%);
+
+  --blockquote-bg: var(--color-blue-100);
+  --inline-code-bg: #fff5f5;
+  --inline-code-color: #ff502c;
+  --table-cell-hover-bg: var(--color-sky-100);
 
   --hover-scale: scale(1.02);
   --transition: all 0.3s ease;

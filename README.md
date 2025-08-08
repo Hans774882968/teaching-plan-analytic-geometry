@@ -1145,7 +1145,7 @@ console.log(midColor); // 输出 #67b7c5
 
 ![3-字体展示.png](./README_assets/3-字体展示.png)
 
-我选择在body标签设置默认字体为“站酷快乐体”，标题标签h1到h6我则选择了“荆南波波黑”（来源都是： https://zhuanlan.zhihu.com/p/690446851/）。我觉得这两个字体的颜值都不错，但荆南波波黑默认就是加粗的，再设置加粗就会太拥挤了，所以我没有把它设为默认字体，而是仅用在标题。
+我选择在body标签设置默认字体为“站酷快乐体”，标题标签h1到h6我则选择了“荆南波波黑”（来源都是： https://zhuanlan.zhihu.com/p/690446851/ ）。我觉得这两个字体的颜值都不错，但荆南波波黑默认就是加粗的，再设置加粗就会太拥挤了，所以我没有把它设为默认字体，而是仅用在标题。
 
 `public\chinese-fonts.css`：
 
@@ -1313,6 +1313,106 @@ export default defineConfig({
 });
 ```
 
+### 在vitest中如何测试组件
+
+安装相关的包：
+
+```bash
+bun add -D @testing-library/react @vitejs/plugin-react jsdom @testing-library/user-event
+```
+
+修改`vitest.config.js`配置：
+
+```js
+import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+// ...
+
+export default defineConfig({
+  plugins: [
+    react(),
+  ],
+  test: {
+    environment: 'jsdom',
+    setupFiles: 'tests/rtlInVitest.setup.js',
+  },
+  // ...
+});
+```
+
+这个 setup 文件不能省，否则运行会说不存在`Chai`（另一个测试框架）属性之类的。`tests\rtlInVitest.setup.js`：
+
+```js
+import { afterEach } from 'vitest';
+import { cleanup } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
+
+// 全局设置清理函数，避免每个测试文件手动清理
+afterEach(() => {
+  cleanup();
+});
+```
+
+### 踩坑：不建议使用`fireEvent`，建议使用`userEvent`
+
+我在写`pagination-with-toolbar`这个组件的单测用例时，有如下代码（`tests\pagination-with-toolbar.test.jsx`）：
+
+```jsx
+vi.mock('@/component/ui/select', () => ({
+  Select: vi.fn(({ children, defaultValue, onValueChange }) => (
+    <select data-testid="select" defaultValue={defaultValue} onChange={(e) => {
+      onValueChange(e.target.value);
+    }}>
+      {children}
+    </select>
+  )),
+  SelectContent: vi.fn(({ children }) => children),
+  SelectItem: vi.fn(({ value, children }) => <option value={value}>{children}</option>),
+  SelectTrigger: vi.fn(({ children }) => children),
+  SelectValue: vi.fn(() => 'Select Value Placeholder'),
+}));
+```
+
+然后用如下代码触发选中事件，期望执行上面的`onValueChange`方法：
+
+```js
+import { fireEvent } from '@testing-library/react';
+
+const select = screen.getByTestId('select');
+fireEvent.change(select, { target: { value: '25' } });
+```
+
+却发现，`e.target.value`始终都只能拿到空字符串。我问了DeepSeek两次，第一次它建议我手动改`select.value = '20'`。但我发现`select`是一个Proxy，改不了。我就问它第二次，它这次告诉我可以改用`@testing-library/user-event`包。我试了试，果然OK了。相关代码：
+
+```js
+import userEvent from '@testing-library/user-event';
+
+it('changes items per page and resets to page 1', async () => {
+  const setItemsPerPage = vi.fn();
+  const onPageChange = vi.fn();
+
+  render(
+    <PaginationWithToolbar
+      {...defaultProps}
+      setItemsPerPage={setItemsPerPage}
+      onPageChange={onPageChange}
+    />
+  );
+
+  const select = screen.getByTestId('select');
+
+  await userEvent.selectOptions(select, '20');
+
+  expect(setItemsPerPage).toHaveBeenCalledWith('20');
+  expect(onPageChange).toHaveBeenCalledWith(1);
+
+  await userEvent.selectOptions(select, '50');
+
+  expect(setItemsPerPage).toHaveBeenCalledWith('50');
+  expect(onPageChange).toHaveBeenCalledWith(1);
+});
+```
+
 ## 实现博客列表和博客详情页
 
 ### 虚拟模块：`virtual:blog-data`
@@ -1467,9 +1567,81 @@ rm -rf temp_geogebra
 
 最后根据[参考链接3](https://blog.csdn.net/qq_20042935/article/details/133920722)，设置一下开源项目的GitHub Pages和Environments tab里的environment  variables。刷新一下就OK~
 
-### GitHub Pages直接通过链接访问只能拿到404的问题
+### GitHub Pages直接通过链接访问只能拿到404的问题：做一个`404.html`
 
-TODO
+问LLM或者查搜索引擎不难得知，GitHub Pages没有能力支持`react-router-dom`。要么改用哈希路由，要么做一个`404.html`作为跳板，先转到首页或其他支持`react-router-dom`的页面，再转到目标页面。我不想换成哈希路由，因此需要做一个`404.html`。步骤：
+
+1. 在`404.html`写JS，转到首页，并带上一个query参数，让首页能够拿到目标网址
+2. 首页拿到目标位置，切过去
+
+`404.html`可以用我之前写好的`NotFound.jsx`改改拿到，但我连这个改动工作都不想做了，直接交给DeepSeek：
+
+```markdown
+大佬，你是一名专家前端工程师，精通前端工程化。请叫我hans7。我有一个VIte + React + Tailwind CSS + framer-motion项目，它的404页面组件代码如下：
+src\NotFound.jsx：
+
+配套的样式 src\NotFound.module.scss：
+
+我现在需要一个404.html。请结合这两个文件，帮我完成转换。要求如下：
+
+1. 请输出一个没有任何CDN依赖的纯HTML文件，仅包含CSS和HTML。
+2. cn函数用于拼接类名。请将所有的Tailwind CSS类名转为纯CSS。
+3. react-router-dom的Link标签转化为a标签。
+4. framer-motion相关的代码转化为CSS代码。
+```
+
+它完成的质量很高，我基本上没做任何修改就直接用起来了。`404.html`仅有的JS如下：
+
+```js
+document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+const basePath = '/teaching-plan-analytic-geometry/';
+const currentPath = window.location.pathname.replace(basePath, '');
+document.getElementById('target-path').textContent = currentPath;
+// 重定向到 SPA
+window.location.href = `${basePath}?redirect=${encodeURIComponent(currentPath)}`;
+```
+
+首页帮忙送到目标位置的代码`src\NavigateForGitHubPages.jsx`：
+
+```jsx
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+export default function NavigateForGitHubPages({ children }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // 处理从 GitHub Pages 的 404 页面重定向过来的请求
+    const urlParams = new URLSearchParams(location.search);
+    const redirectPath = urlParams.get('redirect');
+
+    if (redirectPath) {
+      // 移除重定向参数
+      const cleanPath = window.location.pathname + window.location.search.replace(/\?redirect=.*/, '');
+      window.history.replaceState(null, '', cleanPath);
+
+      // 导航到目标路径
+      navigate(redirectPath);
+    }
+  }, [location, navigate]);
+
+  return children;
+}
+```
+
+使用：
+
+```jsx
+<NavigateForGitHubPages>
+  <ThemeProvider defaultTheme="light">
+    ...
+  </ThemeProvider>
+</NavigateForGitHubPages>
+```
+
+
 
 ## 参考资料
 

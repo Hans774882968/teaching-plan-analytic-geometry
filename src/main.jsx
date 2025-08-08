@@ -1,8 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import './animate-polyfill.css';
+import './styles/animate-polyfill.css';
 import './styles/code-block.scss';
+import './styles/prose-overwrite.scss';
 import App from './App.jsx';
 import { getGeogebraHTML5Codebase } from './lib/getWebsiteBasePath.js';
 import { setupStagewise } from './21st-toolbar';

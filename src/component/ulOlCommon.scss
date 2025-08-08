@@ -1,0 +1,43 @@
+%ul-ol-common {
+
+  ul,
+  ol {
+    li {
+      position: relative;
+    }
+  }
+
+  ul {
+    padding-left: 20px;
+
+    &>li::before {
+      content: "";
+      position: absolute;
+      left: -16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--tpm-primary);
+      border-radius: 50%;
+    }
+  }
+
+  ol {
+    padding-left: 24px;
+
+    &>li {
+      counter-increment: hans7-section-counter;
+    }
+
+    &>li::before {
+      content: counter(hans7-section-counter) ".";
+      position: absolute;
+      left: -24px;
+      top: 0;
+      color: var(--tpm-primary);
+      font-weight: bold;
+      border-radius: 50%;
+    }
+  }
+}

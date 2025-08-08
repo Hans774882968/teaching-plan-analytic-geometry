@@ -1,20 +1,6 @@
+@use 'ulOlCommon' as *;
+
 .tpm-markdown-container {
-
-  [class^="_teachingPlanH1"] {
-    margin-bottom: 20px;
-  }
-
-  [class^="_teachingPlanH2"] {
-    margin-bottom: 16px;
-  }
-
-  [class^="_teachingPlanH3"],
-  [class^="_teachingPlanH4"],
-  [class^="_teachingPlanH5"],
-  [class^="_teachingPlanH6"] {
-    margin-bottom: 8px;
-  }
-
   a {
     color: var(--tpm-color-link);
   }
@@ -24,21 +10,36 @@
   }
 
   table {
-    table-layout: auto;
-    margin: 16px 0;
+    border: 1px solid var(--tw-prose-td-borders);
 
     tr {
-      border-bottom: 1px solid var(--color-gray-200);
 
       th,
       td {
         padding: 8px 12px;
+        border: 1px solid var(--tw-prose-td-borders);
+      }
+
+      th {
+        display: table-cell;
+        vertical-align: inherit;
+        font-weight: bold;
+        text-align: center;
+        unicode-bidi: isolate;
+      }
+
+      td {
+        display: table-cell;
+        vertical-align: inherit;
+        unicode-bidi: isolate;
       }
 
       th:hover,
       td:hover {
-        background-color: var(--color-sky-100);
+        background-color: var(--table-cell-hover-bg);
       }
     }
   }
+
+  @extend %ul-ol-common;
 }

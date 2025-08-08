@@ -66,9 +66,10 @@ export default function BlogDetail() {
           </Breadcrumb>
         </div>
 
-        <h1 className="text-4xl font-bold text-gray-800 mt-6 mb-4">
-          <MarkdownRenderer content={blog.title} />
-        </h1>
+        <MarkdownRenderer
+          className="text-4xl font-bold text-gray-800 mt-6 mb-4"
+          content={`# ${blog.title}`}
+        />
 
         <div className="flex flex-col gap-2 text-gray-600 text-sm mb-6">
           <div className="flex flex-wrap items-center">

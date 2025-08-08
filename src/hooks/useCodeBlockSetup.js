@@ -33,15 +33,6 @@ export default function useCodeBlockSetup() {
 
   useEffect(() => {
     const codeBlockWrapperSetup = () => {
-      tpmMdContainerRef.current?.querySelectorAll('.code-block-wrapper')?.forEach((codeBlockWrapper) => {
-        const codeNode = codeBlockWrapper.querySelector('.highlighted-code');
-        const codeNodeComputedStyle = getComputedStyle(codeNode, null);
-        const codeNodeBgColor = codeNodeComputedStyle.getPropertyValue('background-color');
-        const codeNodeColor = codeNodeComputedStyle.getPropertyValue('color');
-        codeBlockWrapper.style.backgroundColor = codeNodeBgColor;
-        codeBlockWrapper.style.color = codeNodeColor;
-      });
-
       tpmMdContainerRef.current?.querySelectorAll('.code-block-wrapper .svg-chevron-down-wrapper')?.forEach((svgChevronDownWrapper) => {
         if (svgChevronDownWrapper.children.length) {
           return;
@@ -51,7 +42,7 @@ export default function useCodeBlockSetup() {
         const targetCodeBlockWrapper = svgChevronDownWrapper.parentElement.parentElement.parentElement;
 
         const img = document.createElement('img');
-        img.classList.add('svg-chevron-down-wrapper-img');
+        img.classList.add('svg-chevron-down-wrapper-img', 'not-prose');
         img.src = ChevronDown;
         img.addEventListener('click', () => {
           const hasExpanded = img.classList.contains('expanded');
@@ -85,7 +76,7 @@ export default function useCodeBlockSetup() {
         }
 
         const img = document.createElement('img');
-        img.classList.add('svg-download-wrapper-img');
+        img.classList.add('svg-download-wrapper-img', 'not-prose');
         img.src = DownloadSvg;
         img.addEventListener('click', () => {
           downloadCode(codeBlockWrapper);

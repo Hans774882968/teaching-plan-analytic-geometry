@@ -1,0 +1,20 @@
+.prose {
+  blockquote {
+    background-color: var(--blockquote-bg);
+    overflow: auto;
+
+    p {
+      margin: 10px 0;
+    }
+  }
+
+  :not(.code-pre)>code {
+    word-break: break-word;
+    border-radius: 2px;
+    overflow-x: auto;
+    background-color: var(--inline-code-bg);
+    color: var(--inline-code-color);
+    font-size: .87em;
+    padding: .15em .4em;
+  }
+}

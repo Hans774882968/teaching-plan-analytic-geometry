@@ -7,10 +7,13 @@ import {
 } from 'react-icons/fa';
 import { FaCircleDollarToSlot } from 'react-icons/fa6';
 import { useLocation } from 'react-router-dom';
+import { useHljsTheme } from '@/hooks/useHljsTheme';
 
 export default function Layout({ children }) {
   const { pathname } = useLocation();
   const isAtIndex = pathname === '/';
+
+  useHljsTheme();
 
   const floatingElements = (
     <>

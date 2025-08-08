@@ -36,7 +36,7 @@ export default {
   </div>
   <div class="code-body">
     ${lineNumbersHtml}
-    <pre class="code-pre"><code class="highlighted-code hljs language-${language}">${highlighted}</code></pre>
+    <pre class="code-pre not-prose"><code class="highlighted-code hljs language-${language} not-prose">${highlighted}</code></pre>
   </div>
 </div>`.trim();
   },

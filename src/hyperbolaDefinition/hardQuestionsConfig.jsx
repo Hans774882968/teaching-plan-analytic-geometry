@@ -1,6 +1,5 @@
 import TeX from '@matejmazur/react-katex';
 import Geogebra from '@/component/Geogebra';
-// import Card from '../component/teachingPlan/Card';
 
 export const config = {
   quiz: [

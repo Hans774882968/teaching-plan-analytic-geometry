@@ -6,12 +6,19 @@ export const FILTER_STYLE = {
   SELECT: 'select',
 };
 
+export const HLJS_DEFAULT_THEME = {
+  label: 'Docco',
+  value: 'docco.css',
+};
+
 export const useSettingsStore = create(
   persist(
     (set) => ({
       filterStyle: FILTER_STYLE.FLAT,
+      hljsTheme: HLJS_DEFAULT_THEME.value,
       setFilterStyle: (filterStyle) => set({ filterStyle }),
-      reset: () => set({ filterStyle: FILTER_STYLE.FLAT }),
+      setHljsTheme: (hljsTheme) => set({ hljsTheme }),
+      reset: () => set({ filterStyle: FILTER_STYLE.FLAT, hljsTheme: HLJS_DEFAULT_THEME.value }),
     }),
     {
       name: 'tpm-settings',

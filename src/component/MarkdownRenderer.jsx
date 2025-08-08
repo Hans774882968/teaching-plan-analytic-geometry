@@ -1,7 +1,6 @@
 import { processMarkdown } from '@/lib/marked';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
-import 'highlight.js/styles/paraiso-light.css';
 import useCodeBlockSetup from '../hooks/useCodeBlockSetup';
 import './MarkdownRenderer.scss';
 
@@ -34,7 +33,10 @@ export default function MarkdownRenderer({ className, content, ...rest }) {
       <div
         ref={tpmMdContainerRef}
         dangerouslySetInnerHTML={{ __html: htmlContent }}
-        className={cn('tpm-markdown-container max-w-none', className)}
+        className={cn(
+          'tpm-markdown-container max-w-none prose dark:prose-invert',
+          className
+        )}
         {...rest}
       />
     );

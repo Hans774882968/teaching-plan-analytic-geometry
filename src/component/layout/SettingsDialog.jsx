@@ -16,10 +16,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/component/ui/select';
-import { Label } from '@/component/ui/label';
+import { hljsThemeOptions } from '@/common/themeOptions';
+import { TpmCombobox } from '@/component/ui/tpm-combobox';
 
 export default function SettingsDialog() {
-  const { filterStyle, setFilterStyle, reset } = useSettingsStore();
+  const { filterStyle, setFilterStyle, hljsTheme, setHljsTheme, reset } = useSettingsStore();
+  const widthClassName = 'w-50 sm:w-70 md:w-90';
 
   const handleFilterStyleChange = (value) => {
     setFilterStyle(value);
@@ -39,7 +41,7 @@ export default function SettingsDialog() {
           <FaGear />
         </div>
       </DialogTrigger>
-      <DialogContent className="max-w-75 sm:max-w-150">
+      <DialogContent className="max-w-85 sm:max-w-150">
         <DialogHeader>
           <DialogTitle>设置</DialogTitle>
           <DialogDescription>
@@ -47,13 +49,11 @@ export default function SettingsDialog() {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-6 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="filterStyle" className="col-span-2 sm:col-span-1 justify-end">
-              筛选组件风格
-            </Label>
+        <div className="flex flex-col gap-6 py-4">
+          <div className="flex flex-wrap items-center gap-4">
+            筛选组件风格：
             <Select value={filterStyle} onValueChange={handleFilterStyleChange}>
-              <SelectTrigger className="col-span-2 sm:col-span-3">
+              <SelectTrigger className={widthClassName}>
                 <SelectValue placeholder="选择风格" />
               </SelectTrigger>
               <SelectContent>
@@ -61,6 +61,17 @@ export default function SettingsDialog() {
                 <SelectItem value={FILTER_STYLE.SELECT}>下拉框</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4">
+            选代码块主题：
+            <div className={widthClassName}>
+              <TpmCombobox
+                value={hljsTheme}
+                setValue={setHljsTheme}
+                options={hljsThemeOptions}
+              />
+            </div>
           </div>
 
           <div className="flex justify-end">

@@ -10,12 +10,22 @@ marked.use(markedKatex({
   throwOnError: false,
 }));
 
-const addIdToHeadingRenderer = {
-  heading({ text, depth }) {
-    return `<h${depth} class="${styles[`teachingPlanH${depth}`]}">${text}</h${depth}>\n`;
-  },
-};
-marked.use({ renderer: addIdToHeadingRenderer });
+function mdHtmlPostProcessor(html) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+
+  doc.querySelectorAll('ul,ol').forEach((list) => {
+    list.classList.add('not-prose');
+  });
+
+  for (let depth = 1; depth <= 6; depth++) {
+    doc.querySelectorAll(`h${depth}`).forEach((list) => {
+      list.classList.add(styles[`teachingPlanH${depth}`]);
+    });
+  }
+
+  return doc.body.innerHTML;
+}
 
 /**
  * 注意：
@@ -33,7 +43,9 @@ export const processMarkdown = async (_content) => {
   // Handle both Promise and string return types from marked()
   const result = marked(content);
   const html = typeof result === 'string' ? result : await result;
-  return html;
+
+  const postProcessedHtml = mdHtmlPostProcessor(html);
+  return postProcessedHtml;
 
   // TODO: 接入 sanitize html 会导致 style 属性被吞，设置 allowedAttributes 未生效，暂时注释
   // const sanitizedHtml = sanitizeHtml(html, {

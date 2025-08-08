@@ -19,3 +19,5 @@ export const SELECT_MODES = {
   OR: '包含任一',
 };
 export const SELECT_MODE_ARR = Object.values(SELECT_MODES);
+
+export const DATA_HLJS_THEME = 'data-hljs-theme';

@@ -26,12 +26,23 @@
 
 .teachingPlanH2 {
   font-size: var(--section-title-size);
+}
+
+.teachingPlanH2,
+.teachingPlanH3,
+.teachingPlanH4,
+.teachingPlanH5,
+.teachingPlanH6 {
   color: var(--tpm-primary);
   position: relative;
   padding-left: 15px;
 }
 
-.teachingPlanH2::before {
+.teachingPlanH2::before,
+.teachingPlanH3::before,
+.teachingPlanH4::before,
+.teachingPlanH5::before,
+.teachingPlanH6::before {
   content: '';
   position: absolute;
   left: 0;
