@@ -1413,9 +1413,80 @@ it('changes items per page and resets to page 1', async () => {
 });
 ```
 
-## 实现博客列表和博客详情页
+## 【常规】实现博客列表和博客详情页
+
+我最近刷到一些讲数学题的B站视频，又想起了自己高中当做题家的峥嵘岁月，于是抽空闲时间在obsidian写了些笔记。所以我希望在这个项目实现一些页面，把这些数学博客展示出来，并且和课件，以及GeoGebra纯享等模块关联起来。我这些数学博客会充分使用LLM、GeoGebra等工具，实现快速编写和足够硬核的平衡。
 
 ### 虚拟模块：`virtual:blog-data`
+
+按常规的前后端项目，展示博客是需要一个后端的。但这个项目是纯前端项目，因此我打算写一个虚拟模块来CRUD博客的一些属性。在古法手作编程的时代，我会直接投降，启动后端项目。但现在有LLM的加持，我认为这个工作量是可以接受的。我打算在前端展示博客的创建时间、最近修改时间、标签，相关的`front-matter`示例如下：
+
+```yaml
+tags:
+  - 正用韦达定理
+  - 分类讨论
+  - 圆锥曲线硬解定理
+  - 待定系数法
+title: 存在过椭圆右焦点的直线，使得OA⊥OB，求离心率范围
+ctime: '1754292981127'
+ctime_f: '2025-08-04 15:36:21'
+mtime: '1754587593215'
+mtime_f: '2025-08-08 01:26:33'
+```
+
+[完整代码传送门：`src\plugins\vite-plugin-blog-data.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/plugins/vite-plugin-blog-data.js)
+
+我是用DeepSeek生成的主体代码，但它没有我项目的上下文信息，生成代码的很多细节不是很好，我还是手动改了不少。和前面提到的两个虚拟模块不一样的是，我们这次采用了之前用过的`chokidar`来监听博客文件变化：
+
+```js
+const blogsDir = path.resolve(process.cwd(), 'docs', 'blogs');
+      
+const watcher = chokidar.watch(blogsDir, {
+  ignored: (path, stats) => {
+    return stats?.isFile() && !path.endsWith('.md');
+  },
+  ignoreInitial: true,
+  persistent: true,
+});
+
+// 文件变化时触发 HMR
+watcher
+  .on('add', (filePath) => {
+    console.log(`[${virtualModuleId}] File added: ${filePath}`);
+    serverNotifyReload(server, resolvedVirtualModuleId);
+  })
+  .on('change', (filePath) => {
+    console.log(`[${virtualModuleId}] File changed: ${filePath}`);
+    serverNotifyReload(server, resolvedVirtualModuleId);
+  })
+  .on('unlink', (filePath) => {
+    console.log(`[${virtualModuleId}] File removed: ${filePath}`);
+    serverNotifyReload(server, resolvedVirtualModuleId);
+  });
+```
+
+另外，为了读取博客的`front-matter`信息，我们需要一个叫`gray-matter`的包。用它读写`front-matter`信息都很方便。读信息：
+
+```js
+import matter from 'gray-matter';
+const { data, content } = matter(rawContent);
+const title = data.title || path.basename(mdFile, '.md');
+```
+
+写信息：
+
+```js
+const newContent = matter.stringify(content, newFrontmatter, {
+  language: 'yaml',
+  delimiters: '---',
+});
+```
+
+这个stringify方法有时候会导致我的日期变为Date对象直接toString的格式，这个小bug我暂时懒得处理。
+
+### 自动为博客添加Markdown格式的标题，以及`ctime, mtime`
+
+完整代码：[ `src\scripts\blog-metadata-processor.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/scripts/blog-metadata-processor.js)
 
 TODO
 
