@@ -1490,6 +1490,14 @@ const newContent = matter.stringify(content, newFrontmatter, {
 
 TODO
 
+### 列表页常见的筛选能力
+
+TODO
+
+## 设置对话框
+
+我一开始在 21st.dev 上看到一个更为酷炫的[带动画的对话框](https://21st.dev/aceternity/animated-modal/default)，想接入它。但发现它一直有一个bug，就是它始终在下拉框的下拉菜单的上面。我很长时间没找到修它的办法，决定放弃，使用shadcn的标准对话框。但是标准对话框没有动画，比较生硬。我看shadcn的官方文档发现，官方文档用的是Tailwind 3.x，所以它的对话框有动画，而我的项目用的是4.x，一些相关的CSS变量没有定义，所以没有动画。
+
 ## 【常规】部署到 GitHub Pages
 
 GitHub Pages不是部署到根路径的，而是部署到你的仓库名的。以我的项目为例，我项目的访问URL将是：`https://hans774882968.github.io/teaching-plan-analytic-geometry`。所以：
