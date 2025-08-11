@@ -12,7 +12,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 function NumberedPagination({
   currentPage,
   totalPages,
-  paginationItemsToDisplay = 5,
+  paginationItemsToDisplay = 4,
   onPageChange,
   paginationClassName = '',
 }) {

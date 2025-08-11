@@ -1,5 +1,7 @@
 用于Claude Cli。
 
+注：我写这篇提示词时并未考虑到需要生成一个`src\scripts\blog-content-cache.json`来处理递归更新问题。
+
 ## Prompt
 
 大佬，你是一名专家前端工程师，精通前端工程化。请叫我hans7。请帮我在`src\scripts`下新增一个脚本：读取`docs\blogs`下的所有`.md`文件：

@@ -19,9 +19,13 @@
 
 [传送门](https://hans774882968.github.io/teaching-plan-analytic-geometry)。欢迎参观~
 
-现阶段的整体效果：
+现阶段的整体效果-PC端：
 
 ![5-现阶段的整体效果.png](./README_assets/5-现阶段的整体效果.png)
+
+移动端：
+
+![5-现阶段的整体效果-移动端.png](./README_assets/5-现阶段的整体效果-移动端.png)
 
 本文 52pojie：https://www.52pojie.cn/thread-2048343-1-1.html
 
@@ -767,6 +771,8 @@ export function hookGetEleById() {
 
 ## 【困难】Markdown 代码块交互升级：展示行号、支持展开代码块、复制代码、下载代码
 
+呜呜呜，我确实后悔没有做足够多技术调研，一直没发现有`react-markdown`这个包，所以现在也只能将就用marked渲染Markdown。
+
 效果：
 
 ![2-增强的Markdown代码块效果展示.png](./README_assets/2-增强的Markdown代码块效果展示.png)
@@ -885,6 +891,8 @@ const tpmMdContainerRef = useCodeBlockSetup();
 
 
 ### 【常规】让`code-block-wrapper`的样式与代码块保持一致
+
+250811更新：该方案已被废弃，请参考《编写 postcss 插件：如何在 marked + highlight.js 中实现切换代码块风格》。
 
 我之前引用了`paraiso-light`主题，这个主题会设置代码块的背景色和默认文字颜色，所以我的`code-block-wrapper`需要拿到这个主题设置以后的CSS。这个活我认为只能用JS实现。
 
@@ -1096,7 +1104,183 @@ plugins: [
 ]
 ```
 
+### 【常规】引入`@tailwindcss/typography`，一键美化已渲染为HTML的博客
 
+照官方文档说的做就能轻松引入：
+
+```css
+/* src\index.css */
+@plugin "@tailwindcss/typography";
+```
+
+然后在`src\component\MarkdownRenderer.jsx`里新增类名`prose dark:prose-invert`即可。但我希望自定义Markdown HTML中的一些元素，比如`blockquote`。完成这个需求最简单的做法是直接新开一个css文件，正常书写，覆盖typography的默认样式。[`src\styles\prose-overwrite.scss`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/styles/prose-overwrite.scss)：
+
+```scss
+.prose {
+  blockquote {
+    background-color: var(--blockquote-bg);
+    overflow: auto;
+
+    p {
+      margin: 10px 0;
+    }
+  }
+  // ...
+}
+```
+
+为了方便地更改`blockquote`的左边框颜色和背景色，我们需要新建一个`tailwind.config.js`，覆盖`typography`内置的变量值。
+
+```js
+module.exports = {
+  theme: {
+    extend: {
+      typography: () => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-quote-borders': 'var(--tpm-primary)',
+          },
+        },
+        invert: {
+          css: {
+            '--tw-prose-quote-borders': 'var(--tpm-primary-invert)',
+          },
+        },
+      }),
+    },
+  },
+  plugins: [require('@tailwindcss/typography')],
+};
+```
+
+然后还需要在`src\index.css`导入：`@config "../tailwind.config.js";`。
+
+### 【困难】编写 postcss 插件：如何在 marked + highlight.js 中实现切换代码块风格
+
+回顾一下我之前设想的更新颜色的方式：`const codeNodeComputedStyle = getComputedStyle(codeNode, null);`，然后写入对应DOM元素的style属性。现在我希望实现切换代码块风格的能力，却悲痛地发现之前设想的做法不可行。只要我需要在切换时发起请求，那`getComputedStyle`的可行的调用时机就取决于网络请求了，这就导致我们就无法确定一个合理的`setTimeout`的延迟秒数。详见我之前记录的[废案文档：`docs\样式类需求\【废案】hljsTheme废案记录.md`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/docs/%E6%A0%B7%E5%BC%8F%E7%B1%BB%E9%9C%80%E6%B1%82/%E3%80%90%E5%BA%9F%E6%A1%88%E3%80%91hljsTheme%E5%BA%9F%E6%A1%88%E8%AE%B0%E5%BD%95.md)。
+
+后来我想到了一种不错的做法：把`highlight.js`提供的所有CSS代码都拿到，存在某个JS文件里，然后用`postcss`插件修改选择器为我们所期望的样子，最后把CSS代码插入到页面。这个方案的好处是，只要能看见网页，所有的CSS代码就都在本地，切换时不需要发起网络请求。但其坏处是，一个用户偏好的主题可能就那几种，但所有用户都被迫在看见网页前等待含有所有CSS代码的JS代码加载完毕。我看到`highlight.js`的CSS代码（我把它们存储在`src\common\hljsThemeCssText.js`）大概有115kb，感觉没有非常糟糕，决定就先这样做。
+
+首先，我们写一个[脚本：`src\scripts\generate-new-hljs-theme-css.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/scripts/generate-new-hljs-theme-css.js)生成所有需要的CSS代码。
+
+1. 同样使用了对键值对排序的技巧。在`highlight.js`更新后，需要再次运行脚本时，可以减少 git diff 信息。
+2. 我们看看这个脚本用到的一个我自己编写的postcss插件。这个插件需要把：
+
+```css
+.hljs {
+  background: #e7e9db;
+  color: #4f424c
+}
+```
+
+改写为：
+
+```css
+.code-block-wrapper, .hljs {
+  background: #e7e9db;
+  color: #4f424c
+}
+```
+
+但实测发现，并非所有主题的CSS格式都这么简单。比如`node_modules\highlight.js\styles\nord.css`是这样的：
+
+```css
+.hljs {
+  background: #2E3440
+}
+.hljs,
+.hljs-subst {
+  color: #D8DEE9
+}
+```
+
+但不符合上述简单格式的CSS主题只有2个，出于对快速实现需求的考虑，我决定在运行postcss插件后，手动修改这两个CSS主题的代码，详见[`docs\样式类需求\hljsTheme.md`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/docs/%E6%A0%B7%E5%BC%8F%E7%B1%BB%E9%9C%80%E6%B1%82/hljsTheme.md)。
+
+postcss插件的调用方式如下：
+
+```js
+import postcss from 'postcss';
+
+const result = await postcss([
+  modifyHljsSelectorPlugin,
+]).process(cssContent, { from: undefined });
+```
+
+这个`modifyHljsSelectorPlugin`是一个没有参数的函数，并且需要设置`modifyHljsSelectorPlugin.postcss = true`。但为了优雅地收集我修改的选择器，我把它包了一层，变成了2阶函数，如下（[`src\scripts\modifyHljsSelectorPlugin.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/scripts/modifyHljsSelectorPlugin.js)）：
+
+```js
+export default function getModifyHljsSelectorPlugin(onModify) {
+  const modifyHljsSelectorPlugin = () => {
+    // ...
+  };
+  modifyHljsSelectorPlugin.postcss = true;
+  return modifyHljsSelectorPlugin;
+}
+```
+
+插件的实现细节就不说啦，毕竟~~这是前端工程师的核心竞争力~~，比较简单，用DeepSeek生成（直接用网页版生成，会使用已经废弃的老写法），然后搜索引擎搜下最新用法，照着改即可。
+
+咳咳，还是简单说说。`Rule(rule)`方法让我们可以通过`rule.selector`拿到每一个选择器，直接对它赋值就能修改选择器。我们用`selectorParser`（`import selectorParser from 'postcss-selector-parser'`）拿到选择器的一些属性，筛选出只有`.hljs`的。然后用postcss遍历代码块的每一条声明：
+
+```js
+let hasBackground = false, hasColor = false;
+rule.walkDecls(decl => {
+  if (decl.prop === 'background' || decl.prop === 'background-color') hasBackground = true;
+  if (decl.prop === 'color') hasColor = true;
+});
+if (!hasBackground || !hasColor) return;
+```
+
+就完成了整个判定工作。
+
+另外，我调试时发现主题`pojoaque.css`和`brown-paper.css`是有背景图片的，我们把代码复制到JS文件后，它们的背景URL的写法就需要改。最容易想到的办法就是引入一个占位符，在恰当时机更新。比如`pojoaque.css`：
+
+```css
+.code-block-wrapper, .hljs {
+  color: #dccf8f;
+  background: url(__VITE_BASE_PATH__/pojoaque.jpg) repeat scroll left top #181914
+}
+```
+
+我选择的更新时机是创建style标签插入页面时：
+
+```js
+// src\hooks\useHljsTheme.js
+function getThemeCssContent(actualHljsTheme) {
+  const cssContent = hljsThemeCssText[actualHljsTheme] || '';
+  const basePath = getWebsiteBasePath().slice(0, -1);
+  return cssContent.replaceAll('__VITE_BASE_PATH__', basePath);
+}
+
+// call
+styleEl.textContent = getThemeCssContent(actualHljsTheme);
+```
+
+接下来我们把生成的CSS代码插入到页面：
+
+```jsx
+// src\component\layout\SettingsDialog.jsx
+const { hljsTheme, setHljsTheme } = useSettingsStore();
+<div className={widthClassName}>
+  <TpmCombobox
+    value={hljsTheme}
+    setValue={setHljsTheme}
+    options={hljsThemeOptions}
+  />
+</div>
+```
+
+然后我们直接在所有页面都引入一个副作用：
+
+```js
+// src\component\layout\Layout.jsx
+export default function Layout({ children }) {
+  useHljsTheme();
+  // ...
+}
+```
+
+为优雅起见，我们不妨封装一个自定义hook（`src\hooks\useHljsTheme.js`），这个hook做的事很简单：读取`const { hljsTheme } = useSettingsStore()`并插入一个style标签。
 
 ## 用插值算法确定网站的配色
 
@@ -1486,17 +1670,176 @@ const newContent = matter.stringify(content, newFrontmatter, {
 
 ### 自动为博客添加Markdown格式的标题，以及`ctime, mtime`
 
-完整代码：[ `src\scripts\blog-metadata-processor.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/scripts/blog-metadata-processor.js)
+[完整代码：`src\scripts\blog-metadata-processor.js`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/scripts/blog-metadata-processor.js)
 
-TODO
+这个脚本我是在Claude Code Cli让Kimi K2生成的（提示词：`docs\blog功能开发\自动添加title、ctime等属性.md`），但它生成的代码质量确实不得行，连用`gray-matter`读写`front-matter`信息都不知道，相比之下DeepSeek的表现就好得多。
+
+为了解决递归更新的问题，我又修改脚本，让它生成了个cache文件，保存每个文件的文本，仅在不包括`front-matter`信息的文件内容变化时更新修改时间。这个cache文件不会被打包进产物，就无伤大雅。这个cache文件一样要先对键值对排序再写入，这样可以让 git diff 更少。
 
 ### 列表页常见的筛选能力
 
-TODO
+既然有博客列表页，那就必须有筛选能力，这事做B端的同学都很熟悉了。和普通的前后端项目（前端给后端发送接口，带`pageno`和`count`参数）不同，这是个纯前端项目，所以我是通过截取一个完整数组的方式来实现分页的。我看shadcn并没有提供antd风格的分页组件，所以我自己写了一个。相关代码：
 
-## 设置对话框
+- [`src\component\ui\numbered-pagination.jsx`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/component/ui/numbered-pagination.jsx) ：结合 https://21st.dev/originui/numbered-pagination/default 和 https://21st.dev/originui/joined-pagination/default 魔改的
+- [`src\component\ui\pagination-with-toolbar.jsx`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/component/ui/pagination-with-toolbar.jsx) ：antd 风格的 Pagination 组件。可以自定义每页显示条数
+- [相关单测：`tests\pagination-with-toolbar.test.jsx`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/tests/pagination-with-toolbar.test.jsx)
 
-我一开始在 21st.dev 上看到一个更为酷炫的[带动画的对话框](https://21st.dev/aceternity/animated-modal/default)，想接入它。但发现它一直有一个bug，就是它始终在下拉框的下拉菜单的上面。我很长时间没找到修它的办法，决定放弃，使用shadcn的标准对话框。但是标准对话框没有动画，比较生硬。我看shadcn的官方文档发现，官方文档用的是Tailwind 3.x，所以它的对话框有动画，而我的项目用的是4.x，一些相关的CSS变量没有定义，所以没有动画。
+因为这是个受控组件（我确实感觉让它支持非受控模式比较麻烦），即`setCurrentPage`要由外部提供，所以每个筛选项生效都需要额外调用`setCurrentPage`，所以我为每个筛选项都写了一个方法，比如（`src\mathBlog\BlogList.jsx`）：
+
+```js
+const [ctimeRange, setCtimeRange] = useState({
+  from: undefined,
+  to: undefined,
+});
+
+const onTagChange = (tag) => {
+  setTagFilter(tag);
+  setCurrentPage(1);
+};
+
+const handleCtimeRangeChange = (range) => {
+  setCtimeRange(range);
+  setCurrentPage(1);
+};
+```
+
+### 特殊的筛选项： `ctime, mtime`
+
+我不满足于只支持到一天的时间筛选，所以查了下，找到[这个组件](https://21st.dev/openstatusHQ/datetime-picker/default)，但我要的是时间范围筛选，所以我结合这个组件和shadcn的date-picker，魔改了一下。相关代码：
+
+- [`src\component\ui\datetime-range-picker.jsx`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/component/ui/datetime-range-picker.jsx) ：我魔改的组件，支持时间范围筛选。因为shadcn的`Calendar`组件只支持传入`mode="range"`参数，所以我们只能把两个`TimePicker`放在`Calendar`下方的同一个div，并保证它们的总宽度比`Calendar`小，做出那种看上去像是两个相同的由日历+`TimePicker`构成的组件的感觉。
+- [`src\component\ui\datetime-picker.jsx`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/component/ui/datetime-picker.jsx) ：只能选时间
+
+最后成功让用法足够简单：
+
+```jsx
+const [mtimeRange, setMtimeRange] = useState({
+  from: undefined,
+  to: undefined,
+});
+
+<DatetimeRangePicker
+  date={mtimeRange}
+  setDate={handleMtimeRangeChange}
+/>
+```
+
+## 【常规】设置对话框
+
+我一开始在 21st.dev 上看到了一个更为酷炫的[带动画的对话框](https://21st.dev/aceternity/animated-modal/default)，想接入它。但发现它一直有一个bug，就是它始终在下拉框的下拉菜单的上面。我很长时间没找到修它的办法，问LLM，调`z-index`之类的手段都失败，决定放弃，回去使用shadcn的标准对话框。但是标准对话框没有动画，比较生硬。我在shadcn的官方文档打开F12排查发现，官方文档用的是Tailwind 3.x，所以它的对话框有动画，而我的项目用的是4.x，一些相关的CSS变量没有定义，不知道是被废弃了还是怎么滴，官方文档也没说，所以没有动画。于是Kimi K2帮我生成了一些相关变量：
+
+```css
+/* src\index.css */
+@theme inline {
+  /* Animation variables polyfill for Tailwind 3.x (shadcn uses) */
+  --animate-in: animate-in 0.15s ease-out;
+  --animate-out: animate-out 0.15s ease-in;
+  /* ... */
+}
+
+/* src\styles\animate-polyfill.css */
+@keyframes animate-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+```
+
+将就用着先吧。
+
+### 设置对话框的每个设置项都需要存储到`localStorage`
+
+这个需求我在使用React的开源项目里也做过两三次了。我目前觉得最趁手的还是`zustand`，同时支持状态管理和写入`localStorage`，API通俗易懂，LLM也能轻松生成。
+
+## 【常规】移动端适配
+
+移动端适配是个没啥技术含量的杂活，但是看到自己的网站在移动端的显示效果不好，想要优化它的强迫症就会发作。我们现在有Tailwind CSS和LLM，做移动端适配会比以前容易一些。一般来说，在LLM时代做移动端适配有两种方式：
+
+1. 在需求开发时就顺便让LLM生成移动端适配的代码
+2. 在开发的代码积累到一定量级后，集中做移动端适配
+
+具体选哪个，我认为要一事一议。如果你用的是AI开发平台，比如cursor、Claude Code Cli，因为LLM有你项目的上下文，那么我认为一般来说第一种方式会更好。如果你不想付费上班，用的网页免费版LLM，比如我这个项目，那么我认为第二种方式更可能更好。
+
+最常规的移动端适配就是写media query（下面代码来自`src\component\teachingPlan\basic.module.scss`）：
+
+```css
+.container {
+  padding: 24px;
+  /* ... */
+  gap: 24px;
+}
+
+@media (min-width: 48rem) {
+  .container {
+    padding: 30px;
+    gap: 30px;
+  }
+}
+
+@media (min-width: 64rem) {
+  .container {
+    padding: 30px 100px;
+  }
+}
+```
+
+我比较认可Tailwind的理念，所以media query的写法刻意与Tailwind保持一致。用Tailwind CSS做移动端适配则更简单。以以下代码为例：`className: 'w-50 sm:w-70 md:w-90'`表示，在最小的屏幕里宽度是200px，大于等于640px宽度是280px，大于等于768px宽度是360px。可以看到，Tailwind是移动端优先的，默认样式作用于屏幕最小的移动端。
+
+### 导航栏变汉堡菜单
+
+效果：
+
+![6-移动端适配-导航栏.png](./README_assets/6-移动端适配-导航栏.png)
+
+[完整代码传送门：`src\component\layout\Navbar.jsx`](https://github.com/Hans774882968/teaching-plan-analytic-geometry/blob/main/src/component/layout/Navbar.jsx)
+
+也有少数的移动端适配工作不止调字体、组件大小那么简单，比如这个导航栏。在小屏幕下，导航栏不能平铺展示。于是我决定在小屏幕下展示一个汉堡菜单。相关代码：
+
+```jsx
+const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+const toggleMenu = () => {
+  setIsMenuOpen(!isMenuOpen);
+};
+
+// 触发汉堡菜单的按钮
+<button
+  className="md:hidden ..."
+  onClick={toggleMenu}
+  aria-label="菜单"
+  title="菜单"
+>
+  {isMenuOpen ? <FaTimes /> : <FaBars />}
+</button>
+
+// 原有的PC端导航栏
+<div className="hidden md:flex ..." />
+
+// 小屏幕下的汉堡菜单
+{isMenuOpen && (
+  <motion.div
+    className="flex md:hidden ..."
+  />
+)}
+```
+
+原有的PC端导航栏是有点schema化的，所以移动端的导航栏也要复用已有的数据结构，代码大致如下：
+
+```js
+const navigationItems = [promptDisplayDropdown, blogDropdown, aboutThisProjectDropdown, aboutUsDropdown].map((dropdown) => {
+  return {
+    label: dropdown.children,
+    items: dropdown.urls,
+    ...dropdown,
+  };
+});
+```
 
 ## 【常规】部署到 GitHub Pages
 
