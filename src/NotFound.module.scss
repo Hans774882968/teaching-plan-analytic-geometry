@@ -97,7 +97,7 @@
 }
 
 .btnSky {
-  background: linear-gradient(to right, var(--vivid-blue-bg-start), #4361ee);
+  background: linear-gradient(to right, var(--vivid-blue-bg-start), var(--lesson-card-border-left-hover));
   transition: all 0.3s ease;
 }
 

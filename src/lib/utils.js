@@ -60,6 +60,19 @@ export function filterBySelections(a, attr, selection, mode) {
   return res;
 }
 
+export function filterBySelectionsSingle(a, attr, selection, mode) {
+  if (!isNonEmptyArray(selection)) return a;
+
+  const res = a.filter((item) => {
+    if (mode === SELECT_MODES.AND) {
+      return selection.every(s => item[attr] === s);
+    } else {
+      return selection.some(s => item[attr] === s);
+    }
+  });
+  return res;
+}
+
 export function isSubSequence(long, short) {
   if (!short) return true;
   if (long.length < short.length) return false;

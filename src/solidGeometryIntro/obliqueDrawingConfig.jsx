@@ -3,6 +3,7 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 
 export default {
   title: String.raw`📐 空间几何体与斜二测画法 📏`,
+  lpName: 'conan',
 
   header: {
     content: String.raw`一起探索空间几何的视觉表达~`,

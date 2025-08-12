@@ -3,6 +3,7 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 
 export default {
   title: String.raw`📈 函数的单调性 📉`,
+  lpName: 'conan',
 
   header: {
     content: String.raw`函数的单调性是函数的重要性质，它描述了函数值随自变量变化的趋势`,

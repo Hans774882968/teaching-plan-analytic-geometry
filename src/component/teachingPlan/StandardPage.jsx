@@ -5,8 +5,6 @@ import MarkdownRenderer from '@/component/MarkdownRenderer';
 import QuizContainer from '@/component/QuizContainer';
 import Geogebra from '@/component/Geogebra';
 import TPButton from '@/component/TPButton';
-import conanThinking from '@/assets/conan-thinking-1.png';
-import conanThumbUp from '@/assets/conan-thumb-up-1.png';
 import Section from '@/component/teachingPlan/Section';
 import KnowledgePoint from '@/component/teachingPlan/KnowledgePoint';
 import Card from '@/component/teachingPlan/Card';
@@ -16,6 +14,7 @@ import Think from '@/component/teachingPlan/Think';
 import Footer from '@/component/teachingPlan/Footer';
 import { Link } from 'react-router-dom';
 import appletOnLoadCollection from '@/appletOnLoadCollection';
+import LearningPartnerImg from './LearningPartnerImg';
 
 function wrapStringAsParagraph(node) {
   if (typeof node === 'string') {
@@ -56,7 +55,13 @@ ${appletOnLoadSrcCode}
 
       <Section>
         <LearningPartnerCard
-          imgNode={(lpStyles) => <img src={conanThinking} className={lpStyles.conanImg} />}
+          imgNode={(lpStyles) => (
+            <LearningPartnerImg
+              lpStyles={lpStyles}
+              name={config.lpName}
+              status="thinking"
+            />
+          )}
         >
           <h2 className={styles.teachingPlanH2}>{config.welcome.title}</h2>
           {wrapStringAsParagraph(config.welcome.content)}
@@ -64,11 +69,25 @@ ${appletOnLoadSrcCode}
       </Section>
 
       <Section>
-        <h2 className={styles.teachingPlanH2}>{config.knowledgePointSection.title}</h2>
+        <MarkdownRenderer
+          content={`## ${config.knowledgePointSection.title}`}
+        />
         {config.knowledgePointSection.points.map((point, index) => (
           <KnowledgePoint key={index}>
-            <h3 className={styles.teachingPlanH3}>{point.title}</h3>
-            <MarkdownRenderer content={point.content} />
+            {
+              typeof point.content === 'string' ? (
+                <MarkdownRenderer
+                  content={`### ${point.title}\n\n${point.content}`}
+                />
+              ) : (
+                <>
+                  <MarkdownRenderer
+                    content={`### ${point.title}`}
+                  />
+                  {point.content}
+                </>
+              )
+            }
             {Array.isArray(point.thinks) && point.thinks.map((think, index) => {
               return (
                 <Think
@@ -96,7 +115,9 @@ ${appletOnLoadSrcCode}
       </Section>
 
       <Section>
-        <h2 className={styles.teachingPlanH2}>{config.geogebraSection.title}</h2>
+        <MarkdownRenderer
+          content={`## ${config.geogebraSection.title}`}
+        />
         {
           config.geogebraSection.geogebraList.map((geogebra, index) => {
             const appletOnLoadCodeBlock = appletOnLoadCodeBlockList[index];
@@ -146,10 +167,16 @@ ${appletOnLoadSrcCode}
 
       <Section>
         <LearningPartnerCard
-          imgNode={(lpStyles) => <img src={conanThumbUp} className={lpStyles.conanImg} />}
+          imgNode={(lpStyles) => (
+            <LearningPartnerImg
+              lpStyles={lpStyles}
+              name={config.lpName}
+              status="thumbUp"
+            />
+          )}
         >
           <h2 className={styles.teachingPlanH2}>{config.summary.title}</h2>
-          {wrapStringAsParagraph(config.summary.content)}
+          <MarkdownRenderer content={config.summary.content} />
         </LearningPartnerCard>
       </Section>
 

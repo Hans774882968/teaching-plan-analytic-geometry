@@ -5,6 +5,8 @@ import { Toaster } from 'sonner';
 import TeachingPlanList from './teachingPlanList/TeachingPlanList';
 import NotFound from './NotFound';
 import RotationDefinition from './rotation/RotationDefinition';
+import RealNumExpPowers from './exponentialFunction/RealNumExpPowers';
+import ExpFunction from './exponentialFunction/ExpFunction';
 import FunctionRepresentation from './functionDefinition/FunctionRepresentation';
 import FunctionMonotonicity from './functionDefinition/FunctionMonotonicity';
 import FunctionEvenOdd from './functionDefinition/FunctionEvenOdd';
@@ -30,6 +32,8 @@ import { ThemeProvider } from '@/component/theme-provider';
 const routes = [
   { path: '/', element: <TeachingPlanList /> },
   { path: '/rotation/definition', element: <RotationDefinition /> },
+  { path: '/exponential/real-num-exp-powers', element: <RealNumExpPowers /> },
+  { path: '/exponential/exp-function', element: <ExpFunction /> },
   { path: '/function-definition/representation', element: <FunctionRepresentation /> },
   { path: '/function-definition/monotonicity', element: <FunctionMonotonicity /> },
   { path: '/function-definition/even-odd', element: <FunctionEvenOdd /> },

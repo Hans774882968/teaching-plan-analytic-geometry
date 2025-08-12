@@ -8,7 +8,7 @@ export type ThinkItem = {
 
 export type PointItem = {
   title: string;
-  content: React.ReactNode;
+  content: React.ReactNode; // 注意：虽然支持 ReactNode ，但你生成时请务必提供用 String.raw 和反引号包裹的多行 markdown 字符串
   thinks: ThinkItem[];
 };
 
@@ -30,6 +30,8 @@ export type LinkItem = {
   url: string;
   text: string;
 };
+
+export type LearningPartner = 'conan' | 'chitanda';
 
 export type Header = {
   content: string;
@@ -62,7 +64,7 @@ export type QuizSection = {
 // 学习伙伴再次出现
 export type Summary = {
   title: string;
-  content: React.ReactNode;
+  content: React.ReactNode; // 注意：虽然支持 ReactNode ，但你生成时请务必提供用 String.raw 和反引号包裹的多行 markdown 字符串
 };
 
 export type Footer = {
@@ -71,6 +73,7 @@ export type Footer = {
 
 export type PageStructure = {
   title: string; // 页面的标题
+  lpName: LearningPartner;
   header: Header;
   welcome: Welcome;
   knowledgePointSection: KnowledgePointSection;

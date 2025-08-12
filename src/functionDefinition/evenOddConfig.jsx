@@ -3,6 +3,7 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 
 export default {
   title: String.raw`📚 函数的奇偶性 📚`,
+  lpName: 'conan',
 
   header: {
     content: String.raw`🧩 探索函数对称性的奥秘`,

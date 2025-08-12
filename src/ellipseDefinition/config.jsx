@@ -3,6 +3,7 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 
 export const config = {
   title: '椭圆探索之旅 | 解析几何探秘',
+  lpName: 'conan',
   welcome: {
     title: '欢迎，Hans7！',
     content: <>我是你的数学学习伙伴柯南！今天我们将一起探索<strong className={styles.highlight}>椭圆</strong>的奥秘。椭圆不仅是重要的几何图形，还在天文、物理和工程中有广泛应用。准备好开始我们的数学探案之旅了吗？</>,

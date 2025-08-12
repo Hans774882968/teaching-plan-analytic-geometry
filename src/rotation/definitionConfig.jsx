@@ -3,6 +3,7 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 
 export default {
   title: String.raw`🔄 图形的旋转定义与性质 🔄`,
+  lpName: 'conan',
 
   header: {
     content: String.raw`📚 初三数学 | 旋转专题`,

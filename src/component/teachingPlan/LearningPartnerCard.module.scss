@@ -20,13 +20,13 @@
   position: relative;
 }
 
-.conanImg {
+.lpImg {
   border-radius: 50%;
   width: 180px;
   border: 1px solid var(--tpm-primary);
   transition: all 0.3s ease;
 }
 
-.conanImg:hover {
+.lpImg:hover {
   transform: rotate(5deg) var(--hover-scale);
 }

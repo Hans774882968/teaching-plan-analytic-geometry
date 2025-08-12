@@ -3,6 +3,7 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 
 export const hyperbolaConfig = {
   title: '📐 双曲线的定义与基本性质 🔍',
+  lpName: 'conan',
   welcome: {
     title: '👬 欢迎Hans7学习双曲线',
     content: <p>

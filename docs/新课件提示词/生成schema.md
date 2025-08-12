@@ -1,33 +1,22 @@
-[TOC]
-
-## 生成schema
-
-### 食用方式
-
-1. 可以扔给DeepSeek网页版+开启深度思考。也可以扔给Cline + DeepSeek Chat（Reasoner太慢了，很烧钱，而且出来的效果远不及预期）
-2. 如果是扔给DeepSeek网页版，那么需要手动粘贴类型定义文件和`Geogebra组件文档.md`，`StandardPage.jsx`可以不粘贴。
-
-### Prompt
-
 大佬，你是一名专家前端工程师，精通前端工程化。请叫我hans7。
 
 ### 背景和目标
 
-我打算生成一个新课件，详细讲解空间向量基本定理。知识点包括：
+我打算生成一个新课件，详细讲解指数函数的性质与图像。知识点包括：
 
-- 共线向量基本定理、平面向量基本定理在空间中仍成立吗？如何判断空间中的三个向量是否共面？
-- 共面向量定理
-- 由共面向量定理得到判断空间中四点是否共面的方法
-- 空间向量基本定理
-- 向量的线性组合或线性表达式
-- 基底、基向量
+- 指数函数的定义
+- 指数函数的定义域、值域、奇偶性、单调性
+- 函数`a^x`和`(1/a)^x`的联系
+- 利用指数函数的性质比较两个数的大小
+- 利用指数函数的性质与图像估计指数函数与一次函数的交点
+- 情境与问题：用函数表示有机体内的碳14含量与其死亡时间之间的关系
 
 文件结构如下：
 
 ```
-src/spatialVector/
-├── SpVecFundamentalTheorem.jsx       # 主组件
-└── spVecFundamentalTheoremConfig.jsx # 内容配置文件，被主组件调用
+src/exponentialFunction/
+├── ExpFunction.jsx       # 主组件
+└── expFunctionConfig.jsx # 内容配置文件，被主组件调用
 ```
 
 我们有一个标准页面 @/src\component\teachingPlan\StandardPage.jsx ，需要给它提供一个描述页面结构的配置对象，其类型定义文件在 @/src\component\teachingPlan\StandardPageStructure.d.ts 。你生成的内容配置文件的类型应与该类型定义文件相符。标准页面的“实验互动模块”用到一个 @/src\component\Geogebra.jsx 组件，其组件文档为 @/docs\Geogebra组件文档.md
@@ -36,13 +25,14 @@ src/spatialVector/
 
 ### 目标客户和学习伙伴
 
-15岁的高一学生Hans，其喜爱的卡通形象就是课件的学习伙伴——名侦探柯南。学习伙伴在 Welcome 模块首次出现，在 Summary 模块再次出现。
+15岁的高一学生Hans，其喜爱的卡通形象就是课件的学习伙伴——千反田爱瑠。学习伙伴在 Welcome 模块首次出现，在 Summary 模块再次出现。
 
 ### 实现要求
 
-1. 页面所有的title属性的文案，以及`h4, h5, h6`标签的文案的前面都要选择一个emoji。页面标题 config.title 前后各有一个emoji。
+1. 对于单个知识点的内容（`config.knowledgePointSection.points[i].content`），`config.quizSection.quiz[i]`的`question, correct, explanation`属性，和`config.summary.content`，虽然它们支持ReactNode，但请务必生成用 String.raw 和反引号包裹的多行`markdown`字符串！
 2. 在知识点和思考题中，必须标记重点和难点！
 3. 整个配置文件出现的所有字符串，尤其是**含有公式的字符串**，都**必须使用`String.raw`和反引号**，以简化转义字符的书写。
+4. 页面所有的title属性的文案，以及`h4, h5, h6`标签的文案的前面都要选择一个emoji。页面标题 config.title 前后各有一个emoji。
 
 ### 标题标签 h4, h5, h6 的使用规范
 
@@ -61,6 +51,15 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 2. Markdown String 中的公式生成规范见下文《字符串》一节。
 
 ### 如何标记重点和难点
+
+在Markdown String中：可以直接嵌入HTML。比如：
+
+```markdown
+椭圆的<span class="highlight">离心率</span>是
+椭圆的<span class="hard">面积公式</span>是
+```
+
+在ReactNode中：
 
 ```jsx
 import styles from '@/component/teachingPlan/basic.module.scss';

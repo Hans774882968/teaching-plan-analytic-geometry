@@ -3,6 +3,7 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 
 export default {
   title: '📐 抛物线的奥秘 🔍',
+  lpName: 'conan',
   welcome: {
     title: '👬 欢迎Hans7来到抛物线世界',
     content: '我是你的学习伙伴柯南，今天我们一起探索抛物线这个神奇的曲线！抛物线不仅是数学中的重要概念，在物理、工程和日常生活中也有广泛应用。',

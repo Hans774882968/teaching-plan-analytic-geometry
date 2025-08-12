@@ -16,9 +16,26 @@
   --tpm-color-link-hover: #69b1ff;
   --tpm-btn-primary-bg: #1677ff;
   --tpm-btn-primary-hover-bg: #4096ff;
+
   --navbar-bg-start: #67cbeb;
   --navbar-bg-end: #77cce8;
   --navbar-bg: linear-gradient(135deg, var(--navbar-bg-start) 0%, var(--navbar-bg-end) 100%);
+
+  --lp-text-color-male: #155dfc;
+  --lp-text-color-female: #f6339a;
+  --lp-text-color-backup: #6a7282;
+
+  --lesson-card-border-left: var(--vivid-blue-bg-start);
+  --lesson-card-border-left-hover: #4361ee;
+
+  --highlight-bg-start: var(--tpm-primary);
+  --highlight-bg-end: var(--color-blue-300);
+  --highlight-color: #1a3c6e;
+  --highlight-border-left: var(--lesson-card-border-left-hover);
+  --hard-bg-start: #ff758c;
+  --hard-bg-end: #ff6b6b4d;
+  --hard-color: #6e1c1a;
+  --hard-border-left: #c0392b;
 
   --blockquote-bg: var(--color-blue-100);
   --inline-code-bg: #fff5f5;

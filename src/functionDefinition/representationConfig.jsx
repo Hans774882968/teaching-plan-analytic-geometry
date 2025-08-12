@@ -3,6 +3,7 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 
 export default {
   title: '🔍 函数及其表示方法 📊',
+  lpName: 'conan',
   header: {
     content: String.raw`函数是数学中描述变量间关系的重要工具，本节课将系统学习函数的表示方法及其应用`,
   },

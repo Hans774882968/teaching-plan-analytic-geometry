@@ -81,6 +81,7 @@ class Footer {
 class PageStructure {
   constructor(config) {
     this.title = config.title;
+    this.lpName = config.lpName;
     this.header = new Header(config.header.content);
     this.welcome = new Welcome(config.welcome.title, config.welcome.content);
     this.points = config.points.map(p => new PointItem(p.title, p.content, p.thinks));

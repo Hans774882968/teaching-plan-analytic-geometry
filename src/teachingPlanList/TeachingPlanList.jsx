@@ -7,6 +7,7 @@ import {
   FaArrowRight,
   FaBookmark,
   FaChartLine,
+  FaUserCircle,
 } from 'react-icons/fa';
 import { FaCircleDollarToSlot } from 'react-icons/fa6';
 import { addToFavorite, cn } from '@/lib/utils';
@@ -16,31 +17,41 @@ import { Link } from 'react-router-dom';
 import NoData from '@/component/NoData';
 import { tagColorList } from '@/lib/getTagColor';
 import Card from '@/component/teachingPlan/Card';
-import { TP_ITEMS_PER_PAGE, TP_PER_PAGE_OPTIONS } from '@/common/consts';
+import {
+  LEARNING_PARTNER_MAP,
+  TP_ITEMS_PER_PAGE,
+  TP_PER_PAGE_OPTIONS,
+} from '@/common/consts';
 import { getPaginationItems } from '@/lib/pagination';
 import { PaginationWithToolbar } from '@/component/ui/pagination-with-toolbar';
 import CategorySelector from './CategorySelector';
 import DifficultySelector from './DifficultySelector';
+import LearningPartnerSelector from './LearningPartnerSelector';
 import SelectMode from '@/component/SelectMode';
 import { useLessonFilterStore } from './states/lessonFilterState';
 import { getFilteredLessons } from './utils';
+import { Input } from '@/component/ui/input';
+import { Button } from '@/component/ui/button';
 
 // 在首页用 Helmet 改标题无效，决定改 index.html 的标题
 const lessonPlans = [
-  { url: '/rotation/definition', title: '图形的旋转', category: ['平面几何'], difficulty: '初中' },
-  { url: '/function-definition/representation', title: '函数及其表示方法', category: ['代数'], difficulty: '高中' },
-  { url: '/function-definition/monotonicity', title: '函数的单调性', category: ['代数'], difficulty: '高中' },
-  { url: '/function-definition/even-odd', title: '函数的奇偶性', category: ['代数'], difficulty: '高中' },
-  { url: '/plane-vector-definition', title: '平面向量的定义及其线性运算', category: ['平面几何'], difficulty: '高中' },
-  { url: '/solid-geometry-intro/oblique-drawing', title: '空间几何体与斜二测画法', category: ['空间几何'], difficulty: '高中' },
-  { url: '/spatial-vector/fundamental-theorem', title: '空间向量基本定理', category: ['空间几何'], difficulty: '高中' },
-  { url: '/ellipse-definition', title: '椭圆的定义与性质', category: ['圆锥曲线', '代数'], difficulty: '高中' },
-  { url: '/hyperbola-definition', title: '双曲线的定义与性质', category: ['圆锥曲线', '代数'], difficulty: '高中' },
-  { url: '/parabola-definition', title: '抛物线的定义与性质', category: ['圆锥曲线', '代数'], difficulty: '高中' },
+  { url: '/rotation/definition', title: '图形的旋转', category: ['平面几何'], difficulty: '初中', lpName: 'conan' },
+  { url: '/exponential/real-num-exp-powers', title: '实数指数幂及其运算', category: ['代数'], difficulty: '高中', lpName: 'chitanda' },
+  { url: '/exponential/exp-function', title: '指数函数的性质与图像', category: ['代数'], difficulty: '高中', lpName: 'chitanda' },
+  { url: '/function-definition/representation', title: '函数及其表示方法', category: ['代数'], difficulty: '高中', lpName: 'conan' },
+  { url: '/function-definition/monotonicity', title: '函数的单调性', category: ['代数'], difficulty: '高中', lpName: 'conan' },
+  { url: '/function-definition/even-odd', title: '函数的奇偶性', category: ['代数'], difficulty: '高中', lpName: 'conan' },
+  { url: '/plane-vector-definition', title: '平面向量的定义及其线性运算', category: ['平面几何'], difficulty: '高中', lpName: 'conan' },
+  { url: '/solid-geometry-intro/oblique-drawing', title: '空间几何体与斜二测画法', category: ['空间几何'], difficulty: '高中', lpName: 'conan' },
+  { url: '/spatial-vector/fundamental-theorem', title: '空间向量基本定理', category: ['空间几何'], difficulty: '高中', lpName: 'conan' },
+  { url: '/ellipse-definition', title: '椭圆的定义与性质', category: ['圆锥曲线', '代数'], difficulty: '高中', lpName: 'conan' },
+  { url: '/hyperbola-definition', title: '双曲线的定义与性质', category: ['圆锥曲线', '代数'], difficulty: '高中', lpName: 'conan' },
+  { url: '/parabola-definition', title: '抛物线的定义与性质', category: ['圆锥曲线', '代数'], difficulty: '高中', lpName: 'conan' },
 ].map((lesson, index) => ({ ...lesson, id: index + 1 }));
 
 const categories = [...new Set(lessonPlans.flatMap(lesson => lesson.category))].sort();
 const difficulties = [...new Set(lessonPlans.map(lesson => lesson.difficulty))];
+const learningPartners = [...new Set(lessonPlans.flatMap(lesson => lesson.lpName))].sort();
 
 // 难度颜色映射
 const difficultyColors = {
@@ -64,8 +75,21 @@ const categoryShapes = {
   '代数': <FaChartLine />,
 };
 
+// 学习伙伴颜色映射
+const learningPartnerColors = learningPartners.reduce((learningPartnerColors, learningPartner, index) => {
+  learningPartnerColors[learningPartner] = tagColorList[index % tagColorList.length];
+  return learningPartnerColors;
+}, {});
+
+const LEARNING_PARTNER_TEXT_COLOR = {
+  conan: 'text-[var(--lp-text-color-male)]',
+  chitanda: 'text-[var(--lp-text-color-female)]',
+};
+
 // 教案卡片组件
 function LessonCard({ lesson, index }) {
+  const learningPartnerName = LEARNING_PARTNER_MAP[lesson.lpName];
+
   function onBookmarkBtnClick() {
     addToFavorite(lesson.url, lesson.title);
   }
@@ -94,9 +118,9 @@ function LessonCard({ lesson, index }) {
               ))
             }
           </div>
-          <div className="flex-1">
-            <h3 className="text-xl font-bold text-gray-800 mb-2">{lesson.title}</h3>
-            <div className="flex items-center mb-4">
+          <div className="flex-1 flex flex-col gap-2">
+            <h3 className="text-xl font-bold text-gray-800">{lesson.title}</h3>
+            <div className="flex items-center">
               <span className={cn(
                 'px-2 py-1 rounded-md text-xs font-semibold transition-colors duration-300',
                 difficultyColors[lesson.difficulty]
@@ -116,6 +140,13 @@ function LessonCard({ lesson, index }) {
                   </span>
                 ))
               }
+            </div>
+            <div
+              className={cn('flex items-center', LEARNING_PARTNER_TEXT_COLOR[lesson.lpName] || 'text-[var(--lp-text-color-backup)]')}
+              title={`学习伙伴：${learningPartnerName}`}
+            >
+              <FaUserCircle className="mr-2" />
+              <span className="font-semibold">{LEARNING_PARTNER_MAP[lesson.lpName]}</span>
             </div>
           </div>
         </div>
@@ -148,12 +179,23 @@ export default function TeachingPlanList() {
     mode,
     categoryFilter,
     difficultyFilter,
+    learningPartnerFilter,
+    titleFilter,
     setMode,
     setCategoryFilter,
     setDifficultyFilter,
+    setLearningPartnerFilter,
+    setTitleFilter,
   } = useLessonFilterStore();
 
-  const filteredLessons = getFilteredLessons(lessonPlans, categoryFilter, difficultyFilter, mode);
+  const filteredLessons = getFilteredLessons(
+    lessonPlans,
+    categoryFilter,
+    difficultyFilter,
+    learningPartnerFilter,
+    titleFilter,
+    mode
+  );
 
   const [itemsPerPage, setItemsPerPage] = useState(TP_ITEMS_PER_PAGE);
   // 所有导致数据个数变化的场景都需要重置页码
@@ -172,11 +214,27 @@ export default function TeachingPlanList() {
     setCurrentPage(1);
   };
 
-  const onModeChange = (val) => {
-    setMode(val);
-    // 清空原来选择的标签
+  const onLearningPartnerFilterChange = (learningPartner) => {
+    setLearningPartnerFilter(learningPartner);
+    setCurrentPage(1);
+  };
+
+  const onTitleFilterChange = (titleFilter) => {
+    setTitleFilter(titleFilter);
+    setCurrentPage(1);
+  };
+
+  const onResetFilters = () => {
+    // 清空表单所有项目
     onCategoryFilterChange([]);
     onDifficultyFilterChange('all');
+    onLearningPartnerFilterChange([]);
+    onTitleFilterChange('');
+  };
+
+  const onModeChange = (val) => {
+    setMode(val);
+    onResetFilters();
   };
 
   return (
@@ -210,29 +268,53 @@ export default function TeachingPlanList() {
       </motion.header>
 
       <Card
-        className="max-w-4xl mx-auto mb-12 flex flex-col gap-6 !overflow-x-visible"
+        className="max-w-4xl mx-auto mb-12 flex flex-col gap-4 !overflow-x-visible"
         initial={{ opacity: 0, scale: 0.95, y: 32 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
       >
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             筛选模式：
             <SelectMode defaultValue={mode} onValueChange={onModeChange} />
           </div>
 
           <CategorySelector
             categories={categories}
-            categoryFilter={categoryFilter}
             onCategoryFilterChange={onCategoryFilterChange}
             categoryColors={categoryColors}
           />
 
           <DifficultySelector
             difficulties={difficulties}
-            difficultyFilter={difficultyFilter}
             onDifficultyFilterChange={onDifficultyFilterChange}
             difficultyColors={difficultyColors}
           />
+
+          <LearningPartnerSelector
+            learningPartners={learningPartners}
+            learningPartnerColors={learningPartnerColors}
+            onLearningPartnerFilterChange={onLearningPartnerFilterChange}
+          />
+
+          <div className="flex flex-wrap items-center gap-3">
+            搜索标题：
+            <Input
+              className="w-50 sm:w-70 md:w-90"
+              name="标题"
+              placeholder="请输入"
+              value={titleFilter}
+              onChange={(e) => onTitleFilterChange(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div>
+          <Button
+            onClick={onResetFilters}
+            variant="default"
+          >
+            重置
+          </Button>
         </div>
 
         <PaginationWithToolbar

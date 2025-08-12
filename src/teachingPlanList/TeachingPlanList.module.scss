@@ -20,14 +20,14 @@
 
 .lessonCard {
   transition: all 0.3s ease;
-  border-left: 4px solid var(--vivid-blue-bg-start);
+  border-left: 4px solid var(--lesson-card-border-left);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .lessonCard:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(67, 97, 238, 0.15);
-  border-left: 4px solid #4361ee;
+  border-left: 4px solid var(--lesson-card-border-left-hover);
 }
 
 .floating {

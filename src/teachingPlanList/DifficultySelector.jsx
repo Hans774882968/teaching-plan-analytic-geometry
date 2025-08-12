@@ -43,7 +43,7 @@ export default function DifficultySelector({
                 onClick={() => onDifficultyFilterChange('all')}
                 selected={difficultyFilter === 'all'}
               >
-                所有
+                全部
               </FilterButton>
               {
                 difficulties.map((difficulty, index) => (
@@ -59,7 +59,7 @@ export default function DifficultySelector({
               }
             </>
           ) : (
-            <Select onValueChange={onDifficultyFilterChange} defaultValue="all">
+            <Select onValueChange={onDifficultyFilterChange} value={difficultyFilter}>
               <SelectTrigger className="w-50 sm:w-70 md:w-90">
                 <SelectValue placeholder="请选择" />
               </SelectTrigger>

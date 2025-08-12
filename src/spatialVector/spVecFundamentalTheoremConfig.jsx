@@ -3,6 +3,7 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 
 export default {
   title: String.raw`🌌 空间向量基本定理 🔍`,
+  lpName: 'conan',
 
   header: {
     content: String.raw`空间向量基本定理是解决空间几何问题的核心工具，理解它就能掌握三维空间中的向量运算！`,

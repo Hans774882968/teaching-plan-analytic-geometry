@@ -21,3 +21,8 @@ export const SELECT_MODES = {
 export const SELECT_MODE_ARR = Object.values(SELECT_MODES);
 
 export const DATA_HLJS_THEME = 'data-hljs-theme';
+
+export const LEARNING_PARTNER_MAP = {
+  conan: '柯南',
+  chitanda: '千反田爱瑠',
+};

@@ -3,6 +3,7 @@ import styles from '@/component/teachingPlan/basic.module.scss';
 
 const config = {
   title: '🚀 平面向量的定义与线性运算 🧮',
+  lpName: 'conan',
 
   header: {
     content: '高中数学 | 平面向量专题',

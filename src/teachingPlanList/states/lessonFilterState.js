@@ -7,7 +7,11 @@ export const useLessonFilterStore = create((set) => ({
   mode: SELECT_MODES.OR,
   categoryFilter: [],
   difficultyFilter: 'all',
+  learningPartnerFilter: [],
+  titleFilter: '',
   setMode: (mode) => set({ mode }),
   setCategoryFilter: (categoryFilter) => set({ categoryFilter }),
   setDifficultyFilter: (difficultyFilter) => set({ difficultyFilter }),
+  setLearningPartnerFilter: (learningPartnerFilter) => set({ learningPartnerFilter }),
+  setTitleFilter: (titleFilter) => set({ titleFilter }),
 }));

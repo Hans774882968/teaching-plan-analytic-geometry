@@ -24,6 +24,13 @@ function mdHtmlPostProcessor(html) {
     });
   }
 
+  doc.querySelectorAll('.highlight').forEach((span) => {
+    span.classList.replace('highlight', styles.highlight);
+  });
+  doc.querySelectorAll('.hard').forEach((span) => {
+    span.classList.replace('hard', styles.hard);
+  });
+
   return doc.body.innerHTML;
 }
 
