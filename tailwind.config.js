@@ -1,6 +1,15 @@
 module.exports = {
   theme: {
     extend: {
+      keyframes: {
+        'tpm-shake': {
+          '0%, 100%': { transform: 'scale(.99)' },
+          '50%':      { transform: 'scale(1.01)' },
+        },
+      },
+      animation: {
+        tpmShake: 'tpm-shake 2s infinite',
+      },
       typography: () => ({
         DEFAULT: {
           css: {

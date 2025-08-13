@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>数学课件提示词生成器</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css"
+  >
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/dracula.min.css"
+  >
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/markdown/markdown.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+    }
+
+    .editor-container {
+      transition: all 0.3s ease;
+      border: 2px solid #e2e8f0;
+    }
+
+    .editor-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      border-color: #a3bffa;
+    }
+
+    .preview-container {
+      transition: all 0.3s ease;
+    }
+
+    .animate-pulse-slow {
+      animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    .bounce {
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .floating {
+      animation: floating 6s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-15px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .rotate {
+      animation: rotate 15s linear infinite;
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .markdown-content h1 {
+      @apply text-2xl font-bold text-indigo-700 mb-4 mt-6;
+    }
+
+    .markdown-content h2 {
+      @apply text-xl font-semibold text-indigo-600 mb-3 mt-5;
+    }
+
+    .markdown-content p {
+      @apply text-gray-700 mb-3;
+    }
+
+    .markdown-content ul {
+      @apply list-disc pl-5 mb-4;
+    }
+
+    .markdown-content li {
+      @apply mb-2;
+    }
+
+    .markdown-content pre {
+      @apply bg-gray-800 text-gray-200 p-4 rounded-lg overflow-x-auto mb-4;
+    }
+
+    .markdown-content code {
+      @apply bg-gray-100 text-red-500 px-1.5 py-0.5 rounded text-sm;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // 默认值
+    const DEFAULT_VALUES = {
+      title: "勾股定理及其应用",
+      knowledgePoints: `1. 勾股定理的定义：直角三角形中，两直角边的平方和等于斜边的平方
+2. 勾股定理的证明方法（至少3种）
+3. 勾股定理在实际生活中的应用（建筑、测量等）
+4. 勾股定理的逆定理
+5. 常见的勾股数（3,4,5；5,12,13等）`,
+      fileStructure: `课件文件夹/
+  ├── 封面页.md
+  ├── 目录页.md
+  ├── 知识点讲解/
+  │   ├── 定义与证明.md
+  │   ├── 应用场景.md
+  │   └── 逆定理与勾股数.md
+  ├── 例题解析/
+  │   ├── 基础例题.md
+  │   ├── 中等例题.md
+  │   └── 综合应用题.md
+  ├── 课堂练习/
+  │   └── 练习题.md
+  ├── 总结页.md
+  └── 参考资料.md`,
+      standardPageTypes: `# 标准页类型定义
+
+## 封面页
+- 包含课程标题、适用年级、课时数
+- 简洁的数学相关背景图
+- 教师姓名和学校信息
+
+## 目录页
+- 清晰的课程结构导航
+- 每个章节配有小图标
+- 预计每个部分的时长
+
+## 知识点讲解页
+- 核心概念突出显示
+- 分步骤的推导过程
+- 可视化图表或示意图
+- 关键公式用卡片突出
+
+## 例题解析页
+- 题目与解答分离
+- 分步骤解析思路
+- 多种解法对比（如适用）
+- 错误解法分析`,
+      geogebraUsageDoc: `# GeoGebra 组件使用指南
+
+## 基本要求
+1. 所有几何图形必须使用GeoGebra制作
+2. 动态演示需设置可拖动点或滑动条
+3. 图形颜色遵循统一规范：
+   - 直角边：蓝色
+   - 斜边：红色
+   - 直角标记：橙色
+
+## 示例代码
+\`\`\`geogebra
+# 勾股定理动态演示
+a = Slider(1, 5, 1, 1, 100, false, true, false, false)
+b = Slider(1, 5, 1, 1, 100, false, true, false, false)
+c = sqrt(a^2 + b^2)
+
+A = (0,0)
+B = (a,0)
+C = (0,b)
+poly = Polygon(A, B, C)
+
+text1 = Text("a = " + a, (a/2, -0.3))
+text2 = Text("b = " + b, (-0.3, b/2))
+text3 = Text("c = " + c, (a/2 + 0.2, b/2 + 0.2))
+\`\`\`
+
+## 使用场景
+- 定理的动态验证
+- 图形变换演示
+- 函数图像绘制
+- 几何构造过程`
+    };
+
+    // 提示词模板
+    const PROMPT_TEMPLATE = `这是一篇用于让LLM生成数学课件{{title}}的提示词。知识点包括：
+
+{{knowledgePoints}}
+
+文件结构如下：
+
+{{fileStructure}}
+
+省略许多细节。
+
+{{standardPageTypes}}
+
+{{geogebraUsageDoc}}`;
+
+    // 自定义的简单模板引擎
+    const renderTemplate = (template, data) => {
+      return template.replace(/\{\{(\w+)\}\}/g, (match, key) => {
+        return data[key] || match;
+      });
+    };
+
+    // CodeMirror编辑器组件
+    const CodeEditor = ({ value, onChange, label, height = 200 }) => {
+      const editorRef = useRef(null);
+      const textareaRef = useRef(null);
+      const instanceRef = useRef(null);
+
+      useEffect(() => {
+        if (textareaRef.current && !instanceRef.current) {
+          const editor = CodeMirror.fromTextArea(textareaRef.current, {
+            mode: 'markdown',
+            theme: 'dracula',
+            lineNumbers: true,
+            lineWrapping: true,
+            indentUnit: 2,
+            tabSize: 2,
+            extraKeys: { "Tab": "indentMore", "Shift-Tab": "indentLess" }
+          });
+
+          editor.on('change', (cm) => {
+            onChange(cm.getValue());
+          });
+
+          instanceRef.current = editor;
+        }
+      }, []);
+
+      useEffect(() => {
+        if (instanceRef.current && instanceRef.current.getValue() !== value) {
+          instanceRef.current.setValue(value);
+        }
+      }, [value]);
+
+      return (
+        <div className="editor-container bg-white rounded-xl shadow-lg p-1 mb-6 overflow-hidden">
+          <div className="flex items-center justify-between bg-gradient-to-r from-purple-500 to-indigo-600 p-3 rounded-t-lg">
+            <h3 className="text-white font-bold flex items-center">
+              <i className="fas fa-edit mr-2"></i>
+              {label}
+            </h3>
+            <span className="bg-white bg-opacity-20 px-2 py-1 rounded-full text-xs text-white">
+              Markdown
+            </span>
+          </div>
+          <textarea
+            ref={textareaRef}
+            defaultValue={value}
+            className="hidden"
+          />
+          <div ref={editorRef} className="rounded-b-lg" style={{ height: `${height}px` }}></div>
+        </div>
+      );
+    };
+
+    // 主组件
+    const App = () => {
+      const [values, setValues] = useState(DEFAULT_VALUES);
+      const [previewHtml, setPreviewHtml] = useState('');
+
+      // 处理输入变化
+      const handleChange = (key) => (newValue) => {
+        setValues(prev => ({
+          ...prev,
+          [key]: newValue
+        }));
+      };
+
+      // 生成预览
+      useEffect(() => {
+        const promptText = renderTemplate(PROMPT_TEMPLATE, values);
+        const html = marked.parse(promptText);
+        setPreviewHtml(html);
+      }, [values]);
+
+      // 重置所有字段
+      const handleReset = () => {
+        setValues(DEFAULT_VALUES);
+      };
+
+      // 复制提示词
+      const copyPrompt = () => {
+        const promptText = renderTemplate(PROMPT_TEMPLATE, values);
+        navigator.clipboard.writeText(promptText);
+        alert('提示词已复制到剪贴板！');
+      };
+
+      return (
+        <div className="max-w-7xl mx-auto px-4">
+          {/* 标题区 */}
+          <header className="text-center py-10">
+            <div className="inline-block relative">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-3 relative z-10">
+                数学课件提示词生成器
+                <span className="text-indigo-600">.</span>
+              </h1>
+              <div className="absolute -top-4 -right-6 w-16 h-16 bg-yellow-400 rounded-full opacity-20 rotate-12"></div>
+              <div className="absolute -bottom-4 -left-6 w-12 h-12 bg-indigo-400 rounded-full opacity-20 -rotate-12"></div>
+            </div>
+            <p className="text-gray-600 max-w-2xl mx-auto mt-4">
+              通过填写下方编辑器，快速生成高质量的数学课件提示词，让AI为您创建精美的数学课件！
+            </p>
+
+            <div className="mt-6 flex justify-center gap-4">
+              <button
+                onClick={handleReset}
+                className="px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center"
+              >
+                <i className="fas fa-sync-alt mr-2"></i>
+                重置所有字段
+              </button>
+              <button
+                onClick={copyPrompt}
+                className="px-5 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center"
+              >
+                <i className="fas fa-copy mr-2"></i>
+                复制提示词
+              </button>
+            </div>
+          </header>
+
+          {/* 装饰元素 */}
+          <div className="absolute top-20 right-10 w-16 h-16 bg-pink-400 rounded-full opacity-10 rotate floating"></div>
+          <div className="absolute bottom-20 left-8 w-24 h-24 bg-blue-400 rounded-full opacity-10 -rotate floating"></div>
+          <div className="absolute top-1/3 left-5 w-12 h-12 bg-green-400 rounded-full opacity-10 rotate bounce"></div>
+
+          {/* 主要内容区 */}
+          <div className="flex flex-col lg:flex-row gap-6 mb-16">
+            {/* 左侧编辑区 */}
+            <div className="lg:w-1/2">
+              <div className="bg-white rounded-2xl shadow-xl p-6 border-2 border-indigo-100">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                    <i className="fas fa-keyboard mr-3 text-indigo-600"></i>
+                    编辑提示词内容
+                  </h2>
+                  <span className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">
+                    实时同步
+                  </span>
+                </div>
+
+                <CodeEditor
+                  label="课件标题"
+                  value={values.title}
+                  onChange={handleChange('title')}
+                  height={120}
+                />
+
+                <CodeEditor
+                  label="知识点"
+                  value={values.knowledgePoints}
+                  onChange={handleChange('knowledgePoints')}
+                />
+
+                <CodeEditor
+                  label="文件结构"
+                  value={values.fileStructure}
+                  onChange={handleChange('fileStructure')}
+                />
+
+                <CodeEditor
+                  label="标准页类型定义"
+                  value={values.standardPageTypes}
+                  onChange={handleChange('standardPageTypes')}
+                />
+
+                <CodeEditor
+                  label="GeoGebra使用文档"
+                  value={values.geogebraUsageDoc}
+                  onChange={handleChange('geogebraUsageDoc')}
+                />
+              </div>
+            </div>
+
+            {/* 右侧预览区 */}
+            <div className="lg:w-1/2">
+              <div className="bg-gradient-to-br from-indigo-50 to-white rounded-2xl shadow-xl p-6 h-full border-2 border-indigo-100">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                    <i className="fas fa-eye mr-3 text-indigo-600"></i>
+                    提示词预览效果
+                  </h2>
+                  <div className="animate-pulse-slow bg-gradient-to-r from-green-400 to-teal-500 text-white px-3 py-1 rounded-full text-sm">
+                    <i className="fas fa-bolt mr-1"></i>
+                    实时渲染
+                  </div>
+                </div>
+
+                <div className="preview-container bg-white rounded-xl shadow-lg p-5 h-[calc(100%-80px)] overflow-y-auto">
+                  <div
+                    className="markdown-content"
+                    dangerouslySetInnerHTML={{ __html: previewHtml }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 页脚 */}
+          <footer className="text-center py-8 text-gray-600">
+            <div className="mb-4">
+              <div className="w-16 h-16 bg-indigo-500 rounded-full mx-auto flex items-center justify-center mb-3">
+                <i className="fas fa-calculator text-white text-2xl"></i>
+              </div>
+              <p>为数学教育工作者提供的高效工具</p>
+            </div>
+            <p>© 2023 数学课件提示词生成器 | 为Hans7定制</p>
+          </footer>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+
+</html>

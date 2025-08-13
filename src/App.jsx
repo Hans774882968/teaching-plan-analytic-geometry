@@ -22,6 +22,7 @@ import ParabolaHardQuestions from './parabolaDefinition/ParabolaHardQuestions';
 import Layout from './component/layout/Layout';
 import PromptDisplaySchema from './promptDisplay/promptDisplaySchema';
 import PromptDisplayJsx from './promptDisplay/promptDisplayJsx';
+import PromptFastEdit from './promptFastEdit/PromptFastEdit';
 import ReadmeDisplay from './readmeDisplay/ReadmeDisplay';
 import { getWebsiteBasePath } from './lib/getWebsiteBasePath';
 import BlogDetail from './mathBlog/BlogDetail';
@@ -48,6 +49,7 @@ const routes = [
   { path: '/parabola-hard-questions', element: <ParabolaHardQuestions /> },
   { path: '/prompt-display-schema', element: <PromptDisplaySchema /> },
   { path: '/prompt-display-jsx', element: <PromptDisplayJsx /> },
+  { path: '/prompt-fast-edit', element: <PromptFastEdit /> },
   { path: '/tpm-dev-doc', element: <ReadmeDisplay /> },
   { path: '/blogs', element: <BlogList /> },
   { path: '/blog/:title', element: <BlogDetail /> },
@@ -66,7 +68,7 @@ function App() {
           toastOptions={{
             style: {
               color: 'white',
-              backgroundColor: 'var(--vivid-blue-bg)',
+              background: 'var(--vivid-blue-bg)',
               borderColor: 'var(--vivid-blue-bg-start)',
             },
             classNames: {

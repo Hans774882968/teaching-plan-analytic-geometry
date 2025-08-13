@@ -17,10 +17,19 @@ import {
   SelectValue,
 } from '@/component/ui/select';
 import { hljsThemeOptions } from '@/common/themeOptions';
+import { editorLightThemes } from '@/common/editorThemeOptions';
 import { TpmCombobox } from '@/component/ui/tpm-combobox';
 
 export default function SettingsDialog() {
-  const { filterStyle, setFilterStyle, hljsTheme, setHljsTheme, reset } = useSettingsStore();
+  const {
+    filterStyle,
+    setFilterStyle,
+    hljsTheme,
+    setHljsTheme,
+    lightEditorTheme,
+    setLightEditorTheme,
+    reset,
+  } = useSettingsStore();
   const widthClassName = 'w-50 sm:w-70 md:w-90';
 
   const handleFilterStyleChange = (value) => {
@@ -70,6 +79,17 @@ export default function SettingsDialog() {
                 value={hljsTheme}
                 setValue={setHljsTheme}
                 options={hljsThemeOptions}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4">
+            选编辑器主题：
+            <div className={widthClassName}>
+              <TpmCombobox
+                value={lightEditorTheme}
+                setValue={setLightEditorTheme}
+                options={editorLightThemes}
               />
             </div>
           </div>

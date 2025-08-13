@@ -2,21 +2,14 @@
 
 ### 背景和目标
 
-我打算生成一个新课件，详细讲解指数函数的性质与图像。知识点包括：
+我打算生成一个新课件，详细讲解{{title}}。知识点包括：
 
-- 指数函数的定义
-- 指数函数的定义域、值域、奇偶性、单调性
-- 函数`a^x`和`(1/a)^x`的联系
-- 利用指数函数的性质比较两个数的大小
-- 利用指数函数的性质与图像估计指数函数与一次函数的交点
-- 情境与问题：用函数表示有机体内的碳14含量与其死亡时间之间的关系
+{{knowledgePoints}}
 
 文件结构如下：
 
 ```
-src/exponentialFunction/
-├── ExpFunction.jsx       # 主组件
-└── expFunctionConfig.jsx # 内容配置文件，被主组件调用
+{{fileStructure}}
 ```
 
 我们有一个标准页面 @/src\component\teachingPlan\StandardPage.jsx ，需要给它提供一个描述页面结构的配置对象，其类型定义文件在 @/src\component\teachingPlan\StandardPageStructure.d.ts 。你生成的内容配置文件的类型应与该类型定义文件相符。标准页面的“实验互动模块”用到一个 @/src\component\Geogebra.jsx 组件，其组件文档为 @/docs\Geogebra组件文档.md
@@ -25,7 +18,9 @@ src/exponentialFunction/
 
 ### 目标客户和学习伙伴
 
-15岁的高一学生Hans，其喜爱的卡通形象就是课件的学习伙伴——千反田爱瑠。学习伙伴在 Welcome 模块首次出现，在 Summary 模块再次出现。
+{{learningPartner}}
+
+学习伙伴在 Welcome 模块首次出现，在 Summary 模块再次出现。
 
 ### 实现要求
 
@@ -109,3 +104,9 @@ $$
 \frac{x^2}{a^2} + \frac{y^2}{b^2} = 1
 $$
 ```
+
+### src\component\teachingPlan\StandardPageStructure.d.ts
+
+{{standardPageTypes}}
+
+{{geogebraUsageDoc}}

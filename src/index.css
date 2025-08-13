@@ -37,6 +37,8 @@
   --hard-color: #6e1c1a;
   --hard-border-left: #c0392b;
 
+  --prompt-fast-edit-border: #e2e8f0;
+
   --blockquote-bg: var(--color-blue-100);
   --inline-code-bg: #fff5f5;
   --inline-code-color: #ff502c;

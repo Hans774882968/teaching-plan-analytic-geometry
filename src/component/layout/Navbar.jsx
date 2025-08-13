@@ -21,7 +21,7 @@ import { Link } from 'react-router-dom';
 import NavDropdown from './NavDropdown';
 import SettingsDialog from './SettingsDialog';
 import { useState } from 'react';
-import { FaBookOpenReader } from 'react-icons/fa6';
+import { FaBookOpenReader, FaRegPenToSquare } from 'react-icons/fa6';
 
 const promptDisplayDropdown = {
   key: 'promptDisplay',
@@ -32,6 +32,15 @@ const promptDisplayDropdown = {
     </>
   ),
   urls: [
+    {
+      label: (
+        <>
+          <FaRegPenToSquare />
+          快速编辑
+        </>
+      ),
+      url: '/prompt-fast-edit',
+    },
     {
       label: (
         <>

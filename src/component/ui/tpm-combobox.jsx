@@ -63,7 +63,7 @@ export function TpmCombobox({
                   key={theme.value}
                   value={theme.label}
                   onSelect={() => {
-                    setValue(theme.value);
+                    setValue(theme.value, theme);
                     setOpen(false);
                   }}
                 >
