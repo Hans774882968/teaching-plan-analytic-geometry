@@ -7,6 +7,7 @@ import {
 import { editorLightThemes } from '@/common/editorThemeOptions';
 import { useSettingsStore } from '@/component/layout/states/settingsState';
 import { cn } from '@/lib/utils';
+import useEditorFontSizeHook from '@/hooks/useEditorFontSizeHook';
 
 function EditorFieldTag({ children }) {
   return (
@@ -28,18 +29,23 @@ export default function EditorWrapper({
     t.value === (lightEditorTheme)
   )?.theme;
 
+  const {
+    editorFontSize,
+    editorRef,
+  } = useEditorFontSizeHook();
+
   return (
     <div className={cn(
       'transition-all duration-300',
       'hover:-translate-y-1.5 hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)]',
       'border border-[var(--prompt-fast-edit-border)] hover:border-[var(--tpm-primary)] bg-white rounded-xl shadow-lg overflow-hidden'
     )}>
-      <div className="flex items-center justify-between bg-gradient-to-r from-[var(--navbar-bg-start)] to-[var(--navbar-bg-end)] p-3 rounded-t-lg">
+      <div className="flex flex-wrap items-center gap-2 justify-between bg-gradient-to-r from-[var(--navbar-bg-start)] to-[var(--navbar-bg-end)] p-3 rounded-t-lg">
         <h3 className="text-lg text-white font-bold flex items-center">
           <FaEdit className="mr-2" />
           {label}
         </h3>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {
             Array.isArray(tags) && tags.map((tag, index) => {
               return (
@@ -52,6 +58,8 @@ export default function EditorWrapper({
       </div>
       <div>
         <CodeMirror
+          ref={editorRef}
+          style={{ fontSize: `${editorFontSize}px` }}
           value={value}
           onChange={onChange}
           extensions={[markdown({ base: markdownLanguage, codeLanguages: languages })]}

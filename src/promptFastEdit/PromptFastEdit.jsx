@@ -3,22 +3,37 @@ import { useEffect, useState } from 'react';
 import MarkdownRenderer from '@/component/MarkdownRenderer';
 import {
   FaBolt,
+  FaBook,
   FaCopy,
   FaDatabase,
-  FaGlasses,
+  FaFileExport,
   FaKeyboard,
   FaSyncAlt,
 } from 'react-icons/fa';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
 import basicStyles from '@/component/teachingPlan/basic.module.scss';
+import EditorWrapper from '@/component/EditorWrapper';
+import BackToTopButton from '@/component/BackToTopButton';
 import PromptContainer from './PromptContainer';
-import EditorWrapper from './EditorWrapper';
-import { cn } from '@/lib/utils';
+import PromptOpBtn from './PromptOpBtn';
+import { cn, localDownloadFile } from '@/lib/utils';
 import { toast } from 'sonner';
 import {
   genSchemaPrompt,
 } from 'virtual:prompt-display';
-import { tpPromptDefaultValueMp } from '@/common/teachingPlanPromptData';
+import { LEARNING_PARTNER_DEFAULT_VALUE_MP } from '@/common/teachingPlanPromptData';
+import { LEARNING_PARTNER_MAP } from '@/common/consts';
 import { Link } from 'react-router-dom';
+import { getPromptVariablesMd } from './utils';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/component/ui/select';
+import { usePromptEditStore } from './promptEditState';
+import PromptUsageDocDialog from './PromptUsageDocDialog';
 
 const renderTemplate = (template, data) => {
   return template.replace(/\{\{(\w+)\}\}/g, (match, key) => {
@@ -27,14 +42,24 @@ const renderTemplate = (template, data) => {
 };
 
 export default function PromptFastEdit() {
-  const [values, setValues] = useState(tpPromptDefaultValueMp);
+  const {
+    values,
+    learningPartner,
+    setValues,
+    setLearningPartner,
+    reset,
+  } = usePromptEditStore();
   const [promptMarkdown, setPromptMarkdown] = useState('');
 
+  const onLearningPartnerChange = (lpName) => {
+    setLearningPartner(lpName);
+    setValues({
+      learningPartner: LEARNING_PARTNER_DEFAULT_VALUE_MP[lpName] || '',
+    });
+  };
+
   const handleInputChange = (key) => (newValue) => {
-    setValues(prev => ({
-      ...prev,
-      [key]: newValue,
-    }));
+    setValues({ [key]: newValue });
   };
 
   // 生成预览
@@ -45,7 +70,7 @@ export default function PromptFastEdit() {
 
   // 重置所有字段
   const handleReset = () => {
-    setValues(tpPromptDefaultValueMp);
+    reset();
     toast.success('已重置所有字段~');
   };
 
@@ -54,6 +79,26 @@ export default function PromptFastEdit() {
     const promptText = renderTemplate(genSchemaPrompt, values).trim();
     navigator.clipboard.writeText(promptText);
     toast.success('提示词已复制到剪贴板~');
+  };
+
+  const exportVariablesMd = () => {
+    const mdContent = getPromptVariablesMd(values);
+    const fileName = `tpm-${values.title || document.title}-变量.md`;
+    localDownloadFile({
+      data: mdContent,
+      fileName,
+      onSuccess: () => toast.success('导出变量成功~'),
+    });
+  };
+
+  const exportPrompt = () => {
+    const promptText = renderTemplate(genSchemaPrompt, values).trim();
+    const fileName = `tpm-${values.title || document.title}-提示词.md`;
+    localDownloadFile({
+      data: promptText,
+      fileName,
+      onSuccess: () => toast.success('导出提示词文档成功~'),
+    });
   };
 
   return (
@@ -74,21 +119,35 @@ export default function PromptFastEdit() {
           </h1>
         </div>
 
-        <div className="flex justify-center gap-4">
-          <button
+        <div className="flex flex-wrap justify-center gap-4 bg-white/40 hover:bg-white/80">
+          <PromptOpBtn
             onClick={handleReset}
-            className="px-5 py-2.5 leading-[1.3] cursor-pointer bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-medium shadow-md hover:shadow-xl transition-all duration-300 flex items-center"
+            className="bg-gradient-to-r from-blue-700 to-blue-500"
           >
             <FaSyncAlt className="mr-2" />
             重置
-          </button>
-          <button
+          </PromptOpBtn>
+          <PromptOpBtn
             onClick={copyPrompt}
-            className="px-5 py-2.5 leading-[1.3] cursor-pointer bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-medium shadow-md hover:shadow-xl transition-all duration-300 flex items-center"
+            className="bg-gradient-to-r from-indigo-700 to-indigo-500"
           >
             <FaCopy className="mr-2" />
-            复制提示词
-          </button>
+            复制
+          </PromptOpBtn>
+          <PromptOpBtn
+            onClick={exportVariablesMd}
+            className="bg-gradient-to-r from-blue-700 to-blue-500"
+          >
+            <FaFileExport className="mr-2" />
+            导出变量
+          </PromptOpBtn>
+          <PromptOpBtn
+            onClick={exportPrompt}
+            className="bg-gradient-to-r from-indigo-700 to-indigo-500"
+          >
+            <FaBook className="mr-2" />
+            导出整篇提示词
+          </PromptOpBtn>
         </div>
       </motion.header>
 
@@ -123,6 +182,26 @@ export default function PromptFastEdit() {
             onChange={handleInputChange('fileStructure')}
           />
 
+          <div className="flex flex-wrap items-center gap-3">
+            学习伙伴：
+            <Select onValueChange={onLearningPartnerChange} value={learningPartner}>
+              <SelectTrigger className="w-46 sm:w-70 md:w-90">
+                <SelectValue placeholder="请选择" />
+              </SelectTrigger>
+              <SelectContent>
+                {
+                  Object.entries(LEARNING_PARTNER_MAP).map(([value, label]) => {
+                    return (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    );
+                  })
+                }
+              </SelectContent>
+            </Select>
+          </div>
+
           <EditorWrapper
             label="学习伙伴"
             value={values.learningPartner}
@@ -145,14 +224,16 @@ export default function PromptFastEdit() {
         </PromptContainer>
 
         <PromptContainer>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center gap-2 justify-between">
             <h2 className="text-2xl font-bold text-[var(--tpm-primary)] flex items-center">
-              <FaGlasses className="mr-3" />
+              <FaMagnifyingGlass className="mr-3" />
               提示词预览
+              <PromptUsageDocDialog />
             </h2>
             <Link
               className="flex items-center gap-1 bg-white/60 hover:bg-white/80 text-[var(--tpm-primary)] font-bold px-3 py-1 rounded-full text-sm"
               to="/prompt-display-schema"
+              title="查看原始文档"
             >
               <FaDatabase />原始文档
             </Link>
@@ -167,6 +248,8 @@ export default function PromptFastEdit() {
           </div>
         </PromptContainer>
       </div>
+
+      <BackToTopButton />
     </div>
   );
 }

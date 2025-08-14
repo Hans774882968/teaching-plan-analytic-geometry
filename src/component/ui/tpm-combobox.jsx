@@ -23,6 +23,7 @@ export function TpmCombobox({
   options,
   setValue,
   value,
+  className,
 }) {
   const [open, setOpen] = useState(false);
   const widthClassName = 'w-50 sm:w-70 md:w-90';
@@ -36,7 +37,8 @@ export function TpmCombobox({
           aria-expanded={open}
           className={cn(
             'justify-between',
-            widthClassName
+            widthClassName,
+            className
           )}
         >
           {
@@ -49,7 +51,8 @@ export function TpmCombobox({
       </PopoverTrigger>
       <PopoverContent className={cn(
         'p-0',
-        widthClassName
+        widthClassName,
+        className
       )}>
         <Command>
           <CommandInput placeholder="请搜索" className="h-9" />

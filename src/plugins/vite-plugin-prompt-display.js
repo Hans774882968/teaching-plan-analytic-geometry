@@ -10,6 +10,7 @@ const promptFilePaths = [genSchemaPromptPath, genJsxPromptPath];
 
 const standardPageTsPath = path.resolve(process.cwd(), 'src', 'component', 'teachingPlan', 'StandardPageStructure.d.ts');
 const geogebraUsageDocPath = path.resolve(process.cwd(), 'docs', 'Geogebra组件文档.md');
+const genSchemaPromptUsagePath = path.resolve(process.cwd(), 'docs', '新课件提示词', '生成schema-食用方式.md');
 
 export default function promptDisplayPlugin() {
   const virtualModuleId = 'virtual:prompt-display';
@@ -46,6 +47,7 @@ export default function promptDisplayPlugin() {
       const standardPageTypeFileContent = fs.readFileSync(standardPageTsPath, 'utf-8').trim();
       const standardPageTypes = String.raw`\`\`\`ts\n${standardPageTypeFileContent}\n\`\`\``;
       const geogebraUsageDoc = getEncodedFileContent(geogebraUsageDocPath);
+      const genSchemaPromptUsageDoc = getEncodedFileContent(genSchemaPromptUsagePath);
 
       return `
 export const genSchemaRelativePath = String.raw\`${genSchemaRelativePath}\`;
@@ -56,6 +58,7 @@ export const genJsxPrompt = decodeURI(\`${genJsxPromptContent}\`);
 
 export const standardPageTypes = \`${standardPageTypes}\`;
 export const geogebraUsageDoc = decodeURI(\`${geogebraUsageDoc}\`);
+export const genSchemaPromptUsageDoc = decodeURI(\`${genSchemaPromptUsageDoc}\`);
 `.trim();
     },
   };

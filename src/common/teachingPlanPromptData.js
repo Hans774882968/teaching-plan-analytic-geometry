@@ -3,6 +3,13 @@ import {
   geogebraUsageDoc,
 } from 'virtual:prompt-display';
 
+export const LEARNING_PARTNER_DEFAULT_VALUE_MP = {
+  conan: '目标客户是15岁的高一学生Hans。其喜爱的卡通形象就是课件的学习伙伴——名侦探柯南。',
+  chitanda: '目标客户是15岁的高一学生Hans。其喜爱的卡通形象就是课件的学习伙伴——千反田爱瑠。',
+};
+
+export const DEFAULT_LP_VALUE = 'conan';
+
 export const tpPromptDefaultValueMp = {
   title: '指数函数的性质与图像',
   knowledgePoints: `
@@ -18,9 +25,7 @@ src/exponentialFunction/
 ├── ExpFunction.jsx       # 主组件
 └── expFunctionConfig.jsx # 内容配置文件，被主组件调用
 `.trim(),
-  learningPartner: `
-目标客户是15岁的高一学生Hans。其喜爱的卡通形象就是课件的学习伙伴——千反田爱瑠。
-`.trim(),
+  learningPartner: LEARNING_PARTNER_DEFAULT_VALUE_MP[DEFAULT_LP_VALUE],
   standardPageTypes,
   geogebraUsageDoc,
 };

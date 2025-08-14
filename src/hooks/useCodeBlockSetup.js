@@ -4,6 +4,7 @@ import DownloadSvg from '@/assets/fa-download.svg';
 import { CODE_BODY_INITIAL_MAX_HEIGHT } from '@/common/consts';
 import { toast } from 'sonner';
 import hljsLangToExtName from '@/lib/hljsLangToExtName';
+import { localDownloadFile } from '@/lib/utils';
 
 function downloadCode(codeBlockWrapper) {
   const copyBtn = codeBlockWrapper.querySelector('.copy-button');
@@ -14,18 +15,11 @@ function downloadCode(codeBlockWrapper) {
   const language = codeBlockWrapper.dataset.language;
   const extName = hljsLangToExtName(language);
   const code = decodeURI(copyBtn.dataset.code);
-  const blob = new Blob([code], { type: 'text/plain' });
-  const downloadUrl = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = downloadUrl;
-  a.download = `tpm-${document.title}.${extName}`;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => {
-    document.body.removeChild(a);
-    URL.revokeObjectURL(downloadUrl);
-    toast.success('下载成功！');
-  }, 100);
+  localDownloadFile({
+    data: code,
+    fileName: `tpm-${document.title}.${extName}`,
+    onSuccess: () => toast.success('下载成功！'),
+  });
 }
 
 export default function useCodeBlockSetup() {

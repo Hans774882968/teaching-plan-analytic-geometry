@@ -87,3 +87,23 @@ export function isSubSequence(long, short) {
   }
   return j === shortStr.length;
 }
+
+export function localDownloadFile({
+  data,
+  mimeType = 'text/plain',
+  fileName,
+  onSuccess,
+}) {
+  const blob = new Blob([data], { type: mimeType });
+  const downloadUrl = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = downloadUrl;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(downloadUrl);
+    onSuccess(fileName);
+  }, 100);
+}
