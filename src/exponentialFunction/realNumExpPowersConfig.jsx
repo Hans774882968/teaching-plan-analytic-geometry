@@ -37,8 +37,9 @@ export default {
         thinks: [
           {
             think: String.raw`计算 $ 2^{-3} $ 和 $ \left(\frac{1}{2}\right)^{-2} $ 的值`,
-            answer: String.raw`$ 2^{-3} = \frac{1}{2^3} = \frac{1}{8} $  
-            $ \left(\frac{1}{2}\right)^{-2} = 2^2 = 4 $`,
+            answer: String.raw`$ 2^{-3} = \frac{1}{2^3} = \frac{1}{8} $
+
+$ \left(\frac{1}{2}\right)^{-2} = 2^2 = 4 $`,
             answerRowMaxHeight: '200px',
           },
         ],
@@ -98,11 +99,12 @@ export default {
         thinks: [
           {
             think: String.raw`为什么 $ 2^{\sqrt{2}} $ 有意义？尝试描述它的近似值计算方法`,
-            answer: String.raw`$ 2^{\sqrt{2}} $ 可以看作是有理指数幂的极限：  
-            $ \sqrt{2} \approx 1.414213562... $  
-            $ 2^{1.4} = 2^{7/5} \approx 2.639 $  
-            $ 2^{1.41} = 2^{141/100} \approx 2.657 $  
-            随着小数位数增加，值趋近于 ≈2.665`,
+            answer: String.raw`$ 2^{\sqrt{2}} $ 可以看作是有理指数幂的极限：
+- $ \sqrt{2} \approx 1.414213562... $
+- $ 2^{1.4} = 2^{7/5} \approx 2.639 $
+- $ 2^{1.41} = 2^{141/100} \approx 2.657 $
+
+随着小数位数增加，值趋近于 ≈ 2.665`,
             answerRowMaxHeight: '250px',
           },
         ],
@@ -110,12 +112,12 @@ export default {
     ],
     thinks: [
       {
-        think: String.raw`为什么指数幂的底数 $a$ 在有理数指数幂中要求大于0？`,
+        think: String.raw`为什么指数幂的底数 $ a $ 在有理数指数幂中要求大于0？`,
         answer: String.raw`
 1. 当分母为偶数时，负数开偶次方在实数范围内无定义
 2. 保证运算结果在实数范围内有唯一确定的值
 
-例如： $(-8)^{\frac{1}{3}}$ 有定义（ $=-2$ ），但 $(-8)^{\frac{1}{2}}$ 不是实数（以后你会在《复变函数》中再次接触~）`,
+例如： $ (-8)^{\frac{1}{3}} $ 有定义（ $ =-2 $ ），但 $ (-8)^{\frac{1}{2}} $ 不是实数（以后你会在《复变函数》中再次接触~）`,
         answerRowMaxHeight: '200px',
       },
     ],
@@ -182,7 +184,7 @@ export default {
         ],
         correct: [0, 1, 3],
         explanation: String.raw`解析：
-- A正确： $ 5^{\frac{1}{2}} = \sqrt{5} $  
+- A正确： $ 5^{\frac{1}{2}} = \sqrt{5} $
 - B正确：负数平方为正  
 - C错误： $ 0^{-2} $ 无定义（分母不能为零）  
 - D正确： $ 8^{-\frac{1}{3}} = \frac{1}{\sqrt[3]{8}} = \frac{1}{2} $`,
@@ -197,7 +199,7 @@ export default {
         ],
         correct: [0, 3],
         explanation: String.raw`解析：  
-        $ \sqrt[3]{x^6} = (x^6)^{\frac{1}{3}} = x^{6 \times \frac{1}{3}} = x^2 $  
+$ \sqrt[3]{x^6} = (x^6)^{\frac{1}{3}} = x^{6 \times \frac{1}{3}} = x^2 $
         由于立方根对负实数也有定义，结果 $ x^2 $ 总是非负，等价于 $ |x^2| $`,
       },
       {
@@ -210,7 +212,7 @@ export default {
         ],
         correct: 1,
         explanation: String.raw`解析：  
-        $ \left(\frac{27}{8}\right)^{-\frac{2}{3}} = \left(\frac{8}{27}\right)^{\frac{2}{3}} = \left( \left(\frac{2}{3}\right)^3 \right)^{\frac{2}{3}} = \left(\frac{2}{3}\right)^2 = \frac{4}{9} $`,
+$ \left(\frac{27}{8}\right)^{-\frac{2}{3}} = \left(\frac{8}{27}\right)^{\frac{2}{3}} = \left( \left(\frac{2}{3}\right)^3 \right)^{\frac{2}{3}} = \left(\frac{2}{3}\right)^2 = \frac{4}{9} $`,
       },
     ],
     link: {

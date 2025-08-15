@@ -87,16 +87,16 @@ const config = {
         thinks: [
           {
             think: '为什么向量加法满足交换律，而减法不满足？',
-            answer: String.raw`向量加法交换律源于平行四边形法则的对角线性质，而减法 $ \vec{a} - \vec{b} $ 与 $\vec{b} - \vec{a}$ 方向相反，因此不满足交换律。`,
+            answer: String.raw`向量加法交换律源于平行四边形法则的对角线性质，而减法 $ \vec{a} - \vec{b} $ 与 $ \vec{b} - \vec{a} $ 方向相反，因此不满足交换律。`,
             answerRowMaxHeight: '120px',
           },
           {
-            think: String.raw`数乘向量 $\lambda\vec{a} = 0$ 时， $\lambda$ 和 $\vec{a}$ 必须满足什么条件？`,
-            answer: String.raw`当 $\lambda\vec{a} = \vec{0}$ 时，要么 $\lambda = 0$ ，要么 $\vec{a} = \vec{0}$ ，两者至少有一个成立。`,
+            think: String.raw`数乘向量 $ \lambda\vec{a} = 0 $ 时， $ \lambda $ 和 $ \vec{a} $ 必须满足什么条件？`,
+            answer: String.raw`当 $ \lambda\vec{a} = \vec{0} $ 时，要么 $ \lambda = 0 $ ，要么 $ \vec{a} = \vec{0} $ ，两者至少有一个成立。`,
             answerRowMaxHeight: '100px',
           },
           {
-            think: String.raw`化简下列各式：（1） $ \overrightarrow{AB} + \overrightarrow{CD} + \overrightarrow{BC} $ （2） $ \overrightarrow{AB} + \overrightarrow{FA} + \overrightarrow{BD} + \overrightarrow{DE} + \overrightarrow{EF}$`,
+            think: String.raw`化简下列各式：（1） $ \overrightarrow{AB} + \overrightarrow{CD} + \overrightarrow{BC} $ （2） $ \overrightarrow{AB} + \overrightarrow{FA} + \overrightarrow{BD} + \overrightarrow{DE} + \overrightarrow{EF} $`,
             answer: String.raw`
 （1）原式 = $ \overrightarrow{AB} + \overrightarrow{BC} + \overrightarrow{CD} = \overrightarrow{AC} + \overrightarrow{CD} = \overrightarrow{AD} $ 。主要用到了向量的交换律和结合律。
 
@@ -137,7 +137,7 @@ const config = {
           },
         },
         appletOnLoadId: 'src%5CplaneVectorDefinition%5Cconfig.jsx-plane-vector-definition-1',
-        conclusion: String.raw`通过拖动点A、B、C，验证了 $\overrightarrow{AB} + \overrightarrow{BC} = \overrightarrow{AC}$ 。无论3个向量位置如何，三角形法则始终成立`,
+        conclusion: String.raw`通过拖动点A、B、C，验证了 $ \overrightarrow{AB} + \overrightarrow{BC} = \overrightarrow{AC} $ 。无论3个向量位置如何，三角形法则始终成立`,
       },
       {
         description: (
@@ -165,7 +165,7 @@ const config = {
           },
         },
         appletOnLoadId: 'src%5CplaneVectorDefinition%5Cconfig.jsx-plane-vector-definition-2',
-        conclusion: '数乘向量实现向量的伸缩和方向反转。当 $k>0$ 时同向伸缩， $k<0$ 时反向伸缩， $|k|$ 决定伸缩倍数',
+        conclusion: '数乘向量实现向量的伸缩和方向反转。当 $ k>0 $ 时同向伸缩， $ k<0 $ 时反向伸缩， $ |k| $ 决定伸缩倍数',
       },
     ],
   },
@@ -175,41 +175,41 @@ const config = {
     description: '完成以下3道选择题，检验学习成果：',
     quiz: [
       {
-        question: String.raw`关于向量 $\vec{a}$ 和 $\vec{b}$ ，下列说法正确的是：`,
+        question: String.raw`关于向量 $ \vec{a} $ 和 $ \vec{b} $ ，下列说法正确的是：`,
         options: [
-          String.raw`若 $|\vec{a}| = |\vec{b}|$ ，则 $\vec{a} = \vec{b}$`,
-          String.raw`若 $\vec{a} \parallel \vec{b}$ ，则 $\vec{a}$ 与 $\vec{b}$ 方向相同`,
+          String.raw`若 $ |\vec{a}| = |\vec{b}| $ ，则 $ \vec{a} = \vec{b} $`,
+          String.raw`若 $ \vec{a} \parallel \vec{b} $ ，则 $ \vec{a} $ 与 $ \vec{b} $ 方向相同`,
           '零向量不与任意向量平行',
-          String.raw`若 $\vec{a} + \vec{b} = \vec{0}$ ，则 $\vec{a}$ 与 $\vec{b}$ 互为相反向量`,
+          String.raw`若 $ \vec{a} + \vec{b} = \vec{0} $ ，则 $ \vec{a} $ 与 $ \vec{b} $ 互为相反向量`,
         ],
         correct: 3,
         explanation: String.raw`**解析**：
 - A错误：大小相等但方向可能不同
 - B错误：平行向量方向可能相反
 - C错误：高中数学教材规定，零向量方向任意，与所有向量平行且垂直
-- D正确：满足 $\vec{a} = -\vec{b}$ 的关系`,
+- D正确：满足 $ \vec{a} = -\vec{b} $ 的关系`,
       },
       {
-        question: String.raw`已知平行四边形ABCD，则 $\overrightarrow{AB} + \overrightarrow{AD} =$ ？`,
+        question: String.raw`已知平行四边形ABCD，则 $ \overrightarrow{AB} + \overrightarrow{AD} = $ ？`,
         options: [
-          String.raw`$\overrightarrow{AC}$`,
-          String.raw`$\overrightarrow{BD}$`,
-          String.raw`$\overrightarrow{CA}$`,
-          String.raw`$\overrightarrow{DB}$`,
+          String.raw`$ \overrightarrow{AC} $`,
+          String.raw`$ \overrightarrow{BD} $`,
+          String.raw`$ \overrightarrow{CA} $`,
+          String.raw`$ \overrightarrow{DB} $`,
         ],
         correct: 0,
-        explanation: String.raw`**解析**：根据平行四边形法则， $\overrightarrow{AB} + \overrightarrow{AD} = \overrightarrow{AC}$`,
+        explanation: String.raw`**解析**：根据平行四边形法则， $ \overrightarrow{AB} + \overrightarrow{AD} = \overrightarrow{AC} $`,
       },
       {
-        question: String.raw`设 $\vec{a} \neq \vec{0}$ ， $\lambda\vec{a} = \mu\vec{a}$ ，则：`,
+        question: String.raw`设 $ \vec{a} \neq \vec{0} $ ， $ \lambda\vec{a} = \mu\vec{a} $ ，则：`,
         options: [
-          String.raw`$\lambda = \mu$`,
-          String.raw`$\lambda = -\mu$`,
-          String.raw`$\lambda = |\mu|$`,
-          String.raw`$\lambda$ 与 $\mu$ 关系不确定`,
+          String.raw`$ \lambda = \mu $`,
+          String.raw`$ \lambda = -\mu $`,
+          String.raw`$ \lambda = |\mu| $`,
+          String.raw`$ \lambda $ 与 $ \mu $ 关系不确定`,
         ],
         correct: 0,
-        explanation: String.raw`**解析**：由 $\lambda\vec{a} = \mu\vec{a}$ 可得 $(\lambda - \mu)\vec{a} = \vec{0}$。因 $\vec{a} \neq \vec{0}$ ，故 $\lambda - \mu = 0$ ，即 $\lambda = \mu$`,
+        explanation: String.raw`**解析**：由 $ \lambda\vec{a} = \mu\vec{a} $ 可得 $ (\lambda - \mu)\vec{a} = \vec{0} $ 。因 $ \vec{a} \neq \vec{0} $ ，故 $ \lambda - \mu = 0 $ ，即 $ \lambda = \mu $`,
       },
     ],
     link: {

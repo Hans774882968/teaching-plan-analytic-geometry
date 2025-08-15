@@ -31,7 +31,7 @@ export type LinkItem = {
   text: string;
 };
 
-export type LearningPartner = 'conan' | 'chitanda';
+export type LearningPartner = 'conan' | 'chitanda' | 'menhera';
 
 export type Header = {
   content: string;

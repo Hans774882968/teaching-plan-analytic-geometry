@@ -8,6 +8,7 @@ import {
   FaDatabase,
   FaFileExport,
   FaKeyboard,
+  FaRegQuestionCircle,
   FaSyncAlt,
 } from 'react-icons/fa';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
@@ -35,6 +36,8 @@ import {
 import { usePromptEditStore } from './promptEditState';
 import PromptUsageDocDialog from './PromptUsageDocDialog';
 
+const shouldShowManualResetToast = true;
+
 const renderTemplate = (template, data) => {
   return template.replace(/\{\{(\w+)\}\}/g, (match, key) => {
     return data[key] || match;
@@ -61,6 +64,15 @@ export default function PromptFastEdit() {
   const handleInputChange = (key) => (newValue) => {
     setValues({ [key]: newValue });
   };
+
+  useEffect(() => {
+    if (shouldShowManualResetToast) {
+      toast.info(
+        '学习伙伴/标准页类型定义/GeoGebra组件文档默认值更新了。请点击“重置”查看~',
+        { position: 'bottom-right' }
+      );
+    }
+  }, []);
 
   // 生成预览
   useEffect(() => {
@@ -119,7 +131,7 @@ export default function PromptFastEdit() {
           </h1>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-4 bg-white/40 hover:bg-white/80">
+        <div className="flex flex-wrap justify-center gap-4">
           <PromptOpBtn
             onClick={handleReset}
             className="bg-gradient-to-r from-blue-700 to-blue-500"
@@ -182,10 +194,13 @@ export default function PromptFastEdit() {
             onChange={handleInputChange('fileStructure')}
           />
 
-          <div className="flex flex-wrap items-center gap-3">
-            学习伙伴：
+          <div className="sm:flex sm:items-center">
+            <label className="flex justify-start sm:justify-end items-center gap-2 font-medium mb-2 sm:mb-0 sm:w-1/3 sm:text-right sm:pr-4">
+              <FaRegQuestionCircle className="cursor-pointer" title="预设的学习伙伴提示词" />
+              学习伙伴
+            </label>
             <Select onValueChange={onLearningPartnerChange} value={learningPartner}>
-              <SelectTrigger className="w-46 sm:w-70 md:w-90">
+              <SelectTrigger className="sm:w-2/3">
                 <SelectValue placeholder="请选择" />
               </SelectTrigger>
               <SelectContent>
@@ -206,6 +221,7 @@ export default function PromptFastEdit() {
             label="学习伙伴"
             value={values.learningPartner}
             onChange={handleInputChange('learningPartner')}
+            tags={['通常无需修改']}
           />
 
           <EditorWrapper

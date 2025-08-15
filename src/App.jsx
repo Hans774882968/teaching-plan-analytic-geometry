@@ -7,6 +7,7 @@ import NotFound from './NotFound';
 import RotationDefinition from './rotation/RotationDefinition';
 import RealNumExpPowers from './exponentialFunction/RealNumExpPowers';
 import ExpFunction from './exponentialFunction/ExpFunction';
+import LogOperation from './logarithmicFunction/LogOperation';
 import FunctionRepresentation from './functionDefinition/FunctionRepresentation';
 import FunctionMonotonicity from './functionDefinition/FunctionMonotonicity';
 import FunctionEvenOdd from './functionDefinition/FunctionEvenOdd';
@@ -35,6 +36,7 @@ const routes = [
   { path: '/rotation/definition', element: <RotationDefinition /> },
   { path: '/exponential/real-num-exp-powers', element: <RealNumExpPowers /> },
   { path: '/exponential/exp-function', element: <ExpFunction /> },
+  { path: '/logarithmic/log-operation', element: <LogOperation /> },
   { path: '/function-definition/representation', element: <FunctionRepresentation /> },
   { path: '/function-definition/monotonicity', element: <FunctionMonotonicity /> },
   { path: '/function-definition/even-odd', element: <FunctionEvenOdd /> },

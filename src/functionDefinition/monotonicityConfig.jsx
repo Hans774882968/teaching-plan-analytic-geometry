@@ -99,7 +99,7 @@ export default {
         thinks: [
           {
             think: String.raw`如何用平均变化率解释一次函数 $ f(x) = kx + b $ 的单调性？`,
-            answer: String.raw`在任意区间 $ [x_1, x_2] $ 上，平均变化率为 $ \frac{(kx_2+b) - (kx_1+b)}{x_2-x_1} = k $。所以当 $ k > 0 $ 时函数递增， $ k < 0 $ 时函数递减。`,
+            answer: String.raw`在任意区间 $ [x_1, x_2] $ 上，平均变化率为 $ \frac{(kx_2+b) - (kx_1+b)}{x_2-x_1} = k $ 。所以当 $ k > 0 $ 时函数递增， $ k < 0 $ 时函数递减。`,
             answerRowMaxHeight: '120px',
           },
         ],
@@ -129,7 +129,7 @@ export default {
         ),
         thinks: [
           {
-            think: String.raw`如果一辆汽车的速度函数 $ v(t) = t^2 - 4t + 3 $，如何分析汽车的运动状态？`,
+            think: String.raw`如果一辆汽车的速度函数 $ v(t) = t^2 - 4t + 3 $ ，如何分析汽车的运动状态？`,
             answer: String.raw`
 1. 加速度 $ a(t) = v'(t) = 2t - 4 $
 2. 当 $ t < 2 $ 时， $ a(t) < 0 $ ，汽车减速
@@ -209,7 +209,7 @@ export default {
     ),
     quiz: [
       {
-        question: String.raw`已知函数 $ f(x) = x^2 - 4x + 3 $，下列说法正确的是：`,
+        question: String.raw`已知函数 $ f(x) = x^2 - 4x + 3 $ ，下列说法正确的是：`,
         options: [
           String.raw`在 $ (-\infty, 2) $ 上单调递增`,
           String.raw`在 $ (2, +\infty) $ 上单调递增`,

@@ -130,8 +130,9 @@ $ [-1.5] = -2 $ （不超过-1.5的最大整数，注意 $ -1 > -1.5 $ ）`,
             answerRowMaxHeight: '120px',
           },
           {
-            think: String.raw`若 $ f(x) = x^2 + 1 $，求 $ f(x-1) $ 和 $ f(2x) $ 的表达式`,
-            answer: String.raw`$ f(x-1) = (x-1)^2 + 1 = x^2 - 2x + 2 $  
+            think: String.raw`若 $ f(x) = x^2 + 1 $ ，求 $ f(x-1) $ 和 $ f(2x) $ 的表达式`,
+            answer: String.raw`$ f(x-1) = (x-1)^2 + 1 = x^2 - 2x + 2 $
+
 $ f(2x) = (2x)^2 + 1 = 4x^2 + 1 $`,
             answerRowMaxHeight: '120px',
           },
@@ -237,15 +238,15 @@ $ f(2x) = (2x)^2 + 1 = 4x^2 + 1 $`,
         ],
         correct: [0, 1],
         explanation: String.raw`解析：  
-- $ g(x) $ 定义域为 $ \mathbb{R} $ 且 $ g(x) = |x| $，正确
+- $ g(x) $ 定义域为 $ \mathbb{R} $ 且 $ g(x) = |x| $ ，正确
 - $ h(x) $ 是 $ |x| $ 的分段表示，正确
-- $ k(x) $ 定义域 $ [0,+\infty) $，与 $ f(x) $ 不同
-- $ m(x) $ 定义域 $ \mathbb{R} \setminus \{0\} $，与 $ f(x) $ 不同
+- $ k(x) $ 定义域 $ [0,+\infty) $ ，与 $ f(x) $ 不同
+- $ m(x) $ 定义域 $ \mathbb{R} \setminus \{0\} $ ，与 $ f(x) $ 不同
 
 **函数相等必须定义域和对应法则都相同**`,
       },
       {
-        question: String.raw`若 $ f(x) = x^2 + 2x $，则 $ f(x-1) $ 的表达式是？`,
+        question: String.raw`若 $ f(x) = x^2 + 2x $ ，则 $ f(x-1) $ 的表达式是？`,
         options: [
           String.raw`$ x^2 - 2x + 1 $`,
           String.raw`$ x^2 + 4x + 3 $`,
@@ -256,14 +257,15 @@ $ f(2x) = (2x)^2 + 1 = 4x^2 + 1 $`,
         explanation: String.raw`解析：  
 方法1：
 
-$ f(x-1) = (x-1)^2 + 2(x-1) $  
-$ = (x^2 - 2x + 1) + (2x - 2) $  
-$ = x^2 - 2x + 1 + 2x - 2 $  
-$ = x^2 - 1 $
+- $ f(x-1) = (x-1)^2 + 2(x-1) $
+- $ = (x^2 - 2x + 1) + (2x - 2) $
+- $ = x^2 - 2x + 1 + 2x - 2 $
+- $ = x^2 - 1 $
 
 方法2：
 
-$ f(x) = x(x+2) $  
+$ f(x) = x(x+2) $
+
 $ f(x-1) = (x-1)(x-1+2) = (x-1)(x+1) = x^2 - 1 $
 
 思考：为什么方法2更简洁？这给了你什么启发？
@@ -279,9 +281,10 @@ $ f(x-1) = (x-1)(x-1+2) = (x-1)(x+1) = x^2 - 1 $
         ],
         correct: 0,
         explanation: String.raw`解析：  
-- 当 $ -2 \leq x < -1 $ 时 $ [x] = -2 $  
-- 当 $ -1 \leq x < 0 $ 时 $ [x] = -1 $  
-- 当 $ 0 \leq x < 1 $ 时 $ [x] = 0 $  
+- 当 $ -2 \leq x < -1 $ 时 $ [x] = -2 $
+- 当 $ -1 \leq x < 0 $ 时 $ [x] = -1 $
+- 当 $ 0 \leq x < 1 $ 时 $ [x] = 0 $
+
 ∴ 值域为 $ \{-2, -1, 0\} $`,
       },
     ],

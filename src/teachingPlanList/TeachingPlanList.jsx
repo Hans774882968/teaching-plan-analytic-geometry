@@ -38,6 +38,7 @@ const lessonPlans = [
   { url: '/rotation/definition', title: '图形的旋转', category: ['平面几何'], difficulty: '初中', lpName: 'conan' },
   { url: '/exponential/real-num-exp-powers', title: '实数指数幂及其运算', category: ['代数'], difficulty: '高中', lpName: 'chitanda' },
   { url: '/exponential/exp-function', title: '指数函数的性质与图像', category: ['代数'], difficulty: '高中', lpName: 'chitanda' },
+  { url: '/logarithmic/log-operation', title: '对数运算', category: ['代数'], difficulty: '高中', lpName: 'menhera' },
   { url: '/function-definition/representation', title: '函数及其表示方法', category: ['代数'], difficulty: '高中', lpName: 'conan' },
   { url: '/function-definition/monotonicity', title: '函数的单调性', category: ['代数'], difficulty: '高中', lpName: 'conan' },
   { url: '/function-definition/even-odd', title: '函数的奇偶性', category: ['代数'], difficulty: '高中', lpName: 'conan' },
@@ -84,6 +85,7 @@ const learningPartnerColors = learningPartners.reduce((learningPartnerColors, le
 const LEARNING_PARTNER_TEXT_COLOR = {
   conan: 'text-[var(--lp-text-color-male)]',
   chitanda: 'text-[var(--lp-text-color-female)]',
+  menhera: 'text-[var(--lp-text-color-female)]',
 };
 
 // 教案卡片组件

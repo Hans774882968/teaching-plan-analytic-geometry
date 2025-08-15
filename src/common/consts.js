@@ -25,4 +25,5 @@ export const DATA_HLJS_THEME = 'data-hljs-theme';
 export const LEARNING_PARTNER_MAP = {
   conan: '柯南',
   chitanda: '千反田爱瑠',
+  menhera: 'menhera酱',
 };

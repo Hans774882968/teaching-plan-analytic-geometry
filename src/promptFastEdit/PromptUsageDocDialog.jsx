@@ -30,7 +30,10 @@ export default function PromptUsageDocDialog() {
             提示词食用方式
           </DialogDescription>
         </DialogHeader>
-        <MarkdownRenderer content={genSchemaPromptUsageDoc} />
+        <MarkdownRenderer
+          content={genSchemaPromptUsageDoc}
+          className="max-h-120 overflow-y-auto"
+        />
       </DialogContent>
     </Dialog>
   );

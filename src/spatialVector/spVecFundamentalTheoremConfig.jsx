@@ -106,11 +106,13 @@ export default {
         thinks: [
           {
             think: String.raw`❓ 为什么含有点 O 的公式和不含点 O 的公式是等价的？`,
-            answer: String.raw`✔️ $ \overrightarrow{AD} = \overrightarrow{OD} - \overrightarrow{OA} = x\overrightarrow{AB} + y\overrightarrow{AC} $  
-$ = x(\overrightarrow{OB} - \overrightarrow{OA}) + y(\overrightarrow{OC} - \overrightarrow{OA}) = (-x - y)\overrightarrow{OA} + x\overrightarrow{OB} + y\overrightarrow{OC} $  
+            answer: String.raw`✔️ $ \overrightarrow{AD} = \overrightarrow{OD} - \overrightarrow{OA} = x\overrightarrow{AB} + y\overrightarrow{AC} $
+
+$ = x(\overrightarrow{OB} - \overrightarrow{OA}) + y(\overrightarrow{OC} - \overrightarrow{OA}) = (-x - y)\overrightarrow{OA} + x\overrightarrow{OB} + y\overrightarrow{OC} $
+
 $ \overrightarrow{OD} = (1 - x - y)\overrightarrow{OA} + x\overrightarrow{OB} + y\overrightarrow{OC} $ ，证毕
 `,
-            answerRowMaxHeight: '120px',
+            answerRowMaxHeight: '160px',
           },
         ],
       },
@@ -306,9 +308,9 @@ $ \overrightarrow{OD} = (1 - x - y)\overrightarrow{OA} + x\overrightarrow{OB} + 
           String.raw`无法判断`,
         ],
         correct: 1, // B
-        explanation: String.raw`✔️ **解析**：  
-方法1：计算向量 $ \overrightarrow{AB} = (-1,1,0) $, $ \overrightarrow{AC} = (-1,0,1) $, $ \overrightarrow{AD} = (0,1,1) $。混合积 $ \overrightarrow{AB} \cdot (\overrightarrow{AC} \times \overrightarrow{AD}) = 1 \neq 0 $，所以四点不共面（B正确）。  
-方法2：计算 $ \overrightarrow{OD} = 1\overrightarrow{OA} + 1\overrightarrow{OB} + 1\overrightarrow{OC} $ ， $ x + y + z = 3 \neq 1 $ ，所以四点不共面。
+        explanation: String.raw`✔️ **解析**：
+- 方法1：计算向量 $ \overrightarrow{AB} = (-1,1,0) $ , $ \overrightarrow{AC} = (-1,0,1) $ , $ \overrightarrow{AD} = (0,1,1) $ 。混合积 $ \overrightarrow{AB} \cdot (\overrightarrow{AC} \times \overrightarrow{AD}) = 1 \neq 0 $ ，所以四点不共面（B正确）。  
+- 方法2：计算 $ \overrightarrow{OD} = 1\overrightarrow{OA} + 1\overrightarrow{OB} + 1\overrightarrow{OC} $ ， $ x + y + z = 3 \neq 1 $ ，所以四点不共面。
 `,
       },
       {
@@ -320,7 +322,7 @@ $ \overrightarrow{OD} = (1 - x - y)\overrightarrow{OA} + x\overrightarrow{OB} + 
           String.raw`$ \vec{a},\ \vec{a} + \vec{b},\ \vec{a} + \vec{b} + \vec{c} $`,
         ],
         correct: [0, 1, 3], // A, B, D
-        explanation: String.raw`✔️ **解析**：基底要求三个向量不共面。A: 混合积不为0，可；B: 线性无关，可；D: 混合积不为0，可。C: $ (\vec{a}-\vec{b}) + (\vec{b}-\vec{c}) + (\vec{c}-\vec{a}) = \vec{0} $，共面，不可。`,
+        explanation: String.raw`✔️ **解析**：基底要求三个向量不共面。A: 混合积不为0，可；B: 线性无关，可；D: 混合积不为0，可。C: $ (\vec{a}-\vec{b}) + (\vec{b}-\vec{c}) + (\vec{c}-\vec{a}) = \vec{0} $ ，共面，不可。`,
       },
     ],
     link: {
