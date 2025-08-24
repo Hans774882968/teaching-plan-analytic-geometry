@@ -12,6 +12,7 @@ import {
   FaKey,
   FaLockOpen,
   FaReact,
+  FaTachometerAlt,
   FaTimes,
   FaUser,
 } from 'react-icons/fa';
@@ -28,7 +29,7 @@ const promptDisplayDropdown = {
   children: (
     <>
       <FaKey />
-      <span>提示词公开</span>
+      <span>提示词</span>
     </>
   ),
   urls: [
@@ -85,6 +86,27 @@ const blogDropdown = {
         </>
       ),
       url: '/blogs',
+    },
+  ],
+};
+
+const dashboardDropdown = {
+  key: 'dashboard',
+  children: (
+    <>
+      <FaTachometerAlt />
+      <span>仪表盘</span>
+    </>
+  ),
+  urls: [
+    {
+      label: (
+        <>
+          <FaTachometerAlt />
+          仪表盘
+        </>
+      ),
+      url: '/dashboard',
     },
   ],
 };
@@ -172,7 +194,13 @@ const aboutThisProjectDropdown = {
   ],
 };
 
-const navigationItems = [promptDisplayDropdown, blogDropdown, aboutThisProjectDropdown, aboutUsDropdown].map((dropdown) => {
+const navigationItems = [
+  promptDisplayDropdown,
+  blogDropdown,
+  dashboardDropdown,
+  aboutThisProjectDropdown,
+  aboutUsDropdown,
+].map((dropdown) => {
   return {
     label: dropdown.children,
     items: dropdown.urls,
@@ -195,8 +223,8 @@ export default function Navbar() {
       'sticky top-0 z-49 text-white text-2xl md:text-base lg:text-2xl py-4 px-6 shadow-[0_4px_12px_0px_rgba(0,0,0,0.3)]'
     )}>
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <div className="flex items-center space-x-2 md:space-x-4">
-          <Link to="/" className="flex items-center space-x-2 md:space-x-4" rel="noopener noreferrer">
+        <div className="flex items-center space-x-2 lg:space-x-3">
+          <Link to="/" className="flex items-center space-x-2 lg:space-x-3" rel="noopener noreferrer">
             <div className={cn(styles.logoIcon, 'bg-white/[0.2] p-2 rounded-lg')}>
               <FaDraftingCompass />
             </div>
@@ -205,14 +233,16 @@ export default function Navbar() {
             </h1>
           </Link>
 
-          <div className="hidden md:flex items-center space-x-2 md:space-x-4">
+          <div className="hidden md:flex items-center lg:space-x-3">
             {/* 默认字体比站酷快乐体大，默认宽度 200px 不够 */}
             <NavDropdown items={promptDisplayDropdown.urls} navDropdownClasses="min-w-54">
               {promptDisplayDropdown.children}
             </NavDropdown>
-
             <NavDropdown items={blogDropdown.urls} navDropdownClasses="min-w-36">
               {blogDropdown.children}
+            </NavDropdown>
+            <NavDropdown items={dashboardDropdown.urls} navDropdownClasses="min-w-36">
+              {dashboardDropdown.children}
             </NavDropdown>
           </div>
 
@@ -227,7 +257,7 @@ export default function Navbar() {
           <SettingsDialog />
         </div>
 
-        <div className="hidden md:flex items-center space-x-2 md:space-x-4">
+        <div className="hidden md:flex items-center lg:space-x-3">
           <NavDropdown items={aboutThisProjectDropdown.urls} navDropdownClasses="min-w-36">
             {aboutThisProjectDropdown.children}
           </NavDropdown>

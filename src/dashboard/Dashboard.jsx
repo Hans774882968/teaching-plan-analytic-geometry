@@ -25,6 +25,13 @@ import {
   totalTags,
   totalWords,
 } from './dataCollect';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/component/ui/select';
 
 ChartJS.register(
   CategoryScale,
@@ -64,43 +71,48 @@ export default function Dashboard() {
       {/* 图表区域 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
         <div className="bg-gradient-to-br from-sky-100 to-sky-50 rounded-xl shadow-md p-6">
-          <div className="h-64">
+          <div className="h-80">
             <TopTagsChart data={topAppearanceTags} />
           </div>
         </div>
 
         <div className="bg-gradient-to-br from-sky-100 to-sky-50 rounded-xl shadow-md p-6">
-          <div className="h-64">
+          <div className="h-80">
             <TopTaggedBlogsChart data={topTaggedBlogs} />
           </div>
         </div>
 
         <div className="bg-gradient-to-br from-sky-100 to-sky-50 rounded-xl shadow-md p-6">
-          <div className="h-64">
+          <div className="h-80">
             <TopLongestBlogsChart data={topLongestBlogs} />
           </div>
         </div>
 
         <div className="bg-gradient-to-br from-sky-100 to-sky-50 rounded-xl shadow-md p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-[var(--tpm-primary)]">月度博客趋势</h2>
-            <div>
-              <label htmlFor="month-select" className="mr-2 text-[var(--tpm-primary)]">选择月份：</label>
-              <select
-                id="month-select"
-                className="border border-gray-300 rounded-md px-3 py-1"
-                value={selectedMonth}
-                onChange={(e) => setSelectedMonth(e.target.value)}
-              >
+          <div className="flex flex-col gap-4 mb-4 sm:flex-row sm:justify-between sm:items-center">
+            <h2 className="text-xl font-bold text-[var(--tpm-primary)] sm:w-1/2">月度博客趋势</h2>
+            <Select
+              className="border border-gray-300 rounded-md px-3 py-1"
+              value={selectedMonth}
+              onValueChange={setSelectedMonth}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="请选择" />
+              </SelectTrigger>
+              <SelectContent>
                 {
-                  getAvailableMonths().map(month => (
-                    <option key={month} value={month}>{month}</option>
-                  ))
+                  getAvailableMonths().map((month) => {
+                    return (
+                      <SelectItem key={month} value={month}>
+                        {month}
+                      </SelectItem>
+                    );
+                  })
                 }
-              </select>
-            </div>
+              </SelectContent>
+            </Select>
           </div>
-          <div className="h-64">
+          <div className="h-80">
             <MonthlyBlogMdyTrendChart
               ctimeData={monthlyBlogMdy.ctime}
               mtimeData={monthlyBlogMdy.mtime}

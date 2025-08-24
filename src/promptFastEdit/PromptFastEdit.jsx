@@ -14,7 +14,6 @@ import {
 import { FaMagnifyingGlass } from 'react-icons/fa6';
 import basicStyles from '@/component/teachingPlan/basic.module.scss';
 import EditorWrapper from '@/component/EditorWrapper';
-import BackToTopButton from '@/component/BackToTopButton';
 import PromptContainer from './PromptContainer';
 import PromptOpBtn from './PromptOpBtn';
 import { cn, localDownloadFile } from '@/lib/utils';
@@ -264,8 +263,6 @@ export default function PromptFastEdit() {
           </div>
         </PromptContainer>
       </div>
-
-      <BackToTopButton />
     </div>
   );
 }

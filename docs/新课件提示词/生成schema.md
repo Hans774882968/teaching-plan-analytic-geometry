@@ -27,7 +27,9 @@
 1. 对于单个知识点的内容（`config.knowledgePointSection.points[i].content`），`config.quizSection.quiz[i]`的`question, correct, explanation`属性，和`config.summary.content`，虽然它们支持ReactNode，但请务必生成用 String.raw 和反引号包裹的多行`markdown`字符串！
 2. 在知识点和思考题中，必须标记重点和难点！
 3. 整个配置文件出现的所有字符串，尤其是**含有公式的字符串**，都**必须使用`String.raw`和反引号**，以简化转义字符的书写。
-4. 页面所有的title属性的文案，以及`h4, h5, h6`标签的文案的前面都要选择一个emoji。页面标题 config.title 前后各有一个emoji。
+4. 页面所有的title属性的文案，以及`h4, h5, h6`标签的文案的前面都要选择一个emoji。页面标题`config.title`前后各有一个emoji。
+5. 关于`config.quizSection.link`对象：`url`是当前页面的链接加上`-hard-questions`后缀，`text`是`更难的{{ config.title }}练习题`。
+6. 关于`config.footer.info`：作者是“DeepSeek老师”，其余页脚信息可自由发挥。
 
 ### 标题标签 h4, h5, h6 的使用规范
 

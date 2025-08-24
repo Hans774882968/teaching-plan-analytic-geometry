@@ -1,6 +1,19 @@
 import { Bar } from 'react-chartjs-2';
+import { longTextTrim } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 export default function TopLongestBlogsChart({ data }) {
+  const [displayBytes, setDisplayBytes] = useState(10);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDisplayBytes(window.innerWidth < 640 ? 10 : 20);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const chartData = {
     labels: data.map(item => item.title),
     datasets: [
@@ -57,7 +70,7 @@ export default function TopLongestBlogsChart({ data }) {
         ticks: {
           callback: function (value) {
             const label = this.getLabelForValue(value);
-            return label.length > 15 ? label.substring(0, 15) + '...' : label;
+            return longTextTrim(label, displayBytes);
           },
         },
       },

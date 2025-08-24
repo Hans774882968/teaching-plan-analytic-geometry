@@ -1,12 +1,25 @@
 import { Bar } from 'react-chartjs-2';
+import { longTextTrim } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 // 最多标签博客图表
 export default function TopTaggedBlogsChart({ data }) {
+  const [displayBytes, setDisplayBytes] = useState(10);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDisplayBytes(window.innerWidth < 640 ? 10 : 20);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const chartData = {
     labels: data.map(item => item.title),
     datasets: [
       {
-        label: '标签数量',
+        label: '标签数',
         data: data.map(item => item.count),
         backgroundColor: 'rgba(16, 185, 129, 0.8)',
         borderColor: 'rgba(16, 185, 129, 1)',
@@ -36,7 +49,7 @@ export default function TopTaggedBlogsChart({ data }) {
           title: (tooltipItems) => {
             return data[tooltipItems[0].dataIndex].title;
           },
-          label: (context) => `标签数量: ${context.parsed.y}`,
+          label: (context) => `标签数: ${context.parsed.y}`,
         },
       },
     },
@@ -48,7 +61,7 @@ export default function TopTaggedBlogsChart({ data }) {
         },
         title: {
           display: true,
-          text: '标签数量',
+          text: '标签数',
         },
       },
       x: {
@@ -58,7 +71,7 @@ export default function TopTaggedBlogsChart({ data }) {
         ticks: {
           callback: function (value) {
             const label = this.getLabelForValue(value);
-            return label.length > 15 ? label.substring(0, 15) + '...' : label;
+            return longTextTrim(label, displayBytes);
           },
         },
       },

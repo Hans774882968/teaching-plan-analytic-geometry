@@ -39,6 +39,8 @@ const lessonPlans = [
   { url: '/exponential/real-num-exp-powers', title: '实数指数幂及其运算', category: ['代数'], difficulty: '高中', lpName: 'chitanda' },
   { url: '/exponential/exp-function', title: '指数函数的性质与图像', category: ['代数'], difficulty: '高中', lpName: 'chitanda' },
   { url: '/logarithmic/log-operation', title: '对数运算', category: ['代数'], difficulty: '高中', lpName: 'menhera' },
+  { url: '/logarithmic/log-calculation', title: '对数运算法则', category: ['代数'], difficulty: '高中', lpName: 'menhera' },
+  { url: '/logarithmic/log-function', title: '对数函数', category: ['代数'], difficulty: '高中', lpName: 'menhera' },
   { url: '/function-definition/representation', title: '函数及其表示方法', category: ['代数'], difficulty: '高中', lpName: 'conan' },
   { url: '/function-definition/monotonicity', title: '函数的单调性', category: ['代数'], difficulty: '高中', lpName: 'conan' },
   { url: '/function-definition/even-odd', title: '函数的奇偶性', category: ['代数'], difficulty: '高中', lpName: 'conan' },

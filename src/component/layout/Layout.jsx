@@ -8,6 +8,7 @@ import {
 import { FaCircleDollarToSlot } from 'react-icons/fa6';
 import { useLocation } from 'react-router-dom';
 import { useHljsTheme } from '@/hooks/useHljsTheme';
+import BackToTopButton from '../BackToTopButton';
 
 export default function Layout({ children }) {
   const { pathname } = useLocation();
@@ -77,6 +78,7 @@ export default function Layout({ children }) {
       <Navbar />
       {children}
       {!isAtIndex && floatingElements}
+      <BackToTopButton />
     </div>
   );
 }

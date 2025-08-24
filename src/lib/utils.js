@@ -107,3 +107,33 @@ export function localDownloadFile({
     onSuccess(fileName);
   }, 100);
 }
+
+/**
+ * 按 UTF-8 字节长度裁剪长文本
+ * @param {string} text      原始文本
+ * @param {number} maxBytes  最大字节数（默认 10）
+ * @param {string} suffix    后缀符号（默认 …）
+ * @returns {string}
+ */
+export function longTextTrim(text, maxBytes = 10, suffix = '…') {
+  if (typeof text !== 'string') return String(text);
+
+  const encoder = new TextEncoder();
+  if (encoder.encode(text).length <= maxBytes) return text;
+
+  let left = 0;
+  let right = text.length;
+
+  // 二分法找最大可截断字符索引
+  while (left < right) {
+    const mid = (left + right + 1) >> 1;
+    if (encoder.encode(text.slice(0, mid)).length <= maxBytes) {
+      left = mid;
+    } else {
+      right = mid - 1;
+    }
+  }
+
+  // 如果截断后只剩空串，直接返回后缀
+  return left ? text.slice(0, left) + suffix : suffix;
+}

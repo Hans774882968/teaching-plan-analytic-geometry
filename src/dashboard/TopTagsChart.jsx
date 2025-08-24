@@ -1,6 +1,19 @@
+import { longTextTrim } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 export default function TopTagsChart({ data }) {
+  const [displayBytes, setDisplayBytes] = useState(10);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDisplayBytes(window.innerWidth < 640 ? 10 : 20);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const chartData = {
     labels: data.map(item => item.tag),
     datasets: [
@@ -50,6 +63,12 @@ export default function TopTagsChart({ data }) {
       x: {
         grid: {
           display: false,
+        },
+        ticks: {
+          callback: function (value) {
+            const label = this.getLabelForValue(value);
+            return longTextTrim(label, displayBytes);
+          },
         },
       },
     },

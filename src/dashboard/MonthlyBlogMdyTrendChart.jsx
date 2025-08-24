@@ -1,31 +1,46 @@
+import { useEffect, useMemo, useState } from 'react';
 import { Line } from 'react-chartjs-2';
+import {
+  calcGroupedData,
+  getDaysInMonth,
+  parseSelectedMonth,
+} from './blogTrendUtils';
+import dayjs from 'dayjs';
 
 export default function MonthlyBlogMdyTrendChart({ ctimeData, mtimeData, selectedMonth }) {
-  // 获取该月的天数
-  const [year, month] = selectedMonth.split('-').map(Number);
-  const daysInMonth = new Date(year, month, 0).getDate();
+  const [groupSize, setGroupSize] = useState(1);
 
-  // 生成该月所有天的标签
-  const labels = Array.from({ length: daysInMonth }, (_, i) => `${i + 1}日`);
+  useEffect(() => {
+    const handleResize = () => {
+      // 小于640px使用3天分组，大屏幕使用1天分组
+      setGroupSize(window.innerWidth < 640 ? 3 : 1);
+    };
 
-  // 初始化数据数组
-  const ctimeCounts = Array(daysInMonth).fill(0);
-  const mtimeCounts = Array(daysInMonth).fill(0);
+    // 初始设置
+    handleResize();
 
-  // 填充数据
-  ctimeData.forEach(({ day, count }) => {
-    ctimeCounts[day - 1] = count;
-  });
+    // 添加窗口大小变化监听
+    window.addEventListener('resize', handleResize);
 
-  mtimeData.forEach(({ day, count }) => {
-    mtimeCounts[day - 1] = count;
-  });
+    // 清理函数
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const [year, month] = parseSelectedMonth(selectedMonth);
+  const daysInMonth = useMemo(() => getDaysInMonth(year, month), [year, month]);
+
+  // 根据分组大小分组数据
+  const groupedData = useMemo(() => {
+    return calcGroupedData(ctimeData, mtimeData, daysInMonth, groupSize);
+  }, [ctimeData, mtimeData, daysInMonth, groupSize]);
+
+  const { labels, ctimeCounts, mtimeCounts } = groupedData;
 
   const chartData = {
     labels,
     datasets: [
       {
-        label: '创建时间',
+        label: '创建',
         data: ctimeCounts,
         borderColor: 'rgba(79, 70, 229, 1)',
         backgroundColor: 'rgba(79, 70, 229, 0.1)',
@@ -33,7 +48,7 @@ export default function MonthlyBlogMdyTrendChart({ ctimeData, mtimeData, selecte
         fill: true,
       },
       {
-        label: '修改时间',
+        label: '修改',
         data: mtimeCounts,
         borderColor: 'rgba(16, 185, 129, 1)',
         backgroundColor: 'rgba(16, 185, 129, 0.1)',
@@ -61,7 +76,8 @@ export default function MonthlyBlogMdyTrendChart({ ctimeData, mtimeData, selecte
       tooltip: {
         callbacks: {
           title: (tooltipItems) => {
-            return `${selectedMonth}-${tooltipItems[0].label}`;
+            const tooltipItemLabel = tooltipItems[0].label;
+            return tooltipItemLabel.includes('日') ? `${selectedMonth}: ${tooltipItemLabel}` : dayjs(selectedMonth).add(Number(tooltipItemLabel) - 1, 'day').format('YYYY-MM-DD');
           },
           label: (context) => `${context.dataset.label}: ${context.parsed.y}`,
         },
@@ -75,7 +91,7 @@ export default function MonthlyBlogMdyTrendChart({ ctimeData, mtimeData, selecte
         },
         title: {
           display: true,
-          text: '博客数量',
+          text: '博客数',
         },
       },
       x: {
