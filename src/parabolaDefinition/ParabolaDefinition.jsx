@@ -26,6 +26,11 @@ import { Link } from 'react-router-dom';
 
 import appletOnLoadCollection from '@/appletOnLoadCollection';
 
+import { TypeAnimation } from 'react-type-animation';
+import GraphemeSplitter from 'grapheme-splitter';
+
+const splitter = new GraphemeSplitter();
+
 function Inner() {
   const [showFeedbacks, setShowFeedbacks] = useState({});
 
@@ -49,7 +54,20 @@ ${appletOnLoadCollection[config.appletOnLoadId] || ''}
         <h1 className={styles.teachingPlanH1}>
           {config.title}
         </h1>
-        <p>与名侦探柯南一起探索抛物线的奥秘！</p>
+        <p>
+          <TypeAnimation
+            splitter={(str) => splitter.splitGraphemes(str)}
+            sequence={[
+              '与名侦探柯南一起探索抛物线的奥秘！',
+              1000,
+              '',
+              1000,
+            ]}
+            speed={50}
+            wrapper="span"
+            repeat={Infinity}
+          />
+        </p>
       </Header>
 
       <Section>

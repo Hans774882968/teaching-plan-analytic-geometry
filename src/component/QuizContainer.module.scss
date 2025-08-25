@@ -42,13 +42,14 @@
 }
 
 .option:hover {
-  background-color: var(--tpm-primary);
+  background-color: var(--tpm-btn-primary-hover-bg);
   color: white;
   transform: translateY(-3px);
 }
 
 .option.selected {
-  background-color: #FFD166;
+  background-color: var(--tpm-btn-primary-bg);
+  color: white;
 }
 
 .feedback {
@@ -61,13 +62,13 @@
 }
 
 .feedback.correct {
-  background: rgba(106, 176, 76, 0.3);
-  color: #2b580c;
+  background: var(--quiz-correct-feedback-bg);
+  color: var(--quiz-correct-feedback-color);
 }
 
 .feedback.incorrect {
-  background: rgba(255, 107, 107, 0.3);
-  color: #7a0c2e;
+  background: var(--quiz-incorrect-feedback-bg);
+  color: var(--quiz-incorrect-feedback-color);
 }
 
 .explanationArea {

@@ -35,6 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/component/ui/select';
+import { TypeAnimation } from 'react-type-animation';
 
 const displayableBlogs = blogList.map((blogTitle) => ({
   ...blogMap[blogTitle],
@@ -118,7 +119,19 @@ export default function BlogList() {
     <div className={basicStyles.container}>
       <Header>
         <h1 className={basicStyles.teachingPlanH1}>📚 博客列表 🔍</h1>
-        <p>这里汇聚了各类足够硬核的数学博客~</p>
+        <p>
+          <TypeAnimation
+            sequence={[
+              '这里汇聚了各类足够硬核的数学博客~',
+              1500,
+              '',
+              1500,
+            ]}
+            speed={50}
+            wrapper="span"
+            repeat={Infinity}
+          />
+        </p>
       </Header>
 
       {/* 取消 hover scale 规避博客标题的公式出现在下拉框之上的问题 */}

@@ -24,6 +24,27 @@ import SettingsDialog from './SettingsDialog';
 import { useState } from 'react';
 import { FaBookOpenReader, FaRegPenToSquare } from 'react-icons/fa6';
 
+const blogDropdown = {
+  key: 'blog',
+  children: (
+    <>
+      <FaBook />
+      <span>博客</span>
+    </>
+  ),
+  urls: [
+    {
+      label: (
+        <>
+          <FaBookOpenReader />
+          博客列表
+        </>
+      ),
+      url: '/blogs',
+    },
+  ],
+};
+
 const promptDisplayDropdown = {
   key: 'promptDisplay',
   children: (
@@ -62,30 +83,15 @@ const promptDisplayDropdown = {
         <>
           <FaReact />
           生成jsx
+          <span className={cn(
+            'px-1.5 py-0.5 rounded-md text-xs font-semibold transition-colors duration-300',
+            'bg-red-400 text-white'
+          )}>
+            废弃
+          </span>
         </>
       ),
       url: '/prompt-display-jsx',
-    },
-  ],
-};
-
-const blogDropdown = {
-  key: 'blog',
-  children: (
-    <>
-      <FaBook />
-      <span>博客</span>
-    </>
-  ),
-  urls: [
-    {
-      label: (
-        <>
-          <FaBookOpenReader />
-          博客列表
-        </>
-      ),
-      url: '/blogs',
     },
   ],
 };
@@ -195,8 +201,8 @@ const aboutThisProjectDropdown = {
 };
 
 const navigationItems = [
-  promptDisplayDropdown,
   blogDropdown,
+  promptDisplayDropdown,
   dashboardDropdown,
   aboutThisProjectDropdown,
   aboutUsDropdown,
@@ -220,7 +226,7 @@ export default function Navbar() {
       styles.navbar,
       // 让 z-index 比 shadcn-ui dialog 小
       // md 以下都展示 hamburger ，所以文字反而可以大一点
-      'sticky top-0 z-49 text-white text-2xl md:text-base lg:text-2xl py-4 px-6 shadow-[0_4px_12px_0px_rgba(0,0,0,0.3)]'
+      'sticky top-0 z-49 text-white text-2xl md:text-base lg:text-xl xl:text-2xl py-4 px-6 shadow-[0_4px_12px_0px_rgba(0,0,0,0.3)]'
     )}>
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-2 lg:space-x-3">
@@ -235,11 +241,11 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center lg:space-x-3">
             {/* 默认字体比站酷快乐体大，默认宽度 200px 不够 */}
-            <NavDropdown items={promptDisplayDropdown.urls} navDropdownClasses="min-w-54">
-              {promptDisplayDropdown.children}
-            </NavDropdown>
             <NavDropdown items={blogDropdown.urls} navDropdownClasses="min-w-36">
               {blogDropdown.children}
+            </NavDropdown>
+            <NavDropdown items={promptDisplayDropdown.urls} navDropdownClasses="min-w-54">
+              {promptDisplayDropdown.children}
             </NavDropdown>
             <NavDropdown items={dashboardDropdown.urls} navDropdownClasses="min-w-36">
               {dashboardDropdown.children}
@@ -268,7 +274,7 @@ export default function Navbar() {
 
         {isMenuOpen && (
           <motion.div
-            className="flex md:hidden absolute top-full flex-col bg-[#67cbeb] shadow-lg py-4 gap-4 rounded-lg overflow-hidden min-w-50 border-2 border-white/20"
+            className="flex md:hidden absolute top-full flex-col bg-[#67cbeb] shadow-lg py-4 gap-4 rounded-lg overflow-y-auto min-w-54 max-h-(--navbar-menu-mxh) border-2 border-white/20"
             initial={{ left: '-100%' }}
             animate={{ left: isMenuOpen ? 0 : '-100%' }}
             transition={{ duration: 0.2 }}

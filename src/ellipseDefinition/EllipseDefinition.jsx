@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
 import { config } from './config';
 import Geogebra from '@/component/Geogebra';
 import styles from '@/component/teachingPlan/basic.module.scss';
@@ -18,6 +17,10 @@ import LearningPartnerCard from '../component/teachingPlan/LearningPartnerCard';
 import Think from '@/component/teachingPlan/Think';
 import Footer from '@/component/teachingPlan/Footer';
 import appletOnLoadCollection from '@/appletOnLoadCollection';
+import { TypeAnimation } from 'react-type-animation';
+import GraphemeSplitter from 'grapheme-splitter';
+
+const splitter = new GraphemeSplitter();
 
 const Inner = () => {
   const [showFeedbacks, setShowFeedbacks] = useState({});
@@ -40,7 +43,20 @@ ${appletOnLoadCollection[config.geogebraObject.appletOnLoadId] || ''}
     <div className={styles.container}>
       <Header>
         <h1 className={styles.teachingPlanH1}>🔭 {config.title} 🔍</h1>
-        <p>与名侦探柯南一起揭开椭圆的神秘面纱！</p>
+        <p>
+          <TypeAnimation
+            splitter={(str) => splitter.splitGraphemes(str)}
+            sequence={[
+              '与名侦探柯南一起揭开椭圆的神秘面纱！',
+              1000,
+              '',
+              1000,
+            ]}
+            speed={50}
+            wrapper="span"
+            repeat={Infinity}
+          />
+        </p>
       </Header>
 
       <Section>
@@ -64,7 +80,7 @@ ${appletOnLoadCollection[config.geogebraObject.appletOnLoadId] || ''}
         <KnowledgePoint>
           <h3 className={styles.teachingPlanH3}>📐 {config.equation.title}</h3>
           <p>{config.equation.contentX}</p>
-          <div className={styles.highlight}>{config.equation.formulaX}</div>
+          <div>{config.equation.formulaX}</div>
           <p>其中：</p>
           <ul>
             {
@@ -74,7 +90,7 @@ ${appletOnLoadCollection[config.geogebraObject.appletOnLoadId] || ''}
             }
           </ul>
           <p>{config.equation.contentY}</p>
-          <div className={styles.highlight}>{config.equation.formulaY}</div>
+          <div>{config.equation.formulaY}</div>
           <Think
             think={config.equation.thinkWhenAEqB}
             answer={config.equation.answerWhenAEqB}

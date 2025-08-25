@@ -50,7 +50,7 @@ export default function BlogDetail() {
               </BreadcrumbItem>
 
               <BreadcrumbSeparator />
-              
+
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link to="/blogs">博客列表</Link>
@@ -108,7 +108,7 @@ export default function BlogDetail() {
         </div>
 
         <div className="border-t border-gray-200 pt-6">
-          <MarkdownRenderer content={blog.content} />
+          <MarkdownRenderer className="overflow-x-auto" content={blog.content} />
         </div>
       </Card>
 

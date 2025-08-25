@@ -32,6 +32,7 @@ import { useLessonFilterStore } from './states/lessonFilterState';
 import { getFilteredLessons } from './utils';
 import { Input } from '@/component/ui/input';
 import { Button } from '@/component/ui/button';
+import { TypeAnimation } from 'react-type-animation';
 
 // 在首页用 Helmet 改标题无效，决定改 index.html 的标题
 const lessonPlans = [
@@ -41,6 +42,7 @@ const lessonPlans = [
   { url: '/logarithmic/log-operation', title: '对数运算', category: ['代数'], difficulty: '高中', lpName: 'menhera' },
   { url: '/logarithmic/log-calculation', title: '对数运算法则', category: ['代数'], difficulty: '高中', lpName: 'menhera' },
   { url: '/logarithmic/log-function', title: '对数函数', category: ['代数'], difficulty: '高中', lpName: 'menhera' },
+  { url: '/logarithmic/inv-function', title: '指数函数与对数函数的关系', category: ['代数'], difficulty: '高中', lpName: 'menhera' },
   { url: '/function-definition/representation', title: '函数及其表示方法', category: ['代数'], difficulty: '高中', lpName: 'conan' },
   { url: '/function-definition/monotonicity', title: '函数的单调性', category: ['代数'], difficulty: '高中', lpName: 'conan' },
   { url: '/function-definition/even-odd', title: '函数的奇偶性', category: ['代数'], difficulty: '高中', lpName: 'conan' },
@@ -267,7 +269,17 @@ export default function TeachingPlanList() {
           数学<span className="text-blue-600">教案</span>库
         </h1>
         <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-          探索数学世界的教学资源，精选教案助力高效教学
+          <TypeAnimation
+            sequence={[
+              'LLM高效生成教学资源方案探索，为教师高效教学赋能',
+              1500,
+              'LLM高效生成教学资源方案探索，为学生高效探索赋能',
+              1500,
+            ]}
+            speed={50}
+            wrapper="span"
+            repeat={Infinity}
+          />
         </p>
       </motion.header>
 

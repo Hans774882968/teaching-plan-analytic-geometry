@@ -15,6 +15,10 @@ import Footer from '@/component/teachingPlan/Footer';
 import { Link } from 'react-router-dom';
 import appletOnLoadCollection from '@/appletOnLoadCollection';
 import LearningPartnerImg from './LearningPartnerImg';
+import { TypeAnimation } from 'react-type-animation';
+import GraphemeSplitter from 'grapheme-splitter';
+
+const splitter = new GraphemeSplitter();
 
 function wrapStringAsParagraph(node) {
   if (typeof node === 'string') {
@@ -24,6 +28,8 @@ function wrapStringAsParagraph(node) {
 }
 
 function Inner({ config }) {
+  const headerContent = config.header.content;
+
   const [showFeedbacks, setShowFeedbacks] = useState({});
 
   const appletOnLoadCodeBlockList = useMemo(() => {
@@ -50,7 +56,26 @@ ${appletOnLoadSrcCode}
     <div className={styles.container}>
       <Header>
         <h1 className={styles.teachingPlanH1}>{config.title}</h1>
-        {wrapStringAsParagraph(config.header.content)}
+        {
+          typeof headerContent === 'string' ? (
+            <p>
+              <TypeAnimation
+                splitter={(str) => splitter.splitGraphemes(str)}
+                sequence={[
+                  headerContent,
+                  1000,
+                  '',
+                  1000,
+                ]}
+                speed={50}
+                wrapper="span"
+                repeat={Infinity}
+              />
+            </p>
+          ) : (
+            headerContent
+          )
+        }
       </Header>
 
       <Section>

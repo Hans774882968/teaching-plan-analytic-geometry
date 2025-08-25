@@ -12,17 +12,23 @@ import {
   Filler,
 } from 'chart.js';
 import MonthlyBlogMdyTrendChart from './MonthlyBlogMdyTrendChart';
-import AnimatedNumber from '@/component/AnimatedNumber';
 import TopTagsChart from './TopTagsChart';
 import TopTaggedBlogsChart from './TopTaggedBlogsChart';
 import TopLongestBlogsChart from './TopLongestBlogsChart';
+import TopLongestTitleBlogsChart from './TopLongestTitleBlogsChart';
+import IndicatorCard from './IndicatorCard';
+import ChartCard from './ChartCard';
 import {
   calculateMonthlyBlogMdy,
   getAvailableMonths,
   topAppearanceTags,
   topLongestBlogs,
+  topLongestTitleBlogs,
   topTaggedBlogs,
+  totalBlogs,
+  totalTagReferences,
   totalTags,
+  totalTitleWords,
   totalWords,
 } from './dataCollect';
 import {
@@ -32,6 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/component/ui/select';
+import { FaBlog, FaBook, FaBookOpen, FaTags } from 'react-icons/fa';
 
 ChartJS.register(
   CategoryScale,
@@ -53,42 +60,40 @@ export default function Dashboard() {
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* 顶部指标卡片 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-        <div className="bg-gradient-to-br from-sky-100 to-sky-50 rounded-xl shadow-md p-6 flex flex-col items-center justify-center">
-          <div className="text-5xl font-bold text-[var(--tpm-primary)] mb-2">
-            <AnimatedNumber value={totalTags} />
-          </div>
-          <div className="text-gray-600 text-lg">标签总数</div>
-        </div>
-
-        <div className="bg-gradient-to-br from-sky-100 to-sky-50 rounded-xl shadow-md p-6 flex flex-col items-center justify-center">
-          <div className="text-5xl font-bold text-[var(--tpm-primary)] mb-2">
-            <AnimatedNumber value={totalWords} />
-          </div>
-          <div className="text-gray-600 text-lg">博客总字数</div>
-        </div>
+        <IndicatorCard txt={<><FaTags />标签总数</>} val={totalTags} />
+        <IndicatorCard txt={<><FaTags />标签总引用数</>} val={totalTagReferences} />
+        <IndicatorCard txt={<><FaBlog />博客总数</>} val={totalBlogs} />
+        <IndicatorCard txt={<><FaBookOpen />博客总字数</>} val={totalWords} />
+        <IndicatorCard txt={<><FaBook />博客标题总字数</>} val={totalTitleWords} />
       </div>
 
       {/* 图表区域 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
-        <div className="bg-gradient-to-br from-sky-100 to-sky-50 rounded-xl shadow-md p-6">
+        <ChartCard>
           <div className="h-80">
             <TopTagsChart data={topAppearanceTags} />
           </div>
-        </div>
+        </ChartCard>
 
-        <div className="bg-gradient-to-br from-sky-100 to-sky-50 rounded-xl shadow-md p-6">
+        <ChartCard>
           <div className="h-80">
             <TopTaggedBlogsChart data={topTaggedBlogs} />
           </div>
-        </div>
+        </ChartCard>
 
-        <div className="bg-gradient-to-br from-sky-100 to-sky-50 rounded-xl shadow-md p-6">
+        <ChartCard>
+          <div className="h-80">
+            <TopLongestTitleBlogsChart data={topLongestTitleBlogs} />
+          </div>
+        </ChartCard>
+
+        <ChartCard>
           <div className="h-80">
             <TopLongestBlogsChart data={topLongestBlogs} />
           </div>
-        </div>
+        </ChartCard>
 
-        <div className="bg-gradient-to-br from-sky-100 to-sky-50 rounded-xl shadow-md p-6">
+        <ChartCard>
           <div className="flex flex-col gap-4 mb-4 sm:flex-row sm:justify-between sm:items-center">
             <h2 className="text-xl font-bold text-[var(--tpm-primary)] sm:w-1/2">月度博客趋势</h2>
             <Select
@@ -119,7 +124,7 @@ export default function Dashboard() {
               selectedMonth={selectedMonth}
             />
           </div>
-        </div>
+        </ChartCard>
       </div>
     </div>
   );

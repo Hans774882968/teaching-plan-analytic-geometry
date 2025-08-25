@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>指数大冒险 - 高中数学闯关游戏</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+QingKe+HuangYou&display=swap');
+
+    body {
+      font-family: 'ZCOOL QingKe HuangYou', cursive;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .game-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .game-title {
+      font-family: 'Ma Shan Zheng', cursive;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .level-card {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .level-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(38, 117, 252, 0.4);
+    }
+
+    .progress-bar {
+      overflow: hidden;
+      background-color: #e5e7eb;
+      border-radius: 9999px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 9999px;
+      background: linear-gradient(to right, #10b981, #3b82f6);
+      transition: width 0.5s ease;
+    }
+
+    .celebration {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0);
+      }
+
+      50% {
+        transform: translateY(-20px) rotate(10deg);
+      }
+
+      100% {
+        transform: translateY(0) rotate(0);
+      }
+    }
+
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+
+<body class="py-8 px-4">
+  <div
+    id="root"
+    class="max-w-4xl mx-auto"
+  ></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // 游戏数据
+    const gameData = {
+      levels: [
+        {
+          id: 1,
+          title: "指数入门",
+          description: "学习指数的基本概念和性质",
+          questions: [
+            {
+              type: "multipleChoice",
+              question: "2³ × 2⁴ 等于多少？",
+              options: ["2⁷", "2¹²", "4⁷", "4¹²"],
+              answer: 0,
+              explanation: "根据指数乘法法则：aᵐ × aⁿ = aᵐ⁺ⁿ，所以2³ × 2⁴ = 2⁷"
+            },
+            {
+              type: "multipleChoice",
+              question: "(3²)⁴ 等于多少？",
+              options: ["3⁶", "3⁸", "9⁶", "9⁸"],
+              answer: 1,
+              explanation: "根据指数的乘方法则：(aᵐ)ⁿ = aᵐⁿ，所以(3²)⁴ = 3⁸"
+            },
+            {
+              type: "input",
+              question: "化简表达式：5⁰ + 7¹ - 4⁻¹ × 4",
+              answer: "2",
+              explanation: "任何数的0次方等于1，所以5⁰=1；7¹=7；4⁻¹ × 4 = 4⁻¹⁺¹ = 4⁰ = 1。因此1+7-1=7"
+            }
+          ]
+        },
+        {
+          id: 2,
+          title: "指数运算",
+          description: "掌握指数的运算法则",
+          questions: [
+            {
+              type: "multipleChoice",
+              question: "2⁻³ 等于多少？",
+              options: ["-8", "-6", "1/8", "1/6"],
+              answer: 2,
+              explanation: "负指数法则：a⁻ⁿ = 1/aⁿ，所以2⁻³ = 1/2³ = 1/8"
+            },
+            {
+              type: "input",
+              question: "计算：(2³ × 3²) ÷ (2² × 3)",
+              answer: "18",
+              explanation: "(2³ × 3²) ÷ (2² × 3) = 2³⁻² × 3²⁻¹ = 2¹ × 3¹ = 2 × 3 = 6"
+            },
+            {
+              type: "multipleChoice",
+              question: "下列哪项等于 aᵐ ÷ aⁿ？",
+              options: ["aᵐ⁻ⁿ", "aᵐ⁺ⁿ", "aᵐⁿ", "aⁿ⁻ᵐ"],
+              answer: 0,
+              explanation: "根据指数除法法则：aᵐ ÷ aⁿ = aᵐ⁻ⁿ"
+            }
+          ]
+        },
+        {
+          id: 3,
+          title: "指数函数",
+          description: "理解指数函数的性质和图像",
+          questions: [
+            {
+              type: "multipleChoice",
+              question: "指数函数 y = 2ˣ 的图像经过以下哪一点？",
+              options: ["(0, 0)", "(1, 0)", "(0, 1)", "(1, 2)"],
+              answer: 2,
+              explanation: "当x=0时，y=2⁰=1，所以经过点(0, 1)"
+            },
+            {
+              type: "multipleChoice",
+              question: "函数 y = (1/2)ˣ 的单调性如何？",
+              options: ["单调递增", "单调递减", "先增后减", "先减后增"],
+              answer: 1,
+              explanation: "因为底数a=1/2，0<a<1，所以函数单调递减"
+            },
+            {
+              type: "input",
+              question: "解方程：2ˣ = 8",
+              answer: "3",
+              explanation: "因为2³=8，所以x=3"
+            }
+          ]
+        },
+        {
+          id: 4,
+          title: "综合应用",
+          description: "应用指数知识解决实际问题",
+          questions: [
+            {
+              type: "multipleChoice",
+              question: "细菌数量每20分钟翻倍，最初有100个细菌，2小时后有多少个？",
+              options: ["6400", "3200", "1600", "800"],
+              answer: 0,
+              explanation: "2小时=120分钟，共分裂6次。细菌数量=100×2⁶=100×64=6400"
+            },
+            {
+              type: "input",
+              question: "某放射性物质半衰期为10年，现有80克，30年后还剩多少克？",
+              answer: "10",
+              explanation: "30年经过3个半衰期，剩余量=80×(1/2)³=80×1/8=10克"
+            },
+            {
+              type: "multipleChoice",
+              question: "下列哪个是指数函数？",
+              options: ["y = x²", "y = 2ˣ", "y = x⁻²", "y = √x"],
+              answer: 1,
+              explanation: "指数函数的自变量在指数位置，所以y=2ˣ是指数函数"
+            }
+          ]
+        }
+      ]
+    };
+
+    // 游戏主组件
+    function MathAdventureGame() {
+      const [currentScreen, setCurrentScreen] = useState('welcome');
+      const [currentLevel, setCurrentLevel] = useState(0);
+      const [currentQuestion, setCurrentQuestion] = useState(0);
+      const [score, setScore] = useState(0);
+      const [userAnswer, setUserAnswer] = useState('');
+      const [isCorrect, setIsCorrect] = useState(null);
+      const [showExplanation, setShowExplanation] = useState(false);
+      const [unlockedLevels, setUnlockedLevels] = useState([true, false, false, false]);
+      const [achievements, setAchievements] = useState([
+        { id: 1, name: "入门学者", earned: false },
+        { id: 2, name: "运算大师", earned: false },
+        { id: 3, name: "函数专家", earned: false },
+        { id: 4, name: "指数王者", earned: false }
+      ]);
+
+      // 检查成就
+      useEffect(() => {
+        const newAchievements = [...achievements];
+        if (score >= 5 && !newAchievements[0].earned) {
+          newAchievements[0].earned = true;
+          setAchievements(newAchievements);
+        }
+        if (score >= 10 && !newAchievements[1].earned) {
+          newAchievements[1].earned = true;
+          setAchievements(newAchievements);
+        }
+        if (score >= 15 && !newAchievements[2].earned) {
+          newAchievements[2].earned = true;
+          setAchievements(newAchievements);
+        }
+        if (score >= 20 && !newAchievements[3].earned) {
+          newAchievements[3].earned = true;
+          setAchievements(newAchievements);
+        }
+      }, [score]);
+
+      // 处理开始游戏
+      const handleStartGame = () => {
+        setCurrentScreen('levelSelect');
+      };
+
+      // 处理选择关卡
+      const handleSelectLevel = (levelIndex) => {
+        if (unlockedLevels[levelIndex]) {
+          setCurrentLevel(levelIndex);
+          setCurrentQuestion(0);
+          setCurrentScreen('game');
+          setUserAnswer('');
+          setIsCorrect(null);
+          setShowExplanation(false);
+        }
+      };
+
+      // 处理提交答案
+      const handleSubmitAnswer = () => {
+        const currentQ = gameData.levels[currentLevel].questions[currentQuestion];
+        let correct = false;
+
+        if (currentQ.type === 'multipleChoice') {
+          correct = parseInt(userAnswer) === currentQ.answer;
+        } else if (currentQ.type === 'input') {
+          correct = userAnswer.trim() === currentQ.answer.toString();
+        }
+
+        setIsCorrect(correct);
+        if (correct) {
+          setScore(score + 1);
+        }
+        setShowExplanation(true);
+      };
+
+      // 处理下一题
+      const handleNextQuestion = () => {
+        if (currentQuestion < gameData.levels[currentLevel].questions.length - 1) {
+          setCurrentQuestion(currentQuestion + 1);
+          setUserAnswer('');
+          setIsCorrect(null);
+          setShowExplanation(false);
+        } else {
+          // 解锁下一关
+          const newUnlockedLevels = [...unlockedLevels];
+          if (currentLevel < gameData.levels.length - 1) {
+            newUnlockedLevels[currentLevel + 1] = true;
+            setUnlockedLevels(newUnlockedLevels);
+          }
+          setCurrentScreen('levelComplete');
+        }
+      };
+
+      // 处理返回关卡选择
+      const handleBackToLevelSelect = () => {
+        setCurrentScreen('levelSelect');
+      };
+
+      // 渲染欢迎界面
+      const renderWelcomeScreen = () => (
+        <div className="text-center">
+          <h1 className="text-5xl font-bold text-blue-800 game-title mb-6">指数大冒险</h1>
+          <p className="text-xl text-gray-700 mb-8">闯关式学习指数运算与指数函数</p>
+          <div className="float-animation mb-10">
+            <div className="inline-block p-6 bg-yellow-400 rounded-full shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+            </div>
+          </div>
+          <button
+            onClick={handleStartGame}
+            className="btn-primary text-white text-xl font-bold py-4 px-10 rounded-full shadow-lg"
+          >
+            开始冒险
+          </button>
+        </div>
+      );
+
+      // 渲染关卡选择界面
+      const renderLevelSelectScreen = () => (
+        <div>
+          <h2 className="text-3xl font-bold text-center text-blue-800 game-title mb-8">选择关卡</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {gameData.levels.map((level, index) => (
+              <div
+                key={level.id}
+                className={`level-card p-6 rounded-2xl border-2 ${unlockedLevels[index] ? 'bg-white border-blue-500 cursor-pointer' : 'bg-gray-200 border-gray-400'}`}
+                onClick={() => handleSelectLevel(index)}
+              >
+                <div className="flex items-center mb-4">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center ${unlockedLevels[index] ? 'bg-blue-500 text-white' : 'bg-gray-400 text-gray-200'}`}>
+                    <span className="text-xl font-bold">{level.id}</span>
+                  </div>
+                  <h3 className="text-xl font-bold ml-4">{level.title}</h3>
+                </div>
+                <p className="text-gray-600 mb-4">{level.description}</p>
+                {!unlockedLevels[index] && (
+                  <div className="text-center py-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline-block text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    <span className="ml-2 text-gray-500">尚未解锁</span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 bg-white p-6 rounded-2xl shadow-md">
+            <h3 className="text-xl font-bold text-blue-700 mb-4">你的成就</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {achievements.map(ach => (
+                <div key={ach.id} className={`p-4 rounded-lg text-center ${ach.earned ? 'bg-yellow-100 border-2 border-yellow-400' : 'bg-gray-100 border-2 border-gray-300'}`}>
+                  <div className={`text-2xl mb-2 ${ach.earned ? 'text-yellow-500' : 'text-gray-400'}`}>
+                    {ach.earned ? '★' : '☆'}
+                  </div>
+                  <div className="font-medium">{ach.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+
+      // 渲染游戏界面
+      const renderGameScreen = () => {
+        const level = gameData.levels[currentLevel];
+        const question = level.questions[currentQuestion];
+        const progress = ((currentQuestion + 1) / level.questions.length) * 100;
+
+        return (
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-blue-800">{level.title}</h2>
+              <div className="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+                <span className="text-lg font-bold">积分: {score}</span>
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <div className="flex justify-between text-sm text-gray-600 mb-1">
+                <span>进度</span>
+                <span>{currentQuestion + 1} / {level.questions.length}</span>
+              </div>
+              <div className="progress-bar h-3 rounded-full">
+                <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl shadow-md mb-6">
+              <h3 className="text-xl font-bold mb-4">问题 {currentQuestion + 1}</h3>
+              <p className="text-lg mb-6">{question.question}</p>
+
+              {question.type === 'multipleChoice' && (
+                <div className="space-y-3">
+                  {question.options.map((option, index) => (
+                    <div
+                      key={index}
+                      className={`p-4 rounded-lg border-2 cursor-pointer ${userAnswer === index.toString() ? 'border-blue-500 bg-blue-50' : 'border-gray-300'}`}
+                      onClick={() => !showExplanation && setUserAnswer(index.toString())}
+                    >
+                      {option}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {question.type === 'input' && (
+                <div className="flex items-center">
+                  <span className="text-lg mr-3">答案:</span>
+                  <input
+                    type="text"
+                    value={userAnswer}
+                    onChange={(e) => !showExplanation && setUserAnswer(e.target.value)}
+                    className="flex-grow p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                    disabled={showExplanation}
+                  />
+                </div>
+              )}
+
+              {showExplanation && (
+                <div className={`mt-6 p-4 rounded-lg ${isCorrect ? 'bg-green-100 border-2 border-green-300' : 'bg-red-100 border-2 border-red-300'}`}>
+                  <div className="font-bold mb-2">{isCorrect ? '正确! ✓' : '不正确! ✗'}</div>
+                  <div>{question.explanation}</div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-between">
+              <button
+                onClick={handleBackToLevelSelect}
+                className="px-6 py-3 bg-gray-300 text-gray-800 font-medium rounded-lg hover:bg-gray-400"
+              >
+                返回
+              </button>
+
+              {!showExplanation ? (
+                <button
+                  onClick={handleSubmitAnswer}
+                  disabled={userAnswer === ''}
+                  className={`px-6 py-3 font-medium rounded-lg ${userAnswer === '' ? 'bg-gray-400 text-gray-200' : 'btn-primary text-white'}`}
+                >
+                  提交答案
+                </button>
+              ) : (
+                <button
+                  onClick={handleNextQuestion}
+                  className="px-6 py-3 btn-primary text-white font-medium rounded-lg"
+                >
+                  {currentQuestion < level.questions.length - 1 ? '下一题' : '完成关卡'}
+                </button>
+              )}
+            </div>
+          </div>
+        );
+      };
+
+      // 渲染关卡完成界面
+      const renderLevelCompleteScreen = () => {
+        const level = gameData.levels[currentLevel];
+        const nextLevel = currentLevel < gameData.levels.length - 1 ? currentLevel + 1 : null;
+
+        return (
+          <div className="text-center">
+            <div className="inline-block p-5 bg-green-100 rounded-full mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+
+            <h2 className="text-3xl font-bold text-green-700 mb-4">恭喜！</h2>
+            <p className="text-xl mb-6">你已完成 {level.title} 关卡</p>
+
+            <div className="bg-white p-6 rounded-2xl shadow-md inline-block mb-8">
+              <h3 className="text-lg font-bold mb-2">获得奖励</h3>
+              <div className="flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-yellow-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="text-2xl font-bold">+5 积分</span>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {nextLevel ? (
+                <button
+                  onClick={() => handleSelectLevel(nextLevel)}
+                  className="block w-full py-4 btn-primary text-white text-xl font-bold rounded-2xl shadow-lg"
+                >
+                  进入下一关
+                </button>
+              ) : (
+                <div className="p-4 bg-yellow-100 rounded-2xl border-2 border-yellow-300">
+                  <p className="text-lg font-bold">恭喜你通关了所有关卡！</p>
+                </div>
+              )}
+
+              <button
+                onClick={handleBackToLevelSelect}
+                className="block w-full py-3 bg-gray-200 text-gray-800 text-lg font-medium rounded-2xl"
+              >
+                返回关卡选择
+              </button>
+            </div>
+          </div>
+        );
+      };
+
+      // 根据当前屏幕状态渲染不同内容
+      return (
+        <div className="game-container p-8">
+          {currentScreen === 'welcome' && renderWelcomeScreen()}
+          {currentScreen === 'levelSelect' && renderLevelSelectScreen()}
+          {currentScreen === 'game' && renderGameScreen()}
+          {currentScreen === 'levelComplete' && renderLevelCompleteScreen()}
+        </div>
+      );
+    }
+
+    // 渲染根组件
+    ReactDOM.render(<MathAdventureGame />, document.getElementById('root'));
+
+    // 初始化图标
+    feather.replace();
+  </script>
+</body>
+
+</html>

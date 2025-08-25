@@ -18,13 +18,28 @@ export type GeoGebraItem = {
   conclusion: string; // markdown str
 };
 
-// 一道单选题或多选题，选项从 0 开始编号
-export type QuizItem = {
+export type QuestionType = 'choice' | 'fill';
+
+export type QuizItemCommon = {
+  type?: QuestionType; // 题目类型，不提供则为选择题
   question: React.ReactNode; // 注意：虽然支持 ReactNode ，但你生成时请务必提供用 String.raw 和反引号包裹的多行 markdown 字符串
-  options: React.ReactNode[]; // 注意：虽然支持 ReactNode ，但你生成时请务必提供用 String.raw 和反引号包裹的多行 markdown 字符串
-  correct: number | number[]; // 正确选项的编号，单选题为 number，多选题为 number[]
   explanation: React.ReactNode; // 注意：虽然支持 ReactNode ，但你生成时请务必提供用 String.raw 和反引号包裹的多行 markdown 字符串
-};
+}
+
+// 选择题
+export type QuizItemChoice = QuizItemCommon & {
+  type?: 'choice';
+  options: React.ReactNode[]; // 注意：虽然支持 ReactNode ，但你生成时请务必提供用 String.raw 和反引号包裹的多行 markdown 字符串
+  correct: number | number[]; // 从 0 开始编号，单选题为 number，多选题为 number[]
+}
+
+// 填空题
+export type QuizItemFill = QuizItemCommon & {
+  type: 'fill';
+  correct: string;
+}
+
+export type QuizItem = QuizItemChoice | QuizItemFill;
 
 export type LinkItem = {
   url: string;

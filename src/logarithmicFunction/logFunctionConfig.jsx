@@ -140,6 +140,18 @@ $$
         correct: 1,
         explanation: String.raw`因为 $ \log_a 1 = 0 $ 对任意底数 $ a $ 都成立，所以函数一定经过定点 $ (1, 0) $ 呢`,
       },
+      {
+        type: 'fill',
+        question: String.raw`求值： $ lg20 + log_{100} 25 $`,
+        correct: '2',
+        explanation: String.raw`$ lg20 + log_{100} 25 = lg20 + log_{100} (5^2) = lg20 + 2 * \frac{lg5}{2} = lg(20*5) = 2 $`,
+      },
+      {
+        type: 'fill',
+        question: String.raw`求值： $ log_{32} 16 $`,
+        correct: '0.8',
+        explanation: String.raw`$ log_{32} 16 = log_{2^5} 2^4 = \frac{4}{5} = 0.8 $`,
+      },
     ],
     link: {
       url: '/logarithmic/log-function-hard-questions',

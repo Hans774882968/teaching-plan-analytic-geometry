@@ -23,7 +23,8 @@ class GeoGebraItem {
 }
 
 class QuizItem {
-  constructor(question, options, correct, explanation) {
+  constructor(question, options, correct, explanation, type = 'choice') {
+    this.type = type;
     this.question = question;
     this.options = options;
     this.correct = correct;
@@ -60,7 +61,7 @@ class GeoGebraSection {
 class QuizSection {
   constructor(description, quiz = [], link) {
     this.description = description;
-    this.quiz = quiz.map(q => new QuizItem(q.question, q.options, q.correct, q.explanation));
+    this.quiz = quiz.map(q => new QuizItem(q.question, q.options, q.correct, q.explanation, q.type || 'choice'));
     this.link = new LinkItem(link.url);
   }
 }

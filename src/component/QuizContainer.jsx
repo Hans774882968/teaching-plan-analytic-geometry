@@ -5,27 +5,10 @@ import { HOVER_SCALE } from '@/common/consts';
 import Think from '@/component/teachingPlan/Think';
 import { cn } from '@/lib/utils';
 import MarkdownRenderer from './MarkdownRenderer';
+import { Input } from '@/component/ui/input';
+import { isAnswerCorrect } from '@/lib/quizUtils';
 
-function isCorrect(selectedIndex, quiz) {
-  if (typeof quiz.correct === 'number') {
-    return selectedIndex === quiz.correct;
-  }
-  if (Array.isArray(quiz.correct)) {
-    return quiz.correct.includes(selectedIndex);
-  }
-  return false;
-}
-
-export default function QuizContainer({ index, quiz, showFeedbacks }) {
-  const [selectedOptions, setSelectedOptions] = useState({});
-
-  const handleOptionSelect = (questionIndex, optionIndex) => {
-    setSelectedOptions(prev => ({
-      ...prev,
-      [questionIndex]: optionIndex,
-    }));
-  };
-
+function QuizContainerCommon({ children, index, isCorrect, quiz, showFeedbacks }) {
   return (
     <motion.div
       className={styles.quizContainer}
@@ -42,31 +25,28 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
           <MarkdownRenderer content={quiz.question} />
         </div>
       </div>
-      <div className={styles.options}>
-        {quiz.options.map((option, optIndex) => (
-          <div
-            key={optIndex}
-            className={`${styles.option} ${selectedOptions[index] === optIndex ? styles.selected : ''}`}
-            onClick={() => handleOptionSelect(index, optIndex)}
-          >
-            <span>{String.fromCharCode(65 + optIndex)}. </span><MarkdownRenderer className="flex-1" content={option} />
-          </div>
-        ))}
-      </div>
+      {children}
       {showFeedbacks[index] && (
         <>
           <motion.div
             className={cn(
               styles.feedback,
-              isCorrect(selectedOptions[index], quiz) ? styles.correct : styles.incorrect
+              isCorrect ? styles.correct : styles.incorrect
             )}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
           >
-            <div>{isCorrect(selectedOptions[index], quiz) ? '✔️' : '❌'}</div>
+            <div>{isCorrect ? '✔️' : '❌'}</div>
             <div className={styles.explanationArea}>
-              <MarkdownRenderer content={quiz.explanation} />
+              <MarkdownRenderer
+                className={cn(
+                  isCorrect
+                    ? 'text-(--quiz-correct-feedback-color)'
+                    : 'text-(--quiz-incorrect-feedback-color)'
+                )}
+                content={quiz.explanation}
+              />
             </div>
           </motion.div>
           <div>
@@ -85,4 +65,64 @@ export default function QuizContainer({ index, quiz, showFeedbacks }) {
       )}
     </motion.div>
   );
+}
+
+function QuizFill({ index, quiz, showFeedbacks }) {
+  const [userAnswer, setUserAnswer] = useState('');
+  const isCorrect = isAnswerCorrect(userAnswer, quiz);
+
+  return (
+    <QuizContainerCommon
+      index={index}
+      isCorrect={isCorrect}
+      quiz={quiz}
+      showFeedbacks={showFeedbacks}
+    >
+      <Input
+        name="内容"
+        placeholder="请输入"
+        value={userAnswer}
+        onChange={(e) => setUserAnswer(e.target.value)}
+      />
+    </QuizContainerCommon>
+  );
+}
+
+function QuizChoice({ index, quiz, showFeedbacks }) {
+  const [userAnswer, setUserAnswer] = useState(-1);
+  const isCorrect = isAnswerCorrect(userAnswer, quiz);
+
+  return (
+    <QuizContainerCommon
+      index={index}
+      isCorrect={isCorrect}
+      quiz={quiz}
+      showFeedbacks={showFeedbacks}
+    >
+      <div className={styles.options}>
+        {
+          quiz.options.map((option, optIndex) => (
+            <div
+              key={optIndex}
+              className={`${styles.option} ${userAnswer === optIndex ? styles.selected : ''}`}
+              onClick={() => setUserAnswer(optIndex)}
+            >
+              <span>{String.fromCharCode(65 + optIndex)}. </span>
+              <MarkdownRenderer
+                className="flex-1 transition-colors duration-300 text-inherit"
+                content={option}
+              />
+            </div>
+          ))
+        }
+      </div>
+    </QuizContainerCommon>
+  );
+}
+
+export default function QuizContainer({ index, quiz, showFeedbacks }) {
+  if (quiz.type === 'fill') {
+    return <QuizFill index={index} quiz={quiz} showFeedbacks={showFeedbacks} />;
+  }
+  return <QuizChoice index={index} quiz={quiz} showFeedbacks={showFeedbacks} />;
 }

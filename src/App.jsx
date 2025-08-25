@@ -10,6 +10,7 @@ import ExpFunction from './exponentialFunction/ExpFunction';
 import LogOperation from './logarithmicFunction/LogOperation';
 import LogCalculation from './logarithmicFunction/LogCalculation';
 import LogFunction from './logarithmicFunction/LogFunction';
+import InverseFunction from './logarithmicFunction/InverseFunction';
 import FunctionRepresentation from './functionDefinition/FunctionRepresentation';
 import FunctionMonotonicity from './functionDefinition/FunctionMonotonicity';
 import FunctionEvenOdd from './functionDefinition/FunctionEvenOdd';
@@ -42,6 +43,7 @@ const routes = [
   { path: '/logarithmic/log-operation', element: <LogOperation /> },
   { path: '/logarithmic/log-calculation', element: <LogCalculation /> },
   { path: '/logarithmic/log-function', element: <LogFunction /> },
+  { path: '/logarithmic/inv-function', element: <InverseFunction /> },
   { path: '/function-definition/representation', element: <FunctionRepresentation /> },
   { path: '/function-definition/monotonicity', element: <FunctionMonotonicity /> },
   { path: '/function-definition/even-odd', element: <FunctionEvenOdd /> },

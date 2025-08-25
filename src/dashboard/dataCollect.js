@@ -57,16 +57,19 @@ export function getAvailableMonths() {
 }
 
 export const totalTags = tags.length;
+export const totalBlogs = blogs.length;
 
-// 标签总数
 const allTagsInBlog = blogs.flatMap(blog => blog.tags);
+export const totalTagReferences = allTagsInBlog.length;
 // 统计每个标签被引用的次数
 const tagCounts = allTagsInBlog.reduce((acc, tag) => {
   acc[tag] = (acc[tag] || 0) + 1;
   return acc;
 }, {});
 
-export const totalWords = blogs.reduce((sum, blog) => sum + blog.content.split(' ').length, 0);
+export const totalWords = blogs.reduce((sum, blog) => sum + blog.content.length, 0);
+
+export const totalTitleWords = blogs.reduce((sum, blog) => sum + blog.title.length, 0);
 
 // 被引用最多的前5个标签
 export const topAppearanceTags = Object.entries(tagCounts)
@@ -81,6 +84,15 @@ export const topTaggedBlogs = [...blogs]
   .map(blog => ({
     title: blog.title,
     count: blog.tags.length,
+  }));
+
+// 标题最长的前5篇博客
+export const topLongestTitleBlogs = [...blogs]
+  .sort((a, b) => b.title.length - a.title.length)
+  .slice(0, 5)
+  .map(blog => ({
+    title: blog.title,
+    length: blog.title.length,
   }));
 
 // 内容最长的前5篇博客

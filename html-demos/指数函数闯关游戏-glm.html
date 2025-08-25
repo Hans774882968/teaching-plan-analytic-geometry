@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>指数大冒险 - 闯关式学习高中数学</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+    }
+
+    .bounce-in {
+      animation: bounceIn 0.6s ease-out;
+    }
+
+    @keyframes bounceIn {
+      0% {
+        transform: scale(0.3);
+        opacity: 0;
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      70% {
+        transform: scale(0.9);
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .slide-up {
+      animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+      0% {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .shake {
+      animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
+        transform: translateX(-5px);
+      }
+
+      20%,
+      40%,
+      60%,
+      80% {
+        transform: translateX(5px);
+      }
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f0f;
+      animation: confetti-fall 3s linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-purple-100 min-h-screen">
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    // 关卡数据
+    const levels = [
+      {
+        id: 1,
+        title: "指数基础",
+        description: "学习指数的基本概念和性质",
+        icon: "fa-square-root-variable",
+        color: "bg-blue-500",
+        questions: [
+          {
+            id: 1,
+            question: "计算: 2³ × 2⁴ = ?",
+            options: ["2⁷", "2¹²", "4⁷", "8⁴"],
+            correctAnswer: 0,
+            explanation: "同底数幂相乘，底数不变，指数相加：2³ × 2⁴ = 2³⁺⁴ = 2⁷"
+          },
+          {
+            id: 2,
+            question: "计算: (3²)³ = ?",
+            options: ["3⁵", "3⁶", "9³", "27²"],
+            correctAnswer: 1,
+            explanation: "幂的乘方，底数不变，指数相乘：(3²)³ = 3²ˣ³ = 3⁶"
+          },
+          {
+            id: 3,
+            question: "计算: 5⁰ = ?",
+            options: ["0", "1", "5", "不存在"],
+            correctAnswer: 1,
+            explanation: "任何非零数的0次方都等于1：5⁰ = 1"
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "分数指数幂",
+        description: "掌握分数指数幂的运算规则",
+        icon: "fa-superscript",
+        color: "bg-green-500",
+        questions: [
+          {
+            id: 1,
+            question: "计算: 4^(1/2) = ?",
+            options: ["2", "16", "1/2", "√2"],
+            correctAnswer: 0,
+            explanation: "4^(1/2) = √4 = 2"
+          },
+          {
+            id: 2,
+            question: "计算: 8^(2/3) = ?",
+            options: ["4", "2", "16", "64"],
+            correctAnswer: 0,
+            explanation: "8^(2/3) = (³√8)² = 2² = 4"
+          },
+          {
+            id: 3,
+            question: "计算: 9^(-1/2) = ?",
+            options: ["-3", "3", "1/3", "-1/3"],
+            correctAnswer: 2,
+            explanation: "9^(-1/2) = 1/9^(1/2) = 1/√9 = 1/3"
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: "指数函数",
+        description: "探索指数函数的图像和性质",
+        icon: "fa-chart-line",
+        color: "bg-purple-500",
+        questions: [
+          {
+            id: 1,
+            question: "函数 y = 2^x 的定义域是？",
+            options: ["(0, +∞)", "(-∞, 0)", "(-∞, +∞)", "[0, +∞)"],
+            correctAnswer: 2,
+            explanation: "指数函数 y = a^x (a>0, a≠1) 的定义域是实数集 R，即 (-∞, +∞)"
+          },
+          {
+            id: 2,
+            question: "函数 y = (1/3)^x 的性质是？",
+            options: ["在R上单调递增", "在R上单调递减", "在(0,+∞)上单调递增", "在(-∞,0)上单调递减"],
+            correctAnswer: 1,
+            explanation: "当 0 < a < 1 时，指数函数 y = a^x 在 R 上单调递减"
+          },
+          {
+            id: 3,
+            question: "函数 y = 3^x 的图像一定通过点？",
+            options: ["(0,0)", "(1,0)", "(0,1)", "(1,1)"],
+            correctAnswer: 2,
+            explanation: "指数函数 y = a^x (a>0, a≠1) 的图像一定通过点 (0,1)，因为 a^0 = 1"
+          }
+        ]
+      },
+      {
+        id: 4,
+        title: "指数方程",
+        description: "学习解指数方程的方法",
+        icon: "fa-equals",
+        color: "bg-yellow-500",
+        questions: [
+          {
+            id: 1,
+            question: "解方程: 2^x = 8",
+            options: ["x = 2", "x = 3", "x = 4", "x = 6"],
+            correctAnswer: 1,
+            explanation: "2^x = 8 = 2³，所以 x = 3"
+          },
+          {
+            id: 2,
+            question: "解方程: 3^(x+1) = 27",
+            options: ["x = 1", "x = 2", "x = 3", "x = 4"],
+            correctAnswer: 1,
+            explanation: "3^(x+1) = 27 = 3³，所以 x+1 = 3，解得 x = 2"
+          },
+          {
+            id: 3,
+            question: "解方程: 4^x = 2^(x+3)",
+            options: ["x = 1", "x = 2", "x = 3", "x = 4"],
+            correctAnswer: 2,
+            explanation: "4^x = (2²)^x = 2^(2x)，所以 2^(2x) = 2^(x+3)，因此 2x = x+3，解得 x = 3"
+          }
+        ]
+      },
+      {
+        id: 5,
+        title: "综合应用",
+        description: "运用指数知识解决实际问题",
+        icon: "fa-puzzle-piece",
+        color: "bg-red-500",
+        questions: [
+          {
+            id: 1,
+            question: "某种细菌每20分钟数量翻倍，初始有100个，2小时后有多少个？",
+            options: ["400个", "800个", "1600个", "6400个"],
+            correctAnswer: 3,
+            explanation: "2小时 = 6个20分钟，所以细菌数量翻倍6次：100 × 2^6 = 100 × 64 = 6400个"
+          },
+          {
+            id: 2,
+            question: "某放射性物质每10年衰减一半，100年后剩余量是原来的？",
+            options: ["1/2", "1/10", "1/32", "1/1024"],
+            correctAnswer: 3,
+            explanation: "100年 = 10个10年，所以衰减10次：(1/2)^10 = 1/1024"
+          },
+          {
+            id: 3,
+            question: "某城市人口年增长率为2%，5年后人口是原来的？",
+            options: ["1.02倍", "1.1倍", "1.2倍", "约1.104倍"],
+            correctAnswer: 3,
+            explanation: "5年后人口是原来的 (1+0.02)^5 ≈ 1.104倍"
+          }
+        ]
+      }
+    ];
+    // 主应用组件
+    function App() {
+      const [currentLevel, setCurrentLevel] = useState(null);
+      const [currentQuestion, setCurrentQuestion] = useState(0);
+      const [score, setScore] = useState(0);
+      const [completedLevels, setCompletedLevels] = useState([]);
+      const [showExplanation, setShowExplanation] = useState(false);
+      const [selectedOption, setSelectedOption] = useState(null);
+      const [isCorrect, setIsCorrect] = useState(null);
+      const [showConfetti, setShowConfetti] = useState(false);
+      const startLevel = (levelId) => {
+        setCurrentLevel(levelId);
+        setCurrentQuestion(0);
+        setSelectedOption(null);
+        setShowExplanation(false);
+      };
+      const handleOptionSelect = (optionIndex) => {
+        if (showExplanation) return;
+        setSelectedOption(optionIndex);
+        const level = levels.find(l => l.id === currentLevel);
+        const question = level.questions[currentQuestion];
+        const correct = optionIndex === question.correctAnswer;
+        setIsCorrect(correct);
+        if (correct) {
+          setScore(score + 10);
+          if (currentQuestion === level.questions.length - 1) {
+            setShowConfetti(true);
+            setTimeout(() => setShowConfetti(false), 3000);
+            if (!completedLevels.includes(currentLevel)) {
+              setCompletedLevels([...completedLevels, currentLevel]);
+            }
+          }
+        }
+        setShowExplanation(true);
+      };
+      const nextQuestion = () => {
+        const level = levels.find(l => l.id === currentLevel);
+        if (currentQuestion < level.questions.length - 1) {
+          setCurrentQuestion(currentQuestion + 1);
+          setSelectedOption(null);
+          setShowExplanation(false);
+        } else {
+          setCurrentLevel(null);
+        }
+      };
+      const resetProgress = () => {
+        setScore(0);
+        setCompletedLevels([]);
+        setCurrentLevel(null);
+      };
+      const createConfetti = () => {
+        if (!showConfetti) return null;
+        const confetti = [];
+        const colors = ['bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-purple-500'];
+        for (let i = 0; i < 100; i++) {
+          const style = {
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            backgroundColor: colors[Math.floor(Math.random() * colors.length)].replace('bg-', '#'),
+            animationDelay: `${Math.random() * 3}s`,
+            width: `${Math.random() * 10 + 5}px`,
+            height: `${Math.random() * 10 + 5}px`,
+          };
+          confetti.push(<div key={i} className="confetti" style={style}></div>);
+        }
+        return confetti;
+      };
+      if (currentLevel) {
+        const level = levels.find(l => l.id === currentLevel);
+        const question = level.questions[currentQuestion];
+        return (
+          <div className="min-h-screen flex flex-col items-center justify-center p-4">
+            {showConfetti && createConfetti()}
+            <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-6 md:p-8 bounce-in">
+              <div className="flex justify-between items-center mb-6">
+                <div className="flex items-center">
+                  <div className={`${level.color} w-10 h-10 rounded-full flex items-center justify-center text-white mr-3`}>
+                    <i className={`fas ${level.icon}`}></i>
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-800">{level.title}</h2>
+                </div>
+                <div className="text-lg font-semibold text-gray-700">
+                  <i className="fas fa-star text-yellow-500 mr-1"></i> {score}
+                </div>
+              </div>
+              <div className="mb-6">
+                <div className="flex justify-between text-sm text-gray-600 mb-2">
+                  <span>问题 {currentQuestion + 1}/{level.questions.length}</span>
+                  <span>关卡 {currentLevel}/{levels.length}</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                  <div
+                    className={`${level.color} h-2.5 rounded-full transition-all duration-500`}
+                    style={{ width: `${((currentQuestion + 1) / level.questions.length) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">{question.question}</h3>
+                <div className="space-y-3">
+                  {question.options.map((option, index) => (
+                    <button
+                      key={index}
+                      className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-300 ${selectedOption === index
+                          ? isCorrect
+                            ? 'border-green-500 bg-green-50'
+                            : 'border-red-500 bg-red-50'
+                          : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                        } ${showExplanation && index === question.correctAnswer
+                          ? 'border-green-500 bg-green-50'
+                          : ''
+                        }`}
+                      onClick={() => handleOptionSelect(index)}
+                      disabled={showExplanation}
+                    >
+                      <div className="flex items-center">
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center mr-3 ${selectedOption === index
+                            ? isCorrect
+                              ? 'bg-green-500 text-white'
+                              : 'bg-red-500 text-white'
+                            : 'bg-gray-200'
+                          } ${showExplanation && index === question.correctAnswer && selectedOption !== index
+                            ? 'bg-green-500 text-white'
+                            : ''
+                          }`}>
+                          {String.fromCharCode(65 + index)}
+                        </div>
+                        <span>{option}</span>
+                        {showExplanation && index === question.correctAnswer && (
+                          <i className="fas fa-check-circle text-green-500 ml-auto"></i>
+                        )}
+                        {showExplanation && selectedOption === index && !isCorrect && (
+                          <i className="fas fa-times-circle text-red-500 ml-auto"></i>
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {showExplanation && (
+                <div className={`mb-6 p-4 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
+                  } slide-up`}>
+                  <div className="flex items-start">
+                    <div className={`mr-3 mt-1 ${isCorrect ? 'text-green-500' : 'text-red-500'
+                      }`}>
+                      <i className={`fas ${isCorrect ? 'fa-lightbulb' : 'fa-info-circle'}`}></i>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-1">
+                        {isCorrect ? '回答正确！' : '回答错误！'}
+                      </h4>
+                      <p className="text-gray-700">{question.explanation}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {showExplanation && (
+                <div className="flex justify-end">
+                  <button
+                    className={`${level.color} text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity`}
+                    onClick={nextQuestion}
+                  >
+                    {currentQuestion < level.questions.length - 1 ? '下一题' : '完成关卡'}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center p-4">
+          <div className="w-full max-w-4xl">
+            <header className="text-center mb-12 slide-up">
+              <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-4">
+                指数大冒险
+              </h1>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                hans7，欢迎来到指数运算和指数函数的奇妙世界！通过闯关游戏的方式，轻松掌握高中数学中的指数知识。
+              </p>
+            </header>
+            <div className="flex justify-between items-center mb-8">
+              <div className="flex items-center">
+                <div className="bg-yellow-500 w-10 h-10 rounded-full flex items-center justify-center text-white mr-3">
+                  <i className="fas fa-star"></i>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">总积分</p>
+                  <p className="text-xl font-bold text-gray-800">{score}</p>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <div className="bg-green-500 w-10 h-10 rounded-full flex items-center justify-center text-white mr-3">
+                  <i className="fas fa-trophy"></i>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">已完成关卡</p>
+                  <p className="text-xl font-bold text-gray-800">{completedLevels.length}/{levels.length}</p>
+                </div>
+              </div>
+              <button
+                className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg transition-colors"
+                onClick={resetProgress}
+              >
+                <i className="fas fa-redo mr-2"></i>重置进度
+              </button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {levels.map((level) => (
+                <div
+                  key={level.id}
+                  className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer transform hover:-translate-y-1 ${completedLevels.includes(level.id) ? 'ring-2 ring-green-500' : ''
+                    }`}
+                  onClick={() => startLevel(level.id)}
+                >
+                  <div className={`${level.color} p-5 flex items-center`}>
+                    <div className="bg-white bg-opacity-30 w-12 h-12 rounded-full flex items-center justify-center text-white mr-4">
+                      <i className={`fas ${level.icon} text-xl`}></i>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">{level.title}</h3>
+                      <p className="text-white text-opacity-80 text-sm">{level.description}</p>
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    <div className="flex justify-between items-center mb-3">
+                      <span className="text-sm text-gray-600">
+                        {level.questions.length} 道题目
+                      </span>
+                      {completedLevels.includes(level.id) ? (
+                        <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                          <i className="fas fa-check mr-1"></i>已完成
+                        </span>
+                      ) : (
+                        <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                          <i className="fas fa-lock-open mr-1"></i>未完成
+                        </span>
+                      )}
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className={`${level.color} h-2 rounded-full`}
+                        style={{ width: completedLevels.includes(level.id) ? '100%' : '0%' }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <i className="fas fa-medal text-yellow-500 mr-3"></i>
+                成就系统
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className={`p-4 rounded-xl border-2 ${completedLevels.length >= 1 ? 'border-yellow-400 bg-yellow-50' : 'border-gray-200'}`}>
+                  <div className="flex items-center">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 ${completedLevels.length >= 1 ? 'bg-yellow-400 text-white' : 'bg-gray-200 text-gray-500'}`}>
+                      <i className="fas fa-star"></i>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">初出茅庐</h3>
+                      <p className="text-sm text-gray-600">完成第一个关卡</p>
+                    </div>
+                  </div>
+                </div>
+                <div className={`p-4 rounded-xl border-2 ${completedLevels.length >= 3 ? 'border-blue-400 bg-blue-50' : 'border-gray-200'}`}>
+                  <div className="flex items-center">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 ${completedLevels.length >= 3 ? 'bg-blue-400 text-white' : 'bg-gray-200 text-gray-500'}`}>
+                      <i className="fas fa-fire"></i>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">指数达人</h3>
+                      <p className="text-sm text-gray-600">完成三个关卡</p>
+                    </div>
+                  </div>
+                </div>
+                <div className={`p-4 rounded-xl border-2 ${completedLevels.length >= 5 ? 'border-purple-400 bg-purple-50' : 'border-gray-200'}`}>
+                  <div className="flex items-center">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 ${completedLevels.length >= 5 ? 'bg-purple-400 text-white' : 'bg-gray-200 text-gray-500'}`}>
+                      <i className="fas fa-crown"></i>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">数学大师</h3>
+                      <p className="text-sm text-gray-600">完成所有关卡</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <footer className="text-center text-gray-600 text-sm">
+              <p>© 2025 指数大冒险 - 专为 hans7 设计的数学学习游戏</p>
+            </footer>
+          </div>
+        </div>
+      );
+    }
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+
+</html>

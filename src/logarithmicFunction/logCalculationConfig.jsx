@@ -161,6 +161,18 @@ $$ \log_c a = \frac{\log_d a}{\log_d c} $$
 
 实际计算： $ \log_4 64 = \frac{\log_2 64}{\log_2 4} = \frac{6}{2} = 3 $`,
       },
+      {
+        type: 'fill',
+        question: String.raw`已知 $ log_3 2 = a,\ 3^b = 5 $ ，用 $ a,\ b $ 表示 $ log_3 \sqrt{30} $`,
+        correct: '(a+b+1)/2',
+        explanation: String.raw`$ log_3 \sqrt{30} = \frac{log_3 2 + log_3 3 + log_3 5}{2} = \frac{a + b + 1}{2} $`,
+      },
+      {
+        type: 'fill',
+        question: String.raw`求值： $ log_8 9 * log_{27} 32 $`,
+        correct: '10/9',
+        explanation: String.raw`$ log_8 9 * log_{27} 32 = \frac{ln9 * ln32}{ln8 * ln27} = \frac{(2 * ln3) * (5 * ln2)}{(3 * ln2) * (3 * ln3)} = \frac{10}{9} $`,
+      },
     ],
     link: {
       url: '/logarithmic/log-calculation-hard-questions',

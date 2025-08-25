@@ -11,6 +11,7 @@
 
   --body-bg: #b2deec;
   --tpm-card-bg: rgba(255, 255, 255, 0.8);
+  --tpm-hover-border: #e2e8f0;
   /* 配色来自 antd */
   --tpm-color-link: #1677ff;
   --tpm-color-link-hover: #69b1ff;
@@ -44,10 +45,17 @@
   --inline-code-color: #ff502c;
   --table-cell-hover-bg: var(--color-sky-100);
 
+  --quiz-correct-feedback-bg: rgba(106, 176, 76, 0.3);
+  --quiz-correct-feedback-color: #2b580c;
+  --quiz-incorrect-feedback-bg: rgba(255, 107, 107, 0.3);
+  --quiz-incorrect-feedback-color: #7a0c2e;
+
   --hover-scale: scale(1.02);
   --transition: all 0.3s ease;
   --title-size: 2.5rem;
   --section-title-size: 1.8rem;
+
+  --navbar-menu-mxh: calc(100vh - 120px);
 
   --tpm-font-family: 'Zhan Ku Kuai Le Ti', 'Fredoka One', sans-serif;
   --index-404-font-family: 'Zhan Ku Kuai Le Ti', 'Noto Sans SC', sans-serif;
