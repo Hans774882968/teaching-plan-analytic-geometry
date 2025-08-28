@@ -1,9 +1,7 @@
-import React from 'react';
-import TeX from '@matejmazur/react-katex';
 import styles from '@/component/teachingPlan/basic.module.scss';
 
 export default {
-  title: String.raw`📈 指数函数的性质与图像 📉`,
+  title: String.raw`📈 指数函数的性质与图象 📉`,
   lpName: 'chitanda',
 
   header: {
@@ -348,6 +346,7 @@ $ N(t) = N_0 \cdot e^{-kt} $ ，其中 $ k \approx 0.000121 $
     ),
     quiz: [
       {
+        qid: '指数函数的性质与图象-1',
         question: String.raw`下列函数中是指数函数的是：`,
         options: [
           String.raw`$ y = 3^x $`,
@@ -362,6 +361,7 @@ $ N(t) = N_0 \cdot e^{-kt} $ ，其中 $ k \approx 0.000121 $
 ❌ D： $ y = (-2)^x $ 底数为负数，不是指数函数`,
       },
       {
+        qid: '指数函数的性质与图象-2',
         question: String.raw`指数函数 $ y = a^x (a > 0,\ a \neq 1) $ 的值域是：`,
         options: [
           String.raw`$ (0, +\infty) $`,
@@ -383,6 +383,7 @@ $ N(t) = N_0 \cdot e^{-kt} $ ，其中 $ k \approx 0.000121 $
         `,
       },
       {
+        qid: '指数函数的性质与图象-3',
         question: String.raw`函数 $ y = 3^x $ 和 $ y = \left(\frac{1}{3}\right)^x $ 的图像关系是：`,
         options: [
           String.raw`关于 x 轴对称`,
@@ -399,6 +400,7 @@ $ N(t) = N_0 \cdot e^{-kt} $ ，其中 $ k \approx 0.000121 $
         `,
       },
       {
+        qid: '指数函数的性质与图象-4',
         question: String.raw`函数 $ y = 0.5^x $ 的单调性是：`,
         options: [
           String.raw`单调递增`,
@@ -410,6 +412,7 @@ $ N(t) = N_0 \cdot e^{-kt} $ ，其中 $ k \approx 0.000121 $
         explanation: String.raw`B正确！因为底数 $ a = 0.5 $ 满足 $ 0 < a < 1 $ ，所以函数单调递减`,
       },
       {
+        qid: '指数函数的性质与图象-5',
         question: String.raw`比较大小： $ 4^{0.7} $ 和 $ 4^{0.6} $`,
         options: [
           String.raw`$ 4^{0.7} > 4^{0.6} $`,
@@ -421,6 +424,7 @@ $ N(t) = N_0 \cdot e^{-kt} $ ，其中 $ k \approx 0.000121 $
         explanation: String.raw`A正确！因为底数 $ 4 > 1 $ ，指数函数单调递增，且 $ 0.7 > 0.6 $ ，所以 $ 4^{0.7} > 4^{0.6} $`,
       },
       {
+        qid: '指数函数的性质与图象-6',
         question: String.raw`下列比较正确的是：`,
         options: [
           String.raw`$ 2^{0.5} > 2^{0.6} $`,
@@ -439,6 +443,7 @@ $ N(t) = N_0 \cdot e^{-kt} $ ，其中 $ k \approx 0.000121 $
 `,
       },
       {
+        qid: '指数函数的性质与图象-7',
         question: String.raw`碳14测年法中，某化石的碳14含量是初始含量的25%，其死亡时间大约是：  
 （已知碳14半衰期约5730年）`,
         options: [

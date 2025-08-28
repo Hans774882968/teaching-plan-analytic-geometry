@@ -229,12 +229,14 @@ export const hyperbolaConfig = {
   },
   quiz: [
     {
+      qid: '双曲线的定义与性质-1',
       question: <>双曲线 <TeX>{String.raw`\frac{x^2}{9} - \frac{y^2}{16} = 1`}</TeX> 的实轴长度是多少？</>,
       options: ['3', '6', '4', '8'],
       correct: 1,
       explanation: <p>标准方程中 <TeX>{String.raw`a^2 = 9`}</TeX> ，所以 <TeX>{String.raw`a = 3`}</TeX> ，实轴长度 <TeX>{String.raw`2a = 6`}</TeX></p>,
     },
     {
+      qid: '双曲线的定义与性质-2',
       question: '双曲线的离心率e的范围是？',
       options: [
         <TeX>{String.raw`e > 1`}</TeX>,
@@ -246,6 +248,7 @@ export const hyperbolaConfig = {
       explanation: '双曲线的离心率总是大于1',
     },
     {
+      qid: '双曲线的定义与性质-3',
       question: <>双曲线 <TeX>{String.raw`\frac{y^2}{4} - \frac{x^2}{5} = 1`}</TeX> 的渐近线方程是？</>,
       options: [
         <TeX>{String.raw`y = \pm \frac{2\sqrt{5}}{5} x`}</TeX>,
@@ -255,6 +258,23 @@ export const hyperbolaConfig = {
       ],
       correct: 0,
       explanation: <p><TeX>{String.raw`a = 2,\ b = \sqrt5`}</TeX>，所以渐近线斜率为<TeX>{String.raw`\pm \frac{a}{b} = \pm \frac{2}{\sqrt5}`}</TeX></p>,
+    },
+    {
+      qid: '双曲线的定义与性质-4',
+      question: '已知双曲线的两焦点分别为 $ F_1 $ 、 $ F_2 $ ，其中 $ F_1 $ 是抛物线 $ y^2=4x $ 的焦点，点 $ A (-1, 2), B (3, 2) $ 在双曲线上，则 $ F_2 $ 的方程是？',
+      options: [
+        '$ x=1 $',
+        '$ 2(x-1)^2 - (y-2)^2 = 8 $',
+        String.raw`$ \frac{(x-1)^2}{4} + \frac{(y-2)^2}{8} = 1 $`,
+        String.raw`$ x=1\ (y \neq 0,\ y \neq 4) $ 或 $ \frac{(x-1)^2}{8} + \frac{(y-2)^2}{4} = 1\ (y \neq 0,\ y \neq 4) $`,
+      ],
+      correct: 3,
+      explanation: String.raw`设 $ F_2 (x,\ y) $ 。根据双曲线的定义，我们有两种情况：
+1. $ |AF_1| - |AF_2| = |BF_1| - |BF_2| $ 。此时有 $ |AF_2| = |BF_2| $ ，即 $ F_2 $ 在A和B的中垂线上，得 $ x = 1 $
+2. $ |AF_1| - |AF_2| = |BF_2| - |BF_1| $ 。此时有 $ |AF_2| + |BF_2| = |AF_1| + |BF_1| = 4\sqrt{2} $ ，满足椭圆的定义。椭圆的中心为A和B的中点 $ (1,\ 2) $ ，故半焦距为2。故所求椭圆方程为 $ \frac{(x-1)^2}{8} + \frac{(y-2)^2}{4} = 1 $
+
+但上面两个方程过两个特殊点： $ (1,\ 0) $ 和 $ (1,\ 4) $ 。前者就是 $ F_1 $ ，排除；后者有 $ |AF_1| = |BF_2| $ ，导致双曲线退化，排除。
+`,
     },
   ],
   summary: {

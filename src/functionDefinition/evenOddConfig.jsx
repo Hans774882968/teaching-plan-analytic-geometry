@@ -237,6 +237,7 @@ export default {
     ),
     quiz: [
       {
+        qid: '函数的奇偶性-1',
         question: String.raw`下列函数中，既是奇函数又是偶函数的是？`,
         options: [
           String.raw`$ f(x) = 0 $`,
@@ -251,6 +252,7 @@ export default {
 可得 $ f(x) = -f(x) $ ，即 $ 2f(x) = 0 $ ，所以 $ f(x) = 0 $`,
       },
       {
+        qid: '函数的奇偶性-2',
         question: String.raw`若函数 $ f(x) $ 是奇函数， $ g(x) $ 是偶函数，则下列说法正确的是？（多选）`,
         options: [
           String.raw`$ f(g(x)) $ 是偶函数`,
@@ -266,6 +268,7 @@ C. $ f(-x)g(-x) = [-f(x)][g(x)] = -f(x)g(x) $ → 奇函数
 D. 一般情况下既非奇也非偶，如 $ f(x)=x,\ g(x)=x^2 $ 时`,
       },
       {
+        qid: '函数的奇偶性-3',
         question: String.raw`已知函数 $ f(x) $ 的定义域为 $ \mathbb{R} $ ，且 $ f(x) + f(-x) = 2x^2 $ ，则 $ f(x) $ 是？`,
         options: [
           String.raw`奇函数`,

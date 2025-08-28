@@ -108,7 +108,7 @@ export default function BlogDetail() {
         </div>
 
         <div className="border-t border-gray-200 pt-6">
-          <MarkdownRenderer className="overflow-x-auto" content={blog.content} />
+          <MarkdownRenderer className="overflow-x-auto overflow-y-hidden" content={blog.content} />
         </div>
       </Card>
 

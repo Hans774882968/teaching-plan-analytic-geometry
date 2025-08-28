@@ -38,7 +38,7 @@ import { TypeAnimation } from 'react-type-animation';
 const lessonPlans = [
   { url: '/rotation/definition', title: '图形的旋转', category: ['平面几何'], difficulty: '初中', lpName: 'conan' },
   { url: '/exponential/real-num-exp-powers', title: '实数指数幂及其运算', category: ['代数'], difficulty: '高中', lpName: 'chitanda' },
-  { url: '/exponential/exp-function', title: '指数函数的性质与图像', category: ['代数'], difficulty: '高中', lpName: 'chitanda' },
+  { url: '/exponential/exp-function', title: '指数函数的性质与图象', category: ['代数'], difficulty: '高中', lpName: 'chitanda' },
   { url: '/logarithmic/log-operation', title: '对数运算', category: ['代数'], difficulty: '高中', lpName: 'menhera' },
   { url: '/logarithmic/log-calculation', title: '对数运算法则', category: ['代数'], difficulty: '高中', lpName: 'menhera' },
   { url: '/logarithmic/log-function', title: '对数函数', category: ['代数'], difficulty: '高中', lpName: 'menhera' },

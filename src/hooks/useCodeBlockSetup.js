@@ -5,6 +5,30 @@ import { CODE_BODY_INITIAL_MAX_HEIGHT } from '@/common/consts';
 import { toast } from 'sonner';
 import hljsLangToExtName from '@/lib/hljsLangToExtName';
 import { localDownloadFile } from '@/lib/utils';
+import { useSettingsStore } from '@/component/layout/states/settingsState';
+
+function changeCodeExpandStatus(img, svgChevronDownWrapper, targetCodeBlockWrapper) {
+  const hasExpanded = img.classList.contains('expanded');
+  img.classList.toggle('expanded');
+
+  svgChevronDownWrapper.title = hasExpanded ? '展开代码块' : '收起代码块';
+  const codeBody = targetCodeBlockWrapper.querySelector('.code-body');
+  if (!codeBody) {
+    console.error('[tpm] failed to find .code-body');
+    return;
+  }
+  // 每行其实不到 28px ，但设置这个稍大的数并不太影响动画效果
+  const maxHeight = hasExpanded ? CODE_BODY_INITIAL_MAX_HEIGHT : (28 + targetCodeBlockWrapper.dataset.lineCount * 28);
+  codeBody.classList.toggle('expanded');
+  codeBody.style.maxHeight = `${maxHeight}px`;
+
+  const codeNode = codeBody.querySelector('.highlighted-code');
+  if (!codeNode) {
+    console.error('[tpm] failed to find .highlighted-code');
+    return;
+  }
+  codeNode.style.maxHeight = `${maxHeight}px`;
+}
 
 function downloadCode(codeBlockWrapper) {
   const copyBtn = codeBlockWrapper.querySelector('.copy-button');
@@ -24,6 +48,7 @@ function downloadCode(codeBlockWrapper) {
 
 export default function useCodeBlockSetup() {
   const tpmMdContainerRef = useRef(null);
+  const { expandCode } = useSettingsStore();
 
   useEffect(() => {
     const codeBlockWrapperSetup = () => {
@@ -38,27 +63,11 @@ export default function useCodeBlockSetup() {
         const img = document.createElement('img');
         img.classList.add('svg-chevron-down-wrapper-img', 'not-prose');
         img.src = ChevronDown;
+        if (expandCode) {
+          changeCodeExpandStatus(img, svgChevronDownWrapper, targetCodeBlockWrapper);
+        }
         img.addEventListener('click', () => {
-          const hasExpanded = img.classList.contains('expanded');
-          img.classList.toggle('expanded');
-
-          svgChevronDownWrapper.title = hasExpanded ? '展开代码块' : '收起代码块';
-          const codeBody = targetCodeBlockWrapper.querySelector('.code-body');
-          if (!codeBody) {
-            console.error('[tpm] failed to find .code-body');
-            return;
-          }
-          // 每行其实不到 28px ，但设置这个稍大的数并不太影响动画效果
-          const maxHeight = hasExpanded ? CODE_BODY_INITIAL_MAX_HEIGHT : (28 + targetCodeBlockWrapper.dataset.lineCount * 28);
-          codeBody.classList.toggle('expanded');
-          codeBody.style.maxHeight = `${maxHeight}px`;
-
-          const codeNode = codeBody.querySelector('.highlighted-code');
-          if (!codeNode) {
-            console.error('[tpm] failed to find .highlighted-code');
-            return;
-          }
-          codeNode.style.maxHeight = `${maxHeight}px`;
+          changeCodeExpandStatus(img, svgChevronDownWrapper, targetCodeBlockWrapper);
         });
         svgChevronDownWrapper.appendChild(img);
       });
@@ -99,7 +108,7 @@ export default function useCodeBlockSetup() {
     return () => {
       setupObserver.disconnect();
     };
-  }, []);
+  }, [expandCode]);
 
   return tpmMdContainerRef;
 }

@@ -34,6 +34,8 @@ import BlogList from './mathBlog/BlogList';
 import NavigateForGitHubPages from './NavigateForGitHubPages';
 import { ThemeProvider } from '@/component/theme-provider';
 import Dashboard from './dashboard/Dashboard';
+import MathChallenges from './mathChallenges/MathChallenges';
+import Challenge from './mathChallenges/challenge/Challenge';
 
 const routes = [
   { path: '/', element: <TeachingPlanList /> },
@@ -63,6 +65,8 @@ const routes = [
   { path: '/blogs', element: <BlogList /> },
   { path: '/blog/:title', element: <BlogDetail /> },
   { path: '/dashboard', element: <Dashboard /> },
+  { path: '/math-challenges', element: <MathChallenges /> },
+  { path: '/math-challenge/:title', element: <Challenge /> },
   { path: '/404', element: <NotFound /> },
   { path: '*', element: <NotFound /> },
 ];

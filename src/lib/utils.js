@@ -118,16 +118,29 @@ export function localDownloadFile({
 export function longTextTrim(text, maxBytes = 10, suffix = '…') {
   if (typeof text !== 'string') return String(text);
 
+  // 使用 Array.from 正确分割 Unicode 字符
+  const chars = Array.from(text);
+  if (!chars.length) return text;
+
   const encoder = new TextEncoder();
-  if (encoder.encode(text).length <= maxBytes) return text;
 
+  // 构建字节长度前缀和数组
+  const prefixSum = [0];
+  for (let i = 0; i < chars.length; i++) {
+    const byteLength = encoder.encode(chars[i]).length;
+    prefixSum.push(prefixSum[i] + byteLength);
+  }
+
+  // 如果整个文本的字节长度不超过最大字节数，直接返回
+  if (prefixSum[chars.length] <= maxBytes) return text;
+
+  // 二分查找找到最大的索引，使得 prefixSum[index] <= maxBytes
   let left = 0;
-  let right = text.length;
+  let right = chars.length;
 
-  // 二分法找最大可截断字符索引
   while (left < right) {
     const mid = (left + right + 1) >> 1;
-    if (encoder.encode(text.slice(0, mid)).length <= maxBytes) {
+    if (prefixSum[mid] <= maxBytes) {
       left = mid;
     } else {
       right = mid - 1;
@@ -135,5 +148,5 @@ export function longTextTrim(text, maxBytes = 10, suffix = '…') {
   }
 
   // 如果截断后只剩空串，直接返回后缀
-  return left ? text.slice(0, left) + suffix : suffix;
+  return left ? chars.slice(0, left).join('') + suffix : suffix;
 }

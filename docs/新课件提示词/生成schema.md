@@ -30,6 +30,7 @@
 4. 页面所有的title属性的文案，以及`h4, h5, h6`标签的文案的前面都要选择一个emoji。页面标题`config.title`前后各有一个emoji。
 5. 关于`config.quizSection.link`对象：`url`是当前页面的链接加上`-hard-questions`后缀，`text`是`更难的{{ config.title }}练习题`。
 6. 关于`config.footer.info`：作者是“DeepSeek老师”，其余页脚信息可自由发挥。
+7. 关于`QuizItem`类型：`qid`的格式为`{{ config.title }}-{{ i+1 }}`（`i`从0开始）
 
 ### 标题标签 h4, h5, h6 的使用规范
 

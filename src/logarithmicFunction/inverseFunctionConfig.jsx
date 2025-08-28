@@ -142,6 +142,7 @@ export default {
     description: String.raw`请选择下面问题的正确答案...menhera酱相信你一定可以的！`,
     quiz: [
       {
+        qid: '指数函数与对数函数的关系-1',
         question: String.raw`下列函数中，哪个不存在反函数？`,
         options: [
           String.raw`$ y = 2^x $`,
@@ -153,6 +154,7 @@ export default {
         explanation: String.raw`$ y = x^2 $ 不是一一对应函数（例如 $ x = 2 $ 和 $ x = -2 $ 都对应 $ y=4 $ ），因此不存在反函数。其他三个函数都是一一对应的，存在反函数呢`,
       },
       {
+        qid: '指数函数与对数函数的关系-2',
         question: String.raw`函数 $ y = 3^x $ 的反函数是什么？`,
         options: [
           String.raw`$ y = \log_3 x $`,
@@ -164,6 +166,7 @@ export default {
         explanation: String.raw`指数函数 $ y = a^x $ 的反函数是对数函数 $ y = \log_a x $ ，所以 $ y = 3^x $ 的反函数是 $ y = \log_3 x $ 哦~`,
       },
       {
+        qid: '指数函数与对数函数的关系-3',
         question: String.raw`如果 $ f(x) = e^x $ 和 $ g(x) = \ln x $ 互为反函数，那么 $ f(g(5)) $ 的值是多少？`,
         options: [
           String.raw`0`,
@@ -175,6 +178,7 @@ export default {
         explanation: String.raw`根据反函数的性质， $ f(g(x)) = x $ ，所以 $ f(g(5)) = 5 $ 。当然我们也可以通过 $ e^{\ln 5} = 5 $ 来验证呢`,
       },
       {
+        qid: '指数函数与对数函数的关系-4',
         type: 'fill',
         question: String.raw`如果 $ y=f(x) $ 存在反函数，则它一定是单调函数吗`,
         correct: '不一定',

@@ -121,6 +121,7 @@ $$ \log_c a = \frac{\log_d a}{\log_d c} $$
     description: String.raw`检验一下你对对数运算法则的掌握程度吧…menhera酱会为你加油的哦~`,
     quiz: [
       {
+        qid: '对数运算法则-1',
         question: String.raw`化简表达式 $ \log_2 4 + \log_2 8 $ ：`,
         options: [
           String.raw`$ \log_2 12 $`,
@@ -134,6 +135,7 @@ $$ \log_c a = \frac{\log_d a}{\log_d c} $$
 因为 $ 2^5 = 32 $ ，所以正确答案是 5。`,
       },
       {
+        qid: '对数运算法则-2',
         question: String.raw`计算 $ \log_3 81 - \log_3 9 $ ：`,
         options: [
           String.raw`$ \log_3 72 $`,
@@ -147,6 +149,7 @@ $$ \log_c a = \frac{\log_d a}{\log_d c} $$
 因为 $ 3^2 = 9 $ ，所以正确答案是 2。`,
       },
       {
+        qid: '对数运算法则-3',
         question: String.raw`使用换底公式计算 $ \log_4 64 $ ：`,
         options: [
           String.raw`$ \frac{\log_2 64}{\log_2 4} $`,
@@ -162,12 +165,14 @@ $$ \log_c a = \frac{\log_d a}{\log_d c} $$
 实际计算： $ \log_4 64 = \frac{\log_2 64}{\log_2 4} = \frac{6}{2} = 3 $`,
       },
       {
+        qid: '对数运算法则-4',
         type: 'fill',
         question: String.raw`已知 $ log_3 2 = a,\ 3^b = 5 $ ，用 $ a,\ b $ 表示 $ log_3 \sqrt{30} $`,
         correct: '(a+b+1)/2',
         explanation: String.raw`$ log_3 \sqrt{30} = \frac{log_3 2 + log_3 3 + log_3 5}{2} = \frac{a + b + 1}{2} $`,
       },
       {
+        qid: '对数运算法则-5',
         type: 'fill',
         question: String.raw`求值： $ log_8 9 * log_{27} 32 $`,
         correct: '10/9',

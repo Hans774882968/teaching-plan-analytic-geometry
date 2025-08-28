@@ -1,8 +1,12 @@
 import TeX from '@matejmazur/react-katex';
 
-export const config = {
+export const ellipseDefinitionHQ = {
+  title: '椭圆的定义与性质',
+  category: ['圆锥曲线', '代数'],
+  difficulty: '高中',
   quiz: [
     {
+      qid: '椭圆的定义与性质HQ-1',
       question: (
         <>
           在椭圆 <TeX>{'\\frac{x^2}{4} + \\frac{y^2}{3} = 1'}</TeX> 中，设A为椭圆的下顶点，B为椭圆的上顶点，F为椭圆的左焦点，过点F且斜率为k的直线与椭圆交于C, D两点，若
@@ -11,10 +15,10 @@ export const config = {
         </>
       ),
       options: [
-        <TeX>{'k=\\pm\\sqrt{2}'}</TeX>,
-        <TeX>{'k=\\pm1'}</TeX>,
-        <TeX>{'k=\\sqrt{2}'}</TeX>,
-        <TeX>{'k=\\pm\\sqrt{3}'}</TeX>,
+        '$ k=\\pm\\sqrt{2} $',
+        '$ k=\\pm1 $',
+        '$ k=\\sqrt{2} $',
+        '$ k=\\pm\\sqrt{3} $',
       ],
       correct: 0,
       explanation: (
@@ -41,16 +45,17 @@ export const config = {
       ),
     },
     {
+      qid: '椭圆的定义与性质HQ-2',
       question: (
         <>
           直线 <TeX>{'l: y = x + 1'}</TeX> 与椭圆C <TeX>{'\\frac{x^2}{4} + \\frac{y^2}{3} = 1'}</TeX> 交于M, N两点，O为坐标原点，若点E满足<TeX>{'\\overrightarrow{OE} = t(\\overrightarrow{OM} + \\overrightarrow{ON})'}</TeX>，且点E在椭圆C上，求实数t的值
         </>
       ),
       options: [
-        <><TeX>{'\\pm\\sqrt{2}'}</TeX></>,
-        <><TeX>{'\\sqrt{7}'}</TeX></>,
-        <><TeX>{'\\pm \\frac{\\sqrt{6}}{2}'}</TeX></>,
-        <><TeX>{'\\pm \\frac{\\sqrt{7}}{2}'}</TeX></>,
+        '$ \\pm\\sqrt{2} $',
+        '$ \\sqrt{7} $',
+        '$ \\pm \\frac{\\sqrt{6}}{2} $',
+        '$ \\pm \\frac{\\sqrt{7}}{2} $',
       ],
       correct: 3,
       explanation: (

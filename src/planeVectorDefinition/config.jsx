@@ -175,6 +175,7 @@ const config = {
     description: '完成以下3道选择题，检验学习成果：',
     quiz: [
       {
+        qid: '平面向量的定义与线性运算-1',
         question: String.raw`关于向量 $ \vec{a} $ 和 $ \vec{b} $ ，下列说法正确的是：`,
         options: [
           String.raw`若 $ |\vec{a}| = |\vec{b}| $ ，则 $ \vec{a} = \vec{b} $`,
@@ -190,6 +191,7 @@ const config = {
 - D正确：满足 $ \vec{a} = -\vec{b} $ 的关系`,
       },
       {
+        qid: '平面向量的定义与线性运算-2',
         question: String.raw`已知平行四边形ABCD，则 $ \overrightarrow{AB} + \overrightarrow{AD} = $ ？`,
         options: [
           String.raw`$ \overrightarrow{AC} $`,
@@ -201,6 +203,7 @@ const config = {
         explanation: String.raw`**解析**：根据平行四边形法则， $ \overrightarrow{AB} + \overrightarrow{AD} = \overrightarrow{AC} $`,
       },
       {
+        qid: '平面向量的定义与线性运算-3',
         question: String.raw`设 $ \vec{a} \neq \vec{0} $ ， $ \lambda\vec{a} = \mu\vec{a} $ ，则：`,
         options: [
           String.raw`$ \lambda = \mu $`,

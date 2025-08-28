@@ -209,6 +209,7 @@ export default {
     ),
     quiz: [
       {
+        qid: '函数的单调性-1',
         question: String.raw`已知函数 $ f(x) = x^2 - 4x + 3 $ ，下列说法正确的是：`,
         options: [
           String.raw`在 $ (-\infty, 2) $ 上单调递增`,
@@ -225,6 +226,7 @@ export default {
 - 所以选项 B, C 正确`,
       },
       {
+        qid: '函数的单调性-2',
         question: String.raw`关于函数的单调性，以下说法正确的是（多选）：`,
         options: [
           String.raw`常数函数既是增函数也是减函数`,

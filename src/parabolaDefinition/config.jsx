@@ -122,6 +122,7 @@ export default {
   appletOnLoadId: 'src%5CparabolaDefinition%5Cconfig.jsx-parabola-definition',
   quiz: [
     {
+      qid: '抛物线的定义与性质-1',
       question: <p>抛物线 <TeX>{String.raw`y^2 = 8x`}</TeX> 的焦点坐标是？</p>,
       options: [
         '(2, 0)',
@@ -133,6 +134,7 @@ export default {
       explanation: <p>标准方程 <TeX>{String.raw`y^2 = 2px`}</TeX>，其中 <TeX>{String.raw`2p = 8`}</TeX>，所以 <TeX>{String.raw`p = 4`}</TeX>，焦点坐标为 <TeX>{String.raw`(\frac{p}{2}, 0) = (2, 0)`}</TeX></p>,
     },
     {
+      qid: '抛物线的定义与性质-2',
       question: '下列关于抛物线性质的描述，错误的是？',
       options: [
         '离心率恒等于1',
@@ -144,6 +146,7 @@ export default {
       explanation: '抛物线是轴对称图形，但不是中心对称图形，它没有对称中心。',
     },
     {
+      qid: '抛物线的定义与性质-3',
       question: <p>过抛物线 <TeX>{String.raw`y^2 = 4x`}</TeX> 焦点且垂直于x轴的弦长是？</p>,
       options: [
         '2',

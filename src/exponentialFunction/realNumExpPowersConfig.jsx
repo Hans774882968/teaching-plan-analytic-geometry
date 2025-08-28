@@ -175,6 +175,7 @@ $ \left(\frac{1}{2}\right)^{-2} = 2^2 = 4 $`,
     ),
     quiz: [
       {
+        qid: '实数指数幂及其运算-1',
         question: String.raw`下列表达式正确的是：`,
         options: [
           String.raw`$ 5^{\frac{1}{2}} = \sqrt{5} $`,
@@ -190,6 +191,7 @@ $ \left(\frac{1}{2}\right)^{-2} = 2^2 = 4 $`,
 - D正确： $ 8^{-\frac{1}{3}} = \frac{1}{\sqrt[3]{8}} = \frac{1}{2} $`,
       },
       {
+        qid: '实数指数幂及其运算-2',
         question: String.raw`$ \sqrt[3]{x^6} $ 可以简化为：`,
         options: [
           String.raw`$ x^2 $`,
@@ -203,6 +205,7 @@ $ \sqrt[3]{x^6} = (x^6)^{\frac{1}{3}} = x^{6 \times \frac{1}{3}} = x^2 $
         由于立方根对负实数也有定义，结果 $ x^2 $ 总是非负，等价于 $ |x^2| $`,
       },
       {
+        qid: '实数指数幂及其运算-3',
         question: String.raw`计算 $ \left(\frac{27}{8}\right)^{-\frac{2}{3}} $ 的值：`,
         options: [
           String.raw`$ \frac{9}{4} $`,

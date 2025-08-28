@@ -289,6 +289,7 @@ $ \overrightarrow{OD} = (1 - x - y)\overrightarrow{OA} + x\overrightarrow{OB} + 
     ),
     quiz: [
       {
+        qid: '空间向量基本定理-1',
         question: String.raw`📌 关于空间向量基本定理，以下说法正确的是：`,
         options: [
           String.raw`空间任意三个向量都可以作为基底`,
@@ -300,6 +301,7 @@ $ \overrightarrow{OD} = (1 - x - y)\overrightarrow{OA} + x\overrightarrow{OB} + 
         explanation: String.raw`✔️ **解析**：空间向量基本定理要求三个基向量不共面（C正确）。A错误：三个向量必须不共面；B错误：不要求互相垂直；D错误：表示是唯一的。`,
       },
       {
+        qid: '空间向量基本定理-2',
         question: String.raw`📌 已知点 $ A(1,0,0),\ B(0,1,0),\ C(0,0,1),\ D(1,1,1) $ ，这四点：`,
         options: [
           String.raw`一定共面`,
@@ -314,6 +316,7 @@ $ \overrightarrow{OD} = (1 - x - y)\overrightarrow{OA} + x\overrightarrow{OB} + 
 `,
       },
       {
+        qid: '空间向量基本定理-3',
         question: String.raw`📌 设向量 $ \vec{a},\ \vec{b},\ \vec{c} $ 是空间的一个基底，则以下各组向量中也能作为基底的是：`,
         options: [
           String.raw`$ \vec{a} + \vec{b},\ \vec{b} + \vec{c},\ \vec{c} + \vec{a} $`,

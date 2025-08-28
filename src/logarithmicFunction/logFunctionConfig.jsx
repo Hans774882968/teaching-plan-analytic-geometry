@@ -108,6 +108,7 @@ $$
     ),
     quiz: [
       {
+        qid: '对数函数的性质与图象-1',
         question: String.raw`函数 $ y = \log_3 (x-2) $ 的定义域是？`,
         options: [
           String.raw`$ (2, +\infty) $`,
@@ -119,6 +120,7 @@ $$
         explanation: String.raw`因为对数的真数必须大于0，所以 $ x-2 > 0 $ ，解得 $ x > 2 $ ，定义域为 $ (2, +\infty) $ 呢`,
       },
       {
+        qid: '对数函数的性质与图象-2',
         question: String.raw`比较 $ \log_2 3 $ 和 $ \log_2 5 $ 的大小关系？`,
         options: [
           String.raw`$ \log_2 3 > \log_2 5 $`,
@@ -130,6 +132,7 @@ $$
         explanation: String.raw`因为底数 $ 2 > 1 $ ，函数 $ y = \log_2 x $ 单调递增，且 $ 3 < 5 $ ，所以 $ \log_2 3 < \log_2 5 $ 哦~`,
       },
       {
+        qid: '对数函数的性质与图象-3',
         question: String.raw`函数 $ y = \log_a x $ 一定经过的定点是？`,
         options: [
           String.raw`$ (0, 1) $`,
@@ -141,12 +144,14 @@ $$
         explanation: String.raw`因为 $ \log_a 1 = 0 $ 对任意底数 $ a $ 都成立，所以函数一定经过定点 $ (1, 0) $ 呢`,
       },
       {
+        qid: '对数函数的性质与图象-4',
         type: 'fill',
         question: String.raw`求值： $ lg20 + log_{100} 25 $`,
         correct: '2',
         explanation: String.raw`$ lg20 + log_{100} 25 = lg20 + log_{100} (5^2) = lg20 + 2 * \frac{lg5}{2} = lg(20*5) = 2 $`,
       },
       {
+        qid: '对数函数的性质与图象-5',
         type: 'fill',
         question: String.raw`求值： $ log_{32} 16 $`,
         correct: '0.8',

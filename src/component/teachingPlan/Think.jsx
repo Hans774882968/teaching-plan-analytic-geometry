@@ -20,7 +20,7 @@ const Think = ({ think, answer, answerRowMaxHeight }) => {
         styles.questionRow,
         isOpen && 'border-b-1 border-dashed border-[#cbd5e0]'
       )}>
-        <span className="px-1.75 py-0.5 rounded-lg leading-[1.4] font-bold bg-[#FFD166]">思考</span>
+        <span className="px-1.75 py-0.5 rounded-lg leading-[1.4] font-bold bg-(--tpm-light-yellow)">思考</span>
         <div className={styles.questionText}>
           <MarkdownRenderer content={think} />
         </div>

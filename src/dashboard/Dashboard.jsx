@@ -53,7 +53,8 @@ ChartJS.register(
 );
 
 export default function Dashboard() {
-  const [selectedMonth, setSelectedMonth] = useState('2025-07');
+  const availableMonths = getAvailableMonths();
+  const [selectedMonth, setSelectedMonth] = useState(availableMonths[availableMonths.length - 1]);
   const monthlyBlogMdy = calculateMonthlyBlogMdy(selectedMonth);
 
   return (
@@ -106,7 +107,7 @@ export default function Dashboard() {
               </SelectTrigger>
               <SelectContent>
                 {
-                  getAvailableMonths().map((month) => {
+                  availableMonths.map((month) => {
                     return (
                       <SelectItem key={month} value={month}>
                         {month}

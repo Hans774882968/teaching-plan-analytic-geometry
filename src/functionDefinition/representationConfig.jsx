@@ -229,6 +229,7 @@ $ f(2x) = (2x)^2 + 1 = 4x^2 + 1 $`,
     ),
     quiz: [
       {
+        qid: '函数及其表示方法-1',
         question: String.raw`下列哪个函数与 $ f(x) = |x| $ 是同一个函数？`,
         options: [
           String.raw`$ g(x) = \sqrt{x^2} $`,
@@ -246,6 +247,7 @@ $ f(2x) = (2x)^2 + 1 = 4x^2 + 1 $`,
 **函数相等必须定义域和对应法则都相同**`,
       },
       {
+        qid: '函数及其表示方法-2',
         question: String.raw`若 $ f(x) = x^2 + 2x $ ，则 $ f(x-1) $ 的表达式是？`,
         options: [
           String.raw`$ x^2 - 2x + 1 $`,
@@ -272,6 +274,7 @@ $ f(x-1) = (x-1)(x-1+2) = (x-1)(x+1) = x^2 - 1 $
 `,
       },
       {
+        qid: '函数及其表示方法-3',
         question: String.raw`高斯取整函数 $ y = [x] $ 在区间 $ [-2, 1) $ 上的值域是？`,
         options: [
           String.raw`$ \{-2,-1,0\} $`,

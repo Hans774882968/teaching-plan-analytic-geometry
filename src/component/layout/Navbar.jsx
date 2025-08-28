@@ -4,13 +4,16 @@ import {
   FaBlog,
   FaBook,
   FaCode,
+  FaCrown,
   FaDatabase,
   FaDraftingCompass,
+  FaFire,
   FaGem,
   FaGithub,
   FaInfoCircle,
   FaKey,
   FaLockOpen,
+  FaPuzzlePiece,
   FaReact,
   FaTachometerAlt,
   FaTimes,
@@ -28,8 +31,8 @@ const blogDropdown = {
   key: 'blog',
   children: (
     <>
-      <FaBook />
-      <span>博客</span>
+      <FaCrown />
+      <span>藏宝阁</span>
     </>
   ),
   urls: [
@@ -41,6 +44,16 @@ const blogDropdown = {
         </>
       ),
       url: '/blogs',
+    },
+    {
+      label: (
+        <>
+          <FaPuzzlePiece />
+          闯关
+          <FaFire className="text-red-500" />
+        </>
+      ),
+      url: '/math-challenges',
     },
   ],
 };

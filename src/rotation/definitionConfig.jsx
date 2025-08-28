@@ -227,6 +227,7 @@ export default {
     ),
     quiz: [
       {
+        qid: '图形的旋转定义与性质-1',
         question: String.raw`🤔 如图，将三角形ABC绕点O顺时针旋转90°，点A的对应点是？`,
         options: [
           String.raw`点D`,
@@ -243,6 +244,7 @@ export default {
 4. 根据旋转性质，对应点与旋转中心连线夹角等于旋转角`,
       },
       {
+        qid: '图形的旋转定义与性质-2',
         question: String.raw`🤔 下列哪些是旋转的性质？（多选）`,
         options: [
           String.raw`对应线段相等`,
@@ -260,6 +262,7 @@ export default {
 - 图形大小不变（C错误）`,
       },
       {
+        qid: '图形的旋转定义与性质-3',
         question: String.raw`🤔 一个正方形绕其中心旋转多少度后能与自身重合？`,
         options: [
           String.raw`45°`,

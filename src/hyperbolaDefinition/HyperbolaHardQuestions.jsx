@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { config } from './hardQuestionsConfig';
+import { hyperbolaDefinitionHQ } from './hardQuestionsConfig';
 import QuizContainer from '@/component/QuizContainer';
 import { Helmet } from 'react-helmet-async';
 import styles from '@/component/teachingPlan/basic.module.scss';
@@ -13,7 +13,7 @@ function Inner() {
 
   const checkAnswers = () => {
     const feedbacks = {};
-    config.quiz.forEach((_, index) => {
+    hyperbolaDefinitionHQ.quiz.forEach((_, index) => {
       feedbacks[index] = true;
     });
     setShowFeedbacks(feedbacks);
@@ -29,7 +29,7 @@ function Inner() {
           <Link to="/hyperbola-definition"><TPButton>双曲线基础知识讲解</TPButton></Link>
         </Card>
         {
-          config.quiz.map((quiz, index) => (
+          hyperbolaDefinitionHQ.quiz.map((quiz, index) => (
             <QuizContainer
               key={index}
               index={index}

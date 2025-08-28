@@ -4,6 +4,7 @@ import {
   isNonEmptyArray,
   addOrDeleteItem,
   filterBySelections,
+  longTextTrim,
 } from '@/lib/utils';
 import { SELECT_MODES } from '@/common/consts';
 
@@ -125,6 +126,113 @@ describe('utils', () => {
       const mixedItems = [...items, null, undefined, { tags: null }];
       const result = filterBySelections(mixedItems, 'tags', ['react'], SELECT_MODES.OR);
       expect(result.map(i => i.id)).toEqual([1, 4]);
+    });
+  });
+
+  describe('longTextTrim', () => {
+    // 测试1: 基本功能 - 英文字符
+    it('应该正确截断英文字符串', () => {
+      const result = longTextTrim('hello world', 5);
+      expect(result).toBe('hello…');
+    });
+
+    // 测试2: 基本功能 - 中文字符
+    it('应该正确截断中文字符串', () => {
+      const result = longTextTrim('你好世界', 6); // 每个中文占3字节
+      expect(result).toBe('你好…');
+    });
+
+    // 测试3: 边界情况 - 刚好不需要截断
+    it('当字节长度不超过限制时应返回原字符串', () => {
+      const input = 'hello';
+      const result = longTextTrim(input, 5);
+      expect(result).toBe(input);
+    });
+
+    // 测试4: 边界情况 - 空字符串
+    it('应该正确处理空字符串', () => {
+      expect(longTextTrim('', 5)).toBe('');
+    });
+
+    // 测试5: 边界情况 - 最大字节数为0
+    it('当maxBytes为0时应返回后缀', () => {
+      expect(longTextTrim('hello', 0)).toBe('…');
+    });
+
+    // 测试6: 自定义后缀
+    it('应该使用自定义后缀', () => {
+      const result = longTextTrim('hello world', 5, '...');
+      expect(result).toBe('hello...');
+    });
+
+    // 测试7: 混合字符
+    it('应该正确处理混合字符(英文+中文)', () => {
+      const input = 'hello你好';
+      // "hello" = 5字节, "你" = 3字节，总共8字节
+      const result = longTextTrim(input, 7); // 只能保留"hello" + 部分中文字节
+      expect(result).toBe('hello…');
+    });
+
+    // 测试8-1: 特殊字符和emoji
+    it('应该正确处理特殊字符和emoji-1', () => {
+      const input = 'hi👍'; // "hi"=2字节, "👍"=4字节
+      const result = longTextTrim(input, 5);
+      expect(result).toBe('hi…'); // 只能保留"hi" + 后缀
+    });
+
+    // 测试8-2: 特殊字符和emoji
+    it('应该正确处理特殊字符和emoji-2', () => {
+      const input = 'hi👍';
+      const result = longTextTrim(input, 3);
+      expect(result).toBe('hi…');
+    });
+
+    // 测试8-3: 特殊字符和emoji
+    it('应该正确处理特殊字符和emoji-3', () => {
+      const input = 'hi👍';
+      const result = longTextTrim(input, 4);
+      expect(result).toBe('hi…');
+    });
+
+    // 测试8-4: 特殊字符和emoji
+    it('应该正确处理特殊字符和emoji-4', () => {
+      const input = 'hi👍';
+      const result = longTextTrim(input, 6);
+      expect(result).toBe('hi👍');
+    });
+
+    // 测试9: 默认参数
+    it('应该使用默认参数', () => {
+      const longText = '这是一个很长的文本';
+      const result = longTextTrim(longText);
+      expect(result).toBe('这是一…'); // 默认maxBytes=10，前3个中文字符(9字节)+后缀
+    });
+
+    // 测试10: 非字符串输入
+    it('应该将非字符串输入转换为字符串', () => {
+      expect(longTextTrim(null)).toBe('null');
+      expect(longTextTrim(undefined)).toBe('undefined');
+      expect(longTextTrim(123)).toBe('123');
+      expect(longTextTrim(true)).toBe('true');
+    });
+
+    // 测试11: 精确边界测试
+    it('应该在精确的字节边界处截断', () => {
+      // 测试刚好能容纳完整字符的情况
+      const input = 'abc'; // 3字节
+      expect(longTextTrim(input, 3)).toBe('abc');
+
+      // 测试刚好需要截断的情况
+      expect(longTextTrim(input, 2)).toBe('ab…');
+    });
+
+    // 测试12: 多字节字符的部分字节情况
+    it('应该避免截断多字节字符的中间字节', () => {
+      const input = '你好'; // 每个字3字节，共6字节
+
+      // 尝试截断到4字节，应该只保留第一个汉字
+      const result = longTextTrim(input, 4);
+      expect(result).toBe('你…');
     });
   });
 });

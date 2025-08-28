@@ -21,12 +21,15 @@ import { hljsThemeOptions } from '@/common/themeOptions';
 import { editorLightThemes } from '@/common/editorThemeOptions';
 import { TpmCombobox } from '@/component/ui/tpm-combobox';
 import { Separator } from '@/component/ui/separator';
+import { Switch } from '@/component/ui/switch';
 
 // TODO: TpmCombobox 从写死宽度改为 w-full 导致 Popover 宽度不再与 PopoverTrigger 一致
 export default function SettingsDialog() {
   const {
     filterStyle,
     setFilterStyle,
+    expandCode,
+    setExpandCode,
     hljsTheme,
     editorFontSize,
     setHljsTheme,
@@ -94,6 +97,17 @@ export default function SettingsDialog() {
                 setValue={setHljsTheme}
                 options={hljsThemeOptions}
               />
+            </div>
+            <div className="sm:flex sm:items-center">
+              <label className="block font-medium mb-2 sm:mb-0 sm:w-1/3 sm:text-right sm:pr-4">
+                默认展开代码
+              </label>
+              <div className="w-full sm:w-full md:w-full">
+                <Switch
+                  checked={expandCode}
+                  onCheckedChange={setExpandCode}
+                />
+              </div>
             </div>
           </div>
 

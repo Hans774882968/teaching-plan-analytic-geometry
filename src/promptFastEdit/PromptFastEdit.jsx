@@ -13,10 +13,12 @@ import {
 } from 'react-icons/fa';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
 import basicStyles from '@/component/teachingPlan/basic.module.scss';
+import TpmHeader from '@/component/TpmHeader';
+import TpmDivInsideSection from '@/component/TpmDivInsideSection';
 import EditorWrapper from '@/component/EditorWrapper';
 import PromptContainer from './PromptContainer';
 import PromptOpBtn from './PromptOpBtn';
-import { cn, localDownloadFile } from '@/lib/utils';
+import { localDownloadFile } from '@/lib/utils';
 import { toast } from 'sonner';
 import {
   genSchemaPrompt,
@@ -114,22 +116,7 @@ export default function PromptFastEdit() {
 
   return (
     <div className={basicStyles.container}>
-      <motion.header
-        className={cn(
-          'transition-colors duration-300',
-          'border-2 border-[var(--prompt-fast-edit-border)] hover:border-[var(--tpm-primary)]',
-          'flex flex-col items-center gap-6 bg-gradient-to-br from-sky-100 to-sky-50 text-white px-5 py-7.5 rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.15)] text-center relative overflow-hidden'
-        )}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.4 }}
-      >
-        <div className="inline-block relative">
-          <h1 className={cn(basicStyles.teachingPlanH1, 'animate-tpm-shake', '!text-[var(--tpm-primary)]')}>
-            🔭 数学教案提示词快速生成 📚
-          </h1>
-        </div>
-
+      <TpmHeader className="gap-6" title="🔭 数学教案提示词快速生成 📚">
         <div className="flex flex-wrap justify-center gap-4">
           <PromptOpBtn
             onClick={handleReset}
@@ -160,7 +147,7 @@ export default function PromptFastEdit() {
             导出整篇提示词
           </PromptOpBtn>
         </div>
-      </motion.header>
+      </TpmHeader>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <PromptContainer>
@@ -254,13 +241,11 @@ export default function PromptFastEdit() {
             </Link>
           </div>
 
-          <div className={cn(
-            'transition-colors duration-300',
-            'border border-[var(--prompt-fast-edit-border)] hover:border-[var(--tpm-primary)]',
-            'bg-white/40 hover:bg-white/80 rounded-xl shadow-lg p-5 h-[calc(100%-80px)]'
-          )}>
+          <TpmDivInsideSection
+            className="hover:bg-white/80 rounded-xl shadow-lg p-5 h-[calc(100%-80px)]"
+          >
             <MarkdownRenderer className="overflow-y-auto" content={promptMarkdown} />
-          </div>
+          </TpmDivInsideSection>
         </PromptContainer>
       </div>
     </div>

@@ -1,19 +1,23 @@
 import TeX from '@matejmazur/react-katex';
 import Geogebra from '@/component/Geogebra';
 
-export const config = {
+export const hyperbolaDefinitionHQ = {
+  title: '双曲线的定义与性质',
+  category: ['圆锥曲线', '代数'],
+  difficulty: '高中',
   quiz: [
     {
+      qid: '双曲线的定义与性质HQ-1',
       question: (
         <>
           已知双曲线 <TeX>{String.raw`\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1 \ (a > 0, b > 0)`}</TeX> 的左、右焦点分别为 <TeX>{String.raw`F_1`}</TeX>、<TeX>{String.raw`F_2`}</TeX>，若在双曲线的右支上存在点 <TeX>{String.raw`P`}</TeX>，使得 <TeX>{String.raw`|PF_1| = 3|PF_2|`}</TeX>，则双曲线离心率 <TeX>{String.raw`e`}</TeX> 的最大值为（）
         </>
       ),
       options: [
-        <TeX>{String.raw`\sqrt{2}`}</TeX>,
-        2,
-        3,
-        <TeX>{String.raw`\sqrt{3}`}</TeX>,
+        '$ \\sqrt{2} $',
+        '2',
+        '3',
+        '$ \\sqrt{3} $',
       ],
       correct: 1,
       explanation: (
@@ -24,16 +28,17 @@ export const config = {
       ),
     },
     {
+      qid: '双曲线的定义与性质HQ-2',
       question: (
         <>
           若双曲线 <TeX>{String.raw`\frac{x^2}{16} - \frac{y^2}{b^2} = 1 \ (b > 0)`}</TeX> 的一个顶点到与此顶点较远的一个焦点的距离为 9，则双曲线的离心率是（）
         </>
       ),
       options: [
-        <TeX>{String.raw`\frac{4}{3}`}</TeX>,
-        <TeX>{String.raw`\frac{5}{3}`}</TeX>,
-        <TeX>{String.raw`\frac{5}{4}`}</TeX>,
-        <TeX>{String.raw`\frac{3}{2}`}</TeX>,
+        '$ \\frac{4}{3} $',
+        '$ \\frac{5}{3} $',
+        '$ \\frac{5}{4} $',
+        '$ \\frac{3}{2} $',
       ],
       correct: 2,
       explanation: (
@@ -41,16 +46,17 @@ export const config = {
       ),
     },
     {
+      qid: '双曲线的定义与性质HQ-3',
       question: (
         <>
           双曲线 <TeX>{String.raw`\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1 \ (a > 0, b > 0)`}</TeX> 的一条渐近线被圆 <TeX>{String.raw`M`}</TeX>： <TeX>{String.raw`(x-8)^2 + y^2 = 25`}</TeX> 截得的弦长为 6，则双曲线的离心率为（）
         </>
       ),
       options: [
-        2,
-        <TeX>{String.raw`\sqrt3`}</TeX>,
-        4,
-        <TeX>{String.raw`\frac{2\sqrt3}{3}`}</TeX>,
+        '2',
+        '$ \\sqrt3 $',
+        '4',
+        '$ \\frac{2\\sqrt3}{3} $',
       ],
       correct: 3,
       explanation: <p>
@@ -61,6 +67,8 @@ export const config = {
       </p>,
     },
     {
+      qid: '双曲线的定义与性质HQ-4',
+      score: 20,
       question: (
         <div>
           已知点P是双曲线 <TeX>{String.raw`\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1 \ (a > 0, \ b > 0)`}</TeX> 的右支上一点，<TeX>{String.raw`F_1`}</TeX>，<TeX>{String.raw`F_2`}</TeX> 分别为双曲线的左、右焦点，<TeX>{String.raw`I`}</TeX> 为 <TeX>{String.raw`\triangle PF_1F_2`}</TeX> 的内心，若 <TeX>{String.raw`S_{\triangle IPF_1} = S_{\triangle IPF_2} + \lambda S_{\triangle IF_1F_2}`}</TeX> 成立，则 <TeX>{String.raw`\lambda`}</TeX> 的值为（）
@@ -89,10 +97,10 @@ export const config = {
         </div>
       ),
       options: [
-        <TeX>{String.raw`\frac{\sqrt{a^2+b^2}}{2a}`}</TeX>,
-        <TeX>{String.raw`\frac{a}{\sqrt{a^2+b^2}}`}</TeX>,
-        <TeX>{String.raw`\frac{b}{a}`}</TeX>,
-        <TeX>{String.raw`\frac{a}{b}`}</TeX>,
+        '$ \\frac{\\sqrt{a^2+b^2}}{2a} $',
+        '$ \\frac{a}{\\sqrt{a^2+b^2}} $',
+        '$ \\frac{b}{a} $',
+        '$ \\frac{a}{b} $',
       ],
       correct: 1,
       explanation: (
@@ -111,6 +119,7 @@ export const config = {
       ),
     },
     {
+      qid: '双曲线的定义与性质HQ-5',
       question: (
         <div>
           双曲线方程为 <TeX>{String.raw`\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1 \ (a > 0, \ b > 0)`}</TeX>，过右焦点 <TeX>{String.raw`F`}</TeX> 向一条渐近线做垂线，垂足为 <TeX>{String.raw`M`}</TeX>，如图所示，已知 <TeX>{String.raw`\angle MFO = 30^\circ`}</TeX>（<TeX>{String.raw`O`}</TeX> 为坐标原点），则其离心率为（）
@@ -131,10 +140,10 @@ export const config = {
         </div>
       ),
       options: [
-        <TeX>{String.raw`\sqrt{2}`}</TeX>,
-        <TeX>{String.raw`\sqrt{3}`}</TeX>,
-        <TeX>{String.raw`\frac{2\sqrt{3}}{3}`}</TeX>,
-        <TeX>{String.raw`2`}</TeX>,
+        '$ \\sqrt{2} $',
+        '$ \\sqrt{3} $',
+        '$ \\frac{2\\sqrt{3}}{3} $',
+        '2',
       ],
       correct: 3,
       explanation: <>
@@ -143,16 +152,18 @@ export const config = {
       </>,
     },
     {
+      qid: '双曲线的定义与性质HQ-6',
+      score: 20,
       question: (
         <>
           已知双曲线 <TeX>{String.raw`\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1 \ (a > 0, \ b > 0)`}</TeX> 的左右焦点分别为 <TeX>{String.raw`F_1`}</TeX>，<TeX>{String.raw`F_2`}</TeX>，<TeX>{String.raw`e`}</TeX> 为双曲线的离心率，<TeX>{String.raw`P`}</TeX> 是双曲线右支上的点，<TeX>{String.raw`\triangle PF_1F_2`}</TeX> 的内切圆的圆心为 <TeX>{String.raw`I`}</TeX>，过 <TeX>{String.raw`F_2`}</TeX> 作直线 <TeX>{String.raw`PI`}</TeX> 的垂线，垂足为 <TeX>{String.raw`B`}</TeX>，则 <TeX>{String.raw`OB =`}</TeX>（）
         </>
       ),
       options: [
-        <TeX>{String.raw`a`}</TeX>,
-        <TeX>{String.raw`b`}</TeX>,
-        <TeX>{String.raw`ea`}</TeX>,
-        <TeX>{String.raw`eb`}</TeX>,
+        'a',
+        'b',
+        'ea',
+        'eb',
       ],
       correct: 0,
       explanation: <>
@@ -191,6 +202,7 @@ export const config = {
       </>,
     },
     {
+      qid: '双曲线的定义与性质HQ-7',
       question: (
         <>
           等轴双曲线 <TeX>{String.raw`\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1 \ (a > 0, \ b > 0)`}</TeX> 的右焦点为 <TeX>{String.raw`F(c, 0)`}</TeX>，方程 <TeX>{String.raw`ax^2 + bx - c = 0`}</TeX> 的实根分别为 <TeX>{String.raw`x_1`}</TeX> 和 <TeX>{String.raw`x_2`}</TeX>，则三边长分别为 <TeX>{String.raw`|x_1|`}</TeX>，<TeX>{String.raw`|x_2|`}</TeX>，2 的三角形中，长度为 2 的边的对角是（）
@@ -210,16 +222,17 @@ export const config = {
       </>,
     },
     {
+      qid: '双曲线的定义与性质HQ-8',
       question: (
         <>
           设 <TeX>{String.raw`F`}</TeX> 是双曲线 <TeX>{String.raw`\frac{x^2}{4} - \frac{y^2}{12} = 1`}</TeX> 的左焦点，<TeX>{String.raw`A(1, 4)`}</TeX>，<TeX>{String.raw`P`}</TeX> 是双曲线右支上的动点，则 <TeX>{String.raw`|PF| + |PA|`}</TeX> 的最小值为（）
         </>
       ),
       options: [
-        <TeX>{String.raw`5`}</TeX>,
-        <TeX>{String.raw`5 + 4\sqrt{3}`}</TeX>,
-        <TeX>{String.raw`7`}</TeX>,
-        <TeX>{String.raw`9`}</TeX>,
+        '5',
+        '$ 5 + 4\\sqrt{3} $',
+        '7',
+        '9',
       ],
       correct: 3,
       explanation: <>

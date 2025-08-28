@@ -233,6 +233,7 @@ export default {
     ),
     quiz: [
       {
+        qid: '空间几何体与斜二测画法-1',
         question: String.raw`在斜二测画法中，Y轴方向的尺寸如何处理？`,
         options: [
           String.raw`保持原尺寸`,
@@ -245,6 +246,7 @@ export default {
 斜二测画法的核心规则之一是Y轴方向尺寸变为实际尺寸的一半，这是为了在平面上更好地表现立体感。`,
       },
       {
+        qid: '空间几何体与斜二测画法-2',
         question: String.raw`以下哪种几何体最适合用斜二测画法表示？`,
         options: [
           String.raw`球体`,
@@ -257,6 +259,7 @@ export default {
 长方体等由平面构成的几何体最适合斜二测画法，而球体和曲面体在这种画法中会失真。`,
       },
       {
+        qid: '空间几何体与斜二测画法-3',
         question: String.raw`在斜二测坐标系中，X轴和Y轴的夹角是多少？`,
         options: [
           String.raw`$ 90^\circ $`,
@@ -269,6 +272,7 @@ export default {
 标准斜二测画法中，Y轴与X轴成 $ 135^\circ $ 角，这是该画法名称中"斜"字的来源。`,
       },
       {
+        qid: '空间几何体与斜二测画法-4',
         question: String.raw`(多选) 斜二测画法的优点包括：`,
         options: [
           String.raw`能准确表示球体`,

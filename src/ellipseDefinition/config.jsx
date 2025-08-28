@@ -124,12 +124,14 @@ export const config = {
   },
   quiz: [
     {
+      qid: '椭圆的定义与性质-1',
       question: <>椭圆 <TeX>{'\\frac{x^2}{25} + \\frac{y^2}{9} = 1'}</TeX> 的离心率是多少？</>,
       options: ['0.8', '0.6', '0.4', '1.0'],
       correct: 0,
       explanation: <>离心率 <TeX>{'e = \\frac{c}{a} = \\frac{\\sqrt{25-9}}{5} = \\frac{4}{5} = 0.8'}</TeX></>,
     },
     {
+      qid: '椭圆的定义与性质-2',
       question: '下列哪项是椭圆的定义？',
       options: [
         '到定点的距离等于定长的点的集合',
@@ -141,6 +143,7 @@ export const config = {
       explanation: '椭圆的核心定义是到两个焦点距离之和为常数。',
     },
     {
+      qid: '椭圆的定义与性质-3',
       question: <>椭圆 <TeX>{'\\frac{x^2}{16} + \\frac{y^2}{25} = 1'}</TeX> 的焦点坐标是什么？</>,
       options: ['(±3, 0)', '(0, ±4)', '(±4, 0)', '(0, ±3)'],
       correct: 3,

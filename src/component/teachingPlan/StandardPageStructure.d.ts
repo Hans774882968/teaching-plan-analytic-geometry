@@ -21,6 +21,8 @@ export type GeoGebraItem = {
 export type QuestionType = 'choice' | 'fill';
 
 export type QuizItemCommon = {
+  qid: string;
+  score?: number; // 题目分值，不提供则为 10
   type?: QuestionType; // 题目类型，不提供则为选择题
   question: React.ReactNode; // 注意：虽然支持 ReactNode ，但你生成时请务必提供用 String.raw 和反引号包裹的多行 markdown 字符串
   explanation: React.ReactNode; // 注意：虽然支持 ReactNode ，但你生成时请务必提供用 String.raw 和反引号包裹的多行 markdown 字符串
