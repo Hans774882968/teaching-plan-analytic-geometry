@@ -5,6 +5,7 @@ import { TypeAnimation } from 'react-type-animation';
 import {
   FaCrown,
   FaFire,
+  FaLightbulb,
   FaMedal,
   FaStar,
   FaTrophy,
@@ -18,6 +19,8 @@ import { levels } from './levels';
 import TpmCard from '@/component/TpmCard';
 import NoData from '@/component/NoData';
 import AchievementCard from './AchievementCard';
+import Leaderboard from './Leaderboard';
+import CountUp from 'react-countup';
 
 const levelCardContainerVariants = {
   hidden: {},
@@ -32,8 +35,10 @@ export default function MathChallenges() {
   const {
     score,
     countCompletedLevels,
+    countSolvedQuestions,
   } = useMathChallengesStore();
   const completedLevelsCount = countCompletedLevels();
+  const solvedQuestionsCount = countSolvedQuestions();
 
   const has1 = completedLevelsCount >= 1;
   const has3 = completedLevelsCount >= 3;
@@ -53,7 +58,7 @@ export default function MathChallenges() {
               '',
               1000,
             ]}
-            speed={50}
+            speed={30}
             wrapper="span"
             repeat={Infinity}
           />
@@ -71,20 +76,37 @@ export default function MathChallenges() {
         <div className="flex flex-wrap items-center gap-8">
           <div className="flex items-center">
             <div className="bg-yellow-500 w-14 h-14 rounded-full flex items-center justify-center text-white mr-3">
-              <FaStar />
+              <FaStar className="text-2xl" />
             </div>
             <div>
-              <p className="text-lg text-gray-600">总积分</p>
-              <p className="text-2xl font-bold text-gray-800">{score}</p>
+              <p className="text-lg text-yellow-500">总积分</p>
+              <p className="text-2xl font-bold text-yellow-500">
+                <CountUp end={score} />
+              </p>
             </div>
           </div>
+
           <div className="flex items-center">
             <div className="bg-green-500 w-14 h-14 rounded-full flex items-center justify-center text-white mr-3">
-              <FaTrophy />
+              <FaTrophy className="text-2xl" />
             </div>
             <div>
-              <p className="text-lg text-gray-600">已完成关卡</p>
-              <p className="text-2xl font-bold text-gray-800">{completedLevelsCount}</p>
+              <p className="text-lg text-green-500">已完成关卡</p>
+              <p className="text-2xl font-bold text-green-500">
+                <CountUp end={completedLevelsCount} />
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center">
+            <div className="bg-blue-500 w-14 h-14 rounded-full flex items-center justify-center text-white mr-3">
+              <FaLightbulb className="text-2xl" />
+            </div>
+            <div>
+              <p className="text-lg text-blue-500">解决问题</p>
+              <p className="text-2xl font-bold text-blue-500">
+                <CountUp end={solvedQuestionsCount} />
+              </p>
             </div>
           </div>
         </div>
@@ -186,6 +208,8 @@ export default function MathChallenges() {
           />
         </div>
       </TpmSection>
+
+      <Leaderboard />
     </div>
   );
 }

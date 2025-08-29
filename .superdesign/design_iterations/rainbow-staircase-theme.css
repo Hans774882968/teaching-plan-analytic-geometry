@@ -1,0 +1,383 @@
+:root {
+  /* 彩虹阶梯主题色彩 */
+  --rainbow-red: #FF6B6B;
+  --rainbow-orange: #FFA726;
+  --rainbow-yellow: #FFEB3B;
+  --rainbow-green: #66BB6A;
+  --rainbow-blue: #42A5F5;
+  --rainbow-indigo: #5C6BC0;
+  --rainbow-violet: #AB47BC;
+
+  /* 渐变背景 */
+  --background-rainbow: linear-gradient(135deg,
+      var(--rainbow-red) 0%,
+      var(--rainbow-orange) 14.28%,
+      var(--rainbow-yellow) 28.56%,
+      var(--rainbow-green) 42.84%,
+      var(--rainbow-blue) 57.12%,
+      var(--rainbow-indigo) 71.4%,
+      var(--rainbow-violet) 85.68%);
+
+  /* 卡片颜色 */
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --text-primary: #2C3E50;
+  --text-secondary: #7F8C8D;
+  --gold: #FFD700;
+  --silver: #C0C0C0;
+  --bronze: #CD7F32;
+  --shadow-rainbow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --border-radius: 15px;
+
+  /* 动画变量 */
+  --animation-duration: 1.5s;
+  --bounce-easing: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.rainbow-container {
+  max-width: 450px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.rainbow-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  animation: rainbowText 3s ease-in-out infinite;
+}
+
+@keyframes rainbowText {
+
+  0%,
+  100% {
+    color: var(--rainbow-red);
+  }
+
+  16.66% {
+    color: var(--rainbow-orange);
+  }
+
+  33.33% {
+    color: var(--rainbow-yellow);
+  }
+
+  50% {
+    color: var(--rainbow-green);
+  }
+
+  66.66% {
+    color: var(--rainbow-blue);
+  }
+
+  83.33% {
+    color: var(--rainbow-indigo);
+  }
+}
+
+.staircase {
+  position: relative;
+  width: 100%;
+  min-height: 500px;
+}
+
+.stair-step {
+  position: absolute;
+  width: 100%;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-rainbow);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.stair-step:hover {
+  transform: translateX(10px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* 阶梯位置 */
+.stair-1 {
+  top: 0;
+  left: 0;
+  background: linear-gradient(135deg, var(--rainbow-red), var(--rainbow-orange));
+  animation: slideInRight 0.6s ease-out;
+}
+
+.stair-2 {
+  top: 120px;
+  left: 30px;
+  width: calc(100% - 30px);
+  background: linear-gradient(135deg, var(--rainbow-orange), var(--rainbow-yellow));
+  animation: slideInRight 0.8s ease-out;
+}
+
+.stair-3 {
+  top: 240px;
+  left: 60px;
+  width: calc(100% - 60px);
+  background: linear-gradient(135deg, var(--rainbow-yellow), var(--rainbow-green));
+  animation: slideInRight 1s ease-out;
+}
+
+.stair-4 {
+  top: 360px;
+  left: 90px;
+  width: calc(100% - 90px);
+  background: linear-gradient(135deg, var(--rainbow-green), var(--rainbow-blue));
+  animation: slideInRight 1.2s ease-out;
+}
+
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.step-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.step-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.step-number {
+  font-size: 2rem;
+  font-weight: bold;
+  opacity: 0.8;
+}
+
+.step-medal {
+  font-size: 2.5rem;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.step-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.step-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.step-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.step-score {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.step-rainbow {
+  font-size: 1.5rem;
+  animation: rainbowFloat 3s ease-in-out infinite;
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes rainbowFloat {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-5px) rotate(5deg);
+  }
+}
+
+/* 其他排名 */
+.other-ranks {
+  margin-top: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.other-rank-item {
+  display: flex;
+  align-items: center;
+  background: var(--card-bg);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-rainbow);
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.other-rank-item:hover {
+  transform: translateX(10px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.other-rank-number {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--rainbow-violet), var(--rainbow-indigo));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.other-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  margin-right: 15px;
+  border: 2px solid var(--rainbow-blue);
+}
+
+.other-info {
+  flex: 1;
+}
+
+.other-name {
+  font-weight: bold;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.other-score {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* 装饰彩虹 */
+.rainbow-decoration {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 20px;
+  background: linear-gradient(90deg,
+      var(--rainbow-red),
+      var(--rainbow-orange),
+      var(--rainbow-yellow),
+      var(--rainbow-green),
+      var(--rainbow-blue),
+      var(--rainbow-indigo),
+      var(--rainbow-violet));
+  border-radius: 10px;
+  animation: rainbowPulse 2s ease-in-out infinite;
+}
+
+@keyframes rainbowPulse {
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: translateX(-50%) scaleX(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scaleX(1.1);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .rainbow-container {
+    padding: 10px;
+  }
+
+  .rainbow-title {
+    font-size: 2rem;
+  }
+
+  .stair-1 {
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .stair-2 {
+    top: 100px;
+    left: 20px;
+    width: calc(100% - 20px);
+  }
+
+  .stair-3 {
+    top: 200px;
+    left: 40px;
+    width: calc(100% - 40px);
+  }
+
+  .stair-4 {
+    top: 300px;
+    left: 60px;
+    width: calc(100% - 60px);
+  }
+
+  .other-ranks {
+    margin-top: 400px;
+  }
+
+  .step-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .step-name {
+    font-size: 1rem;
+  }
+}

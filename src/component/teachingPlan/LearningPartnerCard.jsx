@@ -5,8 +5,8 @@ import { cn } from '@/lib/utils';
 export default function LearningPartnerCard({ children, imgNode }) {
   return (
     <Card className="flex items-center gap-5">
-      <div className={styles.conanContainer}>
-        {/* conanContainer 移到 Card 内之后，发现没有这第二层 div 就没法设置 img 尺寸 */}
+      <div className={styles.lpContainer}>
+        {/* lpContainer 移到 Card 内之后，发现没有这第二层 div 就没法设置 img 尺寸 */}
         <div
           className={cn(
             styles.floating,

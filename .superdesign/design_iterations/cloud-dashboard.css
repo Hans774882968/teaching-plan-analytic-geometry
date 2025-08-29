@@ -1,0 +1,220 @@
+/* 天空云朵仪表盘 - 淡蓝色主题 */
+@keyframes cloudFloat {
+
+  0%,
+  100% {
+    transform: translateX(0px) translateY(0px);
+  }
+
+  25% {
+    transform: translateX(10px) translateY(-5px);
+  }
+
+  50% {
+    transform: translateX(-5px) translateY(-10px);
+  }
+
+  75% {
+    transform: translateX(15px) translateY(-5px);
+  }
+}
+
+@keyframes cloudRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes rainDrop {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+}
+
+@keyframes windmillRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideInUp {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes rainbowShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+/* 云朵背景装饰 */
+.cloud-bg {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  animation: cloudFloat 20s ease-in-out infinite;
+}
+
+.cloud-bg-1 {
+  width: 200px;
+  height: 60px;
+  top: 10%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.cloud-bg-2 {
+  width: 150px;
+  height: 45px;
+  top: 20%;
+  right: 10%;
+  animation-delay: 5s;
+}
+
+.cloud-bg-3 {
+  width: 180px;
+  height: 55px;
+  bottom: 15%;
+  left: 8%;
+  animation-delay: 10s;
+}
+
+/* 统计卡片动画 */
+.stat-card {
+  transition: all 0.3s ease;
+  animation: slideInUp 0.6s ease-out;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+}
+
+/* 云朵计数动画 */
+.cloud-counter {
+  animation: bounce 2s ease-in-out infinite;
+}
+
+/* 雨滴动画 */
+.rain-drop {
+  animation: rainDrop 1.5s ease-in-out infinite;
+}
+
+/* 风车动画 */
+.windmill {
+  animation: windmillRotate 3s linear infinite;
+}
+
+/* 彩虹渐变 */
+.rainbow-gradient {
+  background: linear-gradient(90deg,
+      #3b82f6,
+      #06b6d4,
+      #10b981,
+      #f59e0b,
+      #ef4444,
+      #8b5cf6,
+      #3b82f6);
+  background-size: 200% 100%;
+  animation: rainbowShimmer 3s ease-in-out infinite;
+}
+
+/* 云朵图表容器 */
+.cloud-chart {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+/* 排行榜项目 */
+.rainbow-item {
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.rainbow-item:hover {
+  transform: translateX(10px);
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+}
+
+/* 图表柱状动画 */
+.chart-bar {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .cloud-bg {
+    display: none;
+  }
+
+  .stat-card {
+    animation: slideInUp 0.4s ease-out;
+  }
+}

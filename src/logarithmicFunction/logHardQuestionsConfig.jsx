@@ -10,6 +10,12 @@ export const logHQ = {
       question: String.raw`解方程 $ 3^{\log_4(x)} = 9\sqrt{3} $`,
       correct: '32',
       explanation: String.raw`$ \log_4(x) = \log_3 (3^{2.5}) = 2.5 $ ，又 $ \log_4 (x) = \frac{\log_2 (x)}{2} $ ，所以解 $ \log_2 (x) = 5 $ 得 $ x = 32 $`,
+      thinks: [
+        {
+          think: '解题过程给了你什么启发',
+          answer: '【FYI】九层之台，起于累土。此题虽水，但也涵盖了指数方程与对数方程互化的基础操作。不少看似复杂的问题，都可以从这些简单的部分着手，逐步拆解，最终解决',
+        },
+      ],
     },
     {
       qid: '对数函数HQ-2',

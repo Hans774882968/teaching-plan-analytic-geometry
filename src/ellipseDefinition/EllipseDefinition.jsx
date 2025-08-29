@@ -3,8 +3,6 @@ import { config } from './config';
 import Geogebra from '@/component/Geogebra';
 import styles from '@/component/teachingPlan/basic.module.scss';
 import MarkdownRenderer from '@/component/MarkdownRenderer';
-import conanThinking from '@/assets/conan-thinking-1.png';
-import conanThumbUp from '@/assets/conan-thumb-up-1.png';
 import QuizContainer from '@/component/QuizContainer';
 import { Helmet } from 'react-helmet-async';
 import TPButton from '@/component/TPButton';
@@ -13,7 +11,8 @@ import Section from '@/component/teachingPlan/Section';
 import KnowledgePoint from '@/component/teachingPlan/KnowledgePoint';
 import Card from '@/component/teachingPlan/Card';
 import Header from '@/component/teachingPlan/Header';
-import LearningPartnerCard from '../component/teachingPlan/LearningPartnerCard';
+import LearningPartnerCard from '@/component/teachingPlan/LearningPartnerCard';
+import LearningPartnerImg from '@/component/teachingPlan/LearningPartnerImg';
 import Think from '@/component/teachingPlan/Think';
 import Footer from '@/component/teachingPlan/Footer';
 import appletOnLoadCollection from '@/appletOnLoadCollection';
@@ -52,7 +51,7 @@ ${appletOnLoadCollection[config.geogebraObject.appletOnLoadId] || ''}
               '',
               1000,
             ]}
-            speed={50}
+            speed={30}
             wrapper="span"
             repeat={Infinity}
           />
@@ -61,7 +60,13 @@ ${appletOnLoadCollection[config.geogebraObject.appletOnLoadId] || ''}
 
       <Section>
         <LearningPartnerCard
-          imgNode={(lpStyles) => <img src={conanThinking} className={lpStyles.conanImg} alt="柯南思考中" />}
+          imgNode={(lpStyles) => (
+            <LearningPartnerImg
+              lpStyles={lpStyles}
+              name={config.lpName}
+              status="thinking"
+            />
+          )}
         >
           <h2 className={styles.teachingPlanH2}>👬 {config.welcome.title}</h2>
           <p>{config.welcome.content}</p>
@@ -180,7 +185,13 @@ ${appletOnLoadCollection[config.geogebraObject.appletOnLoadId] || ''}
 
       <Section>
         <LearningPartnerCard
-          imgNode={(lpStyles) => <img src={conanThumbUp} className={lpStyles.conanImg} alt="柯南点赞" />}
+          imgNode={(lpStyles) => (
+            <LearningPartnerImg
+              lpStyles={lpStyles}
+              name={config.lpName}
+              status="thumbUp"
+            />
+          )}
         >
           <h2 className={styles.teachingPlanH2}>🎉 {config.conclusion.title}</h2>
           <p>{config.conclusion.content}</p>

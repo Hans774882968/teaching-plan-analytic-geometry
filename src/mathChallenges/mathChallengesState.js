@@ -33,6 +33,12 @@ export const useMathChallengesStore = create(
           return res;
         }, 0);
       },
+      countSolvedQuestions() {
+        return levels.reduce((res, level) => {
+          const scoredQuestions = get().scoredMp[level.title] ?? [];
+          return res + scoredQuestions.length;
+        }, 0);
+      },
       reset: () => set({ score: 0, scoredMp: {} }),
     }),
     {

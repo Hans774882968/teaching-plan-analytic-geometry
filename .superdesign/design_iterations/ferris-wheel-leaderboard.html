@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>🎡 游乐园摩天轮排行榜</title>
+  <link
+    rel="stylesheet"
+    href="ferris-wheel-theme.css"
+  >
+</head>
+
+<body>
+  <div class="ferris-container">
+    <h1 class="ferris-title">🎡 游乐园摩天轮排行榜</h1>
+
+    <!-- 装饰云朵 -->
+    <div class="clouds">
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+    </div>
+
+    <!-- 摩天轮主体 -->
+    <div class="ferris-wheel">
+      <div class="wheel-center"></div>
+      <div class="wheel-spokes">
+        <div
+          class="spoke"
+          style="--angle: 0deg;"
+        ></div>
+        <div
+          class="spoke"
+          style="--angle: 90deg;"
+        ></div>
+        <div
+          class="spoke"
+          style="--angle: 180deg;"
+        ></div>
+        <div
+          class="spoke"
+          style="--angle: 270deg;"
+        ></div>
+      </div>
+
+      <!-- 顶部舱位 - 第一名皮蛋 -->
+      <div class="cabin cabin-1">
+        <div class="rank-badge rank-1">🥇</div>
+        <img
+          src="https://raw.githubusercontent.com/your-repo/assets/main/头像-皮蛋.png"
+          alt="皮蛋"
+          class="avatar"
+        >
+        <div class="name">皮蛋</div>
+        <div class="score">123分</div>
+      </div>
+
+      <!-- 右侧舱位 - 第二名黑妞 -->
+      <div class="cabin cabin-2">
+        <div class="rank-badge rank-2">🥈</div>
+        <img
+          src="https://raw.githubusercontent.com/your-repo/assets/main/头像-黑妞.png"
+          alt="黑妞"
+          class="avatar"
+        >
+        <div class="name">黑妞</div>
+        <div class="score">100分</div>
+      </div>
+
+      <!-- 底部舱位 - 第三名宝宝 -->
+      <div class="cabin cabin-3">
+        <div class="rank-badge rank-3">🥉</div>
+        <img
+          src="https://raw.githubusercontent.com/your-repo/assets/main/头像-宝宝.png"
+          alt="宝宝"
+          class="avatar"
+        >
+        <div class="name">宝宝</div>
+        <div class="score">88分</div>
+      </div>
+
+      <!-- 左侧舱位 - 第四名小强 -->
+      <div class="cabin cabin-4">
+        <div class="rank-badge">4</div>
+        <img
+          src="https://raw.githubusercontent.com/your-repo/assets/main/头像-小强.png"
+          alt="小强"
+          class="avatar"
+        >
+        <div class="name">小强</div>
+        <div class="score">70分</div>
+      </div>
+    </div>
+
+    <!-- 其他排名 -->
+    <div class="lower-ranks">
+      <div
+        class="lower-rank-item"
+        style="animation-delay: 0.1s;"
+      >
+        <div class="lower-rank">5</div>
+        <img
+          src="https://raw.githubusercontent.com/your-repo/assets/main/头像-胖墩.png"
+          alt="胖墩"
+          class="lower-avatar"
+        >
+        <div class="lower-info">
+          <div class="lower-name">胖墩</div>
+          <div class="lower-score">50分</div>
+        </div>
+      </div>
+
+      <div
+        class="lower-rank-item"
+        style="animation-delay: 0.2s;"
+      >
+        <div class="lower-rank">6</div>
+        <img
+          src="https://raw.githubusercontent.com/your-repo/assets/main/头像-葱头.png"
+          alt="葱头"
+          class="lower-avatar"
+        >
+        <div class="lower-info">
+          <div class="lower-name">葱头</div>
+          <div class="lower-score">40分</div>
+        </div>
+      </div>
+
+      <div
+        class="lower-rank-item"
+        style="animation-delay: 0.3s;"
+      >
+        <div class="lower-rank">7</div>
+        <img
+          src="https://raw.githubusercontent.com/your-repo/assets/main/头像-蓝蓝.png"
+          alt="蓝蓝"
+          class="lower-avatar"
+        >
+        <div class="lower-info">
+          <div class="lower-name">蓝蓝</div>
+          <div class="lower-score">25分</div>
+        </div>
+      </div>
+
+      <div
+        class="lower-rank-item"
+        style="animation-delay: 0.4s;"
+      >
+        <div class="lower-rank">8</div>
+        <img
+          src="https://raw.githubusercontent.com/your-repo/assets/main/头像-小乖.png"
+          alt="小乖"
+          class="lower-avatar"
+        >
+        <div class="lower-info">
+          <div class="lower-name">小乖</div>
+          <div class="lower-score">12分</div>
+        </div>
+      </div>
+
+      <div
+        class="lower-rank-item"
+        style="animation-delay: 0.5s;"
+      >
+        <div class="lower-rank">9</div>
+        <img
+          src="https://raw.githubusercontent.com/your-repo/assets/main/头像-微笑.png"
+          alt="微笑"
+          class="lower-avatar"
+        >
+        <div class="lower-info">
+          <div class="lower-name">微笑</div>
+          <div class="lower-score">3分</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* 额外的动画增强 */
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-20px) rotate(5deg);
+      }
+    }
+
+    .ferris-wheel:hover {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* 星星闪烁效果 */
+    .ferris-container::before {
+      content: '✨';
+      position: absolute;
+      top: 10%;
+      right: 20%;
+      font-size: 2rem;
+      animation: sparkle 2s ease-in-out infinite alternate;
+    }
+
+    .ferris-container::after {
+      content: '⭐';
+      position: absolute;
+      bottom: 10%;
+      left: 20%;
+      font-size: 1.5rem;
+      animation: sparkle 2.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes sparkle {
+      0% {
+        opacity: 0.5;
+        transform: scale(1);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
+
+    /* 响应式增强 */
+    @media (max-width: 480px) {
+      .ferris-title {
+        font-size: 2rem;
+      }
+
+      .ferris-container::before,
+      .ferris-container::after {
+        display: none;
+      }
+    }
+  </style>
+</body>
+
+</html>

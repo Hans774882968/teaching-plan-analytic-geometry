@@ -127,7 +127,7 @@ export default function BlogList() {
               '',
               1500,
             ]}
-            speed={50}
+            speed={30}
             wrapper="span"
             repeat={Infinity}
           />

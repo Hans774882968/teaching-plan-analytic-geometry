@@ -276,7 +276,7 @@ export default function TeachingPlanList() {
               'LLM高效生成教学资源方案探索，为学生高效探索赋能',
               1500,
             ]}
-            speed={50}
+            speed={30}
             wrapper="span"
             repeat={Infinity}
           />

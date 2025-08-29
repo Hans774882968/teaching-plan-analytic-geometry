@@ -15,7 +15,7 @@ A React-based interactive mathematics teaching plan generator that integrates Ge
 - **Build**: Vite 7 with custom plugins
 - **Testing**: Vitest
 
-## Development Commands
+## Quick Commands Reference
 
 ```bash
 # Development
@@ -27,8 +27,12 @@ bun lint --fix                # Run ESLint
 bun run test                # Run tests with Vitest
 bun run test --ui          # Run tests with UI
 bun run test --reporter=verbose # Verbose test output
-# install shadcn components
-bunx --bun shadcn@latest add breadcrumb
+
+bunx --bun shadcn@latest add [component]  # Add shadcn component
+
+# Environment
+VITE_DEPLOY_TARGET=github-pages      # For GitHub Pages
+VITE_DEPLOY_TARGET=local            # For local development
 ```
 
 ### Environment Variables
@@ -181,6 +185,80 @@ appletOnLoad: (applet) => {
 3. **Content Generation**: LLM-generated content uses standardized schemas for consistency
 4. **Code Blocks**: Custom renderer for enhanced markdown code blocks with copy/expand features
 5. **Deployment**: GitHub Pages requires special path handling and 404.html setup
+
+## Advanced Development Patterns
+
+### State Management Architecture
+- **Zustand Stores**: Uses `zustand` for global state management
+  - `settingsState.js`: UI preferences, theme settings
+  - `lessonFilterState.js`: Teaching plan filters
+  - `mathChallengesState.js`: Challenge progress tracking
+  - `filterState.js`: Blog filtering state
+
+### Component Design Patterns
+- **Schema-driven Pages**: All lesson pages use standardized config.jsx files
+- **Module SCSS**: Component-scoped styling with CSS Modules
+- **Responsive Design**: Mobile-first approach with Tailwind breakpoints
+- **Dynamic Imports**: Code splitting for lesson pages and heavy components
+
+### Build System Deep Dive
+- **Virtual Modules**: 
+  - `virtual:prompt-display`: LLM prompt management
+  - `virtual:readme-display`: README file integration
+  - `virtual:blog-data`: Blog content processing
+- **Custom Vite Plugins**:
+  - `vite-plugin-blog-data.js`: Blog metadata extraction
+  - `vite-plugin-prompt-display.js`: Prompt template management
+  - `vite-plugin-readme-display.js`: README content integration
+
+### Testing Architecture
+- **Vitest Setup**: Separate test config with React Testing Library
+- **Snapshot Testing**: GeoGebra applet code validation
+- **Mock Strategies**: 
+  - File system mocking for build scripts
+  - React component testing with JSDOM
+  - Utility function unit tests
+
+### Performance Optimizations
+- **Code Splitting**: Lesson pages loaded on-demand
+- **Asset Optimization**: GeoGebra assets served locally
+- **Image Optimization**: Responsive images with proper sizing
+- **Bundle Analysis**: Vite build analyzer for size monitoring
+
+### Content Pipeline
+- **AI Prompt Templates**: Located in `docs/新课件提示词/`
+- **Blog Processing**: Automatic metadata extraction from markdown
+- **Asset Pipeline**: README and blog assets copied to dist
+- **GeoGebra Integration**: Custom applet code collection system
+
+## File Organization Deep Dive
+
+### Core Architecture Layers
+```
+src/
+├── component/teachingPlan/    # Reusable lesson components
+│   ├── StandardPage.jsx      # Main lesson template
+│   ├── KnowledgePoint.jsx    # Content display
+│   ├── Think.jsx            # AI thinking components
+│   └── LearningPartner*      # Avatar system
+├── [lesson]/config.jsx       # Schema definition per lesson
+├── lib/                      # Utilities & helpers
+├── plugins/                  # Vite build system
+├── scripts/                  # Build-time automation
+└── mathChallenges/           # Interactive quiz system
+```
+
+### State Management Structure
+- **Global State**: Zustand stores for cross-component data
+- **Local State**: React hooks for component-specific data
+- **URL State**: React Router for navigation and filters
+- **Persistent State**: LocalStorage for user preferences
+
+### Asset Pipeline
+- **GeoGebra Assets**: `public/geogebra/` (50MB+ local hosting)
+- **Font Assets**: Custom Chinese fonts in `public/`
+- **Blog Assets**: Automatic processing from `docs/blogs/`
+- **Build Assets**: Copied via Vite plugins during build
 
 When asked to design UI & frontend interface
 When asked to design UI & frontend interface

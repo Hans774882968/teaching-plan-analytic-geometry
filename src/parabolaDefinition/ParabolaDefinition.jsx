@@ -9,16 +9,13 @@ import Section from '@/component/teachingPlan/Section';
 import KnowledgePoint from '@/component/teachingPlan/KnowledgePoint';
 import Header from '@/component/teachingPlan/Header';
 import LearningPartnerCard from '@/component/teachingPlan/LearningPartnerCard';
+import LearningPartnerImg from '@/component/teachingPlan/LearningPartnerImg';
 import Think from '@/component/teachingPlan/Think';
 import Footer from '@/component/teachingPlan/Footer';
 import QuizContainer from '@/component/QuizContainer';
 import Card from '@/component/teachingPlan/Card';
 import TPButton from '@/component/TPButton';
 import Geogebra from '@/component/Geogebra';
-
-// 导入图片
-import conanThinking from '@/assets/conan-thinking-1.png';
-import conanThumbUp from '@/assets/conan-thumb-up-1.png';
 
 // 导入配置
 import config from './config';
@@ -63,7 +60,7 @@ ${appletOnLoadCollection[config.appletOnLoadId] || ''}
               '',
               1000,
             ]}
-            speed={50}
+            speed={30}
             wrapper="span"
             repeat={Infinity}
           />
@@ -72,7 +69,13 @@ ${appletOnLoadCollection[config.appletOnLoadId] || ''}
 
       <Section>
         <LearningPartnerCard
-          imgNode={(lpStyles) => <img src={conanThinking} alt="柯南思考" className={lpStyles.conanImg} />}
+          imgNode={(lpStyles) => (
+            <LearningPartnerImg
+              lpStyles={lpStyles}
+              name={config.lpName}
+              status="thinking"
+            />
+          )}
         >
           <h2 className={styles.teachingPlanH2}>{config.welcome.title}</h2>
           <p>{config.welcome.content}</p>
@@ -154,7 +157,13 @@ ${appletOnLoadCollection[config.appletOnLoadId] || ''}
 
       <Section>
         <LearningPartnerCard
-          imgNode={(lpStyles) => <img src={conanThumbUp} alt="柯南点赞" className={lpStyles.conanImg} />}
+          imgNode={(lpStyles) => (
+            <LearningPartnerImg
+              lpStyles={lpStyles}
+              name={config.lpName}
+              status="thumbUp"
+            />
+          )}
         >
           <h2 className={styles.teachingPlanH2}>{config.summary.title}</h2>
           <p>{config.summary.content}</p>

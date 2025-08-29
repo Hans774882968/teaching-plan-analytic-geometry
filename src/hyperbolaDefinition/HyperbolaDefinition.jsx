@@ -6,13 +6,12 @@ import MarkdownRenderer from '@/component/MarkdownRenderer';
 import QuizContainer from '@/component/QuizContainer';
 import Geogebra from '@/component/Geogebra';
 import TPButton from '@/component/TPButton';
-import conanThinking from '@/assets/conan-thinking-1.png';
-import conanThumbUp from '@/assets/conan-thumb-up-1.png';
 import Section from '@/component/teachingPlan/Section';
 import KnowledgePoint from '@/component/teachingPlan/KnowledgePoint';
 import Card from '@/component/teachingPlan/Card';
 import Header from '@/component/teachingPlan/Header';
 import LearningPartnerCard from '@/component/teachingPlan/LearningPartnerCard';
+import LearningPartnerImg from '@/component/teachingPlan/LearningPartnerImg';
 import Think from '@/component/teachingPlan/Think';
 import Footer from '@/component/teachingPlan/Footer';
 import { Link } from 'react-router-dom';
@@ -58,7 +57,7 @@ ${appletOnLoadSrcCode}
               '',
               1000,
             ]}
-            speed={50}
+            speed={30}
             wrapper="span"
             repeat={Infinity}
           />
@@ -67,7 +66,13 @@ ${appletOnLoadSrcCode}
 
       <Section>
         <LearningPartnerCard
-          imgNode={(lpStyles) => <img src={conanThinking} className={lpStyles.conanImg} />}
+          imgNode={(lpStyles) => (
+            <LearningPartnerImg
+              lpStyles={lpStyles}
+              name={config.lpName}
+              status="thinking"
+            />
+          )}
         >
           <h2 className={styles.teachingPlanH2}>{config.welcome.title}</h2>
           {config.welcome.content}
@@ -146,7 +151,13 @@ ${appletOnLoadSrcCode}
 
       <Section>
         <LearningPartnerCard
-          imgNode={(lpStyles) => <img src={conanThumbUp} className={lpStyles.conanImg} />}
+          imgNode={(lpStyles) => (
+            <LearningPartnerImg
+              lpStyles={lpStyles}
+              name={config.lpName}
+              status="thumbUp"
+            />
+          )}
         >
           <h2 className={styles.teachingPlanH2}>{config.summary.title}</h2>
           <p>{config.summary.content}</p>

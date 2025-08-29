@@ -51,6 +51,10 @@
   --quiz-incorrect-feedback-bg: rgba(255, 107, 107, 0.3);
   --quiz-incorrect-feedback-color: #7a0c2e;
 
+  --gold: #FFD700;
+  --silver: #C0C0C0;
+  --bronze: #CD7F32;
+
   --hover-scale: scale(1.02);
   --transition: all 0.3s ease;
   --title-size: 2.5rem;

@@ -1,0 +1,372 @@
+:root {
+  /* 游乐园主题色彩 */
+  --primary-ferris: #FF6B6B;
+  --secondary-ferris: #4ECDC4;
+  --accent-ferris: #45B7D1;
+  --background-ferris: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --card-bg-ferris: rgba(255, 255, 255, 0.95);
+  --text-primary: #2C3E50;
+  --text-secondary: #7F8C8D;
+  --gold: #FFD700;
+  --silver: #C0C0C0;
+  --bronze: #CD7F32;
+  --shadow-ferris: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --border-radius: 20px;
+
+  /* 动画变量 */
+  --animation-duration: 2s;
+  --bounce-easing: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: var(--background-ferris);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.ferris-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+}
+
+.ferris-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  animation: titleBounce 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleBounce {
+  0% {
+    transform: translateY(0px);
+  }
+
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+.ferris-wheel {
+  position: relative;
+  width: 350px;
+  height: 350px;
+  margin: 0 auto;
+}
+
+.wheel-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--text-primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.wheel-spokes {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  transform: translate(-50%, -50%);
+  animation: wheelRotate 10s linear infinite;
+}
+
+@keyframes wheelRotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.spoke {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 150px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform-origin: bottom;
+  transform: translate(-50%, -100%) rotate(var(--angle));
+}
+
+.cabin {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: var(--card-bg-ferris);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-ferris);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  animation: cabinFloat 3s ease-in-out infinite;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.cabin:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes cabinFloat {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.cabin-1 {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation-delay: 0s;
+}
+
+.cabin-2 {
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  animation-delay: 0.5s;
+}
+
+.cabin-3 {
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation-delay: 1s;
+}
+
+.cabin-4 {
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  animation-delay: 1.5s;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  margin-bottom: 5px;
+}
+
+.cabin-2 .avatar {
+  border-color: var(--silver);
+}
+
+.cabin-3 .avatar {
+  border-color: var(--bronze);
+}
+
+.name {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.score {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.rank-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+}
+
+.rank-1 {
+  background: var(--gold);
+  animation: sparkle 1s ease-in-out infinite alternate;
+}
+
+.rank-2 {
+  background: var(--silver);
+  animation: sparkle 1.2s ease-in-out infinite alternate;
+}
+
+.rank-3 {
+  background: var(--bronze);
+  animation: sparkle 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes sparkle {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  }
+
+  100% {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+  }
+}
+
+.clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  animation: cloudFloat 20s ease-in-out infinite;
+}
+
+.cloud:nth-child(1) {
+  width: 100px;
+  height: 40px;
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.cloud:nth-child(2) {
+  width: 80px;
+  height: 30px;
+  top: 60%;
+  right: 15%;
+  animation-delay: 5s;
+}
+
+@keyframes cloudFloat {
+
+  0%,
+  100% {
+    transform: translateX(0px);
+  }
+
+  50% {
+    transform: translateX(30px);
+  }
+}
+
+.lower-ranks {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.lower-rank-item {
+  display: flex;
+  align-items: center;
+  background: var(--card-bg-ferris);
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: var(--shadow-ferris);
+  transition: all 0.3s ease;
+  animation: slideInUp 0.5s ease-out;
+}
+
+.lower-rank-item:hover {
+  transform: translateX(10px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes slideInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lower-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  margin-right: 15px;
+  border: 2px solid var(--text-secondary);
+}
+
+.lower-info {
+  flex: 1;
+}
+
+.lower-name {
+  font-weight: bold;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.lower-score {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.lower-rank {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--accent-ferris);
+  margin-left: auto;
+}
+
+@media (max-width: 480px) {
+  .ferris-container {
+    padding: 10px;
+  }
+
+  .ferris-wheel {
+    width: 280px;
+    height: 280px;
+  }
+
+  .wheel-spokes {
+    width: 240px;
+    height: 240px;
+  }
+
+  .cabin {
+    width: 65px;
+    height: 65px;
+  }
+
+  .avatar {
+    width: 30px;
+    height: 30px;
+  }
+}

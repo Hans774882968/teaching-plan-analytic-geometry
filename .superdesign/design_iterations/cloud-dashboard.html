@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>☁️ 天空云朵数据仪表盘</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React & ReactDOM CDN -->
+  <script
+    crossorigin
+    src="https://unpkg.com/react@18/umd/react.development.js"
+  ></script>
+  <script
+    crossorigin
+    src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+  ></script>
+  <!-- Babel Standalone（浏览器里编译 JSX） -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <link
+    rel="stylesheet"
+    href="cloud-dashboard.css"
+  >
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-blue-100">
+  <div id="root"></div>
+
+  <!-- JSX 代码 -->
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    /* ============ 模拟数据 ============ */
+    const mockData = {
+      totalBlogs: 42,
+      totalTags: 28,
+      totalWords: 156789,
+      monthlyTrend: [
+        { day: 1, count: 2 },
+        { day: 2, count: 0 },
+        { day: 3, count: 1 },
+        { day: 4, count: 3 },
+        { day: 5, count: 2 },
+        { day: 6, count: 0 },
+        { day: 7, count: 1 },
+        { day: 8, count: 4 },
+        { day: 9, count: 2 },
+        { day: 10, count: 3 },
+      ],
+      topTags: [
+        { tag: '数学', count: 15 },
+        { tag: '几何', count: 12 },
+        { tag: '代数', count: 10 },
+        { tag: '函数', count: 8 },
+        { tag: '方程', count: 6 },
+      ],
+      longestBlogs: [
+        { title: '25年济南一模递增数列压轴：中等数学原题', length: 2847 },
+        { title: '若正实数a、b满足4a2+9b2=1，求12ab除以2a+3b-1的最大值', length: 2156 },
+        { title: '过椭圆上一点作两条互相垂直的直线分别交椭圆于A和B，求证AB过定点', length: 1987 },
+        { title: '解方程：sqrt(x-1)+sqrt(2x-3)+sqrt(3x-5)+sqrt(4x-7)=5x-6', length: 1823 },
+        { title: '已知e的x次方减mx有两个零点，求证：x1+x2大于2', length: 1654 },
+      ],
+      mostTaggedBlogs: [
+        { title: '25年济南一模递增数列压轴：中等数学原题', count: 8 },
+        { title: '若正实数a、b满足4a2+9b2=1，求12ab除以2a+3b-1的最大值', count: 6 },
+        { title: '过椭圆上一点作两条互相垂直的直线分别交椭圆于A和B，求证AB过定点', count: 5 },
+        { title: '解方程：sqrt(x-1)+sqrt(2x-3)+sqrt(3x-5)+sqrt(4x-7)=5x-6', count: 4 },
+        { title: '已知e的x次方减mx有两个零点，求证：x1+x2大于2', count: 4 },
+      ],
+      longestTitles: [
+        { title: '若正实数a、b满足4a2+9b2=1，求12ab除以2a+3b-1的最大值', length: 32 },
+        { title: '25年济南一模递增数列压轴：中等数学原题', length: 28 },
+        { title: '过椭圆上一点作两条互相垂直的直线分别交椭圆于A和B，求证AB过定点', length: 26 },
+        { title: '解方程：sqrt(x-1)+sqrt(2x-3)+sqrt(3x-5)+sqrt(4x-7)=5x-6', length: 24 },
+        { title: '已知e的x次方减mx有两个零点，求证：x1+x2大于2', length: 23 },
+      ],
+    };
+
+    /* ============ 组件 ============ */
+    const StatCard = ({ icon, title, value, color, animationDelay = 0 }) => {
+      const getAnimationIcon = () => {
+        switch (icon) {
+          case '📊': return <div className="text-4xl cloud-counter" style={{ animationDelay: `${animationDelay}s` }}>☁️</div>;
+          case '🏷️': return <div className="text-4xl rain-drop" style={{ animationDelay: `${animationDelay}s` }}>💧</div>;
+          case '📝': return <div className="text-4xl windmill" style={{ animationDelay: `${animationDelay}s` }}>🌀</div>;
+          default: return <div className="text-4xl">{icon}</div>;
+        }
+      };
+      return (
+        <div className="stat-card bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-blue-100" style={{ animationDelay: `${animationDelay}s` }}>
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>
+              <p className={`text-3xl font-bold ${color}`}>{value}</p>
+            </div>
+            <div className="text-blue-500">{getAnimationIcon()}</div>
+          </div>
+        </div>
+      );
+    };
+
+    const CloudChart = ({ title, children, animationDelay = 0 }) => (
+      <div className="cloud-chart bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg" style={{ animationDelay: `${animationDelay}s` }}>
+        <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">☁️ {title}</h3>
+        {children}
+      </div>
+    );
+
+    const SimpleBarChart = ({ data, maxValue, color = 'bg-blue-400' }) => {
+      const maxBarHeight = 200;
+      return (
+        <div className="flex items-end justify-between h-52 space-x-2">
+          {data.map((item, index) => {
+            const barHeight = (item.count / maxValue) * maxBarHeight;
+            return (
+              <div key={index} className="flex-1 flex flex-col items-center">
+                <div className={`${color} rounded-t-lg chart-bar transition-all duration-300 hover:opacity-80`} style={{ height: `${barHeight}px`, animationDelay: `${index * 0.1}s` }}></div>
+                <div className="text-xs text-gray-600 mt-2 text-center">
+                  <div>{item.day}</div>
+                  <div className="font-semibold">{item.count}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      );
+    };
+
+    const TagCloud = ({ tags }) => {
+      const maxCount = Math.max(...tags.map(tag => tag.count));
+      return (
+        <div className="flex flex-wrap gap-2 justify-center">
+          {tags.map((tag, index) => {
+            const size = Math.max(12, (tag.count / maxCount) * 24);
+            const opacity = Math.max(0.6, tag.count / maxCount);
+            return (
+              <span key={index} className="inline-block px-3 py-1 rounded-full text-white font-medium transition-all duration-300 hover:scale-110" style={{ backgroundColor: `rgba(59, 130, 246, ${opacity})`, fontSize: `${size}px`, animationDelay: `${index * 0.1}s` }}>
+                {tag.tag} <span className="ml-1 text-xs">({tag.count})</span>
+              </span>
+            );
+          })}
+        </div>
+      );
+    };
+
+    const RainbowRanking = ({ title, items, type = 'text', animationDelay = 0 }) => {
+      const getDisplayValue = (item) => {
+        switch (type) {
+          case 'length': return `${item.length} 字`;
+          case 'count': return `${item.count} 个`;
+          default: return '';
+        }
+      };
+      const getRankIcon = (index) => {
+        switch (index) {
+          case 0: return '🥇';
+          case 1: return '🥈';
+          case 2: return '🥉';
+          default: return `${index + 1}`;
+        }
+      };
+      return (
+        <div className="space-y-3">
+          <h4 className="text-lg font-semibold text-gray-700 mb-3">{title}</h4>
+          {items.map((item, index) => (
+            <div key={index} className="rainbow-item bg-white/70 rounded-xl p-4 border border-blue-100 cursor-pointer" style={{ animationDelay: `${animationDelay + index * 0.1}s` }}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <span className="text-2xl">{getRankIcon(index)}</span>
+                  <div className="flex-1">
+                    <h5 className="font-medium text-gray-800 truncate max-w-xs">{item.title}</h5>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-lg font-bold text-blue-600">{getDisplayValue(item)}</div>
+                  {type === 'length' && <div className="text-xs text-gray-500">{Math.round(item.length / 1000 * 10) / 10}k 字</div>}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    /* ============ 主页面 ============ */
+    const CloudDashboard = () => {
+      const [selectedMonth, setSelectedMonth] = useState('2024-01');
+      const [loading, setLoading] = useState(false);
+
+      useEffect(() => {
+        setLoading(true);
+        const timer = setTimeout(() => setLoading(false), 1000);
+        return () => clearTimeout(timer);
+      }, [selectedMonth]);
+
+      if (loading) {
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
+            <div className="text-center">
+              <div className="text-6xl mb-4 animate-bounce">☁️</div>
+              <p className="text-xl text-blue-600">正在加载云朵数据...</p>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 relative overflow-hidden">
+          {/* 背景云朵 */}
+          <div className="cloud-bg cloud-bg-1"></div>
+          <div className="cloud-bg cloud-bg-2"></div>
+          <div className="cloud-bg cloud-bg-3"></div>
+
+          <div className="container mx-auto px-4 py-8 relative z-10">
+            {/* 标题 */}
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold text-gray-800 mb-2">☁️ 天空云朵数据仪表盘</h1>
+              <p className="text-gray-600">探索你的博客数据在云端的表现</p>
+            </div>
+
+            {/* 月份选择器 */}
+            <div className="mb-8 flex justify-center">
+              <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}
+                className="bg-white/90 backdrop-blur-sm border border-blue-200 rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <option value="2024-01">2024年1月</option>
+                <option value="2024-02">2024年2月</option>
+                <option value="2024-03">2024年3月</option>
+              </select>
+            </div>
+
+            {/* 统计卡片 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <StatCard icon="📊" title="总博客数" value={`${mockData.totalBlogs} 篇`} color="text-blue-600" animationDelay={0.1} />
+              <StatCard icon="🏷️" title="总标签数" value={`${mockData.totalTags} 个`} color="text-cyan-600" animationDelay={0.2} />
+              <StatCard icon="📝" title="总字数" value={`${(mockData.totalWords / 1000).toFixed(1)}k`} color="text-indigo-600" animationDelay={0.3} />
+            </div>
+
+            {/* 图表区域 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <CloudChart title="月度博客趋势" animationDelay={0.4}>
+                <SimpleBarChart data={mockData.monthlyTrend} maxValue={Math.max(...mockData.monthlyTrend.map(d => d.count))} color="bg-gradient-to-t from-blue-400 to-blue-300" />
+              </CloudChart>
+              <CloudChart title="热门标签云" animationDelay={0.5}>
+                <TagCloud tags={mockData.topTags} />
+              </CloudChart>
+            </div>
+
+            {/* 彩虹排行榜 */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <CloudChart title="最长博客排行榜" animationDelay={0.6}>
+                <RainbowRanking title="内容最丰富的博客" items={mockData.longestBlogs} type="length" animationDelay={0.7} />
+              </CloudChart>
+              <CloudChart title="标签最多排行榜" animationDelay={0.8}>
+                <RainbowRanking title="标签最丰富的博客" items={mockData.mostTaggedBlogs} type="count" animationDelay={0.9} />
+              </CloudChart>
+              <CloudChart title="标题最长排行榜" animationDelay={1.0}>
+                <RainbowRanking title="标题最长的博客" items={mockData.longestTitles} type="length" animationDelay={1.1} />
+              </CloudChart>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    /* ============ 渲染 ============ */
+    ReactDOM.render(<CloudDashboard />, document.getElementById('root'));
+  </script>
+</body>
+
+</html>

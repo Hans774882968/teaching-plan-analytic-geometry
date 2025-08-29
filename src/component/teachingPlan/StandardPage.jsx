@@ -10,11 +10,11 @@ import KnowledgePoint from '@/component/teachingPlan/KnowledgePoint';
 import Card from '@/component/teachingPlan/Card';
 import Header from '@/component/teachingPlan/Header';
 import LearningPartnerCard from '@/component/teachingPlan/LearningPartnerCard';
+import LearningPartnerImg from './LearningPartnerImg';
 import Think from '@/component/teachingPlan/Think';
 import Footer from '@/component/teachingPlan/Footer';
 import { Link } from 'react-router-dom';
 import appletOnLoadCollection from '@/appletOnLoadCollection';
-import LearningPartnerImg from './LearningPartnerImg';
 import { TypeAnimation } from 'react-type-animation';
 import GraphemeSplitter from 'grapheme-splitter';
 
@@ -67,7 +67,7 @@ ${appletOnLoadSrcCode}
                   '',
                   1000,
                 ]}
-                speed={50}
+                speed={30}
                 wrapper="span"
                 repeat={Infinity}
               />
