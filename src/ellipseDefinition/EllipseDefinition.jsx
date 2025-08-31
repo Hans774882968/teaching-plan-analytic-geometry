@@ -47,9 +47,9 @@ ${appletOnLoadCollection[config.geogebraObject.appletOnLoadId] || ''}
             splitter={(str) => splitter.splitGraphemes(str)}
             sequence={[
               '与名侦探柯南一起揭开椭圆的神秘面纱！',
-              1000,
+              3000,
               '',
-              1000,
+              3000,
             ]}
             speed={30}
             wrapper="span"

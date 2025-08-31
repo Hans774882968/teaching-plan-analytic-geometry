@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>每日一题</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+  <link
+    rel="stylesheet"
+    href="daily_question_theme.css"
+  >
+  <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes bounce {
+
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+
+      40% {
+        transform: translateY(-20px);
+      }
+
+      60% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
+        transform: translateX(-5px);
+      }
+
+      20%,
+      40%,
+      60%,
+      80% {
+        transform: translateX(5px);
+      }
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 800ms ease-out;
+    }
+
+    .slide-up {
+      animation: slideUp 600ms ease-out;
+    }
+
+    .slide-up-delay-200 {
+      animation: slideUp 600ms ease-out 200ms both;
+    }
+
+    .slide-up-delay-400 {
+      animation: slideUp 600ms ease-out 400ms both;
+    }
+
+    .slide-up-delay-600 {
+      animation: slideUp 600ms ease-out 600ms both;
+    }
+
+    .bounce {
+      animation: bounce 600ms ease-out;
+    }
+
+    .shake {
+      animation: shake 400ms ease-in-out;
+    }
+
+    .pop-in {
+      animation: popIn 400ms ease-out;
+    }
+
+    .calendar-day {
+      transition: all 200ms ease-out;
+    }
+
+    .calendar-day:hover {
+      transform: scale(1.1);
+    }
+
+    .calendar-checked {
+      background-color: var(--calendar-checked);
+      color: var(--calendar-checked-text);
+      border-radius: 50%;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .option-button {
+      transition: all 200ms ease-out;
+    }
+
+    .option-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .option-button.selected {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      transform: scale(1.02);
+    }
+
+    .submit-button {
+      transition: all 150ms ease-in-out;
+    }
+
+    .submit-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .submit-button:active {
+      transform: scale(0.95);
+    }
+
+    .tooltip {
+      opacity: 0;
+      visibility: hidden;
+      transition: all 300ms ease-out;
+    }
+
+    .tooltip-trigger:hover .tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .score-animation {
+      transition: all 600ms ease-out;
+    }
+
+    .score-animation.bounce {
+      animation: bounce 600ms ease-out;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // 励志格言数组
+    const quotes = [
+      "学习就像爬山，每一步都是向上的进步",
+      "知识是力量，坚持是成功的关键",
+      "今天的努力，是明天的收获",
+      "每天进步一点点，成就未来的自己",
+      "思考比答案更重要，过程比结果更珍贵",
+      "挑战自我，超越极限",
+      "学而时习之，不亦说乎",
+      "知识改变命运，学习成就未来",
+      "坚持不懈，金石可镂",
+      "智慧源于思考，成功源于坚持"
+    ];
+
+    // 题目类型定义
+    const QuestionType = {
+      CHOICE: 'choice',
+      FILL: 'fill'
+    };
+
+    // 模拟题库
+    const questionBank = [
+      {
+        qid: 'q001',
+        type: QuestionType.CHOICE,
+        score: 10,
+        question: String.raw`下列哪个选项是正确的？\n\n这是一个测试题目，请选择正确答案。`,
+        options: [
+          String.raw`选项A：这是第一个选项`,
+          String.raw`选项B：这是第二个选项`,
+          String.raw`选项C：这是第三个选项`,
+          String.raw`选项D：这是第四个选项`
+        ],
+        correct: 0,
+        explanation: String.raw`**正确答案是A**\n\n这是一个示例题目，用于展示每日一题的功能。\n\n- 选项A是正确的\n- 选项B、C、D都是错误的\n\n学习要点：理解题目要求，仔细分析每个选项。`
+      },
+      {
+        qid: 'q002',
+        type: QuestionType.FILL,
+        score: 15,
+        question: String.raw`请填空：\n\n2 + 2 = ____`,
+        correct: '4',
+        explanation: String.raw`**正确答案是4**\n\n这是一个简单的数学填空题。\n\n计算过程：\n\`\`\`\n2 + 2 = 4\n\`\`\`\n\n这是基础的加法运算。`
+      }
+    ];
+
+    // 计算连续签到加分
+    function calculateStreakBonus(streakDays) {
+      if (streakDays >= 61) return 30;
+      if (streakDays === 60) return 600;
+      if (streakDays >= 31) return 25;
+      if (streakDays === 30) return 300;
+      if (streakDays >= 16) return 20;
+      if (streakDays === 15) return 150;
+      if (streakDays >= 8) return 15;
+      if (streakDays === 7) return 70;
+      return 10;
+    }
+
+    // 生成日历数据
+    function generateCalendarData(year, month, checkInDates) {
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const startDate = new Date(firstDay);
+      startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+      const calendar = [];
+      const current = new Date(startDate);
+
+      for (let week = 0; week < 6; week++) {
+        const weekData = [];
+        for (let day = 0; day < 7; day++) {
+          const dateStr = current.toISOString().split('T')[0];
+          const isCurrentMonth = current.getMonth() === month;
+          const isFuture = current > new Date();
+          const isCheckedIn = checkInDates.includes(dateStr);
+
+          weekData.push({
+            date: new Date(current),
+            dateStr: dateStr,
+            day: current.getDate(),
+            isCurrentMonth: isCurrentMonth,
+            isFuture: isFuture,
+            isCheckedIn: isCheckedIn
+          });
+
+          current.setDate(current.getDate() + 1);
+        }
+        calendar.push(weekData);
+      }
+
+      return calendar;
+    }
+
+    // 标题与格言组件
+    function HeaderSection() {
+      const [currentQuote, setCurrentQuote] = useState('');
+
+      useEffect(() => {
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        setCurrentQuote(randomQuote);
+      }, []);
+
+      return (
+        <div className="bg-white rounded-lg shadow-md p-8 mb-6 fade-in">
+          <h1 className="text-3xl font-bold text-center text-gray-800 mb-4">
+            每日一题
+          </h1>
+          <p className="text-lg text-center text-gray-600 italic">
+            "{currentQuote}"
+          </p>
+        </div>
+      );
+    }
+
+    // 题目与答案组件
+    function QuestionAnswerSection({ question, onSubmit, isSubmitted, selectedAnswer, setSelectedAnswer, fillAnswer, setFillAnswer }) {
+      function renderQuestionContent() {
+        if (question.type === QuestionType.CHOICE) {
+          return (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {question.options.map((option, index) => (
+                  <button
+                    key={index}
+                    className={`option-button p-4 text-left border-2 border-gray-200 rounded-lg hover:border-blue-300 ${selectedAnswer === index ? 'selected' : ''
+                      }`}
+                    onClick={() => setSelectedAnswer(index)}
+                    disabled={isSubmitted}
+                  >
+                    <span className="font-medium mr-2">{String.fromCharCode(65 + index)}.</span>
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        } else {
+          return (
+            <div className="space-y-4">
+              <input
+                type="text"
+                className="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-blue-300 focus:outline-none"
+                placeholder="请输入答案..."
+                value={fillAnswer}
+                onChange={(e) => setFillAnswer(e.target.value)}
+                disabled={isSubmitted}
+              />
+            </div>
+          );
+        }
+      }
+
+      return (
+        <div className="bg-white rounded-lg shadow-md p-6 mb-6 slide-up">
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm text-gray-500">
+                题目 #{question.qid}
+              </span>
+              <span className="text-sm text-gray-500">
+                {question.score}分
+              </span>
+            </div>
+            <div className="text-lg text-gray-800 whitespace-pre-line mb-6">
+              {question.question}
+            </div>
+            {renderQuestionContent()}
+          </div>
+
+          <div className="space-y-4">
+            <button
+              className="submit-button w-full bg-blue-500 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              onClick={onSubmit}
+              disabled={
+                isSubmitted ||
+                (question.type === QuestionType.CHOICE && selectedAnswer === null) ||
+                (question.type === QuestionType.FILL && !fillAnswer.trim())
+              }
+            >
+              {isSubmitted ? '已提交' : '提交答案'}
+            </button>
+
+            {isSubmitted && (
+              <div className="mt-6 p-4 bg-gray-50 rounded-lg slide-up">
+                <h3 className="font-medium text-gray-800 mb-2">答案解释：</h3>
+                <div className="text-gray-600 whitespace-pre-line">
+                  {question.explanation}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // 用户状态与签到日历组件
+    function StatusCalendarSection({ score, streakDays, checkInDates, currentMonth, setCurrentMonth }) {
+      const bonusScore = calculateStreakBonus(streakDays);
+
+      const calendarData = generateCalendarData(
+        currentMonth.getFullYear(),
+        currentMonth.getMonth(),
+        checkInDates
+      );
+
+      const monthNames = [
+        '一月', '二月', '三月', '四月', '五月', '六月',
+        '七月', '八月', '九月', '十月', '十一月', '十二月'
+      ];
+
+      function changeMonth(direction) {
+        const newMonth = new Date(currentMonth);
+        newMonth.setMonth(currentMonth.getMonth() + direction);
+        setCurrentMonth(newMonth);
+      }
+
+      return (
+        <div className="bg-white rounded-lg shadow-md p-6 slide-up-delay-600">
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-lg font-medium text-gray-800">
+                当前积分: <span className="text-blue-600 score-animation">{score}</span>分
+              </div>
+              <div className="flex items-center text-lg font-medium text-gray-800">
+                连胜: {streakDays}天 (今日+{bonusScore}分)
+                <div className="tooltip-trigger relative ml-2">
+                  <i className="fas fa-question-circle text-gray-400 cursor-help"></i>
+                  <div className="tooltip absolute right-0 top-6 w-64 p-3 bg-gray-800 text-white text-sm rounded-lg shadow-lg z-10">
+                    <div className="font-medium mb-2">连续签到得分规则：</div>
+                    <div className="text-xs space-y-1">
+                      <div>• 每天签到加10分</div>
+                      <div>• 连续签到第7天，加分为70分</div>
+                      <div>• 第8到14天，每天加15分</div>
+                      <div>• 连续签到第15天，加分为150分</div>
+                      <div>• 第16到29天，每天加20分</div>
+                      <div>• 连续签到第30天，加分为300分</div>
+                      <div>• 第31到59天，每天加25分</div>
+                      <div>• 连续签到第60天，加分为600分</div>
+                      <div>• 第61天之后，每天加30分</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t pt-6">
+            <div className="flex items-center justify-between mb-4">
+              <button
+                className="p-2 hover:bg-gray-100 rounded-lg"
+                onClick={() => changeMonth(-1)}
+              >
+                <i className="fas fa-chevron-left"></i>
+              </button>
+              <h3 className="text-lg font-medium text-gray-800">
+                {currentMonth.getFullYear()}年{monthNames[currentMonth.getMonth()]}
+              </h3>
+              <button
+                className="p-2 hover:bg-gray-100 rounded-lg"
+                onClick={() => changeMonth(1)}
+              >
+                <i className="fas fa-chevron-right"></i>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-7 gap-2 text-center">
+              {['日', '一', '二', '三', '四', '五', '六'].map((day) => (
+                <div key={day} className="text-sm font-medium text-gray-500 py-2">
+                  {day}
+                </div>
+              ))}
+
+              {calendarData.map((week, weekIndex) => (
+                <React.Fragment key={weekIndex}>
+                  {week.map((day, dayIndex) => (
+                    <div
+                      key={`${weekIndex}-${dayIndex}`}
+                      className={`calendar-day py-2 text-sm ${day.isCurrentMonth ? 'text-gray-800' : 'text-gray-300'
+                        }`}
+                    >
+                      {day.isCheckedIn && day.isCurrentMonth ? (
+                        <div className="calendar-checked pop-in">
+                          {day.day}
+                        </div>
+                      ) : (
+                        <span>{day.day}</span>
+                      )}
+                    </div>
+                  ))}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // 主应用组件
+    function DailyQuestionApp() {
+      const [currentQuestion, setCurrentQuestion] = useState(null);
+      const [selectedAnswer, setSelectedAnswer] = useState(null);
+      const [fillAnswer, setFillAnswer] = useState('');
+      const [isSubmitted, setIsSubmitted] = useState(false);
+      const [score, setScore] = useState(120);
+      const [streakDays, setStreakDays] = useState(5);
+      const [checkInDates, setCheckInDates] = useState([
+        '2024-08-01', '2024-08-02', '2024-08-03', '2024-08-04', '2024-08-05'
+      ]);
+      const [currentMonth, setCurrentMonth] = useState(new Date());
+
+      useEffect(() => {
+        const randomQuestion = questionBank[Math.floor(Math.random() * questionBank.length)];
+        setCurrentQuestion(randomQuestion);
+      }, []);
+
+      function handleSubmit() {
+        if (!currentQuestion) return;
+
+        setIsSubmitted(true);
+
+        let isCorrect = false;
+        if (currentQuestion.type === QuestionType.CHOICE) {
+          isCorrect = selectedAnswer === currentQuestion.correct;
+        } else {
+          isCorrect = fillAnswer.trim() === currentQuestion.correct;
+        }
+
+        if (isCorrect) {
+          const bonusScore = calculateStreakBonus(streakDays);
+          const totalScore = currentQuestion.score + bonusScore;
+          setScore(prev => prev + totalScore);
+
+          // 添加签到记录
+          const today = new Date().toISOString().split('T')[0];
+          if (!checkInDates.includes(today)) {
+            setCheckInDates(prev => [...prev, today]);
+            setStreakDays(prev => prev + 1);
+          }
+
+          // 分数动画
+          setTimeout(() => {
+            const scoreElement = document.querySelector('.score-animation');
+            if (scoreElement) {
+              scoreElement.classList.add('bounce');
+              setTimeout(() => {
+                scoreElement.classList.remove('bounce');
+              }, 600);
+            }
+          }, 100);
+        }
+      }
+
+      if (!currentQuestion) {
+        return <div className="flex items-center justify-center min-h-screen">加载中...</div>;
+      }
+
+      return (
+        <div className="max-w-4xl mx-auto p-4">
+          <HeaderSection />
+          <QuestionAnswerSection
+            question={currentQuestion}
+            onSubmit={handleSubmit}
+            isSubmitted={isSubmitted}
+            selectedAnswer={selectedAnswer}
+            setSelectedAnswer={setSelectedAnswer}
+            fillAnswer={fillAnswer}
+            setFillAnswer={setFillAnswer}
+          />
+          <StatusCalendarSection
+            score={score}
+            streakDays={streakDays}
+            checkInDates={checkInDates}
+            currentMonth={currentMonth}
+            setCurrentMonth={setCurrentMonth}
+          />
+        </div>
+      );
+    }
+
+    // 渲染应用
+    ReactDOM.render(<DailyQuestionApp />, document.getElementById('root'));
+  </script>
+</body>
+
+</html>

@@ -13,6 +13,7 @@ import {
 import LevelComplete from './LevelComplete';
 import CountUp from 'react-countup';
 import Tag from '@/component/Tag';
+import { getQuestionScore } from '../utils';
 
 export default function Challenge() {
   const {
@@ -28,7 +29,7 @@ export default function Challenge() {
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const currentQuestion = currentLevel.quiz[currentQuestionIdx];
-  const scoreDelta = currentQuestion.score || 10;
+  const scoreDelta = getQuestionScore(currentQuestion);
   const [currentScreen, setCurrentScreen] = useState('question');
 
   const [userAnswer, setUserAnswer] = useState('');

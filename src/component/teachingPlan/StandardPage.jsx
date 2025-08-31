@@ -63,9 +63,9 @@ ${appletOnLoadSrcCode}
                 splitter={(str) => splitter.splitGraphemes(str)}
                 sequence={[
                   headerContent,
-                  1000,
+                  3000,
                   '',
-                  1000,
+                  3000,
                 ]}
                 speed={30}
                 wrapper="span"

@@ -55,6 +55,16 @@ const blogDropdown = {
       ),
       url: '/math-challenges',
     },
+    {
+      label: (
+        <>
+          <FaPuzzlePiece />
+          每日一题
+          <FaFire className="text-red-500" />
+        </>
+      ),
+      url: '/daily-question',
+    },
   ],
 };
 
@@ -254,7 +264,7 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center lg:space-x-3">
             {/* 默认字体比站酷快乐体大，默认宽度 200px 不够 */}
-            <NavDropdown items={blogDropdown.urls} navDropdownClasses="min-w-36">
+            <NavDropdown items={blogDropdown.urls} navDropdownClasses="min-w-44">
               {blogDropdown.children}
             </NavDropdown>
             <NavDropdown items={promptDisplayDropdown.urls} navDropdownClasses="min-w-54">

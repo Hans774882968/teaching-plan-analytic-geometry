@@ -36,6 +36,7 @@ import { ThemeProvider } from '@/component/theme-provider';
 import Dashboard from './dashboard/Dashboard';
 import MathChallenges from './mathChallenges/MathChallenges';
 import Challenge from './mathChallenges/challenge/Challenge';
+import DailyQuestion from './mathChallenges/dailyQuestion/DailyQuestion';
 
 const routes = [
   { path: '/', element: <TeachingPlanList /> },
@@ -67,6 +68,7 @@ const routes = [
   { path: '/dashboard', element: <Dashboard /> },
   { path: '/math-challenges', element: <MathChallenges /> },
   { path: '/math-challenge/:title', element: <Challenge /> },
+  { path: '/daily-question', element: <DailyQuestion /> },
   { path: '/404', element: <NotFound /> },
   { path: '*', element: <NotFound /> },
 ];

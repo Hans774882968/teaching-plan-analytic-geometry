@@ -53,9 +53,9 @@ ${appletOnLoadSrcCode}
             splitter={(str) => splitter.splitGraphemes(str)}
             sequence={[
               '与名侦探柯南一起探索双曲线的奥秘！',
-              1000,
+              3000,
               '',
-              1000,
+              3000,
             ]}
             speed={30}
             wrapper="span"

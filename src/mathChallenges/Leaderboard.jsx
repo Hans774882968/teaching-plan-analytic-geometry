@@ -55,6 +55,7 @@ function PlayerCard({ className, player, rank }) {
       <div className="flex-1 flex items-center overflow-hidden mr-3">
         {
           player.avatar ? (
+            // TODO: Can't perform a React state update on a component that hasn't mounted yet. This indicates that you have a side-effect in your render function that asynchronously later calls tries to update the component. Move this work to useEffect instead
             <Img
               src={player.avatar}
               alt={player.name}
@@ -92,11 +93,6 @@ function PlayerCard({ className, player, rank }) {
             >
               {player.name}
             </span>
-            {player.isCurrentUser && (
-              <span className="ml-2 text-xs bg-blue-200 text-blue-600 px-2 py-1 rounded-full">
-                我
-              </span>
-            )}
           </div>
           <div className={cn('text-xs', player.isCurrentUser ? 'text-blue-600 font-bold' : 'text-gray-500')}>
             ID: {player.id.toString().padStart(4, '0')}
@@ -146,7 +142,7 @@ export default function Leaderboard() {
     return b.id - a.id;
   });
 
-  const playerCardWidths = ['w-full', 'w-[96%]', 'w-[92%]', 'w-[88%]'];
+  const playerCardWidths = ['w-full', 'w-[97%] md:w-[96%]', 'w-[94%] md:w-[92%]', 'w-[91%] md:w-[88%]'];
 
   return (
     <TpmSection bgColor="bg-gradient-to-r from-white/70 to-white/80">

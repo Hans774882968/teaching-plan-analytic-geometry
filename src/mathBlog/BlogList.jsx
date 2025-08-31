@@ -123,9 +123,9 @@ export default function BlogList() {
           <TypeAnimation
             sequence={[
               '这里汇聚了各类足够硬核的数学博客~',
-              1500,
+              3000,
               '',
-              1500,
+              3000,
             ]}
             speed={30}
             wrapper="span"

@@ -272,9 +272,9 @@ export default function TeachingPlanList() {
           <TypeAnimation
             sequence={[
               'LLM高效生成教学资源方案探索，为教师高效教学赋能',
-              1500,
+              3000,
               'LLM高效生成教学资源方案探索，为学生高效探索赋能',
-              1500,
+              3000,
             ]}
             speed={30}
             wrapper="span"

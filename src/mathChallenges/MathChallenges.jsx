@@ -54,9 +54,9 @@ export default function MathChallenges() {
           <TypeAnimation
             sequence={[
               '闯关式巩固各个方向的数学知识',
-              1000,
+              3000,
               '',
-              1000,
+              3000,
             ]}
             speed={30}
             wrapper="span"

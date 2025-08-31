@@ -10,7 +10,7 @@ import { setupStagewise } from './21st-toolbar';
 
 window.GGB_WEB3D_NO_CACHE_BASE_PATH = getGeogebraHTML5Codebase();
 
-setupStagewise();
+setupStagewise(false);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
