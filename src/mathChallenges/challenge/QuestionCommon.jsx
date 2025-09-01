@@ -1,8 +1,9 @@
 import { motion } from 'motion/react';
 import MarkdownRenderer from '@/component/MarkdownRenderer';
-import { cn } from '@/lib/utils';
+import { cn, getRelevantBlogsMdText } from '@/lib/utils';
 import { FaInfoCircle, FaLightbulb } from 'react-icons/fa';
 import Think from '@/component/teachingPlan/Think';
+import Card from '@/component/teachingPlan/Card';
 
 export default function QuestionCommon({
   children,
@@ -13,6 +14,8 @@ export default function QuestionCommon({
   const explanationTextColor = isCorrect
     ? 'text-(--quiz-correct-feedback-color)'
     : 'text-(--quiz-incorrect-feedback-color)';
+
+  const relevantBlogsMdText = getRelevantBlogsMdText(currentQuestion.relevantBlogs);
 
   return (
     <div className="flex flex-col gap-6">
@@ -54,18 +57,31 @@ export default function QuestionCommon({
               </div>
             </div>
           </motion.div>
-          <div>
-            {
-              Array.isArray(currentQuestion.thinks) && currentQuestion.thinks.map((think, index) => {
-                return (
-                  <Think
-                    key={index}
-                    {...think}
-                  />
-                );
-              })
-            }
-          </div>
+          {
+            Array.isArray(currentQuestion.thinks) && (
+              <div>
+                {
+                  currentQuestion.thinks.map((think, index) => {
+                    return (
+                      <Think
+                        key={index}
+                        {...think}
+                      />
+                    );
+                  })
+                }
+              </div>
+            )
+          }
+          {
+            Array.isArray(currentQuestion.relevantBlogs) && (
+              <Card>
+                <MarkdownRenderer
+                  content={relevantBlogsMdText}
+                />
+              </Card>
+            )
+          }
         </>
       )}
     </div>

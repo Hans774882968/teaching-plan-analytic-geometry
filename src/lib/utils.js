@@ -150,3 +150,13 @@ export function longTextTrim(text, maxBytes = 10, suffix = '…') {
   // 如果截断后只剩空串，直接返回后缀
   return left ? chars.slice(0, left).join('') + suffix : suffix;
 }
+
+export function getRelevantBlogsMdText(relevantBlogs) {
+  if (!Array.isArray(relevantBlogs) || relevantBlogs.length === 0) return '';
+  return relevantBlogs.reduce((res, relevantBlog) => {
+    if (typeof relevantBlog === 'string') {
+      return res + `- [${relevantBlog}](${relevantBlog})\n`;
+    }
+    return res + `- [${relevantBlog.title}](${relevantBlog.url})\n`;
+  }, '### 相关博客\n\n');
+}

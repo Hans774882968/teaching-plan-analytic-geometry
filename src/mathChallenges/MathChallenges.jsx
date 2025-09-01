@@ -50,7 +50,7 @@ export default function MathChallenges() {
   return (
     <div className={basicStyles.container}>
       <TpmHeader title="🔭 数学闯关 🔥">
-        <p>
+        <p className="text-lg italic">
           <TypeAnimation
             sequence={[
               '闯关式巩固各个方向的数学知识',

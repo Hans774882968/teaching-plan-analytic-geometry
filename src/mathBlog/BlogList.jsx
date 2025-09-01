@@ -119,7 +119,7 @@ export default function BlogList() {
     <div className={basicStyles.container}>
       <Header>
         <h1 className={basicStyles.teachingPlanH1}>📚 博客列表 🔍</h1>
-        <p>
+        <p className="italic">
           <TypeAnimation
             sequence={[
               '这里汇聚了各类足够硬核的数学博客~',

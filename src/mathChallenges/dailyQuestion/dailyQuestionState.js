@@ -1,5 +1,7 @@
+import dayjs from 'dayjs';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { calculateStreakDays } from './utils';
 
 export const useDailyQuestionStore = create(
   persist(
@@ -7,24 +9,21 @@ export const useDailyQuestionStore = create(
       todayQuestion: {},
       setTodayQuestion: (question) => set({ todayQuestion: question }),
       checkInDates: [],
-      streakDays: 0,
-      setCheckInDates: (dates) => set({ checkInDates: dates }),
-      setStreakDays: (days) => set({ streakDays: days }),
+      getStreakDays: () => calculateStreakDays(get().checkInDates),
       isTodayCheckedIn: () => {
-        const today = new Date().toISOString().split('T')[0];
+        const today = dayjs().format('YYYY-MM-DD');
         return get().checkInDates.includes(today);
       },
       performCheckIn: () => set((state) => {
-        const today = new Date().toISOString().split('T')[0];
+        const today = dayjs().format('YYYY-MM-DD');
         // 避免重复签到
-        if (!state.checkInDates.includes(today)) {
-          return {
-            checkInDates: [...state.checkInDates, today],
-            streakDays: state.streakDays + 1,
-          };
+        if (state.checkInDates.includes(today)) {
+          // 如果已签到，则不改变状态
+          return state;
         }
-        // 如果已签到，则不改变状态
-        return state;
+        return {
+          checkInDates: [...state.checkInDates, today],
+        };
       }),
     }),
     {

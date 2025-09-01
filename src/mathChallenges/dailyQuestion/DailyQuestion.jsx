@@ -1,13 +1,17 @@
 import { motion } from 'motion/react';
 import basicStyles from '@/component/teachingPlan/basic.module.scss';
-import { useState, useEffect, Fragment, useRef } from 'react';
-import { FaQuestionCircle, FaChevronLeft, FaChevronRight, FaStar, FaTrophy } from 'react-icons/fa';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/component/ui/tooltip';
+import { useState, useEffect, useRef } from 'react';
+import {
+  FaQuestionCircle,
+  FaStar,
+  FaTrophy,
+  FaUser,
+} from 'react-icons/fa';
 import { Button } from '@/component/ui/button';
 import { cn } from '@/lib/utils';
 import { useMathChallengesStore } from '../mathChallengesState';
 import { useDailyQuestionStore } from './dailyQuestionState';
-import { calculateStreakBonus, generateCalendarData } from './utils';
+import { calculateStreakBonus, shouldNotifyCheckIn } from './utils';
 import TpmSection from '@/component/TpmSection';
 import TpmHeader from '@/component/TpmHeader';
 import { TypeAnimation } from 'react-type-animation';
@@ -20,6 +24,10 @@ import QuestionChoice from '../challenge/QuestionChoice';
 import QuestionFill from '../challenge/QuestionFill';
 import { getQuestionScore } from '../utils';
 import CountUp from 'react-countup';
+import Tag from '@/component/Tag';
+import { toast } from 'sonner';
+import CheckInCalendar from './CheckInCalendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/component/ui/popover';
 
 const quotes = [
   '学习就像爬山，每一步都是向上的进步',
@@ -39,7 +47,7 @@ function HeaderSection() {
 
   return (
     <TpmHeader title="🔥 每日一题 🧩">
-      <p className="text-lg text-center text-muted-foreground italic">
+      <p className="text-lg italic">
         <TypeAnimation
           sequence={[
             currentQuote.current,
@@ -64,10 +72,26 @@ function QuestionAnswerSection({
   showExplanation,
   userAnswer,
 }) {
+  const {
+    isTodayCheckedIn,
+  } = useDailyQuestionStore();
+
   if (!currentQuestion) return null;
+  const scoreDelta = getQuestionScore(currentQuestion);
+  const tagBgColor = currentQuestion.belongLevel.bgColor;
 
   return (
     <TpmSection>
+      <div className="flex flex-wrap items-center gap-4">
+        <Tag className={cn(tagBgColor, 'text-white hover:opacity-90 transition-opacity flex items-center gap-1')}>
+          <FaStar />{scoreDelta}分
+        </Tag>
+        {
+          isTodayCheckedIn() && (
+            <Tag className={cn(tagBgColor, 'text-white hover:opacity-90 transition-opacity')}>已签到</Tag>
+          )
+        }
+      </div>
       {
         currentQuestion.type === 'fill' ? (
           <QuestionFill
@@ -90,7 +114,7 @@ function QuestionAnswerSection({
       {
         !showExplanation && (
           <Button
-            className="w-full transition-all duration-150 hover:-translate-y-0.5 hover:shadow-lg active:scale-95"
+            className="w-full transition-all duration-150 hover:shadow-lg active:scale-95"
             onClick={handleSubmitAnswer}
           >
             提交
@@ -101,30 +125,20 @@ function QuestionAnswerSection({
   );
 }
 
-function StatusCalendarSection({ currentQuestion }) {
+function StatusAndCalendarSection({ currentQuestion }) {
   const {
     score,
   } = useMathChallengesStore();
 
-  const [currentMonth, setCurrentMonth] = useState(dayjs());
-
   const {
-    streakDays,
     checkInDates,
+    getStreakDays,
     isTodayCheckedIn,
   } = useDailyQuestionStore();
+  const streakDays = getStreakDays();
   const bonusScore = calculateStreakBonus(streakDays + !isTodayCheckedIn());
-  const totalAddScore = getQuestionScore(currentQuestion) + bonusScore;
-
-  const calendarData = generateCalendarData(
-    currentMonth.year(),
-    currentMonth.month(),
-    checkInDates
-  );
-
-  const changeMonth = (delta) => {
-    setCurrentMonth(currentMonth.add(delta, 'month'));
-  };
+  const questionScore = getQuestionScore(currentQuestion);
+  const totalAddScore = questionScore + bonusScore;
 
   return (
     <TpmSection>
@@ -147,8 +161,20 @@ function StatusCalendarSection({ currentQuestion }) {
           </div>
           <div>
             <p className="text-lg text-green-500">连胜</p>
-            <div className="flex items-center text-lg text-green-500">
-              {streakDays}天
+            <div className="flex items-center text-2xl font-bold text-green-500">
+              <CountUp end={streakDays} />天
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center">
+          <div className="bg-purple-500 w-14 h-14 rounded-full flex items-center justify-center text-white mr-3">
+            <FaUser className="text-2xl" />
+          </div>
+          <div>
+            <p className="text-lg text-purple-500">累计签到</p>
+            <div className="flex items-center text-2xl font-bold text-purple-500">
+              <CountUp end={checkInDates.length} />天
             </div>
           </div>
         </div>
@@ -158,88 +184,44 @@ function StatusCalendarSection({ currentQuestion }) {
             <FaStar className="text-2xl" />
           </div>
           <div>
-            <p className="text-lg text-primary">今日</p>
-            <div className="flex items-center text-lg text-primary">
-              {isTodayCheckedIn() ? '已' : '可'}+{totalAddScore}分
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <FaQuestionCircle className="ml-2 text-primary cursor-help" />
-                  </TooltipTrigger>
-                  <TooltipContent className="text-sm rounded-lg shadow-lg max-w-xs">
-                    <div className="font-medium mb-2">连胜得分规则：</div>
-                    <div className="text-xs space-y-1">
-                      <div>• 第1到6天，每天签到加10分</div>
-                      <div>• 连胜第7天，加70分</div>
-                      <div>• 第8到14天，每天加15分</div>
-                      <div>• 连胜第15天，加150分</div>
-                      <div>• 第16到29天，每天加20分</div>
-                      <div>• 连胜第30天，加300分</div>
-                      <div>• 第31到59天，每天加25分</div>
-                      <div>• 连胜第60天，加600分</div>
-                      <div>• 第61天之后，每天加30分</div>
-                      <div>• 第61天之后，每隔30天赠送1000分</div>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+            <p className="text-lg text-primary">今日{isTodayCheckedIn() ? '已' : '可'}加</p>
+            <div className="flex items-center text-2xl font-bold text-primary">
+              {totalAddScore}分
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FaQuestionCircle className="ml-2 text-primary cursor-help" />
+                </PopoverTrigger>
+                <PopoverContent
+                  side="top"
+                  align="center"
+                  className="bg-primary text-primary-foreground text-sm rounded-lg shadow-lg max-w-xs"
+                >
+                  <div className="mb-1">
+                    {totalAddScore} = {questionScore} + {bonusScore}
+                  </div>
+                  <div className="mb-2">连胜得分规则：</div>
+                  <div className="text-xs space-y-1">
+                    <div>• 第1到6天，每天签到加10分</div>
+                    <div>• 连胜第7天，加70分</div>
+                    <div>• 第8到14天，每天加15分</div>
+                    <div>• 连胜第15天，加150分</div>
+                    <div>• 第16到29天，每天加20分</div>
+                    <div>• 连胜第30天，加300分</div>
+                    <div>• 第31到59天，每天加25分</div>
+                    <div>• 连胜第60天，加600分</div>
+                    <div>• 第61天之后，每天加30分</div>
+                    <div>• 第61天之后，每隔30天赠送1000分</div>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
         </div>
       </div>
 
       <Separator className="bg-(--tpm-primary)" />
-      <div className="flex items-center justify-between">
-        <Button
-          variant="outline"
-          size="icon"
-          className="cursor-pointer hover:text-(--tpm-primary)"
-          onClick={() => changeMonth(-1)}
-        >
-          <FaChevronLeft />
-        </Button>
-        <h3 className="text-lg font-medium text-foreground">
-          {currentMonth.format('YYYY年M月')}
-        </h3>
-        <Button
-          variant="outline"
-          size="icon"
-          className="cursor-pointer hover:text-(--tpm-primary)"
-          onClick={() => changeMonth(1)}
-        >
-          <FaChevronRight />
-        </Button>
-      </div>
 
-      <div className="grid grid-cols-7 gap-2">
-        {['日', '一', '二', '三', '四', '五', '六'].map((day) => (
-          <div key={day} className="flex justify-center items-center text-sm font-medium text-gray-500 py-2">
-            {day}
-          </div>
-        ))}
-
-        {calendarData.map((week, weekIndex) => (
-          <Fragment key={weekIndex}>
-            {week.map((day, dayIndex) => (
-              <div
-                key={`${weekIndex}-${dayIndex}`}
-                className={cn(
-                  'flex justify-center items-center py-2 text-sm',
-                  day.isCurrentMonth ? 'text-gray-800' : 'text-gray-300'
-                )}
-              >
-                {day.isCheckedIn && day.isCurrentMonth ? (
-                  <div className="w-8 h-8 rounded-full bg-(--tpm-primary) flex items-center justify-center text-white font-bold">
-                    {day.day}
-                  </div>
-                ) : (
-                  <span>{day.day}</span>
-                )}
-              </div>
-            ))}
-          </Fragment>
-        ))}
-      </div>
+      <CheckInCalendar />
     </TpmSection>
   );
 }
@@ -248,12 +230,13 @@ export default function DailyQuestion() {
   // 用户每天有无数次答题机会，已签到视为已回答正确
   const { score, setScore } = useMathChallengesStore();
   const {
-    streakDays,
+    getStreakDays,
     todayQuestion,
     setTodayQuestion,
     isTodayCheckedIn,
     performCheckIn,
   } = useDailyQuestionStore();
+  const streakDays = getStreakDays();
 
   const currentQuestion = useMemo(() => {
     if (!todayQuestion) return null;
@@ -263,6 +246,12 @@ export default function DailyQuestion() {
   const [userAnswer, setUserAnswer] = useState(isTodayCheckedIn() ? currentQuestion.correct : '');
   const [showExplanation, setShowExplanation] = useState(isTodayCheckedIn());
   const [isCorrect, setIsCorrect] = useState(isTodayCheckedIn() || null);
+
+  useEffect(() => {
+    if (!shouldNotifyCheckIn()) return;
+    if (isTodayCheckedIn()) return;
+    toast.info('大佬，你今天还没有签到喔qwq');
+  }, [isTodayCheckedIn]);
 
   useEffect(() => {
     if (todayQuestion && todayQuestion.date === dayjs().format('YYYY-MM-DD')) return;
@@ -280,8 +269,8 @@ export default function DailyQuestion() {
     const newIsCorrect = isAnswerCorrect(userAnswer, currentQuestion);
     setIsCorrect(newIsCorrect);
     if (!newIsCorrect) return;
-
     if (isTodayCheckedIn()) return;
+    toast.success('签到成功~');
     const currentBonusScore = calculateStreakBonus(streakDays + 1);
     const totalAddScore = getQuestionScore(currentQuestion) + currentBonusScore;
     setScore(score + totalAddScore);
@@ -303,7 +292,7 @@ export default function DailyQuestion() {
         showExplanation={showExplanation}
         userAnswer={userAnswer}
       />
-      <StatusCalendarSection
+      <StatusAndCalendarSection
         currentQuestion={currentQuestion}
       />
     </div>

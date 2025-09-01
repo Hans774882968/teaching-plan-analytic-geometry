@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export function isValidHour(value) {
   return /^(0[0-9]|1[0-9]|2[0-3])$/.test(value);
 }
@@ -170,4 +172,9 @@ export function display12HourValue(hours) {
   if (hours >= 22) return `${hours - 12}`;
   if (hours % 12 > 9) return `${hours}`;
   return `0${hours % 12}`;
+}
+
+export function isAtLeastTwoDaysBeforeNow(targetDate) {
+  const twoDaysAgo = dayjs().subtract(2, 'day');
+  return !dayjs(targetDate).isAfter(twoDaysAgo, 'day');
 }

@@ -3,12 +3,15 @@ import { motion } from 'motion/react';
 import styles from './QuizContainer.module.scss';
 import { HOVER_SCALE } from '@/common/consts';
 import Think from '@/component/teachingPlan/Think';
-import { cn } from '@/lib/utils';
+import { cn, getRelevantBlogsMdText } from '@/lib/utils';
 import MarkdownRenderer from './MarkdownRenderer';
 import { Input } from '@/component/ui/input';
 import { isAnswerCorrect } from '@/lib/quizUtils';
+import Card from './teachingPlan/Card';
 
 function QuizContainerCommon({ children, index, isCorrect, quiz, showFeedbacks }) {
+  const relevantBlogsMdText = getRelevantBlogsMdText(quiz.relevantBlogs);
+
   return (
     <motion.div
       className={styles.quizContainer}
@@ -49,18 +52,31 @@ function QuizContainerCommon({ children, index, isCorrect, quiz, showFeedbacks }
               />
             </div>
           </motion.div>
-          <div>
-            {
-              Array.isArray(quiz.thinks) && quiz.thinks.map((think, index) => {
-                return (
-                  <Think
-                    key={index}
-                    {...think}
-                  />
-                );
-              })
-            }
-          </div>
+          {
+            Array.isArray(quiz.thinks) && (
+              <div>
+                {
+                  quiz.thinks.map((think, index) => {
+                    return (
+                      <Think
+                        key={index}
+                        {...think}
+                      />
+                    );
+                  })
+                }
+              </div>
+            )
+          }
+          {
+            Array.isArray(quiz.relevantBlogs) && (
+              <Card>
+                <MarkdownRenderer
+                  content={relevantBlogsMdText}
+                />
+              </Card>
+            )
+          }
         </>
       )}
     </motion.div>

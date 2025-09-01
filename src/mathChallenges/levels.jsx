@@ -34,6 +34,16 @@ export const levels = [
   icon: levelIcons[level.title] || <FaShapes />,
 }));
 
+function processQuestions() {
+  levels.forEach((level) => {
+    level.quiz.forEach((question) => {
+      question.belongLevel = level;
+    });
+  });
+}
+
+processQuestions();
+
 export const levelsMp = levels.reduce((res, level) => {
   res[level.title] = level;
   return res;
