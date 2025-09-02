@@ -1,7 +1,16 @@
 import TeX from '@matejmazur/react-katex';
 
 export const ellipseDefinitionHQ = {
+  pageUrl: '/ellipse-hard-questions',
   title: '椭圆的定义与性质',
+  welcome: {
+    title: '🧩 知识大挑战',
+    content: '🔥 来测试一下你对椭圆的理解够不够深刻吧！',
+    backLink: {
+      url: '/ellipse-definition',
+      text: '椭圆基础知识讲解',
+    },
+  },
   category: ['圆锥曲线', '代数'],
   difficulty: '高中',
   quiz: [

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>双曲线的定义与性质 - 困难习题集</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.0.0/dist/flowbite.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="sky_blue_theme.css"
+  >
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    .animate-bounce-in {
+      animation: bounceIn 0.6s ease-out;
+    }
+
+    .animate-slide-up {
+      animation: slideUp 0.4s ease-out;
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .animate-progress {
+      animation: progressGrow 0.6s ease-out;
+    }
+
+    .animate-shake {
+      animation: shake 0.3s ease-in-out;
+    }
+
+    .animate-pulse-success {
+      animation: pulseSuccess 0.4s ease-out;
+    }
+
+    .animate-pulse-error {
+      animation: pulseError 0.3s ease-in-out;
+    }
+
+    @keyframes bounceIn {
+      0% {
+        transform: translateY(30px) scale(0.9);
+        opacity: 0;
+      }
+
+      50% {
+        transform: translateY(-10px) scale(1.05);
+      }
+
+      100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      0% {
+        transform: translateY(20px) scale(0.95);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes progressGrow {
+      0% {
+        width: 0%;
+      }
+
+      100% {
+        width: var(--progress-width);
+      }
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-8px);
+      }
+
+      75% {
+        transform: translateX(8px);
+      }
+    }
+
+    @keyframes pulseSuccess {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes pulseError {
+      0% {
+        transform: scale(1);
+      }
+
+      25% {
+        transform: scale(1.05);
+      }
+
+      75% {
+        transform: scale(0.95);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .quiz-card {
+      animation-delay: calc(var(--index) * 0.15s);
+    }
+
+    .option-item {
+      transition: all 0.2s ease;
+    }
+
+    .option-item:hover {
+      transform: translateX(4px);
+    }
+
+    .option-item.selected {
+      animation: pulseSuccess 0.3s ease-out;
+    }
+
+    .feedback-correct {
+      animation: pulseSuccess 0.4s ease-out;
+    }
+
+    .feedback-incorrect {
+      animation: pulseError 0.3s ease-in-out;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .welcome-card {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--chart-4) 100%);
+    }
+
+    .math-formula {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--muted);
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+    }
+
+    .stagger-animation {
+      animation-delay: calc(var(--stagger-delay) * 0.1s);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen">
+  <div class="container mx-auto px-4 py-8 max-w-4xl">
+    <!-- 欢迎卡片 -->
+    <div class="welcome-card animate-bounce-in text-center mb-8">
+      <h1 class="welcome-title mb-2">🧠 双曲线的定义与性质</h1>
+      <p class="welcome-description mb-4">🔥 挑战困难习题，提升数学思维！</p>
+      <div class="flex flex-wrap justify-center gap-2 mb-4">
+        <span class="category-tag">圆锥曲线</span>
+        <span class="category-tag">代数</span>
+        <span class="difficulty-badge">高中</span>
+      </div>
+      <div class="flex justify-center gap-4">
+        <button
+          class="btn-secondary animate-fade-in stagger-animation"
+          style="--stagger-delay: 2"
+        >
+          <i
+            data-lucide="arrow-left"
+            class="w-4 h-4 mr-2"
+          ></i>
+          返回基础知识
+        </button>
+        <button
+          class="btn-primary animate-fade-in stagger-animation"
+          style="--stagger-delay: 3"
+        >
+          <i
+            data-lucide="book-open"
+            class="w-4 h-4 mr-2"
+          ></i>
+          查看课件
+        </button>
+      </div>
+    </div>
+
+    <!-- 进度统计 -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6 animate-slide-up">
+      <h2 class="text-xl font-semibold mb-4 text-gray-800">📊 学习进度</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div class="text-center">
+          <div
+            class="text-2xl font-bold text-blue-600"
+            id="completed-count"
+          >0</div>
+          <div class="text-sm text-gray-600">已完成题目</div>
+        </div>
+        <div class="text-center">
+          <div
+            class="text-2xl font-bold text-green-600"
+            id="accuracy-rate"
+          >0%</div>
+          <div class="text-sm text-gray-600">正确率</div>
+        </div>
+        <div class="text-center">
+          <div
+            class="text-2xl font-bold text-purple-600"
+            id="total-score"
+          >0</div>
+          <div class="text-sm text-gray-600">总分</div>
+        </div>
+      </div>
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          style="--progress-width: 0%"
+        ></div>
+      </div>
+    </div>
+
+    <!-- 题目列表 -->
+    <div class="space-y-4">
+      <!-- 题目 1 -->
+      <div
+        class="quiz-container quiz-card animate-slide-up"
+        style="--index: 0"
+      >
+        <div class="quiz-header">
+          <span class="text-lg font-semibold">1.</span>
+          <div class="flex-1">
+            <div class="quiz-title">双曲线离心率问题</div>
+            <div class="quiz-description">10分 · 选择题</div>
+          </div>
+        </div>
+        <div class="question-content mb-4">
+          <p class="mb-2">已知双曲线 <span class="math-formula">x²/a² - y²/b² = 1 (a > 0, b > 0)</span> 的左、右焦点分别为 <span class="math-formula">F₁</span>、<span class="math-formula">F₂</span>，若在双曲线的右支上存在点 <span class="math-formula">P</span>，使得 <span class="math-formula">|PF₁| = 3|PF₂|</span>，则双曲线离心率 <span class="math-formula">e</span> 的最大值为（）</p>
+        </div>
+        <div class="options space-y-2">
+          <div
+            class="option-item"
+            onclick="selectOption(this, 0)"
+          >
+            <span>A.</span>
+            <span>√2</span>
+          </div>
+          <div
+            class="option-item"
+            onclick="selectOption(this, 1)"
+          >
+            <span>B.</span>
+            <span>2</span>
+          </div>
+          <div
+            class="option-item"
+            onclick="selectOption(this, 2)"
+          >
+            <span>C.</span>
+            <span>3</span>
+          </div>
+          <div
+            class="option-item"
+            onclick="selectOption(this, 3)"
+          >
+            <span>D.</span>
+            <span>√3</span>
+          </div>
+        </div>
+        <div
+          class="feedback-correct hidden"
+          id="feedback-1"
+        >
+          <div class="flex items-center mb-2">
+            <span class="text-2xl mr-2">✔️</span>
+            <span class="font-semibold">回答正确！</span>
+          </div>
+          <div class="explanation">
+            <p class="mb-2">解法一：通过双曲线的第二定义，把 <span class="math-formula">PF₁</span> 和 <span class="math-formula">PF₂</span> 的距离比，转为 P 到左右准线的距离比。有 <span class="math-formula">x + a²/c = 3(x - a²/c), x ≥ a</span>。解得 <span class="math-formula">c/a ≤ 2</span>。</p>
+            <p>解法二：<span class="math-formula">|PF₁| - |PF₂| = 2a, |PF₁| = 3|PF₂|</span>，解得 <span class="math-formula">|PF₂| = a</span>。于是得到边长分别为 3a, a, 2c 的三角形。令 a = 1 得，当三角形退化为线段时离心率最大为 2。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 题目 2 -->
+      <div
+        class="quiz-container quiz-card animate-slide-up"
+        style="--index: 1"
+      >
+        <div class="quiz-header">
+          <span class="text-lg font-semibold">2.</span>
+          <div class="flex-1">
+            <div class="quiz-title">双曲线离心率计算</div>
+            <div class="quiz-description">10分 · 选择题</div>
+          </div>
+        </div>
+        <div class="question-content mb-4">
+          <p class="mb-2">若双曲线 <span class="math-formula">x²/16 - y²/b² = 1 (b > 0)</span> 的一个顶点到与此顶点较远的一个焦点的距离为 9，则双曲线的离心率是（）</p>
+        </div>
+        <div class="options space-y-2">
+          <div
+            class="option-item"
+            onclick="selectOption(this, 0)"
+          >
+            <span>A.</span>
+            <span>4/3</span>
+          </div>
+          <div
+            class="option-item"
+            onclick="selectOption(this, 1)"
+          >
+            <span>B.</span>
+            <span>5/3</span>
+          </div>
+          <div
+            class="option-item"
+            onclick="selectOption(this, 2)"
+          >
+            <span>C.</span>
+            <span>5/4</span>
+          </div>
+          <div
+            class="option-item"
+            onclick="selectOption(this, 3)"
+          >
+            <span>D.</span>
+            <span>3/2</span>
+          </div>
+        </div>
+        <div
+          class="feedback-correct hidden"
+          id="feedback-2"
+        >
+          <div class="flex items-center mb-2">
+            <span class="text-2xl mr-2">✔️</span>
+            <span class="font-semibold">回答正确！</span>
+          </div>
+          <div class="explanation">
+            <p><span class="math-formula">a + c = 9, a = 4, c = 5, e = c/a = 5/4</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 题目 3 -->
+      <div
+        class="quiz-container quiz-card animate-slide-up"
+        style="--index: 2"
+      >
+        <div class="quiz-header">
+          <span class="text-lg font-semibold">3.</span>
+          <div class="flex-1">
+            <div class="quiz-title">双曲线渐近线问题</div>
+            <div class="quiz-description">10分 · 选择题</div>
+          </div>
+        </div>
+        <div class="question-content mb-4">
+          <p class="mb-2">双曲线 <span class="math-formula">x²/a² - y²/b² = 1 (a > 0, b > 0)</span> 的一条渐近线被圆 <span class="math-formula">M</span>：<span class="math-formula">(x-8)² + y² = 25</span> 截得的弦长为 6，则双曲线的离心率为（）</p>
+        </div>
+        <div class="options space-y-2">
+          <div
+            class="option-item"
+            onclick="selectOption(this, 0)"
+          >
+            <span>A.</span>
+            <span>2</span>
+          </div>
+          <div
+            class="option-item"
+            onclick="selectOption(this, 1)"
+          >
+            <span>B.</span>
+            <span>√3</span>
+          </div>
+          <div
+            class="option-item"
+            onclick="selectOption(this, 2)"
+          >
+            <span>C.</span>
+            <span>4</span>
+          </div>
+          <div
+            class="option-item"
+            onclick="selectOption(this, 3)"
+          >
+            <span>D.</span>
+            <span>2√3/3</span>
+          </div>
+        </div>
+        <div
+          class="feedback-correct hidden"
+          id="feedback-3"
+        >
+          <div class="flex items-center mb-2">
+            <span class="text-2xl mr-2">✔️</span>
+            <span class="font-semibold">回答正确！</span>
+          </div>
+          <div class="explanation">
+            <p>直线截半径为5的圆的弦长为6，由勾股定理求得直线到圆心 (8, 0) 的距离是 <span class="math-formula">√(25 - (6/2)²) = 4</span>。</p>
+            <p>双曲线的一条渐近线为 <span class="math-formula">y = (b/a)x</span>。</p>
+            <p>由点到直线的距离公式得：<span class="math-formula">8(b/a)/√(b²/a² + 1) = 4</span>。整理得 <span class="math-formula">4b² = a² + b² = c²</span>。</p>
+            <p>求得 <span class="math-formula">c²/a² = 4/3</span>。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="text-center mt-8 space-x-4">
+      <button
+        class="btn-primary animate-fade-in stagger-animation"
+        style="--stagger-delay: 4"
+        onclick="checkAllAnswers()"
+      >
+        <i
+          data-lucide="check-circle"
+          class="w-4 h-4 mr-2"
+        ></i>
+        检查答案
+      </button>
+      <button
+        class="btn-secondary animate-fade-in stagger-animation"
+        style="--stagger-delay: 5"
+        onclick="resetQuiz()"
+      >
+        <i
+          data-lucide="refresh-cw"
+          class="w-4 h-4 mr-2"
+        ></i>
+        重新开始
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // 初始化 Lucide 图标
+    lucide.createIcons();
+
+    let userAnswers = {};
+    let correctAnswers = {
+      0: 1,  // 题目1正确答案是B
+      1: 2,  // 题目2正确答案是C
+      2: 3   // 题目3正确答案是D
+    };
+
+    function selectOption(element, questionIndex) {
+      // 移除同组其他选项的选中状态
+      const container = element.closest('.quiz-container');
+      const options = container.querySelectorAll('.option-item');
+      options.forEach(opt => opt.classList.remove('selected'));
+
+      // 添加选中状态
+      element.classList.add('selected');
+      userAnswers[questionIndex] = element;
+    }
+
+    function checkAllAnswers() {
+      let correctCount = 0;
+      let totalQuestions = Object.keys(correctAnswers).length;
+
+      Object.keys(correctAnswers).forEach(questionIndex => {
+        const selectedOption = userAnswers[questionIndex];
+        const feedbackElement = document.getElementById(`feedback-${parseInt(questionIndex) + 1}`);
+
+        if (selectedOption) {
+          const optionIndex = Array.from(selectedOption.parentNode.children).indexOf(selectedOption);
+          if (optionIndex === correctAnswers[questionIndex]) {
+            feedbackElement.classList.remove('hidden');
+            feedbackElement.classList.remove('feedback-incorrect');
+            feedbackElement.classList.add('feedback-correct');
+            correctCount++;
+          } else {
+            feedbackElement.classList.remove('hidden');
+            feedbackElement.classList.remove('feedback-correct');
+            feedbackElement.classList.add('feedback-incorrect');
+            selectedOption.classList.add('animate-shake');
+            setTimeout(() => selectedOption.classList.remove('animate-shake'), 300);
+          }
+        }
+      });
+
+      // 更新进度统计
+      updateProgress(correctCount, totalQuestions);
+    }
+
+    function updateProgress(correct, total) {
+      const accuracy = Math.round((correct / total) * 100);
+      const score = correct * 10;
+
+      // 动画更新数字
+      animateNumber('completed-count', correct);
+      animateNumber('accuracy-rate', accuracy, '%');
+      animateNumber('total-score', score);
+
+      // 更新进度条
+      const progressFill = document.querySelector('.progress-fill');
+      progressFill.style.setProperty('--progress-width', `${(correct / total) * 100}%`);
+      progressFill.classList.add('animate-progress');
+    }
+
+    function animateNumber(elementId, targetValue, suffix = '') {
+      const element = document.getElementById(elementId);
+      const startValue = 0;
+      const duration = 800;
+      const startTime = performance.now();
+
+      function updateNumber(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const currentValue = Math.floor(startValue + (targetValue - startValue) * progress);
+
+        element.textContent = currentValue + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateNumber);
+        }
+      }
+
+      requestAnimationFrame(updateNumber);
+    }
+
+    function resetQuiz() {
+      // 重置所有选择
+      document.querySelectorAll('.option-item').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+
+      // 隐藏所有反馈
+      document.querySelectorAll('[id^="feedback-"]').forEach(feedback => {
+        feedback.classList.add('hidden');
+      });
+
+      // 重置进度
+      userAnswers = {};
+      updateProgress(0, 3);
+
+      // 重置进度条动画
+      const progressFill = document.querySelector('.progress-fill');
+      progressFill.classList.remove('animate-progress');
+      progressFill.style.setProperty('--progress-width', '0%');
+
+      // 重新触发动画
+      setTimeout(() => {
+        progressFill.classList.add('animate-progress');
+      }, 100);
+    }
+
+    // 页面加载完成后的初始化
+    document.addEventListener('DOMContentLoaded', function () {
+      // 初始化进度条
+      const progressFill = document.querySelector('.progress-fill');
+      progressFill.style.setProperty('--progress-width', '0%');
+
+      // 添加滚动动画
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      });
+
+      document.querySelectorAll('.quiz-container').forEach(el => {
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+
+</html>

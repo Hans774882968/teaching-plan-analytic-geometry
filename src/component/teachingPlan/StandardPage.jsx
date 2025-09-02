@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import appletOnLoadCollection from '@/appletOnLoadCollection';
 import { TypeAnimation } from 'react-type-animation';
 import GraphemeSplitter from 'grapheme-splitter';
+import { getRelevantBlogsMdText } from '@/lib/utils';
 
 const splitter = new GraphemeSplitter();
 
@@ -31,6 +32,8 @@ function Inner({ config }) {
   const headerContent = config.header.content;
 
   const [showFeedbacks, setShowFeedbacks] = useState({});
+
+  const relevantBlogsMdText = getRelevantBlogsMdText(config.relevantBlogs);
 
   const appletOnLoadCodeBlockList = useMemo(() => {
     return config.geogebraSection.geogebraList.map((geogebra) => {
@@ -189,6 +192,18 @@ ${appletOnLoadSrcCode}
           <Link to={config.quizSection.link.url}><TPButton>{config.quizSection.link.text}</TPButton></Link>
         </Card>
       </Section>
+
+      {
+        Array.isArray(config.relevantBlogs) && (
+          <Section>
+            <Card>
+              <MarkdownRenderer
+                content={relevantBlogsMdText}
+              />
+            </Card>
+          </Section>
+        )
+      }
 
       <Section>
         <LearningPartnerCard

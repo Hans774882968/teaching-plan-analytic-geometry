@@ -1,5 +1,14 @@
 export const parabolaDefinitionHQ = {
+  pageUrl: '/parabola-hard-questions',
   title: '抛物线的定义与性质',
+  welcome: {
+    title: '🧩 知识大挑战',
+    content: '🔥 来测试一下你对抛物线的理解够不够深刻吧！',
+    backLink: {
+      url: '/parabola-definition',
+      text: '抛物线基础知识讲解',
+    },
+  },
   category: ['圆锥曲线', '代数'],
   difficulty: '高中',
   quiz: [

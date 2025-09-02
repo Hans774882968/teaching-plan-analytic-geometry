@@ -75,7 +75,13 @@ export default function QuestionCommon({
           }
           {
             Array.isArray(currentQuestion.relevantBlogs) && (
-              <Card>
+              <Card
+                className={cn(
+                  'transition-colors duration-300',
+                  'border-2 border-[var(--tpm-hover-border)] hover:border-[var(--tpm-primary)]'
+                )}
+                whileHover={{ scale: 1 }}
+              >
                 <MarkdownRenderer
                   content={relevantBlogsMdText}
                 />

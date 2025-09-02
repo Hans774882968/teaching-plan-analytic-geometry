@@ -2,7 +2,16 @@ import TeX from '@matejmazur/react-katex';
 import Geogebra from '@/component/Geogebra';
 
 export const hyperbolaDefinitionHQ = {
+  pageUrl: '/hyperbola-hard-questions',
   title: '双曲线的定义与性质',
+  welcome: {
+    title: '🧩 知识大挑战',
+    content: '🔥 来测试一下你对双曲线的理解够不够深刻吧！',
+    backLink: {
+      url: '/hyperbola-definition',
+      text: '双曲线基础知识讲解',
+    },
+  },
   category: ['圆锥曲线', '代数'],
   difficulty: '高中',
   quiz: [

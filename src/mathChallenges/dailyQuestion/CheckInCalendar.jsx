@@ -14,23 +14,28 @@ function DayDisplayAsCircle({ children }) {
   );
 }
 
-function MonthPicker({ onSelectMonth }) {
+function MonthPicker({ currentYear, onSelectMonth }) {
   const months = Array.from({ length: 12 }, (_, i) => i);
 
   return (
     <div className="grid grid-cols-4 gap-2">
-      {months.map((month) => (
-        <div
-          key={month}
-          className={cn(
-            'p-4 text-sm md:text-base cursor-pointer text-center bg-white',
-            'hover:bg-primary hover:text-white transition-colors duration-300'
-          )}
-          onClick={() => onSelectMonth(month)}
-        >
-          {month + 1}月
-        </div>
-      ))}
+      {months.map((month) => {
+        const shouldHighlightMonth = dayjs().month() === month && dayjs().year() === currentYear;
+
+        return (
+          <div
+            key={month}
+            className={cn(
+              'p-4 text-sm md:text-base cursor-pointer text-center bg-white',
+              'hover:bg-primary hover:text-white transition-colors duration-300',
+              shouldHighlightMonth && 'border-2 border-primary'
+            )}
+            onClick={() => onSelectMonth(month)}
+          >
+            {month + 1}月
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -46,26 +51,37 @@ const getPageStartYear = (year, startYear) => {
   return startYear + pageIndex * 12;
 };
 
+/**
+ * 在此记录一个有趣的现象（不是bug）：
+ * 在年份选择器里，从其他页码切到含有当前年份的页码时，当前年份的边框颜色并没有从黑到蓝的过渡。
+ * 但在月份选择器里有这样的过渡。盲猜是因为月份选择器的月份文案是不变的，而年份选择器的年份文案会变化，
+ * 所以年份选择器在切换页码时会有重绘，而月份选择器没有。
+ */
 function YearPicker({ currentYear, onSelectYear }) {
   const pageStartYear = getPageStartYear(currentYear, START_YEAR);
   const years = Array.from({ length: 12 }, (_, i) => pageStartYear + i);
 
   return (
     <div className="grid grid-cols-4 gap-2">
-      {years.map((year) => (
-        <div
-          key={year}
-          className={cn(
-            'p-4 text-sm md:text-base cursor-pointer text-center bg-white',
-            'hover:bg-primary hover:text-white transition-colors duration-300'
-          )}
-          onClick={() => {
-            onSelectYear(year);
-          }}
-        >
-          {year}
-        </div>
-      ))}
+      {years.map((year) => {
+        const shouldHighlightYear = dayjs().year() === year;
+
+        return (
+          <div
+            key={year}
+            className={cn(
+              'p-4 text-sm md:text-base cursor-pointer text-center bg-white',
+              'hover:bg-primary hover:text-white transition-colors duration-300',
+              shouldHighlightYear && 'border-2 border-primary'
+            )}
+            onClick={() => {
+              onSelectYear(year);
+            }}
+          >
+            {year}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -194,9 +210,8 @@ export default function CheckInCalendar() {
 
       {viewMode === 'month' ? (
         <MonthPicker
-          year={currentMonth.year()}
+          currentYear={currentMonth.year()}
           onSelectMonth={handleSelectMonth}
-          onTitleClick={handleTitleClick}
         />
       ) : viewMode === 'year' ? (
         <YearPicker

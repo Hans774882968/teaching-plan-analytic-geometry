@@ -18,11 +18,8 @@ import PlaneVectorDefinition from './planeVectorDefinition/PlaneVectorDefinition
 import ObliqueDrawing from './solidGeometryIntro/ObliqueDrawing';
 import SpVecFundamentalTheorem from './spatialVector/SpVecFundamentalTheorem';
 import EllipseDefinition from './ellipseDefinition/EllipseDefinition';
-import EllipseHardQuestions from './ellipseDefinition/EllipseHardQuestions';
 import HyperbolaDefinition from './hyperbolaDefinition/HyperbolaDefinition';
-import HyperbolaHardQuestions from './hyperbolaDefinition/HyperbolaHardQuestions';
 import ParabolaDefinition from './parabolaDefinition/ParabolaDefinition';
-import ParabolaHardQuestions from './parabolaDefinition/ParabolaHardQuestions';
 import Layout from './component/layout/Layout';
 import PromptDisplaySchema from './promptDisplay/promptDisplaySchema';
 import PromptDisplayJsx from './promptDisplay/promptDisplayJsx';
@@ -37,6 +34,7 @@ import Dashboard from './dashboard/Dashboard';
 import MathChallenges from './mathChallenges/MathChallenges';
 import Challenge from './mathChallenges/challenge/Challenge';
 import DailyQuestion from './mathChallenges/dailyQuestion/DailyQuestion';
+import { hardQuestionsRoutes } from '@/common/hardQuestionsRoutes';
 
 const routes = [
   { path: '/', element: <TeachingPlanList /> },
@@ -56,9 +54,6 @@ const routes = [
   { path: '/ellipse-definition', element: <EllipseDefinition /> },
   { path: '/hyperbola-definition', element: <HyperbolaDefinition /> },
   { path: '/parabola-definition', element: <ParabolaDefinition /> },
-  { path: '/ellipse-hard-questions', element: <EllipseHardQuestions /> },
-  { path: '/hyperbola-hard-questions', element: <HyperbolaHardQuestions /> },
-  { path: '/parabola-hard-questions', element: <ParabolaHardQuestions /> },
   { path: '/prompt-display-schema', element: <PromptDisplaySchema /> },
   { path: '/prompt-display-jsx', element: <PromptDisplayJsx /> },
   { path: '/prompt-fast-edit', element: <PromptFastEdit /> },
@@ -69,6 +64,7 @@ const routes = [
   { path: '/math-challenges', element: <MathChallenges /> },
   { path: '/math-challenge/:title', element: <Challenge /> },
   { path: '/daily-question', element: <DailyQuestion /> },
+  ...hardQuestionsRoutes,
   { path: '/404', element: <NotFound /> },
   { path: '*', element: <NotFound /> },
 ];

@@ -180,8 +180,8 @@ $$ \log_c a = \frac{\log_d a}{\log_d c} $$
       },
     ],
     link: {
-      url: '/logarithmic/log-calculation-hard-questions',
-      text: String.raw`更难的对数运算法则练习题`,
+      url: '/logarithmic/log-function-hard-questions',
+      text: String.raw`更难的对数函数练习题`,
     },
   },
 

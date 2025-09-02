@@ -1,7 +1,5 @@
 import React from 'react';
 
-export type BlogUrlDesc = LinkItem | string;
-
 export type ThinkItem = {
   think: string; // markdown str
   answer: string; // markdown str
@@ -19,6 +17,13 @@ export type GeoGebraItem = {
   config: Record<string, any>;
   conclusion: string; // markdown str
 };
+
+export type LinkItem = {
+  url: string;
+  text: string;
+};
+
+export type BlogUrlDesc = LinkItem | string;
 
 export type QuestionType = 'choice' | 'fill';
 
@@ -45,11 +50,6 @@ export type QuizItemFill = QuizItemCommon & {
 }
 
 export type QuizItem = QuizItemChoice | QuizItemFill;
-
-export type LinkItem = {
-  url: string;
-  text: string;
-};
 
 export type LearningPartner = 'conan' | 'chitanda' | 'menhera';
 

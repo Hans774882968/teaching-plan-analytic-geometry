@@ -42,6 +42,7 @@
     "highlight.js": "^11.11.1",
     "js-beautify": "^1.15.4",
     "katex": "^0.16.22",
+    "lodash-es": "^4.17.21",
     "lucide-react": "^0.532.0",
     "marked": "^16.0.0",
     "marked-highlight": "^2.2.2",

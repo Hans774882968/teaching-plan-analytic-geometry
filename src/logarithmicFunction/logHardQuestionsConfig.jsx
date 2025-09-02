@@ -1,5 +1,14 @@
 export const logHQ = {
+  pageUrl: '/logarithmic/log-function-hard-questions',
   title: '对数函数',
+  welcome: {
+    title: '🧩 知识大挑战',
+    content: '🔥 来测试一下你对对数函数的理解够不够深刻吧！',
+    backLink: {
+      url: '/logarithmic/log-function',
+      text: '对数函数基础知识讲解',
+    },
+  },
   category: ['代数'],
   difficulty: '高中',
   quiz: [

@@ -1,7 +1,4 @@
-import { ellipseDefinitionHQ } from '@/ellipseDefinition/hardQuestionsConfig';
-import { hyperbolaDefinitionHQ } from '@/hyperbolaDefinition/hardQuestionsConfig';
-import { logHQ } from '@/logarithmicFunction/logHardQuestionsConfig';
-import { parabolaDefinitionHQ } from '@/parabolaDefinition/hardQuestionsConfig';
+import { hardQuestionsData } from '@/common/hardQuestionsData';
 import { FaChartLine, FaShapes } from 'react-icons/fa';
 
 export const levelColorList = [
@@ -23,26 +20,11 @@ export const levelIcons = {
   '对数函数': <FaChartLine />,
 };
 
-export const levels = [
-  ellipseDefinitionHQ,
-  hyperbolaDefinitionHQ,
-  parabolaDefinitionHQ,
-  logHQ,
-].map((level, index) => ({
+export const levels = hardQuestionsData.map((level, index) => ({
   ...level,
   bgColor: getLevelColorByIndex(index),
   icon: levelIcons[level.title] || <FaShapes />,
 }));
-
-function processQuestions() {
-  levels.forEach((level) => {
-    level.quiz.forEach((question) => {
-      question.belongLevel = level;
-    });
-  });
-}
-
-processQuestions();
 
 export const levelsMp = levels.reduce((res, level) => {
   res[level.title] = level;
