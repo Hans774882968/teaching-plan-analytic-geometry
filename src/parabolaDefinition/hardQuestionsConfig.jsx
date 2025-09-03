@@ -4,10 +4,12 @@ export const parabolaDefinitionHQ = {
   welcome: {
     title: '🧩 知识大挑战',
     content: '🔥 来测试一下你对抛物线的理解够不够深刻吧！',
-    backLink: {
-      url: '/parabola-definition',
-      text: '抛物线基础知识讲解',
-    },
+    backLinks: [
+      {
+        url: '/parabola-definition',
+        text: '抛物线基础知识讲解',
+      },
+    ],
   },
   category: ['圆锥曲线', '代数'],
   difficulty: '高中',

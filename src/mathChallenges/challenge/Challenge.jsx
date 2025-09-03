@@ -8,6 +8,8 @@ import QuestionFill from './QuestionFill';
 import QuestionChoice from './QuestionChoice';
 import { levels } from '../levels';
 import {
+  FaArrowLeft,
+  FaSearch,
   FaStar,
 } from 'react-icons/fa';
 import LevelComplete from './LevelComplete';
@@ -119,8 +121,9 @@ export default function Challenge() {
         <div className="flex justify-between items-center">
           <Link
             to="/math-challenges"
-            className="bg-gray-300 text-gray-700 px-5 py-2.5 rounded-xl font-semibold hover:opacity-90 transition-opacity"
+            className="group flex items-center gap-1 bg-gray-300 text-gray-700 px-5 py-2.5 rounded-xl font-semibold hover:opacity-80 transition-opacity duration-300"
           >
+            <FaArrowLeft className="w-4 h-4 group-hover:scale-x-150 group-hover:-translate-x-1 transition-scale duration-600" />
             返回
           </Link>
           {
@@ -128,11 +131,12 @@ export default function Challenge() {
               <button
                 className={cn(
                   currentLevel.bgColor,
-                  'cursor-pointer text-white px-5 py-2.5 rounded-xl font-semibold hover:opacity-90 transition-opacity'
+                  'flex items-center gap-1',
+                  'cursor-pointer text-white px-5 py-2.5 rounded-xl font-semibold hover:opacity-80 transition-opacity duration-300'
                 )}
                 onClick={handleSubmitAnswer}
               >
-                提交
+                <FaSearch />提交
               </button>
             ) : (
               <button

@@ -5,7 +5,7 @@ import { useLessonFilterStore } from './states/lessonFilterState';
 import { FILTER_STYLE, useSettingsStore } from '@/component/layout/states/settingsState';
 import MultipleSelector from '@/component/ui/multiselect';
 import NoData from '@/component/NoData';
-import { LEARNING_PARTNER_MAP } from '@/common/consts';
+import { LEARNING_PARTNER_MAP } from '@/common/learningPartnerData';
 
 export default function LearningPartnerSelector({
   learningPartners,

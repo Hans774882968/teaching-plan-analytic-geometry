@@ -24,7 +24,7 @@ import {
   genSchemaPrompt,
 } from 'virtual:prompt-display';
 import { LEARNING_PARTNER_DEFAULT_VALUE_MP } from '@/common/teachingPlanPromptData';
-import { LEARNING_PARTNER_MAP } from '@/common/consts';
+import { LEARNING_PARTNER_MAP } from '@/common/learningPartnerData';
 import { Link } from 'react-router-dom';
 import { getPromptVariablesMd } from './utils';
 import {
@@ -154,7 +154,7 @@ export default function PromptFastEdit() {
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold text-[var(--tpm-primary)] flex items-center">
               <FaKeyboard className="mr-3" />
-              编辑提示词
+              编辑区
             </h2>
             <span className="flex items-center gap-1 bg-white/60 hover:bg-white/80 text-[var(--tpm-primary)] font-bold px-3 py-1 rounded-full text-sm">
               <FaBolt />实时同步
@@ -162,10 +162,10 @@ export default function PromptFastEdit() {
           </div>
 
           <EditorWrapper
+            type="input"
             label="课件标题"
             value={values.title}
             onChange={handleInputChange('title')}
-            height={120}
           />
 
           <EditorWrapper
@@ -175,6 +175,7 @@ export default function PromptFastEdit() {
           />
 
           <EditorWrapper
+            type="textarea"
             label="文件结构"
             value={values.fileStructure}
             onChange={handleInputChange('fileStructure')}
@@ -204,6 +205,7 @@ export default function PromptFastEdit() {
           </div>
 
           <EditorWrapper
+            type="textarea"
             label="学习伙伴"
             value={values.learningPartner}
             onChange={handleInputChange('learningPartner')}
@@ -229,7 +231,7 @@ export default function PromptFastEdit() {
           <div className="flex flex-wrap items-center gap-2 justify-between">
             <h2 className="text-2xl font-bold text-[var(--tpm-primary)] flex items-center">
               <FaMagnifyingGlass className="mr-3" />
-              提示词预览
+              预览区
               <PromptUsageDocDialog />
             </h2>
             <Link

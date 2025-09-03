@@ -355,7 +355,7 @@ $$ \frac{C_7}{C_8} = \frac{10^{-7}}{10^{-8}} = 10^{1} = 10 $$
       },
     ],
     link: {
-      url: '/logarithmic/log-operation-hard-questions',
+      url: '/logarithmic/log-function-hard-questions',
       text: '更难的对数运算题',
     },
   },

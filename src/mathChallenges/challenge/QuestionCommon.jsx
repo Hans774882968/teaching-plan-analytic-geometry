@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import MarkdownRenderer from '@/component/MarkdownRenderer';
-import { cn, getRelevantBlogsMdText } from '@/lib/utils';
+import { cn, getLinkItemsMdText } from '@/lib/utils';
 import { FaInfoCircle, FaLightbulb } from 'react-icons/fa';
 import Think from '@/component/teachingPlan/Think';
 import Card from '@/component/teachingPlan/Card';
@@ -15,7 +15,7 @@ export default function QuestionCommon({
     ? 'text-(--quiz-correct-feedback-color)'
     : 'text-(--quiz-incorrect-feedback-color)';
 
-  const relevantBlogsMdText = getRelevantBlogsMdText(currentQuestion.relevantBlogs);
+  const relevantBlogsMdText = getLinkItemsMdText(currentQuestion.relevantBlogs, '### 相关博客');
 
   return (
     <div className="flex flex-col gap-6">

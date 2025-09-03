@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { Fragment, useState } from 'react';
 import { useDailyQuestionStore } from './dailyQuestionState';
-import { generateCalendarData } from './utils';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { calcNextEarnScoreDate, generateCalendarData, isStreakDayEarnScore } from './utils';
+import { FaChevronLeft, FaChevronRight, FaFlag } from 'react-icons/fa';
 import { Button } from '@/component/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -92,12 +92,19 @@ export default function CheckInCalendar() {
 
   const {
     checkInDates,
+    getStreakDays,
+    isTodayCheckedIn,
   } = useDailyQuestionStore();
+  const streakDays = getStreakDays();
+  const streakDayEarnScore = isStreakDayEarnScore(streakDays);
 
+  const nextEarnScoreDate = calcNextEarnScoreDate(streakDays, isTodayCheckedIn());
   const calendarData = generateCalendarData(
     currentMonth.year(),
     currentMonth.month(),
-    checkInDates
+    checkInDates,
+    streakDayEarnScore,
+    nextEarnScoreDate
   );
 
   const changeMonth = (delta) => {
@@ -233,7 +240,9 @@ export default function CheckInCalendar() {
             <Fragment key={weekIndex}>
               {week.map((day, dayIndex) => {
                 const ky = `${weekIndex}-${dayIndex}`;
-                const dayText = day.isToday ? '今' : day.day;
+                const dayText = day.shouldShowFlag ? <FaFlag /> : (
+                  day.isToday ? '今' : day.day
+                );
 
                 return (
                   <div

@@ -7,7 +7,7 @@ const stagewiseConfig = {
 
 // 3. Initialize the toolbar when your app starts
 // Framework-agnostic approach - call this when your app initializes
-export function setupStagewise(wannaShow) {
+export function setupStagewise(wannaShow = false) {
   // Only initialize once and only in development mode
   if (process.env.NODE_ENV === 'development' && wannaShow) {
     initToolbar(stagewiseConfig);

@@ -3,14 +3,16 @@ export type LinkItem = {
   text: string;
 };
 
+export type LessonUrlDesc = LinkItem | string;
+
 export type Welcome = {
   title: string;
   content: string;
-  backLink: LinkItem; // 导向基础知识讲解课件
+  backLinks: LessonUrlDesc[]; // 导向基础知识讲解课件
 };
 
 export type HardQuestionsPage = {
-  pageUrl: string; // welcome.backLink.url + '-hard-questions'
+  pageUrl: string; // welcome.backLinks[0].url + '-hard-questions'
   title: string;
   welcome?: Welcome;
   category: string[];

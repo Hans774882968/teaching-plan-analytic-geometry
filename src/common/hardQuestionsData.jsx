@@ -1,0 +1,50 @@
+import { logHQ } from '@/logarithmicFunction/logHardQuestionsConfig';
+import { ellipseDefinitionHQ } from '@/ellipseDefinition/hardQuestionsConfig';
+import { hyperbolaDefinitionHQ } from '@/hyperbolaDefinition/hardQuestionsConfig';
+import { parabolaDefinitionHQ } from '@/parabolaDefinition/hardQuestionsConfig';
+import { conicSectionsVFHQ1 } from '@/conicSections/vietaFormulasHQC';
+import { FaChartLine, FaShapes, FaPuzzlePiece } from 'react-icons/fa';
+
+export const levelColorList = [
+  'bg-blue-500',
+  'bg-green-500',
+  'bg-purple-500',
+  'bg-yellow-500',
+  'bg-red-500',
+];
+
+export const levelIcons = {
+  '椭圆的定义与性质': <FaShapes />,
+  '双曲线的定义与性质': <FaShapes />,
+  '抛物线的定义与性质': <FaShapes />,
+  '对数函数': <FaChartLine />,
+  '圆锥曲线与韦达定理精选题集1': <FaPuzzlePiece />,
+};
+
+export function getLevelColorByIndex(idx) {
+  return levelColorList[idx % levelColorList.length];
+}
+
+const hardQuestionsData = [
+  logHQ,
+  ellipseDefinitionHQ,
+  hyperbolaDefinitionHQ,
+  parabolaDefinitionHQ,
+  conicSectionsVFHQ1,
+].map((level, index) => ({
+  ...level,
+  bgColor: getLevelColorByIndex(index),
+  icon: levelIcons[level.title] || <FaShapes />,
+}));
+
+function processQuestions() {
+  hardQuestionsData.forEach((hq) => {
+    hq.quiz.forEach((question) => {
+      question.belongLevel = hq;
+    });
+  });
+}
+
+processQuestions();
+
+export { hardQuestionsData };

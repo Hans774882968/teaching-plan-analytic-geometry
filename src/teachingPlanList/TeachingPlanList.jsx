@@ -18,7 +18,6 @@ import NoData from '@/component/NoData';
 import { tagColorList } from '@/lib/getTagColor';
 import Card from '@/component/teachingPlan/Card';
 import {
-  LEARNING_PARTNER_MAP,
   TP_ITEMS_PER_PAGE,
   TP_PER_PAGE_OPTIONS,
 } from '@/common/consts';
@@ -33,6 +32,10 @@ import { getFilteredLessons } from './utils';
 import { Input } from '@/component/ui/input';
 import { Button } from '@/component/ui/button';
 import { TypeAnimation } from 'react-type-animation';
+import {
+  LEARNING_PARTNER_MAP,
+  LEARNING_PARTNER_TEXT_COLOR,
+} from '@/common/learningPartnerData';
 
 // 在首页用 Helmet 改标题无效，决定改 index.html 的标题
 const lessonPlans = [
@@ -86,12 +89,6 @@ const learningPartnerColors = learningPartners.reduce((learningPartnerColors, le
   return learningPartnerColors;
 }, {});
 
-const LEARNING_PARTNER_TEXT_COLOR = {
-  conan: 'text-[var(--lp-text-color-male)]',
-  chitanda: 'text-[var(--lp-text-color-female)]',
-  menhera: 'text-[var(--lp-text-color-female)]',
-};
-
 // 教案卡片组件
 function LessonCard({ lesson, index }) {
   const learningPartnerName = LEARNING_PARTNER_MAP[lesson.lpName];
@@ -105,7 +102,6 @@ function LessonCard({ lesson, index }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ scale: 1.03 }}
       className={cn(
         styles.lessonCard,
         styles.bounceInAnimation,
@@ -158,10 +154,10 @@ function LessonCard({ lesson, index }) {
         </div>
 
         <div className="flex justify-between items-center">
-          <button className="text-blue-600 hover:text-blue-800 font-medium">
-            <Link className="flex items-center" to={lesson.url}>
+          <button className="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-300">
+            <Link className="group flex items-center gap-1" to={lesson.url}>
               查看
-              <FaArrowRight className="ml-1.5 text-sm" />
+              <FaArrowRight className="text-xs group-hover:scale-x-150 group-hover:translate-x-0.75 transition-scale duration-600" />
             </Link>
           </button>
           <div className="flex">

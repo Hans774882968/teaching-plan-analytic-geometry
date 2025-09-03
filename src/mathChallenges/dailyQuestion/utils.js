@@ -4,22 +4,55 @@ import isToday from 'dayjs/plugin/isToday';
 
 dayjs.extend(isToday);
 
+export const earnScoreDays = [7, 15, 30, 60];
+
+export function streakDaysTypeJdg(streakDays) {
+  if (typeof streakDays !== 'number') throw new Error('streakDays must be a number');
+  if (streakDays < 0) throw new Error('streakDays must be a non-negative number');
+}
+
+export function isStreakDayEarnScore(streakDays) {
+  streakDaysTypeJdg(streakDays);
+  if (streakDays > earnScoreDays[earnScoreDays.length - 1]) {
+    return streakDays % 30 === 0;
+  }
+  return earnScoreDays.includes(streakDays);
+}
+
+export function calcNextEarnScoreDate(streakDays, isTodayCheckedIn) {
+  streakDaysTypeJdg(streakDays);
+  let daysNeeded = null;
+
+  if (streakDays >= earnScoreDays[earnScoreDays.length - 1]) {
+    daysNeeded = 30 - !isTodayCheckedIn - streakDays % 30;
+  } else {
+    for (const day of earnScoreDays) {
+      if (streakDays < day) {
+        daysNeeded = day - streakDays - !isTodayCheckedIn;
+        break;
+      }
+    }
+  }
+
+  const targetDate = dayjs().add(daysNeeded, 'day');
+  return targetDate;
+}
+
 // 计算连胜加分
 export function calculateStreakBonus(streakDays) {
-  if (typeof streakDays !== 'number') throw new Error('streakDays must be a number');
-  if (streakDays <= 0) throw new Error('streakDays must be a positive number');
+  streakDaysTypeJdg(streakDays);
 
-  if (streakDays >= 61) {
+  if (streakDays > earnScoreDays[earnScoreDays.length - 1]) {
     if (streakDays % 30 === 0) return 1000;
     return 30;
   }
-  if (streakDays === 60) return 600;
-  if (streakDays >= 31) return 25;
-  if (streakDays === 30) return 300;
-  if (streakDays >= 16) return 20;
-  if (streakDays === 15) return 150;
-  if (streakDays >= 8) return 15;
-  if (streakDays === 7) return 70;
+  if (streakDays === earnScoreDays[3]) return 600;
+  if (streakDays > earnScoreDays[2]) return 25;
+  if (streakDays === earnScoreDays[2]) return 300;
+  if (streakDays > earnScoreDays[1]) return 20;
+  if (streakDays === earnScoreDays[1]) return 150;
+  if (streakDays > earnScoreDays[0]) return 15;
+  if (streakDays === earnScoreDays[0]) return 70;
   return 10;
 }
 
@@ -52,7 +85,13 @@ export function shouldNotifyCheckIn() {
   return dayjs().hour() >= 22;
 }
 
-export function generateCalendarData(year, month, checkInDates) {
+export function generateCalendarData(
+  year,
+  month,
+  checkInDates,
+  streakDayEarnScore,
+  nextEarnScoreDate
+) {
   const firstDay = dayjs().year(year).month(month).date(1);
   const startDate = firstDay.startOf('week');
 
@@ -67,6 +106,9 @@ export function generateCalendarData(year, month, checkInDates) {
       const isToday = current.isToday();
       const isFuture = current.isAfter(dayjs(), 'day');
       const isCheckedIn = checkInDates.includes(dateStr);
+      const isNextEarnScoreDate = nextEarnScoreDate.isSame(current, 'day');
+      const isTodayEarnScore = isToday && streakDayEarnScore;
+      const shouldShowFlag = isNextEarnScoreDate || isTodayEarnScore;
 
       weekData.push({
         date: current.toDate(),
@@ -76,6 +118,9 @@ export function generateCalendarData(year, month, checkInDates) {
         isToday,
         isFuture,
         isCheckedIn,
+        isNextEarnScoreDate,
+        isTodayEarnScore,
+        shouldShowFlag,
       });
 
       current = current.add(1, 'day');

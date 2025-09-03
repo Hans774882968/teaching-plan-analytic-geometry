@@ -3,14 +3,14 @@ import { motion } from 'motion/react';
 import styles from './QuizContainer.module.scss';
 import { HOVER_SCALE } from '@/common/consts';
 import Think from '@/component/teachingPlan/Think';
-import { cn, getRelevantBlogsMdText } from '@/lib/utils';
+import { cn, getLinkItemsMdText } from '@/lib/utils';
 import MarkdownRenderer from './MarkdownRenderer';
 import { Input } from '@/component/ui/input';
 import { isAnswerCorrect } from '@/lib/quizUtils';
 import Card from './teachingPlan/Card';
 
 function QuizContainerCommon({ children, index, isCorrect, quiz, showFeedbacks }) {
-  const relevantBlogsMdText = getRelevantBlogsMdText(quiz.relevantBlogs);
+  const relevantBlogsMdText = getLinkItemsMdText(quiz.relevantBlogs, '### 相关博客');
 
   return (
     <motion.div

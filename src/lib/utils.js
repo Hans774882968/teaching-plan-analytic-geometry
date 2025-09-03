@@ -1,6 +1,7 @@
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { SELECT_MODES } from '../common/consts';
+import { getWebsiteBasePath } from './getWebsiteBasePath';
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -151,12 +152,14 @@ export function longTextTrim(text, maxBytes = 10, suffix = '…') {
   return left ? chars.slice(0, left).join('') + suffix : suffix;
 }
 
-export function getRelevantBlogsMdText(relevantBlogs) {
-  if (!Array.isArray(relevantBlogs) || relevantBlogs.length === 0) return '';
-  return relevantBlogs.reduce((res, relevantBlog) => {
-    if (typeof relevantBlog === 'string') {
-      return res + `- [${relevantBlog}](${relevantBlog})\n`;
+export function getLinkItemsMdText(linkItems, prefixText = '') {
+  if (!Array.isArray(linkItems) || linkItems.length === 0) return '';
+  const basePath = getWebsiteBasePath();
+  return linkItems.reduce((res, linkItem) => {
+    if (typeof linkItem === 'string') {
+      return `${res}- [${linkItem}](${linkItem})\n`;
     }
-    return res + `- [${relevantBlog.title}](${relevantBlog.url})\n`;
-  }, '### 相关博客\n\n');
+    const transformedUrl = `${basePath}${linkItem.url.slice(1)}`;
+    return `${res}- [${linkItem.text}](${transformedUrl})\n`;
+  }, prefixText ? `${prefixText}\n\n` : '');
 }

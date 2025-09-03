@@ -10,30 +10,24 @@ import KnowledgePoint from '@/component/teachingPlan/KnowledgePoint';
 import Card from '@/component/teachingPlan/Card';
 import Header from '@/component/teachingPlan/Header';
 import LearningPartnerCard from '@/component/teachingPlan/LearningPartnerCard';
-import LearningPartnerImg from './LearningPartnerImg';
+import LearningPartnerImg from '@/component/teachingPlan/LearningPartnerImg';
 import Think from '@/component/teachingPlan/Think';
 import Footer from '@/component/teachingPlan/Footer';
 import { Link } from 'react-router-dom';
 import appletOnLoadCollection from '@/appletOnLoadCollection';
 import { TypeAnimation } from 'react-type-animation';
 import GraphemeSplitter from 'grapheme-splitter';
-import { getRelevantBlogsMdText } from '@/lib/utils';
+import { getLinkItemsMdText } from '@/lib/utils';
+import { wrapStringAsParagraph } from './utils';
 
 const splitter = new GraphemeSplitter();
-
-function wrapStringAsParagraph(node) {
-  if (typeof node === 'string') {
-    return <p>{node}</p>;
-  }
-  return node;
-}
 
 function Inner({ config }) {
   const headerContent = config.header.content;
 
   const [showFeedbacks, setShowFeedbacks] = useState({});
 
-  const relevantBlogsMdText = getRelevantBlogsMdText(config.relevantBlogs);
+  const relevantBlogsMdText = getLinkItemsMdText(config.relevantBlogs, '### 相关博客');
 
   const appletOnLoadCodeBlockList = useMemo(() => {
     return config.geogebraSection.geogebraList.map((geogebra) => {

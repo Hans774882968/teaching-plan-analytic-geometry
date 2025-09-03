@@ -11,8 +11,8 @@ import { setupMockDate } from './setupMockDate';
 
 window.GGB_WEB3D_NO_CACHE_BASE_PATH = getGeogebraHTML5Codebase();
 
-setupStagewise(false);
-setupMockDate(false);
+setupStagewise();
+setupMockDate();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

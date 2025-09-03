@@ -293,9 +293,9 @@ export default function BlogList() {
 
                   <Link
                     to={`/blog/${blog.titleEncoded}`}
-                    className="flex items-center font-medium text-(--tpm-color-link) hover:text-(--tpm-color-link-hover) transition-colors">
+                    className="group flex items-center gap-1 font-medium text-(--tpm-color-link) hover:text-(--tpm-color-link-hover) transition-colors duration-300">
                     <span>阅读全文</span>
-                    <FaArrowRight className="ml-2 text-sm" />
+                    <FaArrowRight className="text-xs group-hover:scale-x-150 group-hover:translate-x-0.75 transition-scale duration-600" />
                   </Link>
                 </div>
               </div>

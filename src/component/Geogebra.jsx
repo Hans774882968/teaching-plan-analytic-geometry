@@ -8,7 +8,6 @@ const ggbHTML5Codebase = getGeogebraHTML5Codebase();
 const Geogebra = (props) => {
   const defaultProps = {
     appName: 'classic',
-    language: 'zh_CN',
     height: 600,
     showToolBar: true,
     showAlgebraInput: true,

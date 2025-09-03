@@ -4,10 +4,20 @@ export const logHQ = {
   welcome: {
     title: '🧩 知识大挑战',
     content: '🔥 来测试一下你对对数函数的理解够不够深刻吧！',
-    backLink: {
-      url: '/logarithmic/log-function',
-      text: '对数函数基础知识讲解',
-    },
+    backLinks: [
+      {
+        url: '/logarithmic/log-operation',
+        text: '《对数运算》基础知识讲解',
+      },
+      {
+        url: '/logarithmic/log-calculation',
+        text: '《对数运算法则》基础知识讲解',
+      },
+      {
+        url: '/logarithmic/log-function',
+        text: '《对数函数》基础知识讲解',
+      },
+    ],
   },
   category: ['代数'],
   difficulty: '高中',

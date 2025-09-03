@@ -95,7 +95,7 @@ const promptDisplayDropdown = {
             'px-1.5 py-0.5 rounded-md text-xs font-semibold transition-colors duration-300',
             'bg-red-400 text-white'
           )}>
-            NEW
+            上新
           </span>
         </>
       ),

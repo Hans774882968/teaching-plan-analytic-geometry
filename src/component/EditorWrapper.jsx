@@ -8,6 +8,8 @@ import { editorLightThemes } from '@/common/editorThemeOptions';
 import { useSettingsStore } from '@/component/layout/states/settingsState';
 import { cn } from '@/lib/utils';
 import useEditorFontSizeHook from '@/hooks/useEditorFontSizeHook';
+import { Input } from '@/component/ui/input';
+import { Textarea } from '@/component/ui/textarea';
 
 function EditorFieldTag({ children }) {
   return (
@@ -21,6 +23,7 @@ export default function EditorWrapper({
   value,
   onChange,
   label,
+  type = 'code-mirror',
   tags = [],
 }) {
   const { lightEditorTheme } = useSettingsStore();
@@ -38,7 +41,7 @@ export default function EditorWrapper({
     <div className={cn(
       'transition-all duration-300',
       'hover:-translate-y-1.5 hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)]',
-      'border border-[var(--prompt-fast-edit-border)] hover:border-[var(--tpm-primary)] bg-white rounded-xl shadow-lg overflow-hidden'
+      'border border-[var(--prompt-fast-edit-border)] hover:border-(--navbar-bg-start) bg-white rounded-xl shadow-lg overflow-hidden'
     )}>
       <div className="flex flex-wrap items-center gap-2 justify-between bg-gradient-to-r from-[var(--navbar-bg-start)] to-[var(--navbar-bg-end)] p-3 rounded-t-lg">
         <h3 className="text-lg text-white font-bold flex items-center">
@@ -57,14 +60,42 @@ export default function EditorWrapper({
         </div>
       </div>
       <div>
-        <CodeMirror
-          ref={editorRef}
-          style={{ fontSize: `${editorFontSize}px` }}
-          value={value}
-          onChange={onChange}
-          extensions={[markdown({ base: markdownLanguage, codeLanguages: languages })]}
-          theme={currentEditorTheme}
-        />
+        {
+          type === 'code-mirror' && (
+            <CodeMirror
+              ref={editorRef}
+              style={{ fontSize: `${editorFontSize}px` }}
+              value={value}
+              onChange={onChange}
+              extensions={[markdown({ base: markdownLanguage, codeLanguages: languages })]}
+              theme={currentEditorTheme}
+              maxHeight="600px"
+            />
+          )
+        }
+        {
+          type === 'textarea' && (
+            <Textarea
+              className="max-h-60 focus-visible:border-(--navbar-bg-start) focus-visible:ring-0 rounded-none"
+              rows={3}
+              name={label}
+              placeholder="请输入"
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+            />
+          )
+        }
+        {
+          type === 'input' && (
+            <Input
+              className="focus-visible:border-(--navbar-bg-start) focus-visible:ring-0 rounded-none"
+              name={label}
+              placeholder="请输入"
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+            />
+          )
+        }
       </div>
     </div>
   );

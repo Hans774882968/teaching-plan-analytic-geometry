@@ -21,3 +21,15 @@ export const lpMap = {
 };
 
 export const learningPartnerKeys = Object.keys(lpMap);
+
+export const LEARNING_PARTNER_TEXT_COLOR = {
+  conan: 'text-[var(--lp-text-color-male)]',
+  chitanda: 'text-[var(--lp-text-color-female)]',
+  menhera: 'text-[var(--lp-text-color-female)]',
+};
+
+export const LEARNING_PARTNER_MAP = {
+  conan: '柯南',
+  chitanda: '千反田爱瑠',
+  menhera: 'menhera酱',
+};

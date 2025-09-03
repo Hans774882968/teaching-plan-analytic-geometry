@@ -28,6 +28,7 @@ import Tag from '@/component/Tag';
 import { toast } from 'sonner';
 import CheckInCalendar from './CheckInCalendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/component/ui/popover';
+import { sample } from 'lodash-es';
 
 const quotes = [
   '学习就像爬山，每一步都是向上的进步',
@@ -43,7 +44,8 @@ const quotes = [
 ];
 
 function HeaderSection() {
-  const currentQuote = useRef(quotes[Math.floor(Math.random() * quotes.length)]);
+  const randomQuote = sample(quotes);
+  const currentQuote = useRef(randomQuote);
 
   return (
     <TpmHeader title="🔥 每日一题 🧩">
@@ -255,7 +257,7 @@ export default function DailyQuestion() {
 
   useEffect(() => {
     if (todayQuestion && todayQuestion.date === dayjs().format('YYYY-MM-DD')) return;
-    const randomQuestion = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+    const randomQuestion = sample(allQuestions);
     const newTodayQuestion = {
       qid: randomQuestion.qid,
       date: dayjs().format('YYYY-MM-DD'),

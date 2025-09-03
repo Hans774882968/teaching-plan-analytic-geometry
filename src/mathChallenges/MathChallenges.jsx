@@ -7,6 +7,7 @@ import {
   FaFire,
   FaLightbulb,
   FaMedal,
+  FaPuzzlePiece,
   FaStar,
   FaTrophy,
   FaUser,
@@ -91,7 +92,7 @@ export default function MathChallenges() {
               <FaTrophy className="text-2xl" />
             </div>
             <div>
-              <p className="text-lg text-green-500">已完成关卡</p>
+              <p className="text-lg text-green-500">完成关卡</p>
               <p className="text-2xl font-bold text-green-500">
                 <CountUp end={completedLevelsCount} />
               </p>
@@ -161,7 +162,7 @@ export default function MathChallenges() {
             borderColor="border-green-400"
             condition={has3}
             description="完成三个关卡"
-            icon={<FaFire />}
+            icon={<FaPuzzlePiece />}
             iconBgColor="bg-green-400"
             title="数学萌新"
             textColor="text-green-600"
@@ -191,7 +192,7 @@ export default function MathChallenges() {
             borderColor="border-orange-400"
             condition={has9}
             description="完成九个关卡"
-            icon={<FaFire />}
+            icon={<FaTrophy />}
             iconBgColor="bg-orange-400"
             title="数学大师"
             textColor="text-orange-600"

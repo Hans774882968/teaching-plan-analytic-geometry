@@ -1,7 +1,7 @@
 import basicStyles from '@/component/teachingPlan/basic.module.scss';
 import TpmDivInsideSection from '@/component/TpmDivInsideSection';
 import TpmSection from '@/component/TpmSection';
-import { FaRegCheckCircle, FaSearch } from 'react-icons/fa';
+import { FaArrowLeft, FaRegCheckCircle } from 'react-icons/fa';
 import { FaCircleDollarToSlot, FaCircleInfo } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { useMathChallengesStore } from '../mathChallengesState';
@@ -54,10 +54,10 @@ export default function LevelComplete({
             className={cn(
               completed ? 'bg-green-600 hover:bg-green-700' : 'bg-(--tpm-btn-primary-bg) hover:bg-(--tpm-btn-primary-hover-bg)',
               'transition-colors duration-300',
-              'flex justify-center items-center gap-2 py-3 text-white text-lg font-medium rounded-2xl'
+              'group flex justify-center items-center gap-2 py-3 text-white text-lg font-medium rounded-2xl'
             )}
           >
-            <FaSearch />
+            <FaArrowLeft className="w-5 h-5 group-hover:scale-x-150 group-hover:-translate-x-1.25 transition-scale duration-600" />
             返回闯关界面
           </Link>
         </div>
