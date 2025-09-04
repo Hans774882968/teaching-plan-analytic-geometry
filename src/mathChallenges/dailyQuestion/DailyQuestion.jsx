@@ -196,7 +196,7 @@ function StatusAndCalendarSection({ currentQuestion }) {
                 <PopoverContent
                   side="top"
                   align="center"
-                  className="bg-primary text-primary-foreground text-sm rounded-lg shadow-lg max-w-xs"
+                  className="bg-primary border-primary text-primary-foreground text-sm rounded-lg shadow-lg max-w-xs"
                 >
                   <div className="mb-1">
                     {totalAddScore} = {questionScore} + {bonusScore}

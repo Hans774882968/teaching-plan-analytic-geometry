@@ -1,5 +1,5 @@
 import { FILTER_STYLE, useSettingsStore } from './states/settingsState';
-import { FaCode, FaPaintBrush } from 'react-icons/fa';
+import { FaCode, FaPaintBrush, FaQuestionCircle } from 'react-icons/fa';
 import { FaGear } from 'react-icons/fa6';
 import { Button } from '@/component/ui/button';
 import {
@@ -22,6 +22,12 @@ import { editorLightThemes } from '@/common/editorThemeOptions';
 import { TpmCombobox } from '@/component/ui/tpm-combobox';
 import { Separator } from '@/component/ui/separator';
 import { Switch } from '@/component/ui/switch';
+import TextareaWithLength from '@/component/ui/textarea-with-length';
+import { Popover, PopoverContent, PopoverTrigger } from '@/component/ui/popover';
+import {
+  WATERMARK_TEXT_MAX_LENGTH,
+  WATERMARK_TEXT_MAX_ROWS,
+} from '@/common/consts';
 
 // TODO: TpmCombobox 从写死宽度改为 w-full 导致 Popover 宽度不再与 PopoverTrigger 一致
 export default function SettingsDialog() {
@@ -30,6 +36,8 @@ export default function SettingsDialog() {
     setFilterStyle,
     expandCode,
     setExpandCode,
+    watermarkForLessonBlog,
+    setWatermarkForLessonBlog,
     hljsTheme,
     editorFontSize,
     setHljsTheme,
@@ -108,6 +116,33 @@ export default function SettingsDialog() {
                   onCheckedChange={setExpandCode}
                 />
               </div>
+            </div>
+            <div className="sm:flex sm:items-center">
+              <label className="flex sm:justify-end items-center gap-1 font-medium mb-2 sm:mb-0 sm:w-1/3 sm:text-right sm:pr-4">
+                水印文案
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FaQuestionCircle className="cursor-help" />
+                  </PopoverTrigger>
+                  <PopoverContent
+                    side="top"
+                    align="center"
+                    className="bg-primary border-primary text-primary-foreground text-sm rounded-lg shadow-lg max-w-xs"
+                  >
+                    <div>• 目前在课件/博客页面生效</div>
+                    <div>• 留空表示无水印</div>
+                  </PopoverContent>
+                </Popover>
+              </label>
+              <TextareaWithLength
+                className="max-h-20"
+                name="水印文案"
+                placeholder="请输入"
+                maxLength={WATERMARK_TEXT_MAX_LENGTH}
+                rows={WATERMARK_TEXT_MAX_ROWS} // somehow useless
+                value={watermarkForLessonBlog}
+                onChange={(e) => setWatermarkForLessonBlog(e.target.value)}
+              />
             </div>
           </div>
 

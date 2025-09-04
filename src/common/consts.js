@@ -21,3 +21,6 @@ export const SELECT_MODES = {
 export const SELECT_MODE_ARR = Object.values(SELECT_MODES);
 
 export const DATA_HLJS_THEME = 'data-hljs-theme';
+
+export const WATERMARK_TEXT_MAX_LENGTH = 20;
+export const WATERMARK_TEXT_MAX_ROWS = 3;

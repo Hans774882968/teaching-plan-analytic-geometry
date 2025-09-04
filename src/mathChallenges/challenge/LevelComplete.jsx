@@ -8,6 +8,22 @@ import { useMathChallengesStore } from '../mathChallengesState';
 import { cn } from '@/lib/utils';
 import CountUp from 'react-countup';
 
+function CompletedCircle() {
+  return (
+    <div className="p-5 bg-green-100 rounded-full">
+      <FaRegCheckCircle className="w-20 h-20 text-green-600" />
+    </div>
+  );
+}
+
+function FinishedCircle() {
+  return (
+    <div className="p-5 bg-blue-200 rounded-full">
+      <FaCircleInfo className="w-20 h-20 text-blue-600" />
+    </div>
+  );
+}
+
 export default function LevelComplete({
   currentLevelTitle,
   score,
@@ -23,17 +39,13 @@ export default function LevelComplete({
       <TpmSection className="items-center">
         {
           completed ? (
-            <div className="p-5 bg-green-100 rounded-full">
-              <FaRegCheckCircle className="w-16 h-16 text-green-600" />
-            </div>
+            <CompletedCircle />
           ) : (
-            <div className="p-5 bg-blue-200 rounded-full">
-              <FaCircleInfo className="w-10 h-10 text-blue-600" />
-            </div>
+            <FinishedCircle />
           )
         }
 
-        <h2 className={cn('text-3xl font-bold', completed ? 'text-green-700' : 'text-blue-700')}>恭喜</h2>
+        <h2 className={cn('text-5xl font-bold', completed ? 'text-green-700' : 'text-blue-700')}>恭喜</h2>
         <p className="text-xl text-(--tpm-primary)">
           {completed ? '🎉 已通关' : '已完成'}《{currentLevelTitle}》
         </p>

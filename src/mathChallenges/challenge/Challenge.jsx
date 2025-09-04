@@ -9,6 +9,7 @@ import QuestionChoice from './QuestionChoice';
 import { levels } from '../levels';
 import {
   FaArrowLeft,
+  FaArrowRight,
   FaSearch,
   FaStar,
 } from 'react-icons/fa';
@@ -142,11 +143,13 @@ export default function Challenge() {
               <button
                 className={cn(
                   currentLevel.bgColor,
+                  'group flex items-center gap-1',
                   'cursor-pointer text-white px-5 py-2.5 rounded-xl font-semibold hover:opacity-90 transition-opacity'
                 )}
                 onClick={getNextQuestion}
               >
                 {nextQuestionBtnText}
+                <FaArrowRight className="w-4 h-4 group-hover:scale-x-150 group-hover:translate-x-1 transition-scale duration-600" />
               </button>
             )
           }

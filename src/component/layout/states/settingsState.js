@@ -19,6 +19,7 @@ export const settingsFields = {
   filterStyle: FILTER_STYLE.SELECT,
   hljsTheme: HLJS_DEFAULT_THEME.value,
   expandCode: false,
+  watermarkForLessonBlog: '',
   lightEditorTheme: EDITOR_DEFAULT_THEME,
   editorFontSize: DEFAULT_EDITOR_FONT_SIZE,
 };
@@ -30,6 +31,7 @@ export const useSettingsStore = create(
       setFilterStyle: (filterStyle) => set({ filterStyle }),
       setHljsTheme: (hljsTheme) => set({ hljsTheme }),
       setExpandCode: (expandCode) => set({ expandCode }),
+      setWatermarkForLessonBlog: (watermarkForLessonBlog) => set({ watermarkForLessonBlog }),
       setLightEditorTheme: (lightEditorTheme) => set({ lightEditorTheme }),
       setEditorFontSize: (editorFontSize) => set({ editorFontSize }),
       reset: () => set({

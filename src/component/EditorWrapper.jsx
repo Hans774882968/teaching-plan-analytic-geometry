@@ -77,7 +77,7 @@ export default function EditorWrapper({
           type === 'textarea' && (
             <Textarea
               className="max-h-60 focus-visible:border-(--navbar-bg-start) focus-visible:ring-0 rounded-none"
-              rows={3}
+              rows={3} // somehow useless
               name={label}
               placeholder="请输入"
               value={value}

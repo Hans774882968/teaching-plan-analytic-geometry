@@ -100,7 +100,6 @@ describe('calcNextEarnScoreDate', () => {
     ];
     inpArgs.forEach(([inp, isTodayCheckedIn], index) => {
       const result = calcNextEarnScoreDate(inp, isTodayCheckedIn);
-      console.log(inp, isTodayCheckedIn, result.format('YYYY-MM-DD'), ans[index]);//dbg
       expect(result.format('YYYY-MM-DD')).toBe(ans[index]);
     });
   });

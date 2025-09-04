@@ -9,10 +9,32 @@ import { FaCircleDollarToSlot } from 'react-icons/fa6';
 import { useLocation } from 'react-router-dom';
 import { useHljsTheme } from '@/hooks/useHljsTheme';
 import BackToTopButton from '../BackToTopButton';
+// TODO: 自己开发抗 DOM 修改的 hook 给水印组件用
+import Watermark from '@uiw/react-watermark';
+import { useSettingsStore } from './states/settingsState';
+import { useEffect, useState } from 'react';
+import { isLessonOrBlogUrl } from '@/lib/routeUtils';
 
 export default function Layout({ children }) {
   const { pathname } = useLocation();
   const isAtIndex = pathname === '/';
+
+  const {
+    watermarkForLessonBlog,
+  } = useSettingsStore();
+  // 给水印组件传入''，会保持变为''之前的字符串，只有传入空数组才能让它在视觉上消失（实际DOM还在）
+  const watermarkLBContent = isLessonOrBlogUrl(pathname) ? watermarkForLessonBlog.split('\n') : [];
+
+  const [watermarkGapX, setWatermarkGapX] = useState(10);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWatermarkGapX(window.innerWidth < 640 ? 10 : 50);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useHljsTheme();
 
@@ -76,7 +98,12 @@ export default function Layout({ children }) {
   return (
     <div>
       <Navbar />
-      {children}
+      <Watermark
+        content={watermarkLBContent}
+        gapX={watermarkGapX}
+      >
+        {children}
+      </Watermark>
       {!isAtIndex && floatingElements}
       <BackToTopButton />
     </div>
