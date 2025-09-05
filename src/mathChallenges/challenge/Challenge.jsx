@@ -1,5 +1,5 @@
 import basicStyles from '@/component/teachingPlan/basic.module.scss';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useMathChallengesStore } from '../mathChallengesState';
 import { Link, useParams } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -17,8 +17,23 @@ import LevelComplete from './LevelComplete';
 import CountUp from 'react-countup';
 import Tag from '@/component/Tag';
 import { getQuestionScore } from '../utils';
+import { Helmet } from 'react-helmet-async';
+import correctMp3Url from '@/assets/challenge/correct.mp3';
+import wrongMp3Url from '@/assets/challenge/wrong.mp3';
+import TpmAudio from '@/component/TpmAudio';
+import { playAudio } from './utils';
 
-export default function Challenge() {
+function onUnmountComponent(mp3Refs) {
+  mp3Refs.forEach((mp3Ref) => {
+    if (!mp3Ref.current) {
+      return;
+    }
+    mp3Ref.current.pause();
+    mp3Ref.current.currentTime = 0;
+  });
+}
+
+function Inner() {
   const {
     score,
     setScore,
@@ -45,15 +60,22 @@ export default function Challenge() {
     isCompleted(currentLevelTitle) ? '通关' : '完成关卡'
   );
 
+  const correctMp3Ref = useRef(null);
+  const wrongMp3Ref = useRef(null);
+  const mp3Refs = [correctMp3Ref, wrongMp3Ref];
+
   function handleSubmitAnswer() {
     const newIsCorrect = isAnswerCorrect(userAnswer, currentQuestion);
     setIsCorrect(newIsCorrect);
     if (newIsCorrect) {
+      playAudio(correctMp3Ref, correctMp3Url);
       if (!isScored(currentLevelTitle, currentQuestion.qid)) {
         markScored(currentLevelTitle, currentQuestion.qid);
         setScore(score + scoreDelta);
         setScoreAddition(scoreAddition + scoreDelta);
       }
+    } else {
+      playAudio(wrongMp3Ref, wrongMp3Url);
     }
     setFinishedQuestionCount(finishedQuestionCount + 1);
     setShowExplanation(true);
@@ -67,6 +89,7 @@ export default function Challenge() {
     if (currentQuestionIdx < level.quiz.length - 1) {
       setCurrentQuestionIdx(currentQuestionIdx + 1);
     } else {
+      onUnmountComponent(mp3Refs);
       setCurrentScreen('levelComplete');
     }
   }
@@ -123,6 +146,7 @@ export default function Challenge() {
           <Link
             to="/math-challenges"
             className="group flex items-center gap-1 bg-gray-300 text-gray-700 px-5 py-2.5 rounded-xl font-semibold hover:opacity-80 transition-opacity duration-300"
+            onClick={() => onUnmountComponent(mp3Refs)}
           >
             <FaArrowLeft className="w-4 h-4 group-hover:scale-x-150 group-hover:-translate-x-1 transition-scale duration-600" />
             返回
@@ -174,6 +198,22 @@ export default function Challenge() {
           )
         }
       </div>
+
+      <TpmAudio ref={correctMp3Ref} src={correctMp3Url} />
+      <TpmAudio ref={wrongMp3Ref} src={wrongMp3Url} />
     </div>
+  );
+}
+
+export default function Challenge() {
+  const { title: currentLevelTitle } = useParams();
+
+  return (
+    <>
+      <Helmet>
+        <title>闯关-《{currentLevelTitle}》</title>
+      </Helmet>
+      <Inner />
+    </>
   );
 }
