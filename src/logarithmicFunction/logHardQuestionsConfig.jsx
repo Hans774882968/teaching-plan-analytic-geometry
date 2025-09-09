@@ -49,5 +49,12 @@ export const logHQ = {
       correct: 1,
       explanation: String.raw`新分贝值 $ \beta_{\text{new}} = 10 \log_{10} \left( \frac{100I}{I_0} \right) = 10 \left[ \log_{10} 100 + \log_{10} \left( \frac{I}{I_0} \right) \right] = 10 [2 + \log_{10} (I/I_0)] = 20 + 10 \log_{10} (I/I_0) = 20 + \beta_{\text{old}} $ 。所以分贝值增加20 dB`,
     },
+    {
+      qid: '对数函数HQ-3',
+      type: 'fill',
+      question: String.raw`已知 $ a^{a^3} = 3 $ ，求 $ a^6 $`,
+      correct: '9',
+      explanation: String.raw`两边同时取对数： $ a^3 \lna = \ln3 $ ，两边同时乘3，则左边的3可以放进对数里，制造同构： $ a^3 \ln a^3 = 3 \ln3 $ 。又 $ x \lnx $ 单增，故 $ a^3 = 3 $ ，所求为9`,
+    },
   ],
 };
