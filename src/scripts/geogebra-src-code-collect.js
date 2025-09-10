@@ -7,10 +7,10 @@ import { glob } from 'glob';
 import { js_beautify } from 'js-beautify';
 import { JS_BEAUTIFY_OPTIONS } from '../common/consts';
 import chokidar from 'chokidar';
+import { CONFIG_FILES_PATTERN, shouldChokidarIgnore } from './listenerScriptUtils';
 
 const FILE_NAME = 'geogebra-src-code-collect';
 const collectionFilePath = path.resolve('src', 'appletOnLoadCollection.js');
-const CONFIG_FILES_PATTERN = 'src/**/*{config,Config}.{js,jsx}';
 
 export function getFunctionId(geogebraConfig, relativePath, functionCount) {
   const idProperty = geogebraConfig.properties.find(
@@ -236,9 +236,7 @@ export function setupWatcher() {
   console.log(`[${FILE_NAME}] Setting up file watcher...`);
 
   const watcher = chokidar.watch('src', {
-    ignored: (path, stats) => {
-      return stats?.isFile() && !['config.js', 'Config.js', 'config.jsx', 'Config.jsx'].some((v) => path.endsWith(v));
-    },
+    ignored: shouldChokidarIgnore,
     ignoreInitial: true,
     persistent: true,
   });

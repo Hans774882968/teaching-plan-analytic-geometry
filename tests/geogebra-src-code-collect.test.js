@@ -14,6 +14,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import fs from 'fs';
 import { glob } from 'glob';
 import chokidar from 'chokidar';
+import { CONFIG_FILES_PATTERN } from '@/scripts/listenerScriptUtils';
 
 // Mock external modules
 vi.mock('fs');
@@ -295,7 +296,7 @@ const config = {
       glob.mockResolvedValue(['src/file1.js', 'src/file2.jsx']);
       fs.readFileSync.mockReturnValue('const foo = { dummy: \'content\' }');
       await geogebraSrcCodeCollect();
-      expect(glob).toHaveBeenCalledWith('src/**/*{config,Config}.{js,jsx}', {
+      expect(glob).toHaveBeenCalledWith(CONFIG_FILES_PATTERN, {
         ignore: ['node_modules/**'],
       });
       expect(fs.readFileSync).toHaveBeenCalledTimes(2);
@@ -318,7 +319,7 @@ const config = {
   appletOnLoadId: 'undefined-endOfObject',
 }`);
       await geogebraSrcCodeCollect();
-      expect(glob).toHaveBeenCalledWith('src/**/*{config,Config}.{js,jsx}', {
+      expect(glob).toHaveBeenCalledWith(CONFIG_FILES_PATTERN, {
         ignore: ['node_modules/**'],
       });
       expect(fs.readFileSync).toHaveBeenCalledTimes(2);
@@ -334,7 +335,7 @@ const config = {
   }
 }`);
       await geogebraSrcCodeCollect();
-      expect(glob).toHaveBeenCalledWith('src/**/*{config,Config}.{js,jsx}', {
+      expect(glob).toHaveBeenCalledWith(CONFIG_FILES_PATTERN, {
         ignore: ['node_modules/**'],
       });
       expect(fs.readFileSync).toHaveBeenCalledTimes(2);

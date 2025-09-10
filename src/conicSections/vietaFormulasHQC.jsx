@@ -15,7 +15,7 @@ export const conicSectionsVFHQ1 = {
       qid: '圆锥曲线与韦达定理1-1',
       type: 'fill',
       score: 20,
-      question: String.raw`已知曲线 $x^2+\frac{y^2}{y+6}=1$ ，若 $y=kx-2$ 与曲线从下往上依次交于A、B、C，求 $min \frac{|AB|}{|BC|}$`,
+      question: String.raw`已知曲线 $ x^2+\frac{y^2}{y+6}=1 $ ，若 $ y=kx-2 $ 与曲线从下往上依次交于A、B、C，求 $ min \frac{|AB|}{|BC|} $`,
       correct: '5',
       explanation: (
         <div>
@@ -40,7 +40,7 @@ export const conicSectionsVFHQ1 = {
       ),
       relevantBlogs: [
         {
-          text: String.raw`已知曲线 $x^2+\frac{y^2}{y+6}=1$ ，若 $y=kx-2$ 与曲线从下往上依次交于A、B、C，求 $min \frac{|AB|}{|BC|}$`,
+          text: String.raw`已知曲线 $ x^2+\frac{y^2}{y+6}=1 $ ，若 $ y=kx-2 $ 与曲线从下往上依次交于A、B、C，求 $ min \frac{|AB|}{|BC|} $`,
           url: '/blog/已知曲线%20%24x%5E2%2B%5Cfrac%7By%5E2%7D%7By%2B6%7D%3D1%24%20，若%20%24y%3Dkx-2%24%20与曲线从下往上依次交于A、B、C，求%20%24min%20%5Cfrac%7B%7CAB%7C%7D%7B%7CBC%7C%7D%24',
         },
       ],

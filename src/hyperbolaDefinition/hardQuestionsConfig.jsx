@@ -81,7 +81,7 @@ export const hyperbolaDefinitionHQ = {
       qid: '双曲线的定义与性质HQ-4',
       score: 20,
       question: (
-        <div>
+        <div key="hyperbola-hq-4-ky">
           已知点P是双曲线 <TeX>{String.raw`\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1 \ (a > 0, \ b > 0)`}</TeX> 的右支上一点，<TeX>{String.raw`F_1`}</TeX>，<TeX>{String.raw`F_2`}</TeX> 分别为双曲线的左、右焦点，<TeX>{String.raw`I`}</TeX> 为 <TeX>{String.raw`\triangle PF_1F_2`}</TeX> 的内心，若 <TeX>{String.raw`S_{\triangle IPF_1} = S_{\triangle IPF_2} + \lambda S_{\triangle IF_1F_2}`}</TeX> 成立，则 <TeX>{String.raw`\lambda`}</TeX> 的值为（）
           <Geogebra
             id="hyperbola-hard-questions-4"
@@ -138,7 +138,7 @@ export const hyperbolaDefinitionHQ = {
     {
       qid: '双曲线的定义与性质HQ-5',
       question: (
-        <div>
+        <div key="hyperbola-hq-5-ky">
           双曲线方程为 <TeX>{String.raw`\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1 \ (a > 0, \ b > 0)`}</TeX>，过右焦点 <TeX>{String.raw`F`}</TeX> 向一条渐近线做垂线，垂足为 <TeX>{String.raw`M`}</TeX>，如图所示，已知 <TeX>{String.raw`\angle MFO = 30^\circ`}</TeX>（<TeX>{String.raw`O`}</TeX> 为坐标原点），则其离心率为（）
           <Geogebra
             id="hyperbola-hard-questions-5"
@@ -172,9 +172,9 @@ export const hyperbolaDefinitionHQ = {
       qid: '双曲线的定义与性质HQ-6',
       score: 20,
       question: (
-        <>
+        <div key="hyperbola-hq-6-ky">
           已知双曲线 <TeX>{String.raw`\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1 \ (a > 0, \ b > 0)`}</TeX> 的左右焦点分别为 <TeX>{String.raw`F_1`}</TeX>，<TeX>{String.raw`F_2`}</TeX>，<TeX>{String.raw`e`}</TeX> 为双曲线的离心率，<TeX>{String.raw`P`}</TeX> 是双曲线右支上的点，<TeX>{String.raw`\triangle PF_1F_2`}</TeX> 的内切圆的圆心为 <TeX>{String.raw`I`}</TeX>，过 <TeX>{String.raw`F_2`}</TeX> 作直线 <TeX>{String.raw`PI`}</TeX> 的垂线，垂足为 <TeX>{String.raw`B`}</TeX>，则 <TeX>{String.raw`OB =`}</TeX>（）
-        </>
+        </div>
       ),
       options: [
         'a',

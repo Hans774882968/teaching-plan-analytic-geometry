@@ -4,8 +4,7 @@ import traverse from '@babel/traverse';
 import chokidar from 'chokidar';
 import { glob } from 'glob';
 import ListNode from '@/common/ListNode';
-
-const CONFIG_FILES_PATTERN = 'src/**/*{config,Config}.{js,jsx}';
+import { CONFIG_FILES_PATTERN, shouldChokidarIgnore } from './listenerScriptUtils';
 
 // 辅助函数：判断字符是否为空格（不含换行）
 export function isSpace(char) {
@@ -262,9 +261,7 @@ export function setupWatcher() {
   console.log('Setting up file watcher...');
 
   const watcher = chokidar.watch('src', {
-    ignored: (path, stats) => {
-      return stats?.isFile() && !['config.js', 'Config.js', 'config.jsx', 'Config.jsx'].some((v) => path.endsWith(v));
-    },
+    ignored: shouldChokidarIgnore,
     ignoreInitial: true,
     persistent: true,
   });
