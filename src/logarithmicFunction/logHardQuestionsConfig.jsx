@@ -56,5 +56,34 @@ export const logHQ = {
       correct: '9',
       explanation: String.raw`两边同时取对数： $ a^3 \lna = \ln3 $ ，两边同时乘3，则左边的3可以放进对数里，制造同构： $ a^3 \ln a^3 = 3 \ln3 $ 。又 $ x \lnx $ 单增，故 $ a^3 = 3 $ ，所求为9`,
     },
+    {
+      qid: '对数函数HQ-4',
+      score: 20,
+      question: String.raw`（18年全国三卷12题） $ a = log_{0.2} 0.3,\ b = log_2 0.3 $ ，则`,
+      options: [
+        'a+b < ab < 0',
+        'ab < a+b < 0',
+        'a+b < 0 < ab',
+        'ab < 0 < a+b',
+      ],
+      correct: 1,
+      explanation: String.raw`
+化为同底： $ a = \frac{\ln0.3}{\ln0.2} > 0,\ b = \frac{\ln0.3}{\ln2} < 0 $ ，于是 $ ab < 0 $ 。为了判断a+b，我们考虑 $ \ln 0.2 + \ln 5 = 0 $ ，于是 $ a+b = \frac{\ln 0.3}{\ln 2} - \frac{\ln 0.3}{\ln 5} = \frac{(\ln 5 - \ln 2)\ln 0.3}{\ln 2\ln 5} < 0 $
+
+最后看 $ a+b $ 和 $ ab $ 的关系。
+
+- 法1：两者相除： $ \frac{a+b}{ab} = \frac{1}{a}+\frac{1}{b} = -\frac{\ln 5}{\ln 0.3} + \frac{\ln 2}{\ln 0.3} = \frac{\ln 0.4}{\ln 0.3} \in (0, 1) $ ，又 $ ab < 0 $ ，乘过去得到 $ ab<a+b<0 $
+- 法2： $ a+b-ab = \frac{(\ln 5 - \ln 2)\ln 0.3 + (\ln 0.3)^2}{\ln 2\ln 5} = \frac{\ln(\frac{5}{2}0.3)\ln 0.3}{\ln 2\ln 5} $ ， $ \ln 0.75 * \ln 0.3 > 0 $ ，故 $ a+b > ab $
+
+验算：
+
+${'`'.repeat(3)}js
+const a = Math.log(0.3) / Math.log(0.2)
+const b = Math.log(0.3) / Math.log(2)
+console.log(a * b, a + b) // -1.299372483566732 -0.9888952305787985
+console.log(1 / a + 1 / b, Math.log(0.4) / Math.log(0.3)) // 0.7610560044063083
+${'`'.repeat(3)}
+`,
+    },
   ],
 };
