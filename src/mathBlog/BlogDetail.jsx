@@ -23,6 +23,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/component/ui/breadcrumb';
+import { getTimeTextFromNow } from '@/lib/datetime';
+import { Popover, PopoverContent, PopoverTrigger } from '@/component/ui/popover';
 
 export default function BlogDetail() {
   const { title: blogTitle } = useParams();
@@ -75,11 +77,33 @@ export default function BlogDetail() {
           <div className="flex flex-wrap items-center">
             <div className="flex items-center gap-1.5 mr-6 mb-2 md:mb-0">
               <FaRegCalendarAlt className="text-blue-500" />
-              <span>创建时间: {blog.ctime}</span>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <span title={blog.ctime}>创建时间: {getTimeTextFromNow(blog.ctime)}</span>
+                </PopoverTrigger>
+                <PopoverContent
+                  side="top"
+                  align="center"
+                  className="bg-primary border-primary text-primary-foreground text-sm rounded-lg shadow-lg text-center max-w-3xs"
+                >
+                  <div>{blog.ctime}</div>
+                </PopoverContent>
+              </Popover>
             </div>
             <div className="flex items-center gap-1.5 mr-6 mb-2 md:mb-0">
               <FaRegPenToSquare className="text-blue-500" />
-              <span>更新时间: {blog.mtime}</span>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <span title={blog.mtime}>更新时间: {getTimeTextFromNow(blog.mtime)}</span>
+                </PopoverTrigger>
+                <PopoverContent
+                  side="top"
+                  align="center"
+                  className="bg-primary border-primary text-primary-foreground text-sm rounded-lg shadow-lg text-center max-w-3xs"
+                >
+                  <div>{blog.mtime}</div>
+                </PopoverContent>
+              </Popover>
             </div>
             <div className="flex items-center gap-1.5">
               <FaRegClock className="text-blue-500" />

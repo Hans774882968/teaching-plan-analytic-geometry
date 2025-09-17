@@ -110,7 +110,7 @@ export default function SettingsDialog() {
               <label className="block font-medium mb-2 sm:mb-0 sm:w-1/3 sm:text-right sm:pr-4">
                 默认展开代码
               </label>
-              <div className="w-full sm:w-full md:w-full">
+              <div className="w-full sm:w-full md:w-full flex items-center">
                 <Switch
                   checked={expandCode}
                   onCheckedChange={setExpandCode}

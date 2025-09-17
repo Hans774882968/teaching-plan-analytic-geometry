@@ -33,6 +33,7 @@ export const logHQ = {
         {
           think: '解题过程给了你什么启发',
           answer: '【FYI】九层之台，起于累土。此题虽水，但也涵盖了指数方程与对数方程互化的基础操作。不少看似复杂的问题，都可以从这些简单的部分着手，逐步拆解，最终解决',
+          answerRowMaxHeight: '200px',
         },
       ],
     },
@@ -54,7 +55,7 @@ export const logHQ = {
       type: 'fill',
       question: String.raw`已知 $ a^{a^3} = 3 $ ，求 $ a^6 $`,
       correct: '9',
-      explanation: String.raw`两边同时取对数： $ a^3 \lna = \ln3 $ ，两边同时乘3，则左边的3可以放进对数里，制造同构： $ a^3 \ln a^3 = 3 \ln3 $ 。又 $ x \lnx $ 单增，故 $ a^3 = 3 $ ，所求为9`,
+      explanation: String.raw`两边同时取对数： $ a^3 \ln a = \ln 3 $ ，两边同时乘3，则左边的3可以放进对数里，制造同构： $ a^3 \ln a^3 = 3 \ln3 $ 。又 $ x \ln x $ 单增，故 $ a^3 = 3 $ ，所求为9`,
     },
     {
       qid: '对数函数HQ-4',

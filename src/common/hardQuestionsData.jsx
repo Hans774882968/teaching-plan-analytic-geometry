@@ -14,6 +14,14 @@ export const levelColorList = [
   'bg-red-500',
 ];
 
+export const levelTextColorList = [
+  'text-blue-500',
+  'text-green-500',
+  'text-purple-500',
+  'text-yellow-500',
+  'text-red-500',
+];
+
 export const levelIcons = {
   '椭圆的定义与性质': <FaShapes />,
   '双曲线的定义与性质': <FaShapes />,
@@ -27,6 +35,10 @@ export function getLevelColorByIndex(idx) {
   return levelColorList[idx % levelColorList.length];
 }
 
+export function getLevelTextColorByIndex(idx) {
+  return levelTextColorList[idx % levelTextColorList.length];
+}
+
 const hardQuestionsData = [
   logHQ,
   ellipseDefinitionHQ,
@@ -37,6 +49,7 @@ const hardQuestionsData = [
 ].map((level, index) => ({
   ...level,
   bgColor: getLevelColorByIndex(index),
+  textColor: getLevelTextColorByIndex(index),
   icon: levelIcons[level.title] || <FaShapes />,
 }));
 

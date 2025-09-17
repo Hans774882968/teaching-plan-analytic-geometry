@@ -29,6 +29,10 @@ import { toast } from 'sonner';
 import CheckInCalendar from './CheckInCalendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/component/ui/popover';
 import { sample } from 'lodash-es';
+import { playAudio } from '../challenge/utils';
+import correctMp3Url from '@/assets/challenge/correct.mp3';
+import wrongMp3Url from '@/assets/challenge/wrong.mp3';
+import TpmAudio from '@/component/TpmAudio';
 
 const quotes = [
   '学习就像爬山，每一步都是向上的进步',
@@ -249,6 +253,9 @@ export default function DailyQuestion() {
   const [showExplanation, setShowExplanation] = useState(isTodayCheckedIn());
   const [isCorrect, setIsCorrect] = useState(isTodayCheckedIn() || null);
 
+  const correctMp3Ref = useRef(null);
+  const wrongMp3Ref = useRef(null);
+
   useEffect(() => {
     if (!shouldNotifyCheckIn()) return;
     if (isTodayCheckedIn()) return;
@@ -270,7 +277,11 @@ export default function DailyQuestion() {
     setShowExplanation(true);
     const newIsCorrect = isAnswerCorrect(userAnswer, currentQuestion);
     setIsCorrect(newIsCorrect);
-    if (!newIsCorrect) return;
+    if (!newIsCorrect) {
+      playAudio(wrongMp3Ref, wrongMp3Url);
+      return;
+    }
+    playAudio(correctMp3Ref, correctMp3Url);
     if (isTodayCheckedIn()) return;
     toast.success('签到成功~');
     const currentBonusScore = calculateStreakBonus(streakDays + 1);
@@ -297,6 +308,9 @@ export default function DailyQuestion() {
       <StatusAndCalendarSection
         currentQuestion={currentQuestion}
       />
+
+      <TpmAudio ref={correctMp3Ref} src={correctMp3Url} />
+      <TpmAudio ref={wrongMp3Ref} src={wrongMp3Url} />
     </div>
   );
 }

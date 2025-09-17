@@ -11,6 +11,7 @@ import {
   FaStar,
   FaTrophy,
   FaUser,
+  FaUserClock,
 } from 'react-icons/fa';
 import { useMathChallengesStore } from './mathChallengesState';
 import { cn } from '@/lib/utils';
@@ -37,9 +38,11 @@ export default function MathChallenges() {
     score,
     countCompletedLevels,
     countSolvedQuestions,
+    countLevelsSetRecords,
   } = useMathChallengesStore();
   const completedLevelsCount = countCompletedLevels();
   const solvedQuestionsCount = countSolvedQuestions();
+  const levelsSetRecordsCount = countLevelsSetRecords();
 
   const has1 = completedLevelsCount >= 1;
   const has3 = completedLevelsCount >= 3;
@@ -107,6 +110,18 @@ export default function MathChallenges() {
               <p className="text-lg text-blue-500">解决问题</p>
               <p className="text-2xl font-bold text-blue-500">
                 <CountUp end={solvedQuestionsCount} />
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center">
+            <div className="bg-red-500 w-14 h-14 rounded-full flex items-center justify-center text-white mr-3">
+              <FaUserClock className="text-2xl" />
+            </div>
+            <div>
+              <p className="text-lg text-red-500">速通关卡</p>
+              <p className="text-2xl font-bold text-red-500">
+                <CountUp end={levelsSetRecordsCount} />
               </p>
             </div>
           </div>

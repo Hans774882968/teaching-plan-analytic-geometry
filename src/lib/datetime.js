@@ -1,5 +1,11 @@
 import dayjs from 'dayjs';
 
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/zh-cn';
+
+dayjs.extend(relativeTime);
+dayjs.locale('zh-cn');
+
 export function isValidHour(value) {
   return /^(0[0-9]|1[0-9]|2[0-3])$/.test(value);
 }
@@ -126,9 +132,10 @@ export function getDateByType(date, type) {
     return getValidMinuteOrSecond(String(date.getSeconds()));
   case 'hours':
     return getValidHour(String(date.getHours()));
-  case '12hours':
+  case '12hours': {
     const hours = display12HourValue(date.getHours());
     return getValid12Hour(String(hours));
+  }
   default:
     return '00';
   }
@@ -177,4 +184,12 @@ export function display12HourValue(hours) {
 export function isAtLeastTwoDaysBeforeNow(targetDate) {
   const twoDaysAgo = dayjs().subtract(2, 'day');
   return !dayjs(targetDate).isAfter(twoDaysAgo, 'day');
+}
+
+export function getTimeTextFromNow(date) {
+  const d = dayjs(date);
+  if (dayjs().diff(d, 'day') < 7) {
+    return dayjs(date).fromNow();
+  }
+  return date;
 }

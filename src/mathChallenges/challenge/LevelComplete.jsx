@@ -1,8 +1,8 @@
 import basicStyles from '@/component/teachingPlan/basic.module.scss';
 import TpmDivInsideSection from '@/component/TpmDivInsideSection';
 import TpmSection from '@/component/TpmSection';
-import { FaArrowLeft, FaRegCheckCircle, FaStar } from 'react-icons/fa';
-import { FaCircleDollarToSlot, FaCircleInfo } from 'react-icons/fa6';
+import { FaArrowLeft, FaRegCheckCircle, FaStar, FaClock, FaCheck, FaChartPie } from 'react-icons/fa';
+import { FaCircleDollarToSlot, FaCircleInfo, FaTrophy } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { useMathChallengesStore } from '../mathChallengesState';
 import { cn } from '@/lib/utils';
@@ -20,6 +20,8 @@ import TpmAudio from '@/component/TpmAudio';
 import completeOrFinishMp3Url from '@/assets/challenge/complete-or-finish.mp3';
 import { useEffect, useRef } from 'react';
 import { playAudio } from './utils';
+import { getTimerText } from '../utils';
+import NewRecordBadge from './NewRecordBadge';
 
 function CompletedCircle() {
   return (
@@ -89,13 +91,26 @@ export default function LevelComplete({
   currentLevelTitle,
   score,
   scoreAddition,
+  elapsedTime,
+  enableTimer,
+  enableShuffle,
+  correctQuestionCount,
+  totalQuestions,
+  isNewRecord,
 }) {
   const {
     isCompleted,
+    getBestTime,
   } = useMathChallengesStore();
   const completed = isCompleted(currentLevelTitle);
   const shouldShowLP = Math.random() * (lpCount + 1) >= 1;
   const lpKey = shouldShowLP ? sample(learningPartnerKeys) : '';
+
+  const enableSpeedrun = enableTimer && enableShuffle;
+  const accuracy = Math.round((correctQuestionCount / totalQuestions) * 100);
+  const allCorrect = correctQuestionCount === totalQuestions;
+
+  const currentBestTime = getBestTime(currentLevelTitle);
 
   const completeOrFinishMp3Ref = useRef(null);
 
@@ -113,7 +128,7 @@ export default function LevelComplete({
 
   return (
     <div className={basicStyles.container}>
-      <TpmSection className="items-center bounce-in">
+      <TpmSection className="items-center bounce-in gap-3 md:gap-6 p-3 md:p-6">
         {
           completed ? <CompletedCirclePart lpKey={lpKey} /> : <FinishedCircle />
         }
@@ -125,20 +140,54 @@ export default function LevelComplete({
           {completed ? '🎉 已通关' : '已完成'}《{currentLevelTitle}》
         </p>
 
-        <TpmDivInsideSection
-          className="flex flex-col items-center gap-3 p-4 md:p-6 rounded-2xl shadow-md text-(--tpm-primary)"
-        >
-          <div className="flex justify-center items-center gap-2 text-lg md:text-2xl font-bold">
-            <FaCircleDollarToSlot className="w-6 h-6 text-yellow-500" />
-            <span>+<CountUp end={scoreAddition} />积分</span>
-          </div>
-          <div className="flex justify-center items-center gap-2 text-lg md:text-2xl font-bold">
-            <FaStar className="w-6 h-6 text-yellow-500" />
-            <div>
-              现有：<CountUp start={score - scoreAddition} end={score} />
+        {isNewRecord && (
+          <NewRecordBadge duration={3} />
+        )}
+
+        <div className="flex flex-col 2xs:flex-row items-center 2xs:items-stretch gap-3 md:gap-6">
+          <TpmDivInsideSection
+            className="flex flex-col items-center gap-3 p-3 md:p-6 rounded-2xl shadow-md text-(--tpm-primary)"
+          >
+            <div className="flex justify-center items-center gap-2 text-sm md:text-lg font-bold">
+              <FaCircleDollarToSlot className="w-6 h-6 text-yellow-500" />
+              <span>+<CountUp end={scoreAddition} />积分</span>
             </div>
-          </div>
-        </TpmDivInsideSection>
+            <div className="flex justify-center items-center gap-2 text-sm md:text-lg font-bold">
+              <FaStar className="w-6 h-6 text-yellow-500" />
+              <div>
+                现有：<CountUp start={score - scoreAddition} end={score} />
+              </div>
+            </div>
+          </TpmDivInsideSection>
+
+          <TpmDivInsideSection
+            className="flex flex-col items-center gap-3 p-3 md:p-6 rounded-2xl shadow-md text-(--tpm-primary)"
+          >
+            <div className="flex justify-center items-center gap-2 text-sm md:text-lg font-bold">
+              <FaCheck className="text-green-500" />
+              <span>答对：<CountUp end={correctQuestionCount} />/<CountUp end={totalQuestions} />题</span>
+            </div>
+
+            <div className="flex justify-center items-center gap-2 text-sm md:text-lg font-bold">
+              <FaChartPie className="text-green-500" />
+              <span>正确率：<CountUp end={accuracy} />%</span>
+            </div>
+
+            {enableTimer && (
+              <div className="flex justify-center items-center gap-2 text-sm md:text-lg font-bold">
+                <FaClock className="text-blue-500" />
+                <span>用时：{getTimerText(elapsedTime)}</span>
+              </div>
+            )}
+
+            {enableSpeedrun && allCorrect && (
+              <div className="flex justify-center items-center gap-2 text-sm md:text-lg font-bold">
+                <FaTrophy className="text-yellow-500" />
+                <span>速通纪录：{getTimerText(currentBestTime)}</span>
+              </div>
+            )}
+          </TpmDivInsideSection>
+        </div>
 
         <div className="w-full">
           <Link
