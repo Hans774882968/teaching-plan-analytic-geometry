@@ -227,7 +227,7 @@ export default function CheckInCalendar() {
         />
       ) : (
         <div className="grid grid-cols-7 gap-2">
-          {['日', '一', '二', '三', '四', '五', '六'].map((day) => (
+          {['一', '二', '三', '四', '五', '六', '日'].map((day) => (
             <div
               key={day}
               className="flex justify-center items-center text-sm md:text-base font-medium text-gray-500 py-2"
