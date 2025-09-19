@@ -56,6 +56,22 @@ export function getAvailableMonths() {
   return Array.from(months).sort();
 }
 
+/**
+ * 统计包含代码块的博客数量
+ * Markdown 代码块格式：```language ... ```
+ * @param {Array<{ content: string }>} blogs
+ * @returns {number} 包含代码块的博客数量
+ */
+export function countBlogsWithCode(blogs) {
+  if (!Array.isArray(blogs)) return 0;
+
+  return blogs.filter(blog => {
+    if (typeof blog?.content !== 'string') return false;
+    // 匹配 ``` 包裹的代码块（支持换行）
+    return /```[\s\S]*?```/m.test(blog.content);
+  }).length;
+}
+
 export const totalTags = tags.length;
 export const totalBlogs = blogs.length;
 
@@ -70,6 +86,8 @@ const tagCounts = allTagsInBlog.reduce((acc, tag) => {
 export const totalWords = blogs.reduce((sum, blog) => sum + blog.content.length, 0);
 
 export const totalTitleWords = blogs.reduce((sum, blog) => sum + blog.title.length, 0);
+
+export const totalBlogsWithCode = countBlogsWithCode(blogs);
 
 // 被引用最多的前5个标签
 export const topAppearanceTags = Object.entries(tagCounts)

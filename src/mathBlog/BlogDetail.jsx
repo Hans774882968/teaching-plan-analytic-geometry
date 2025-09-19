@@ -86,7 +86,7 @@ export default function BlogDetail() {
                   align="center"
                   className="bg-primary border-primary text-primary-foreground text-sm rounded-lg shadow-lg text-center max-w-3xs"
                 >
-                  <div>{blog.ctime}</div>
+                  <div>创建时间: {blog.ctime}</div>
                 </PopoverContent>
               </Popover>
             </div>
@@ -101,7 +101,7 @@ export default function BlogDetail() {
                   align="center"
                   className="bg-primary border-primary text-primary-foreground text-sm rounded-lg shadow-lg text-center max-w-3xs"
                 >
-                  <div>{blog.mtime}</div>
+                  <div>更新时间: {blog.mtime}</div>
                 </PopoverContent>
               </Popover>
             </div>

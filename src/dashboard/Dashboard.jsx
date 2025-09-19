@@ -26,6 +26,7 @@ import {
   topLongestTitleBlogs,
   topTaggedBlogs,
   totalBlogs,
+  totalBlogsWithCode,
   totalTagReferences,
   totalTags,
   totalTitleWords,
@@ -38,7 +39,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/component/ui/select';
-import { FaBlog, FaBook, FaBookOpen, FaTags } from 'react-icons/fa';
+import {
+  FaBlog,
+  FaBook,
+  FaBookOpen,
+  FaCode,
+  FaTags,
+} from 'react-icons/fa';
 
 ChartJS.register(
   CategoryScale,
@@ -66,6 +73,7 @@ export default function Dashboard() {
         <IndicatorCard txt={<><FaBlog />博客总数</>} val={totalBlogs} />
         <IndicatorCard txt={<><FaBookOpen />博客总字数</>} val={totalWords} />
         <IndicatorCard txt={<><FaBook />博客标题总字数</>} val={totalTitleWords} />
+        <IndicatorCard txt={<><FaCode />有代码的博客</>} val={totalBlogsWithCode} />
       </div>
 
       {/* 图表区域 */}
