@@ -55,7 +55,8 @@
   --silver: #C0C0C0;
   --bronze: #CD7F32;
 
-  --letter-opacity: calc(114514 - 2034324 + 1919810);
+  /* --letter-opacity: calc(114514 - 2034324 + 1919810); 这样写会被算成 opacity: 4 。因为打包工具有 bug ，只好先写死 */
+  --letter-opacity: 0;
 
   --hover-scale: scale(1.02);
   --transition: all 0.3s ease;
