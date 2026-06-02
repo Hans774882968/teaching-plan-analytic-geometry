@@ -38,6 +38,8 @@ export default function SettingsDialog() {
     setExpandCode,
     watermarkForLessonBlog,
     setWatermarkForLessonBlog,
+    movingWatermarkForLessonBlog,
+    setMovingWatermarkForLessonBlog,
     hljsTheme,
     editorFontSize,
     setHljsTheme,
@@ -142,6 +144,33 @@ export default function SettingsDialog() {
                 rows={WATERMARK_TEXT_MAX_ROWS} // somehow useless
                 value={watermarkForLessonBlog}
                 onChange={(e) => setWatermarkForLessonBlog(e.target.value)}
+              />
+            </div>
+            <div className="sm:flex sm:items-center">
+              <label className="flex sm:justify-end items-center gap-1 font-medium mb-2 sm:mb-0 sm:w-1/3 sm:text-right sm:pr-4">
+                动态水印文案
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FaQuestionCircle className="cursor-help" />
+                  </PopoverTrigger>
+                  <PopoverContent
+                    side="top"
+                    align="center"
+                    className="bg-primary border-primary text-primary-foreground text-sm rounded-lg shadow-lg max-w-xs"
+                  >
+                    <div>• 目前在课件/博客页面生效</div>
+                    <div>• 留空表示无动态水印</div>
+                  </PopoverContent>
+                </Popover>
+              </label>
+              <TextareaWithLength
+                className="max-h-20"
+                name="动态水印文案"
+                placeholder="请输入"
+                maxLength={WATERMARK_TEXT_MAX_LENGTH}
+                rows={WATERMARK_TEXT_MAX_ROWS} // somehow useless
+                value={movingWatermarkForLessonBlog}
+                onChange={(e) => setMovingWatermarkForLessonBlog(e.target.value)}
               />
             </div>
           </div>

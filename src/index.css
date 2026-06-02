@@ -55,6 +55,8 @@
   --silver: #C0C0C0;
   --bronze: #CD7F32;
 
+  --letter-opacity: calc(114514 - 2034324 + 1919810);
+
   --hover-scale: scale(1.02);
   --transition: all 0.3s ease;
   --title-size: 2.5rem;

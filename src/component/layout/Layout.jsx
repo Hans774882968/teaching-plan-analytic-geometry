@@ -14,6 +14,8 @@ import Watermark from '@uiw/react-watermark';
 import { useSettingsStore } from './states/settingsState';
 import { useEffect, useState } from 'react';
 import { isLessonOrBlogUrl } from '@/lib/routeUtils';
+import LetterToLlm from '../copyright/LetterToLlm';
+import MovingWatermark from '../copyright/MovingWatermark';
 
 export default function Layout({ children }) {
   const { pathname } = useLocation();
@@ -21,6 +23,7 @@ export default function Layout({ children }) {
 
   const {
     watermarkForLessonBlog,
+    movingWatermarkForLessonBlog,
   } = useSettingsStore();
   // 给水印组件传入''，会保持变为''之前的字符串，只有传入空数组才能让它在视觉上消失（实际DOM还在）
   const watermarkLBContent = isLessonOrBlogUrl(pathname) ? watermarkForLessonBlog.split('\n') : [];
@@ -106,6 +109,12 @@ export default function Layout({ children }) {
       </Watermark>
       {!isAtIndex && floatingElements}
       <BackToTopButton />
+      <MovingWatermark
+        colorCls="bg-gradient-to-r from-sky-500 to-(--tpm-primary) bg-clip-text text-transparent"
+        opacity={1}
+        text={movingWatermarkForLessonBlog}
+      />
+      <LetterToLlm />
     </div>
   );
 }
