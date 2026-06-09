@@ -1,3 +1,4 @@
+import { motion } from 'motion/react';
 import { useState } from 'react';
 import {
   FaDraftingCompass,
@@ -11,7 +12,6 @@ import {
 } from 'react-icons/fa';
 import { FaCircleDollarToSlot } from 'react-icons/fa6';
 import { addToFavorite, cn } from '@/lib/utils';
-import { motion } from 'motion/react';
 import styles from './TeachingPlanList.module.scss';
 import { Link } from 'react-router-dom';
 import NoData from '@/component/NoData';
